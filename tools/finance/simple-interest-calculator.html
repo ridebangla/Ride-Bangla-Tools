@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simple Interest Calculator — Ride Bangla Tools</title>
+<meta name="description" content="Work out simple interest and the total amount payable from principal, rate and time.">
+<link rel="canonical" href="https://tools.ridebangla.bd/finance/simple-interest-calculator.html">
+<meta property="og:title" content="Simple Interest Calculator — Ride Bangla Tools">
+<meta property="og:description" content="Work out simple interest and the total amount payable from principal, rate and time.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/finance/simple-interest-calculator.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Finance Tools", "item": "https://tools.ridebangla.bd/finance/"}, {"@type": "ListItem", "position": 3, "name": "Simple Interest Calculator", "item": "https://tools.ridebangla.bd/finance/simple-interest-calculator.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Simple Interest Calculator", "description": "Work out simple interest and the total amount payable from principal, rate and time.", "url": "https://tools.ridebangla.bd/finance/simple-interest-calculator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/" style="color:var(--text-hi)">Finance</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Finance</a> / Simple Interest Calculator</div>
+    <h1>Simple Interest Calculator</h1>
+    <p class="lede">Work out simple interest and the total amount payable from principal, rate and time.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field"><label>Principal amount</label><input type="number" id="p" value="100000"></div>
+    <div class="field"><label>Annual interest rate (%)</label><input type="number" id="r" value="8" step="0.1"></div>
+    <div class="field"><label>Time (years)</label><input type="number" id="t" value="3" step="0.5"></div>
+  </div>
+  <div class="panel">
+    <div class="field"><label>Simple interest</label><div class="result-big" id="si">–</div></div>
+    <div class="stat-grid">
+      <div class="stat"><div class="n" id="total">–</div><div class="l">Total amount</div></div>
+    </div>
+  </div>
+</section>
+<script>
+function calc() {
+  const p = parseFloat(document.getElementById('p').value);
+  const r = parseFloat(document.getElementById('r').value);
+  const t = parseFloat(document.getElementById('t').value);
+  if (!p || !r || !t) return;
+  const si = (p*r*t)/100;
+  document.getElementById('si').textContent = si.toLocaleString(undefined,{maximumFractionDigits:0});
+  document.getElementById('total').textContent = (p+si).toLocaleString(undefined,{maximumFractionDigits:0});
+}
+['p','r','t'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+calc();
+</script>
+<section class="related">
+  <div class="container">
+    <h3>More in Finance</h3>
+    <div class="related-list">
+      <a href="loan-emi-calculator.html">Loan EMI Calculator</a>
+      <a href="../finance/">All Finance tools</a>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+
+</body>
+</html>
