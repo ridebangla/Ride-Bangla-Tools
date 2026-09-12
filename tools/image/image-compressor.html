@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Compressor — Ride Bangla Tools</title>
+<meta name="description" content="Shrink a JPG or PNG's file size by adjusting quality and maximum dimensions.">
+<link rel="canonical" href="https://tools.ridebangla.bd/image/image-compressor.html">
+<meta property="og:title" content="Image Compressor — Ride Bangla Tools">
+<meta property="og:description" content="Shrink a JPG or PNG's file size by adjusting quality and maximum dimensions.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/image/image-compressor.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://tools.ridebangla.bd/image/"}, {"@type": "ListItem", "position": 3, "name": "Image Compressor", "item": "https://tools.ridebangla.bd/image/image-compressor.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Image Compressor", "description": "Shrink a JPG or PNG's file size by adjusting quality and maximum dimensions.", "url": "https://tools.ridebangla.bd/image/image-compressor.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Image Compressor free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Image Compressor is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Image Compressor runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Will this reduce the quality of my image?", "acceptedAnswer": {"@type": "Answer", "text": "You control the balance between file size and quality with the settings on the page, so you can compare the result before you rely on it."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/" style="color:var(--text-hi)">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Image Compressor</div>
+    <h1>Image Compressor</h1>
+    <p class="lede">Shrink a bulky JPG or PNG down to size — adjust quality and maximum dimensions and watch the file size drop, right in your browser.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field">
+      <label>Choose an image</label>
+      <input type="file" id="imgIn" accept="image/*">
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Quality: <span id="qVal">80</span>%</label>
+        <input type="range" id="quality" min="10" max="100" value="80" style="width:100%;">
+      </div>
+      <div class="field">
+        <label>Max width (px)</label>
+        <input type="number" id="maxW" value="1600">
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn" id="compressBtn">Compress</button></div>
+  </div>
+  <div class="panel">
+    <img id="preview" style="display:none;border-radius:8px;border:1px solid var(--line);margin-bottom:14px;">
+    <div class="stat-grid">
+      <div class="stat"><div class="n" id="origKb">–</div><div class="l">Original KB</div></div>
+      <div class="stat"><div class="n" id="newKb">–</div><div class="l">Compressed KB</div></div>
+      <div class="stat"><div class="n" id="saved">–</div><div class="l">Reduction</div></div>
+    </div>
+    <div class="btn-row" style="margin-top:16px;"><a class="btn ghost" id="dlLink" style="display:none;">Download compressed image</a></div>
+  </div>
+</section>
+<script>
+const quality = document.getElementById('quality');
+const qVal = document.getElementById('qVal');
+quality.addEventListener('input', () => qVal.textContent = quality.value);
+
+let origFile = null;
+document.getElementById('imgIn').addEventListener('change', (e) => {
+  origFile = e.target.files[0];
+  if (origFile) document.getElementById('origKb').textContent = (origFile.size/1024).toFixed(1);
+});
+
+document.getElementById('compressBtn').addEventListener('click', () => {
+  if (!origFile) { alert('Choose an image first.'); return; }
+  const maxW = parseInt(document.getElementById('maxW').value, 10) || 1600;
+  const img = new Image();
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    img.onload = () => {
+      const scale = Math.min(1, maxW / img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const preview = document.getElementById('preview');
+        preview.src = url; preview.style.display = 'block';
+        document.getElementById('newKb').textContent = (blob.size/1024).toFixed(1);
+        const savedPct = (100 * (1 - blob.size / origFile.size)).toFixed(0);
+        document.getElementById('saved').textContent = savedPct + '%';
+        const dl = document.getElementById('dlLink');
+        dl.href = url; dl.download = 'compressed.jpg'; dl.style.display = 'inline-block';
+        dl.textContent = 'Download compressed image';
+      }, 'image/jpeg', quality.value / 100);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(origFile);
+});
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Image Compressor</h2>
+    <ol class="how-steps">
+      <li>Open the fields above and enter or upload what Image Compressor needs.</li>
+      <li>Adjust any options until the preview or output looks right.</li>
+      <li>Click the button to get your result — instantly, in this tab.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Image Compressor free to use?</summary>
+        <p>Yes. Image Compressor is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. Image Compressor runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Will this reduce the quality of my image?</summary>
+        <p>You control the balance between file size and quality with the settings on the page, so you can compare the result before you rely on it.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Image</h3>
+    <div class="related-list">
+      <a href="image-to-base64.html">Image to Base64</a>
+      <a href="../image/">All Image tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+</body>
+</html>
