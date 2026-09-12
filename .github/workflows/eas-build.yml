@@ -1,6 +1,4 @@
-name: Extract Ride Bangla Tools
-
-on:
+name: Extract Ride Baon:
   push:
     paths:
       - "ride-bangla-tools-site.zip"
