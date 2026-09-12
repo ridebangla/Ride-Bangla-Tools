@@ -1,26 +1,26 @@
 /* ==========================================================================
    Ride Bangla Tools — design tokens
-   A distinct "digital workshop" identity: ink-navy surfaces, a single warm
-   brass accent, monospace catalog numbers. Deliberately NOT the red/green
-   Ride Bangla brand — this is presented as a separate tools product.
+   Brand identity: white surfaces with the Ride Bangla flag colors — deep
+   green (primary accent) and red (highlight accent) — pulled directly from
+   the Ride Bangla logo, so this product reads as unmistakably "Ride Bangla".
    ========================================================================== */
 
 :root{
-  --ink-950:#0D0F14;
-  --ink-900:#12151C;
-  --ink-850:#171B24;
-  --ink-800:#1C212C;
-  --ink-700:#262C39;
-  --ink-600:#333B4B;
-  --line:#2A3140;
-  --text-hi:#EDEFF3;
-  --text-mid:#B7BECC;
-  --text-lo:#7C879B;
-  --brass:#E8A33D;
-  --brass-hi:#F5BE66;
-  --brass-ink:#241804;
-  --green-ok:#4FAE7E;
-  --red-err:#E0664F;
+  --ink-950:#FFFFFF;
+  --ink-900:#FFFFFF;
+  --ink-850:#F4F9F6;
+  --ink-800:#E9F2EC;
+  --ink-700:#D8E6DD;
+  --ink-600:#C2D6C9;
+  --line:#DCE7E0;
+  --text-hi:#0F1D16;
+  --text-mid:#4A5C52;
+  --text-lo:#7C8F84;
+  --brass:#016237;
+  --brass-hi:#04884C;
+  --brass-ink:#FFFFFF;
+  --green-ok:#016237;
+  --red-err:#D90504;
 
   --font-display:'Space Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-body:system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -59,9 +59,10 @@ p{margin:0 0 1em;color:var(--text-mid);max-width:64ch;}
 /* ---------- header ---------- */
 .site-header{
   position:sticky;top:0;z-index:40;
-  background:rgba(13,15,20,.92);
-  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,.97);
   border-bottom:1px solid var(--line);
+  border-top:3px solid;
+  border-image:linear-gradient(90deg, var(--red-err) 0%, var(--red-err) 50%, var(--brass) 50%, var(--brass) 100%) 1;
 }
 .site-header .bar{
   display:flex;align-items:center;gap:14px;
@@ -70,13 +71,13 @@ p{margin:0 0 1em;color:var(--text-mid);max-width:64ch;}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto;}
 .brand img{width:34px;height:34px;border-radius:9px;flex:none;}
 .brand .name{font-family:var(--font-display);font-weight:600;font-size:17px;color:var(--text-hi);}
-.brand .name small{display:block;font-family:var(--font-mono);font-size:10px;font-weight:400;color:var(--brass);letter-spacing:.04em;}
+.brand .name small{display:block;font-family:var(--font-mono);font-size:10px;font-weight:400;color:var(--red-err);letter-spacing:.04em;}
 .site-nav{display:flex;gap:2px;}
 .site-nav a{
   font-size:14px;color:var(--text-mid);padding:8px 12px;border-radius:var(--radius-sm);
   transition:color .15s, background .15s;
 }
-.site-nav a:hover{color:var(--text-hi);background:var(--ink-800);}
+.site-nav a:hover{color:var(--brass);background:var(--ink-800);}
 .nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--text-hi);width:38px;height:38px;font-size:18px;}
 
 @media (max-width:820px){
@@ -183,7 +184,7 @@ button.btn.ghost:hover{border-color:var(--brass);color:var(--brass);}
   white-space:pre-wrap;word-break:break-word;min-height:52px;
 }
 .output.empty{color:var(--text-lo);}
-.result-big{font-family:var(--font-display);font-size:38px;font-weight:600;color:var(--brass);margin:6px 0;}
+.result-big{font-family:var(--font-display);font-size:38px;font-weight:600;color:var(--red-err);margin:6px 0;}
 .swatch{width:100%;height:64px;border-radius:var(--radius-sm);border:1px solid var(--line);margin-bottom:12px;}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-top:16px;}
 .stat{background:var(--ink-900);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;}
@@ -225,7 +226,7 @@ button.btn.ghost:hover{border-color:var(--brass);color:var(--brass);}
 }
 .copy-toast{
   position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(10px);
-  background:var(--text-hi);color:var(--ink-900);font-size:13px;font-weight:600;
+  background:var(--text-hi);color:#FFFFFF;font-size:13px;font-weight:600;
   padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s, transform .2s;
   font-family:var(--font-display);
 }
