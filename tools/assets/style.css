@@ -1,26 +1,30 @@
 /* ==========================================================================
    Ride Bangla Tools — design tokens
-   Brand identity: white surfaces with the Ride Bangla flag colors — deep
-   green (primary accent) and red (highlight accent) — pulled directly from
-   the Ride Bangla logo, so this product reads as unmistakably "Ride Bangla".
+   Colors sampled directly from ridebangla.bd: single-green brand system —
+   white surfaces, a pale mint accent tint for sections/pills, dark
+   navy headings, neutral grey body text, and one solid green for buttons
+   and links. Red is reserved only for genuine error/warning states inside
+   tools (invalid JSON, "Obese" BMI category) — it is not a brand accent
+   here, matching how ridebangla.bd itself uses it (nowhere in the UI,
+   only inside the logo mark).
    ========================================================================== */
 
 :root{
   --ink-950:#FFFFFF;
   --ink-900:#FFFFFF;
-  --ink-850:#F4F9F6;
-  --ink-800:#E9F2EC;
-  --ink-700:#D8E6DD;
-  --ink-600:#C2D6C9;
-  --line:#DCE7E0;
-  --text-hi:#0F1D16;
-  --text-mid:#4A5C52;
-  --text-lo:#7C8F84;
-  --brass:#0E7C42;
-  --brass-hi:#065A30;
+  --ink-850:#EDF8F1;
+  --ink-800:#E3F3E8;
+  --ink-700:#D2EAD9;
+  --ink-600:#BCDDC6;
+  --line:#E7EDE9;
+  --text-hi:#101828;
+  --text-mid:#5B6B63;
+  --text-lo:#8B948D;
+  --brass:#0E7A3B;
+  --brass-hi:#0B6530;
   --brass-ink:#FFFFFF;
-  --green-ok:#0E7C42;
-  --red-err:#D90503;
+  --green-ok:#0E7A3B;
+  --red-err:#DC2626;
 
   --font-display:'Space Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-body:system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -61,8 +65,7 @@ p{margin:0 0 1em;color:var(--text-mid);max-width:64ch;}
   position:sticky;top:0;z-index:40;
   background:rgba(255,255,255,.97);
   border-bottom:1px solid var(--line);
-  border-top:3px solid;
-  border-image:linear-gradient(90deg, var(--red-err) 0%, var(--red-err) 50%, var(--brass) 50%, var(--brass) 100%) 1;
+  border-top:3px solid var(--brass);
 }
 .site-header .bar{
   display:flex;align-items:center;gap:14px;
@@ -71,7 +74,7 @@ p{margin:0 0 1em;color:var(--text-mid);max-width:64ch;}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto;}
 .brand img{width:34px;height:34px;border-radius:9px;flex:none;}
 .brand .name{font-family:var(--font-display);font-weight:600;font-size:17px;color:var(--text-hi);}
-.brand .name small{display:block;font-family:var(--font-mono);font-size:10px;font-weight:400;color:var(--red-err);letter-spacing:.04em;}
+.brand .name small{display:block;font-family:var(--font-mono);font-size:10px;font-weight:400;color:var(--text-lo);letter-spacing:.04em;}
 .site-nav{display:flex;gap:2px;}
 .site-nav a{
   font-size:14px;color:var(--text-mid);padding:8px 12px;border-radius:var(--radius-sm);
@@ -93,17 +96,18 @@ p{margin:0 0 1em;color:var(--text-mid);max-width:64ch;}
 }
 
 /* ---------- hero ---------- */
-.hero{padding:64px 0 40px;border-bottom:1px solid var(--line);}
+.hero{padding:64px 0 40px;background:var(--ink-850);border-bottom:1px solid var(--line);}
 .hero .eyebrow{
-  font-family:var(--font-mono);font-size:12px;color:var(--brass);
-  margin-bottom:14px;
+  display:inline-block;font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brass-hi);
+  background:#FFFFFF;border:1px solid var(--ink-700);border-radius:999px;
+  padding:6px 14px;margin-bottom:18px;letter-spacing:.03em;
 }
 .hero h1{font-size:clamp(32px,5vw,52px);max-width:16ch;color:var(--text-hi);}
 .hero .lede{font-size:18px;max-width:56ch;color:var(--text-mid);}
 
 .search-box{
   margin-top:28px;max-width:560px;display:flex;align-items:center;gap:10px;
-  background:var(--ink-850);border:1px solid var(--line);border-radius:var(--radius-md);
+  background:#FFFFFF;border:1px solid var(--line);border-radius:var(--radius-md);
   padding:4px 6px 4px 16px;
 }
 .search-box svg{flex:none;color:var(--text-lo);}
@@ -150,15 +154,15 @@ p{margin:0 0 1em;color:var(--text-mid);max-width:64ch;}
 
 .tool-body{padding:40px 0 70px;display:grid;grid-template-columns:1fr;gap:28px;}
 .panel{
-  background:var(--ink-850);border:1px solid var(--line);border-radius:var(--radius-md);
-  padding:24px;
+  background:#FFFFFF;border:1px solid var(--line);border-radius:var(--radius-md);
+  padding:24px;box-shadow:0 1px 2px rgba(16,24,40,.04);
 }
 .panel + .panel{margin-top:0;}
 .field{margin-bottom:16px;}
 .field label{display:block;font-size:13px;color:var(--text-mid);margin-bottom:6px;font-family:var(--font-mono);}
 .field .hint{font-size:12px;color:var(--text-lo);margin-top:6px;}
 textarea,input[type=text],input[type=number],input[type=date],select{
-  width:100%;background:var(--ink-900);border:1px solid var(--line);color:var(--text-hi);
+  width:100%;background:var(--ink-850);border:1px solid var(--line);color:var(--text-hi);
   border-radius:var(--radius-sm);padding:11px 12px;font-family:var(--font-body);font-size:14.5px;
   outline:0;transition:border-color .15s;
 }
@@ -179,15 +183,15 @@ button.btn.ghost:hover{border-color:var(--brass);color:var(--brass);}
 .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
 
 .output{
-  background:var(--ink-900);border:1px solid var(--line);border-radius:var(--radius-sm);
+  background:var(--ink-850);border:1px solid var(--line);border-radius:var(--radius-sm);
   padding:14px 16px;font-family:var(--font-mono);font-size:13.5px;color:var(--text-hi);
   white-space:pre-wrap;word-break:break-word;min-height:52px;
 }
 .output.empty{color:var(--text-lo);}
-.result-big{font-family:var(--font-display);font-size:38px;font-weight:600;color:var(--red-err);margin:6px 0;}
+.result-big{font-family:var(--font-display);font-size:38px;font-weight:600;color:var(--brass-hi);margin:6px 0;}
 .swatch{width:100%;height:64px;border-radius:var(--radius-sm);border:1px solid var(--line);margin-bottom:12px;}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-top:16px;}
-.stat{background:var(--ink-900);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;}
+.stat{background:var(--ink-850);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;}
 .stat .n{font-family:var(--font-display);font-size:22px;color:var(--text-hi);}
 .stat .l{font-family:var(--font-mono);font-size:11px;color:var(--text-lo);text-transform:uppercase;letter-spacing:.04em;}
 
@@ -206,7 +210,7 @@ button.btn.ghost:hover{border-color:var(--brass);color:var(--brass);}
 .related-list a:hover{border-color:var(--brass);color:var(--brass);}
 
 /* ---------- footer ---------- */
-.site-footer{border-top:1px solid var(--line);padding:36px 0;}
+.site-footer{border-top:1px solid var(--line);padding:36px 0;background:var(--ink-850);}
 .site-footer .cols{display:flex;flex-wrap:wrap;gap:36px;justify-content:space-between;}
 .site-footer .brand-col .name{font-family:var(--font-display);font-weight:600;color:var(--text-hi);font-size:15px;}
 .site-footer .brand-col p{font-size:13px;max-width:34ch;margin-top:8px;}
@@ -221,8 +225,8 @@ button.btn.ghost:hover{border-color:var(--brass);color:var(--brass);}
 
 /* ---------- misc ---------- */
 .badge{
-  display:inline-block;font-family:var(--font-mono);font-size:11px;color:var(--green-ok);
-  border:1px solid var(--green-ok);border-radius:999px;padding:3px 10px;margin-bottom:14px;
+  display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--brass-hi);
+  background:var(--ink-800);border-radius:999px;padding:4px 12px;margin-bottom:14px;
 }
 .copy-toast{
   position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(10px);
