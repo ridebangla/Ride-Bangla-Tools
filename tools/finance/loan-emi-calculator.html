@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loan EMI Calculator — Ride Bangla Tools</title>
+<meta name="description" content="Estimate the monthly instalment on a loan from the amount, interest rate and term.">
+<link rel="canonical" href="https://tools.ridebangla.bd/finance/loan-emi-calculator.html">
+<meta property="og:title" content="Loan EMI Calculator — Ride Bangla Tools">
+<meta property="og:description" content="Estimate the monthly instalment on a loan from the amount, interest rate and term.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/finance/loan-emi-calculator.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Finance Tools", "item": "https://tools.ridebangla.bd/finance/"}, {"@type": "ListItem", "position": 3, "name": "Loan EMI Calculator", "item": "https://tools.ridebangla.bd/finance/loan-emi-calculator.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Loan EMI Calculator", "description": "Estimate the monthly instalment on a loan from the amount, interest rate and term.", "url": "https://tools.ridebangla.bd/finance/loan-emi-calculator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/" style="color:var(--text-hi)">Finance</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Finance</a> / Loan EMI Calculator</div>
+    <h1>Loan EMI Calculator</h1>
+    <p class="lede">Planning a loan? Enter the amount, rate and term to see your monthly EMI before you sign anything.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field"><label>Loan amount</label><input type="number" id="p" value="500000"></div>
+    <div class="field"><label>Annual interest rate (%)</label><input type="number" id="r" value="12" step="0.1"></div>
+    <div class="field"><label>Term (months)</label><input type="number" id="n" value="24"></div>
+  </div>
+  <div class="panel">
+    <div class="field"><label>Monthly instalment (EMI)</label><div class="result-big" id="emi">–</div></div>
+    <div class="stat-grid">
+      <div class="stat"><div class="n" id="totalPay">–</div><div class="l">Total payable</div></div>
+      <div class="stat"><div class="n" id="totalInt">–</div><div class="l">Total interest</div></div>
+    </div>
+  </div>
+</section>
+<script>
+function calc() {
+  const p = parseFloat(document.getElementById('p').value);
+  const annualR = parseFloat(document.getElementById('r').value);
+  const n = parseFloat(document.getElementById('n').value);
+  if (!p || !n) return;
+  const r = annualR / 12 / 100;
+  const emi = r === 0 ? p / n : (p * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+  const total = emi * n;
+  document.getElementById('emi').textContent = emi.toLocaleString(undefined,{maximumFractionDigits:0});
+  document.getElementById('totalPay').textContent = total.toLocaleString(undefined,{maximumFractionDigits:0});
+  document.getElementById('totalInt').textContent = (total-p).toLocaleString(undefined,{maximumFractionDigits:0});
+}
+['p','r','n'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+calc();
+</script>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Finance</h3>
+    <div class="related-list">
+      <a href="simple-interest-calculator.html">Simple Interest Calculator</a>
+      <a href="../finance/">All Finance tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+</body>
+</html>
