@@ -16,11 +16,11 @@
   --text-hi:#0F1D16;
   --text-mid:#4A5C52;
   --text-lo:#7C8F84;
-  --brass:#16A34A;
-  --brass-hi:#15803D;
+  --brass:#0E7C42;
+  --brass-hi:#065A30;
   --brass-ink:#FFFFFF;
-  --green-ok:#16A34A;
-  --red-err:#DC2626;
+  --green-ok:#0E7C42;
+  --red-err:#D90503;
 
   --font-display:'Space Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-body:system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
