@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo Editor — Ride Bangla Tools</title>
+<meta name="description" content="Adjust brightness, contrast, saturation and more, then rotate, flip and download — free photo editing that runs entirely in your browser.">
+<link rel="canonical" href="https://tools.ridebangla.bd/image/photo-editor.html">
+<meta property="og:title" content="Photo Editor — Ride Bangla Tools">
+<meta property="og:description" content="Adjust brightness, contrast, saturation and more, then rotate, flip and download — free photo editing that runs entirely in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/image/photo-editor.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://tools.ridebangla.bd/image/"}, {"@type": "ListItem", "position": 3, "name": "Photo Editor", "item": "https://tools.ridebangla.bd/image/photo-editor.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Photo Editor", "description": "Adjust brightness, contrast, saturation and more, then rotate, flip and download — free photo editing that runs entirely in your browser.", "url": "https://tools.ridebangla.bd/image/photo-editor.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Photo Editor free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Photo Editor is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my photo uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Photo Editor runs entirely in your browser using the Canvas API — your photo never leaves your device."}}, {"@type": "Question", "name": "What can I adjust?", "acceptedAnswer": {"@type": "Answer", "text": "Brightness, contrast, saturation, grayscale, sepia tone and blur, plus rotate and flip — all live, before you download."}}]}</script>
+<style>
+.pe-canvas-wrap{background:repeating-conic-gradient(#f1f3f5 0% 25%, #fff 0% 50%) 50% / 20px 20px;border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:280px;max-height:60vh;}
+.pe-canvas-wrap canvas{max-width:100%;max-height:60vh;display:block;}
+.pe-row{display:flex;align-items:center;gap:10px;}
+.pe-row input[type=range]{flex:1;}
+.pe-val{font-family:var(--font-mono);font-size:12px;color:var(--text-lo);width:38px;text-align:right;}
+.pe-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.pe-tools button{font-family:var(--font-mono);font-size:12px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;}
+.pe-tools button:hover{border-color:var(--brass);color:var(--brass);}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/" style="color:var(--text-hi)">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Photo Editor</div>
+    <h1>Photo Editor</h1>
+    <p class="lede">Adjust brightness, contrast, saturation and more, rotate or flip, and download — all live, right in your browser.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field">
+      <label>Choose a photo</label>
+      <input type="file" id="peIn" accept="image/*">
+    </div>
+
+    <div class="field pe-row"><label style="min-width:110px;">Brightness</label><input type="range" id="peBright" min="0" max="200" value="100"><span class="pe-val" id="peBrightV">100%</span></div>
+    <div class="field pe-row"><label style="min-width:110px;">Contrast</label><input type="range" id="peContrast" min="0" max="200" value="100"><span class="pe-val" id="peContrastV">100%</span></div>
+    <div class="field pe-row"><label style="min-width:110px;">Saturation</label><input type="range" id="peSat" min="0" max="200" value="100"><span class="pe-val" id="peSatV">100%</span></div>
+    <div class="field pe-row"><label style="min-width:110px;">Grayscale</label><input type="range" id="peGray" min="0" max="100" value="0"><span class="pe-val" id="peGrayV">0%</span></div>
+    <div class="field pe-row"><label style="min-width:110px;">Sepia</label><input type="range" id="peSepia" min="0" max="100" value="0"><span class="pe-val" id="peSepiaV">0%</span></div>
+    <div class="field pe-row"><label style="min-width:110px;">Blur</label><input type="range" id="peBlur" min="0" max="10" value="0"><span class="pe-val" id="peBlurV">0px</span></div>
+
+    <div class="pe-tools">
+      <button type="button" id="peRotL">&#8634; Rotate left</button>
+      <button type="button" id="peRotR">&#8635; Rotate right</button>
+      <button type="button" id="peFlipH">&#8596; Flip horizontal</button>
+      <button type="button" id="peFlipV">&#8597; Flip vertical</button>
+      <button type="button" id="peReset">Reset</button>
+    </div>
+    <div class="btn-row" style="margin-top:16px;"><a class="btn ghost" id="peDl" style="display:none;">Download photo</a></div>
+  </div>
+  <div class="panel">
+    <div class="pe-canvas-wrap"><canvas id="peCanvas"></canvas></div>
+  </div>
+</section>
+<script>
+(function(){
+  const fileIn = document.getElementById('peIn');
+  const canvas = document.getElementById('peCanvas');
+  const ctx = canvas.getContext('2d');
+  const dl = document.getElementById('peDl');
+
+  const sliders = {
+    bright: document.getElementById('peBright'),
+    contrast: document.getElementById('peContrast'),
+    sat: document.getElementById('peSat'),
+    gray: document.getElementById('peGray'),
+    sepia: document.getElementById('peSepia'),
+    blur: document.getElementById('peBlur'),
+  };
+  const vals = {
+    bright: document.getElementById('peBrightV'),
+    contrast: document.getElementById('peContrastV'),
+    sat: document.getElementById('peSatV'),
+    gray: document.getElementById('peGrayV'),
+    sepia: document.getElementById('peSepiaV'),
+    blur: document.getElementById('peBlurV'),
+  };
+
+  let img = null;
+  let rotation = 0;   // 0, 90, 180, 270
+  let flipH = false;
+  let flipV = false;
+
+  function currentFilter(){
+    return [
+      `brightness(${sliders.bright.value}%)`,
+      `contrast(${sliders.contrast.value}%)`,
+      `saturate(${sliders.sat.value}%)`,
+      `grayscale(${sliders.gray.value}%)`,
+      `sepia(${sliders.sepia.value}%)`,
+      `blur(${sliders.blur.value}px)`,
+    ].join(' ');
+  }
+
+  function redraw(){
+    if (!img) return;
+    const swapped = rotation === 90 || rotation === 270;
+    const w = img.width, h = img.height;
+    canvas.width = swapped ? h : w;
+    canvas.height = swapped ? w : h;
+
+    ctx.save();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((rotation * Math.PI) / 180);
+    ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+    ctx.filter = currentFilter();
+    ctx.drawImage(img, -w / 2, -h / 2, w, h);
+    ctx.restore();
+
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      dl.href = url;
+      dl.download = 'edited-photo.jpg';
+      dl.style.display = 'inline-block';
+      dl.textContent = 'Download photo';
+    }, 'image/jpeg', 0.92);
+  }
+
+  Object.entries(sliders).forEach(([key, el]) => {
+    el.addEventListener('input', () => {
+      const unit = key === 'blur' ? 'px' : '%';
+      vals[key].textContent = el.value + unit;
+      redraw();
+    });
+  });
+
+  fileIn.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const im = new Image();
+      im.onload = () => {
+        img = im;
+        rotation = 0; flipH = false; flipV = false;
+        redraw();
+      };
+      im.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('peRotL').addEventListener('click', () => { rotation = (rotation + 270) % 360; redraw(); });
+  document.getElementById('peRotR').addEventListener('click', () => { rotation = (rotation + 90) % 360; redraw(); });
+  document.getElementById('peFlipH').addEventListener('click', () => { flipH = !flipH; redraw(); });
+  document.getElementById('peFlipV').addEventListener('click', () => { flipV = !flipV; redraw(); });
+  document.getElementById('peReset').addEventListener('click', () => {
+    sliders.bright.value = 100; sliders.contrast.value = 100; sliders.sat.value = 100;
+    sliders.gray.value = 0; sliders.sepia.value = 0; sliders.blur.value = 0;
+    Object.entries(sliders).forEach(([key, el]) => {
+      const unit = key === 'blur' ? 'px' : '%';
+      vals[key].textContent = el.value + unit;
+    });
+    rotation = 0; flipH = false; flipV = false;
+    redraw();
+  });
+})();
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Photo Editor</h2>
+    <ol class="how-steps">
+      <li>Choose a photo from your device — it loads straight into the preview.</li>
+      <li>Drag the sliders to adjust brightness, contrast, saturation, grayscale, sepia or blur, and use the buttons to rotate or flip.</li>
+      <li>Click "Download photo" to save the edited result — instantly, in this tab.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Photo Editor free to use?</summary>
+        <p>Yes. Photo Editor is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my photo uploaded to a server?</summary>
+        <p>No. Photo Editor runs entirely in your browser using the Canvas API — your photo never leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What can I adjust?</summary>
+        <p>Brightness, contrast, saturation, grayscale, sepia tone and blur, plus rotate and flip — all live, before you download.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Image</h3>
+    <div class="related-list">
+      <a href="background-remover.html">Background Remover</a>
+      <a href="image-compressor.html">Image Compressor</a>
+      <a href="image-to-base64.html">Image to Base64</a>
+      <a href="image-resizer.html">Image Resizer</a>
+      <a href="../image/">All Image tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+</body>
+</html>
