@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Resizer — Ride Bangla Tools</title>
+<meta name="description" content="Resize any photo to an exact width and height in pixels — perfect for ID verification uploads, passport photos and social media. Free, runs in your browser.">
+<link rel="canonical" href="https://tools.ridebangla.bd/image/image-resizer.html">
+<meta property="og:title" content="Image Resizer — Ride Bangla Tools">
+<meta property="og:description" content="Resize any photo to an exact width and height in pixels — perfect for ID verification uploads, passport photos and social media. Free, runs in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/image/image-resizer.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://tools.ridebangla.bd/image/"}, {"@type": "ListItem", "position": 3, "name": "Image Resizer", "item": "https://tools.ridebangla.bd/image/image-resizer.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Image Resizer", "description": "Resize any photo to an exact width and height in pixels — for ID verification uploads, passport photos and social media.", "url": "https://tools.ridebangla.bd/image/image-resizer.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Image Resizer free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Image Resizer is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my photo uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Image Resizer runs entirely in your browser using JavaScript — your photo never leaves your device."}}, {"@type": "Question", "name": "How do I meet a minimum size like 1500 x 1000 pixels for an ID verification upload?", "acceptedAnswer": {"@type": "Answer", "text": "Enter the required width and height, use the ID / NID / Facebook preset for a shortcut, and keep the \"Crop to fill\" mode selected so both dimensions are met exactly without stretching or distorting the photo."}}, {"@type": "Question", "name": "Will resizing distort or stretch my photo?", "acceptedAnswer": {"@type": "Answer", "text": "Only if you choose \"Stretch\" mode. The default \"Crop to fill\" mode keeps the photo's proportions correct and simply trims the extra edges, and \"Fit inside\" keeps the whole photo visible with padding instead of cropping."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/" style="color:var(--text-hi)">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Image Resizer</div>
+    <h1>Image Resizer</h1>
+    <p class="lede">Resize a photo to an exact width and height in pixels — great for ID verification uploads, passport photos and social media — right in your browser.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field">
+      <label>Choose an image</label>
+      <input type="file" id="imgIn" accept="image/*">
+    </div>
+    <div class="field">
+      <label>Quick presets</label>
+      <div class="btn-row">
+        <button type="button" class="btn ghost preset-btn" data-w="1500" data-h="1000">ID / NID / Facebook (1500×1000)</button>
+        <button type="button" class="btn ghost preset-btn" data-w="600" data-h="600">Passport (600×600)</button>
+        <button type="button" class="btn ghost preset-btn" data-w="1080" data-h="1080">Square post (1080×1080)</button>
+        <button type="button" class="btn ghost preset-btn" data-w="1200" data-h="630">Cover photo (1200×630)</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Width (px)</label>
+        <input type="number" id="targetW" value="1500" min="1">
+      </div>
+      <div class="field">
+        <label>Height (px)</label>
+        <input type="number" id="targetH" value="1000" min="1">
+      </div>
+    </div>
+    <div class="field">
+      <label><input type="checkbox" id="lockRatio" style="width:auto;display:inline-block;vertical-align:middle;margin-right:6px;">Lock aspect ratio to the original photo</label>
+      <p class="hint">Turn this off when you need an exact size (like 1500×1000) that doesn't match your photo's own proportions.</p>
+    </div>
+    <div class="field">
+      <label>When the exact size doesn't match the photo's proportions</label>
+      <select id="fitMode">
+        <option value="fill" selected>Crop to fill (recommended — meets both dimensions exactly)</option>
+        <option value="stretch">Stretch to exact size (may distort the photo)</option>
+        <option value="fit">Fit inside, no crop (adds white bars)</option>
+      </select>
+    </div>
+    <div class="btn-row"><button class="btn" id="resizeBtn">Resize</button></div>
+  </div>
+  <div class="panel">
+    <img id="preview" style="display:none;max-width:100%;border-radius:8px;border:1px solid var(--line);margin-bottom:14px;">
+    <div class="stat-grid">
+      <div class="stat"><div class="n" id="outDims">–</div><div class="l">Output size (px)</div></div>
+      <div class="stat"><div class="n" id="origKb">–</div><div class="l">Original KB</div></div>
+      <div class="stat"><div class="n" id="newKb">–</div><div class="l">New KB</div></div>
+    </div>
+    <div class="btn-row" style="margin-top:16px;"><a class="btn ghost" id="dlLink" style="display:none;">Download resized image</a></div>
+  </div>
+</section>
+<script>
+const wIn = document.getElementById('targetW');
+const hIn = document.getElementById('targetH');
+const lockRatio = document.getElementById('lockRatio');
+let origFile = null;
+let origRatio = null; // width / height of the loaded photo
+
+document.getElementById('imgIn').addEventListener('change', (e) => {
+  origFile = e.target.files[0];
+  if (!origFile) return;
+  document.getElementById('origKb').textContent = (origFile.size / 1024).toFixed(1);
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => { origRatio = img.width / img.height; };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(origFile);
+});
+
+wIn.addEventListener('input', () => {
+  if (lockRatio.checked && origRatio) {
+    hIn.value = Math.round((parseInt(wIn.value, 10) || 0) / origRatio);
+  }
+});
+hIn.addEventListener('input', () => {
+  if (lockRatio.checked && origRatio) {
+    wIn.value = Math.round((parseInt(hIn.value, 10) || 0) * origRatio);
+  }
+});
+
+document.querySelectorAll('.preset-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    wIn.value = btn.dataset.w;
+    hIn.value = btn.dataset.h;
+    lockRatio.checked = false;
+  });
+});
+
+document.getElementById('resizeBtn').addEventListener('click', () => {
+  if (!origFile) { alert('Choose an image first.'); return; }
+  const targetW = parseInt(wIn.value, 10) || 0;
+  const targetH = parseInt(hIn.value, 10) || 0;
+  if (targetW < 1 || targetH < 1) { alert('Enter a valid width and height.'); return; }
+  const mode = document.getElementById('fitMode').value;
+
+  const img = new Image();
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, targetW, targetH);
+
+      if (mode === 'stretch') {
+        ctx.drawImage(img, 0, 0, targetW, targetH);
+      } else if (mode === 'fit') {
+        const scale = Math.min(targetW / img.width, targetH / img.height);
+        const dw = img.width * scale, dh = img.height * scale;
+        ctx.drawImage(img, (targetW - dw) / 2, (targetH - dh) / 2, dw, dh);
+      } else { // fill (crop)
+        const scale = Math.max(targetW / img.width, targetH / img.height);
+        const dw = img.width * scale, dh = img.height * scale;
+        ctx.drawImage(img, (targetW - dw) / 2, (targetH - dh) / 2, dw, dh);
+      }
+
+      const outType = origFile.type === 'image/png' && mode === 'fit' ? 'image/png' : 'image/jpeg';
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const preview = document.getElementById('preview');
+        preview.src = url; preview.style.display = 'block';
+        document.getElementById('outDims').textContent = targetW + ' × ' + targetH;
+        document.getElementById('newKb').textContent = (blob.size / 1024).toFixed(1);
+        const dl = document.getElementById('dlLink');
+        dl.href = url;
+        dl.download = 'resized.' + (outType === 'image/png' ? 'png' : 'jpg');
+        dl.style.display = 'inline-block';
+        dl.textContent = 'Download resized image';
+      }, outType, 0.92);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(origFile);
+});
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Image Resizer</h2>
+    <ol class="how-steps">
+      <li>Upload your photo, or tap a quick preset like "ID / NID / Facebook (1500×1000)".</li>
+      <li>Check the width and height fields — turn off "Lock aspect ratio" if you need an exact size.</li>
+      <li>Pick how to handle the mismatch: Crop to fill (recommended), Stretch, or Fit inside.</li>
+      <li>Click Resize, then download — the exact pixel size is shown above the download button.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Image Resizer free to use?</summary>
+        <p>Yes. Image Resizer is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my photo uploaded to a server?</summary>
+        <p>No. Image Resizer runs entirely in your browser using JavaScript — your photo never leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do I meet a minimum size like 1500 x 1000 pixels for an ID verification upload?</summary>
+        <p>Enter the required width and height, use the ID / NID / Facebook preset for a shortcut, and keep "Crop to fill" mode selected so both dimensions are met exactly without stretching or distorting the photo.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Will resizing distort or stretch my photo?</summary>
+        <p>Only if you choose "Stretch" mode. The default "Crop to fill" mode keeps the photo's proportions correct and simply trims the extra edges, and "Fit inside" keeps the whole photo visible with padding instead of cropping.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Image</h3>
+    <div class="related-list">
+      <a href="image.image-compressor.html">Image Compressor</a>
+      <a href="image.photo-editor.html">Photo Editor</a>
+      <a href="image.background-remover.html">Background Remover</a>
+      <a href="image.image-to-base64.html">Image to Base64</a>
+      <a href="../image/">All Image tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+</body>
+</html>
