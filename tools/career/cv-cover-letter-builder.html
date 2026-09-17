@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CV & Cover Letter Builder — Ride Bangla Tools</title>
+<meta name="description" content="Fill in your details once and download a professional CV and a matching cover letter as PDF. Free, no-login, runs entirely in your browser.">
+<link rel="canonical" href="https://tools.ridebangla.bd/career/cv-cover-letter-builder.html">
+<meta property="og:title" content="CV & Cover Letter Builder — Ride Bangla Tools">
+<meta property="og:description" content="Fill in your details once and download a professional CV and a matching cover letter as PDF.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/career/cv-cover-letter-builder.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Career Tools", "item": "https://tools.ridebangla.bd/career/"}, {"@type": "ListItem", "position": 3, "name": "CV & Cover Letter Builder", "item": "https://tools.ridebangla.bd/career/cv-cover-letter-builder.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "CV & Cover Letter Builder", "description": "Fill in your details once and download a professional CV and a matching cover letter as PDF.", "url": "https://tools.ridebangla.bd/career/cv-cover-letter-builder.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<style>
+  /* small tool-specific tweaks that don't belong in the shared stylesheet */
+  .cv-name-row{display:flex;gap:12px;flex-wrap:wrap;}
+  .cv-name-row>*{flex:1;min-width:180px;}
+  .mini-note{font-size:12.5px;color:var(--text-lo);margin-top:-6px;margin-bottom:16px;}
+  .cv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .cv-grid .field{min-width:0;}
+  .cv-subhead{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--text-hi);margin:8px 0 10px;}
+  .cv-doc{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;padding:10px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--ink-850);margin-bottom:10px;}
+  .cv-doc .field{margin:0;}
+  .cv-check{display:flex;align-items:center;gap:7px;height:42px;padding:0 4px;font-size:12px;color:var(--text-mid);white-space:nowrap;}
+  .cv-check input{width:16px;height:16px;}
+  .cv-location-note{font-size:12px;color:var(--text-lo);margin:-4px 0 12px;}
+  @media(max-width:700px){.cv-grid{grid-template-columns:1fr}.cv-doc{grid-template-columns:1fr}.cv-check{height:auto;padding:4px 0;}}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is CV & Cover Letter Builder free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. CV & Cover Letter Builder is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. CV & Cover Letter Builder runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Can I edit the PDF after I download it?", "acceptedAnswer": {"@type": "Answer", "text": "The download is a finished PDF, not an editable template \u2014 if you need to change something, just update the form on this page and download again."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/" style="color:var(--text-hi)">Career</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Career</a> / CV & Cover Letter Builder</div>
+    <h1>CV & Cover Letter Builder</h1>
+    <p class="lede">Fill in your details once, then download a clean, professional CV and a matching cover letter as PDF — nothing is uploaded anywhere.</p>
+  </div>
+</section>
+
+<section class="tool-body" style="padding-top:28px;">
+  <div class="container" style="max-width:900px;margin:0 auto;padding:0;">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="cv">CV / Resume</button>
+      <button class="tab-btn" data-tab="letter">Cover Letter</button>
+    </div>
+
+    <!-- ============ CV TAB ============ -->
+    <div class="tab-panel panel" id="tab-cv">
+      <div class="section-label">Basic details</div>
+      <div class="cv-name-row">
+        <div class="field"><label>Full name</label><input type="text" id="cv-name" placeholder="Jane Rahman"></div>
+        <div class="field"><label>Target role / title</label><input type="text" id="cv-title" placeholder="Marketing Executive"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Email</label><input type="text" id="cv-email" placeholder="jane@example.com"></div>
+        <div class="field"><label>Phone</label><input type="text" id="cv-phone" placeholder="+880 1XXX-XXXXXX"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Location</label><input type="text" id="cv-location" placeholder="Dhaka, Bangladesh"></div>
+        <div class="field"><label>LinkedIn / portfolio (optional)</label><input type="text" id="cv-link" placeholder="linkedin.com/in/janerahman"></div>
+      </div>
+
+      <div class="section-label">International location & identity</div>
+      <p class="cv-location-note">Choose your country and location. Bangladesh gets the full Division → District → Upazila hierarchy; other countries use State/Province → City from the international location database.</p>
+      <div class="cv-grid">
+        <div class="field"><label>Country of citizenship / nationality</label><select id="cv-citizenship-country"><option value="">Select country</option></select></div>
+        <div class="field"><label>Second citizenship (optional)</label><select id="cv-second-country"><option value="">None / not applicable</option></select></div>
+        <div class="field"><label>Current residence country</label><select id="cv-residence-country"><option value="">Select country</option></select></div>
+        <div class="field"><label>Current location / address line</label><input type="text" id="cv-address" placeholder="Street / area (optional)"></div>
+      </div>
+      <div class="cv-grid">
+        <div class="field"><label id="cv-region-label">State / Province / Division</label><select id="cv-region"><option value="">Select country first</option></select></div>
+        <div class="field"><label id="cv-district-label">District / County</label><select id="cv-district"><option value="">Select region first</option></select></div>
+        <div class="field"><label id="cv-locality-label">City / Upazila / Locality</label><select id="cv-locality"><option value="">Select district / region first</option></select></div>
+        <div class="field"><label>Postal / ZIP code</label><input type="text" id="cv-postal" placeholder="Optional"></div>
+      </div>
+
+      <div class="section-label">Identity & work authorization (optional)</div>
+      <div class="cv-grid">
+        <div class="field"><label>Passport / travel document number</label><input type="text" id="cv-passport" placeholder="Optional"></div>
+        <div class="field"><label>National ID / identity document number</label><input type="text" id="cv-national-id" placeholder="Optional"></div>
+        <div class="field"><label>Residence permit / Iqama number</label><input type="text" id="cv-residence-id" placeholder="Optional"></div>
+        <div class="field"><label>Work permit / visa status</label><input type="text" id="cv-work-status" placeholder="e.g. Valid work permit"></div>
+      </div>
+      <div class="cv-doc">
+        <div class="field"><label>Passport / document expiry</label><input type="text" id="cv-passport-expiry" placeholder="MM/YYYY"></div>
+        <div class="field"><label>Residence / permit expiry</label><input type="text" id="cv-residence-expiry" placeholder="MM/YYYY"></div>
+        <label class="cv-check"><input type="checkbox" id="cv-include-identity"> Include identity details in CV</label>
+      </div>
+      <p class="mini-note">For international applications, only include identity or permit numbers when the employer, visa process, or local rules specifically require them.</p>
+
+      <div class="section-label">Professional summary</div>
+      <div class="field">
+        <textarea id="cv-summary" style="min-height:100px;" placeholder="2–3 sentences on who you are and what you bring — e.g. 'Marketing executive with 4 years' experience running paid social campaigns for e-commerce brands in Bangladesh, with a track record of growing ROAS...'"></textarea>
+      </div>
+
+      <div class="section-label">Work experience</div>
+      <div class="rep-list" id="exp-list"></div>
+      <div class="btn-row"><button class="btn ghost" id="exp-add" type="button">+ Add experience</button></div>
+
+      <div class="section-label">Education</div>
+      <div class="rep-list" id="edu-list"></div>
+      <div class="btn-row"><button class="btn ghost" id="edu-add" type="button">+ Add education</button></div>
+
+      <div class="section-label">Skills</div>
+      <div class="field">
+        <input type="text" id="cv-skills" placeholder="e.g. Facebook Ads, Excel, Canva, Team Leadership, Bengali & English">
+        <div class="hint">Separate skills with commas.</div>
+      </div>
+
+      <div class="section-label">Languages (optional)</div>
+      <div class="field">
+        <input type="text" id="cv-languages" placeholder="e.g. Bengali (Native), English (Fluent), Hindi (Conversational)">
+      </div>
+
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn" id="cv-download" type="button">Download CV as PDF</button>
+      </div>
+      <div class="field" style="margin-top:14px;"><div class="output empty" id="cv-status">Nothing generated yet.</div></div>
+    </div>
+
+    <!-- ============ COVER LETTER TAB ============ -->
+    <div class="tab-panel panel" id="tab-letter" hidden>
+      <div class="section-label">Your details</div>
+      <div class="btn-row" style="margin-bottom:14px;">
+        <button class="btn ghost" id="letter-copy-cv" type="button">Copy from CV tab</button>
+      </div>
+      <div class="row">
+        <div class="field"><label>Full name</label><input type="text" id="lt-name" placeholder="Jane Rahman"></div>
+        <div class="field"><label>Email</label><input type="text" id="lt-email" placeholder="jane@example.com"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Phone</label><input type="text" id="lt-phone" placeholder="+880 1XXX-XXXXXX"></div>
+        <div class="field"><label>Location</label><input type="text" id="lt-location" placeholder="Dhaka, Bangladesh"></div>
+      </div>
+
+      <div class="section-label">Recipient & role</div>
+      <div class="row">
+        <div class="field"><label>Company name</label><input type="text" id="lt-company" placeholder="Bright Ideas Ltd."></div>
+        <div class="field"><label>Position applying for</label><input type="text" id="lt-position" placeholder="Marketing Executive"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Hiring manager's name (optional)</label><input type="text" id="lt-hm" placeholder="Mr. Karim Hasan"></div>
+        <div class="field"><label>Date</label><input type="text" id="lt-date"></div>
+      </div>
+
+      <div class="section-label">Letter body</div>
+      <div class="btn-row" style="margin-bottom:10px;">
+        <button class="btn ghost" id="letter-template" type="button">Insert a starter template</button>
+      </div>
+      <div class="field">
+        <textarea id="lt-body" style="min-height:260px;" placeholder="Write your letter here, or click &quot;Insert a starter template&quot; above and edit it. Leave a blank line between paragraphs."></textarea>
+        <div class="hint">Each blank line starts a new paragraph in the PDF.</div>
+      </div>
+
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn" id="letter-download" type="button">Download Cover Letter as PDF</button>
+      </div>
+      <div class="field" style="margin-top:14px;"><div class="output empty" id="letter-status">Nothing generated yet.</div></div>
+    </div>
+
+  </div>
+</section>
+
+<template id="exp-tpl">
+  <div class="rep-item">
+    <button type="button" class="rep-remove" title="Remove">&times;</button>
+    <div class="row">
+      <div class="field"><label>Job title</label><input type="text" class="exp-role" placeholder="Marketing Executive"></div>
+      <div class="field"><label>Company</label><input type="text" class="exp-company" placeholder="Bright Ideas Ltd."></div>
+    </div>
+    <div class="field"><label>Dates</label><input type="text" class="exp-dates" placeholder="Jan 2023 — Present"></div>
+    <div class="field"><label>What you did</label><textarea class="exp-desc" style="min-height:80px;" placeholder="Ran paid social campaigns across Facebook and Instagram, growing monthly leads by 35%..."></textarea></div>
+  </div>
+</template>
+
+<template id="edu-tpl">
+  <div class="rep-item">
+    <button type="button" class="rep-remove" title="Remove">&times;</button>
+    <div class="row">
+      <div class="field"><label>Degree / qualification</label><input type="text" class="edu-degree" placeholder="BBA in Marketing"></div>
+      <div class="field"><label>Institution</label><input type="text" class="edu-school" placeholder="University of Dhaka"></div>
+    </div>
+    <div class="field"><label>Dates</label><input type="text" class="edu-dates" placeholder="2019 — 2023"></div>
+  </div>
+</template>
+
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use CV & Cover Letter Builder</h2>
+    <ol class="how-steps">
+      <li>Open the fields above and enter or upload what CV & Cover Letter Builder needs.</li>
+      <li>Adjust any options until the preview or output looks right.</li>
+      <li>Click the button to get your result — instantly, in this tab.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is CV & Cover Letter Builder free to use?</summary>
+        <p>Yes. CV & Cover Letter Builder is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. CV & Cover Letter Builder runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I edit the PDF after I download it?</summary>
+        <p>The download is a finished PDF, not an editable template — if you need to change something, just update the form on this page and download again.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Career</h3>
+    <div class="related-list">
+      <a href="../career/">All career tools</a>
+      <a href="../pdf/">PDF tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+/* ---------------------------------------------------------------
+   Tabs
+--------------------------------------------------------------- */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-cv').hidden = btn.dataset.tab !== 'cv';
+    document.getElementById('tab-letter').hidden = btn.dataset.tab !== 'letter';
+  });
+});
+
+/* ---------------------------------------------------------------
+   Repeatable experience / education rows
+--------------------------------------------------------------- */
+function addRow(listId, tplId, prefill) {
+  const list = document.getElementById(listId);
+  const tpl = document.getElementById(tplId);
+  const node = tpl.content.cloneNode(true);
+  const item = node.querySelector('.rep-item');
+  item.querySelector('.rep-remove').addEventListener('click', () => item.remove());
+  list.appendChild(node);
+  return item;
+}
+document.getElementById('exp-add').addEventListener('click', () => addRow('exp-list', 'exp-tpl'));
+document.getElementById('edu-add').addEventListener('click', () => addRow('edu-list', 'edu-tpl'));
+// start with one blank row of each so the form doesn't look empty
+addRow('exp-list', 'exp-tpl');
+addRow('edu-list', 'edu-tpl');
+
+/* default date on the cover letter */
+document.getElementById('lt-date').value = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+/* ---------------------------------------------------------------
+   Copy basic details from the CV tab into the cover letter tab
+--------------------------------------------------------------- */
+document.getElementById('letter-copy-cv').addEventListener('click', () => {
+  document.getElementById('lt-name').value = document.getElementById('cv-name').value;
+  document.getElementById('lt-email').value = document.getElementById('cv-email').value;
+  document.getElementById('lt-phone').value = document.getElementById('cv-phone').value;
+  document.getElementById('lt-location').value = document.getElementById('cv-location').value;
+  if (!document.getElementById('lt-position').value) {
+    document.getElementById('lt-position').value = document.getElementById('cv-title').value;
+  }
+});
+
+/* ---------------------------------------------------------------
+   Starter template for the letter body
+--------------------------------------------------------------- */
+document.getElementById('letter-template').addEventListener('click', () => {
+  const position = document.getElementById('lt-position').value || 'the [Position]';
+  const company = document.getElementById('lt-company').value || '[Company Name]';
+  const ta = document.getElementById('lt-body');
+  ta.value =
+`I am writing to apply for the ${position} role at ${company}. Having followed your work, I believe my background and skills would let me contribute from day one.
+
+In my most recent role, I [describe one or two concrete achievements — a result, a number, a project you led]. I enjoy [something specific about the type of work], and I am looking for a team where I can keep growing in that direction.
+
+I would welcome the chance to discuss how I can support ${company}'s goals. Thank you for considering my application — I look forward to hearing from you.`;
+});
+
+/* ---------------------------------------------------------------
+   International location data
+--------------------------------------------------------------- */
+const countryStateCityUrl = 'https://cdn.jsdelivr.net/npm/country-state-city@3.2.1/+esm';
+let CSC = null;
+let bdGeo = null;
+
+async function loadLocationData() {
+  if (!CSC) CSC = await import(countryStateCityUrl);
+  const countries = CSC.Country.getAllCountries().sort((a,b) => a.name.localeCompare(b.name));
+  ['cv-citizenship-country','cv-second-country','cv-residence-country'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    countries.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.isoCode;
+      opt.textContent = (c.flag ? c.flag + ' ' : '') + c.name;
+      el.appendChild(opt);
+    });
+  });
+}
+
+async function loadBangladeshGeo() {
+  if (bdGeo) return bdGeo;
+  const r = await fetch('https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json', { cache: 'force-cache' });
+  if (!r.ok) throw new Error('Bangladesh location data could not be loaded.');
+  bdGeo = await r.json();
+  return bdGeo;
+}
+
+function setOptions(select, items, placeholder, getValue, getLabel) {
+  select.innerHTML = '';
+  const first = document.createElement('option');
+  first.value = '';
+  first.textContent = placeholder;
+  select.appendChild(first);
+  (items || []).forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = getValue(item);
+    opt.textContent = getLabel(item);
+    select.appendChild(opt);
+  });
+  select.disabled = !(items && items.length);
+}
+
+function resetLocationSelects() {
+  setOptions(document.getElementById('cv-region'), [], 'Select country first', x => x, x => x);
+  setOptions(document.getElementById('cv-district'), [], 'Select region first', x => x, x => x);
+  setOptions(document.getElementById('cv-locality'), [], 'Select district / region first', x => x, x => x);
+}
+
+async function updateLocationForCountry(countryCode) {
+  const region = document.getElementById('cv-region');
+  const district = document.getElementById('cv-district');
+  const locality = document.getElementById('cv-locality');
+  const regionLabel = document.getElementById('cv-region-label');
+  const districtLabel = document.getElementById('cv-district-label');
+  const localityLabel = document.getElementById('cv-locality-label');
+
+  if (!countryCode) { resetLocationSelects(); return; }
+
+  if (countryCode === 'BD') {
+    regionLabel.textContent = 'Division';
+    districtLabel.textContent = 'District';
+    localityLabel.textContent = 'Upazila / Thana';
+    const data = await loadBangladeshGeo();
+    setOptions(region, data, 'Select division', x => x.name, x => x.name + (x.bn_name ? ' — ' + x.bn_name : ''));
+    setOptions(district, [], 'Select division first', x => x.name, x => x.name);
+    setOptions(locality, [], 'Select district first', x => x.name, x => x.name);
+    return;
+  }
+
+  regionLabel.textContent = 'State / Province / Region';
+  districtLabel.textContent = 'District / County';
+  localityLabel.textContent = 'City / Locality';
+  try {
+    const states = CSC.State.getStatesOfCountry(countryCode);
+    setOptions(region, states, 'Select state / province', x => x.isoCode, x => x.name);
+    setOptions(district, [], 'Select state / province first', x => x.name, x => x.name);
+    setOptions(locality, [], 'Select city / locality', x => x.name, x => x.name);
+  } catch (e) {
+    resetLocationSelects();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await loadLocationData();
+    ['cv-citizenship-country','cv-second-country','cv-residence-country'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', async () => {
+        if (id === 'cv-residence-country') await updateLocationForCountry(el.value);
+      });
+    });
+
+    document.getElementById('cv-region').addEventListener('change', async e => {
+      const country = document.getElementById('cv-residence-country').value;
+      const district = document.getElementById('cv-district');
+      const locality = document.getElementById('cv-locality');
+      if (!country || !e.target.value) { resetLocationSelects(); return; }
+
+      if (country === 'BD') {
+        const data = await loadBangladeshGeo();
+        const division = data.find(x => x.name === e.target.value);
+        setOptions(district, division ? division.districts : [], 'Select district', x => x.name, x => x.name + (x.bn_name ? ' — ' + x.bn_name : ''));
+        setOptions(locality, [], 'Select district first', x => x.name, x => x.name);
+      } else {
+        const states = CSC.State.getStatesOfCountry(country);
+        const state = states.find(x => x.isoCode === e.target.value);
+        const cities = state ? CSC.City.getCitiesOfState(country, state.isoCode) : [];
+        setOptions(district, [], 'District / county is optional', x => x, x => x);
+        setOptions(locality, cities, 'Select city / locality', x => x.name, x => x.name);
+      }
+    });
+
+    document.getElementById('cv-district').addEventListener('change', async e => {
+      const country = document.getElementById('cv-residence-country').value;
+      if (country !== 'BD' || !e.target.value) return;
+      const data = await loadBangladeshGeo();
+      for (const division of data) {
+        const district = (division.districts || []).find(x => x.name === e.target.value);
+        if (district) {
+          setOptions(document.getElementById('cv-locality'), district.upazilas || [], 'Select upazila / thana', x => x.name, x => x.name + (x.bn_name ? ' — ' + x.bn_name : ''));
+          break;
+        }
+      }
+    });
+  } catch (e) {
+    console.error('Location database failed:', e);
+  }
+});
+
+/* ---------------------------------------------------------------
+   Shared PDF helpers
+--------------------------------------------------------------- */
+async function loadFonts(pdfDoc) {
+  const { StandardFonts } = PDFLib;
+  return {
+    regular: await pdfDoc.embedFont(StandardFonts.Helvetica),
+    bold: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
+  };
+}
+
+function makeWrapper(font, size, maxWidth) {
+  return function wrap(text) {
+    const out = [];
+    (text || '').split('\n').forEach(rawLine => {
+      if (!rawLine.length) { out.push(''); return; }
+      const words = rawLine.split(/\s+/);
+      let cur = '';
+      words.forEach(w => {
+        const test = cur ? cur + ' ' + w : w;
+        if (font.widthOfTextAtSize(test, size) > maxWidth && cur) { out.push(cur); cur = w; }
+        else cur = test;
+      });
+      out.push(cur);
+    });
+    return out;
+  };
+}
+
+function download(bytes, filename) {
+  const blob = new Blob([bytes], { type: 'application/pdf' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+/* ---------------------------------------------------------------
+   International CV PDF generation
+--------------------------------------------------------------- */
+document.getElementById('cv-download').addEventListener('click', async () => {
+  const status = document.getElementById('cv-status');
+  const name = document.getElementById('cv-name').value.trim();
+  if (!name) { status.textContent = 'Add your full name first.'; status.classList.remove('empty'); return; }
+
+  const title = document.getElementById('cv-title').value.trim();
+  const email = document.getElementById('cv-email').value.trim();
+  const phone = document.getElementById('cv-phone').value.trim();
+  const location = document.getElementById('cv-location').value.trim();
+  const link = document.getElementById('cv-link').value.trim();
+  const summary = document.getElementById('cv-summary').value.trim();
+  const skills = document.getElementById('cv-skills').value.trim();
+  const languages = document.getElementById('cv-languages').value.trim();
+
+  const countryName = id => document.getElementById(id).selectedOptions[0]?.textContent.replace(/^.\s/,'').trim() || '';
+  const citizenship = countryName('cv-citizenship-country');
+  const secondCitizenship = countryName('cv-second-country');
+  const residenceCountry = countryName('cv-residence-country');
+  const region = document.getElementById('cv-region').selectedOptions[0]?.textContent || '';
+  const district = document.getElementById('cv-district').selectedOptions[0]?.textContent || '';
+  const locality = document.getElementById('cv-locality').selectedOptions[0]?.textContent || '';
+  const address = document.getElementById('cv-address').value.trim();
+  const postal = document.getElementById('cv-postal').value.trim();
+  const includeIdentity = document.getElementById('cv-include-identity').checked;
+
+  const passport = document.getElementById('cv-passport').value.trim();
+  const nationalId = document.getElementById('cv-national-id').value.trim();
+  const residenceId = document.getElementById('cv-residence-id').value.trim();
+  const workStatus = document.getElementById('cv-work-status').value.trim();
+  const passportExpiry = document.getElementById('cv-passport-expiry').value.trim();
+  const residenceExpiry = document.getElementById('cv-residence-expiry').value.trim();
+
+  const experiences = [...document.querySelectorAll('#exp-list .rep-item')].map(item => ({
+    role: item.querySelector('.exp-role').value.trim(),
+    company: item.querySelector('.exp-company').value.trim(),
+    dates: item.querySelector('.exp-dates').value.trim(),
+    desc: item.querySelector('.exp-desc').value.trim(),
+  })).filter(e => e.role || e.company || e.desc);
+
+  const education = [...document.querySelectorAll('#edu-list .rep-item')].map(item => ({
+    degree: item.querySelector('.edu-degree').value.trim(),
+    school: item.querySelector('.edu-school').value.trim(),
+    dates: item.querySelector('.edu-dates').value.trim(),
+  })).filter(e => e.degree || e.school);
+
+  const { PDFDocument, rgb } = PDFLib;
+  const pdfDoc = await PDFDocument.create();
+  const { regular, bold } = await loadFonts(pdfDoc);
+
+  const pageW = 595.28, pageH = 841.89, margin = 50;
+  const maxWidth = pageW - margin * 2;
+  const green = rgb(0.055, 0.478, 0.231);
+  const ink = rgb(0.06, 0.09, 0.16);
+  const grey = rgb(0.36, 0.42, 0.39);
+  const line = rgb(0.86, 0.90, 0.87);
+
+  let page = pdfDoc.addPage([pageW, pageH]);
+  let y = pageH - margin;
+
+  function newPageIfNeeded(nextLineHeight) {
+    if (y - nextLineHeight < margin) {
+      page = pdfDoc.addPage([pageW, pageH]);
+      y = pageH - margin;
+    }
+  }
+
+  function drawWrapped(text, font, size, color, lineHeight, indent) {
+    indent = indent || 0;
+    const wrap = makeWrapper(font, size, maxWidth - indent);
+    wrap(text).forEach(lineText => {
+      newPageIfNeeded(lineHeight);
+      if (lineText) page.drawText(lineText, { x: margin + indent, y, size, font, color });
+      y -= lineHeight;
+    });
+  }
+
+  function sectionHeading(label) {
+    newPageIfNeeded(30);
+    y -= 6;
+    page.drawText(label.toUpperCase(), { x: margin, y, size: 10.5, font: bold, color: green });
+    y -= 6;
+    page.drawLine({ start: { x: margin, y }, end: { x: pageW - margin, y }, thickness: 1, color: line });
+    y -= 14;
+  }
+
+  // Clean international header
+  page.drawText(name, { x: margin, y, size: 24, font: bold, color: ink });
+  y -= 27;
+  if (title) { page.drawText(title, { x: margin, y, size: 12.5, font: regular, color: grey }); y -= 19; }
+  const contact = [location, phone, email, link].filter(Boolean).join('  |  ');
+  if (contact) drawWrapped(contact, regular, 9.5, grey, 13);
+  const structuredLocation = [locality, district, region, residenceCountry, postal].filter(Boolean).join(', ');
+  if (structuredLocation) drawWrapped(structuredLocation, regular, 9.5, grey, 13);
+  y -= 3;
+  page.drawLine({ start: { x: margin, y }, end: { x: pageW - margin, y }, thickness: 1.6, color: green });
+  y -= 5;
+
+  if (summary) { sectionHeading('Professional Summary'); drawWrapped(summary, regular, 10.2, ink, 14.5); }
+
+  if (experiences.length) {
+    sectionHeading('Professional Experience');
+    experiences.forEach((e, i) => {
+      newPageIfNeeded(18);
+      const left = [e.role, e.company].filter(Boolean).join(' — ');
+      page.drawText(left, { x: margin, y, size: 10.8, font: bold, color: ink });
+      if (e.dates) {
+        const w = regular.widthOfTextAtSize(e.dates, 9);
+        page.drawText(e.dates, { x: pageW - margin - w, y: y + 1, size: 9, font: regular, color: grey });
+      }
+      y -= 15;
+      if (e.desc) drawWrapped(e.desc, regular, 9.8, ink, 13.5);
+      if (i < experiences.length - 1) y -= 7;
+    });
+  }
+
+  if (education.length) {
+    sectionHeading('Education');
+    education.forEach((e, i) => {
+      newPageIfNeeded(17);
+      const left = [e.degree, e.school].filter(Boolean).join(' — ');
+      page.drawText(left, { x: margin, y, size: 10.8, font: bold, color: ink });
+      if (e.dates) {
+        const w = regular.widthOfTextAtSize(e.dates, 9);
+        page.drawText(e.dates, { x: pageW - margin - w, y: y + 1, size: 9, font: regular, color: grey });
+      }
+      y -= 15;
+      if (i < education.length - 1) y -= 5;
+    });
+  }
+
+  if (skills) { sectionHeading('Core Skills'); drawWrapped(skills.split(',').map(s => s.trim()).filter(Boolean).join('  •  '), regular, 9.8, ink, 14); }
+  if (languages) { sectionHeading('Languages'); drawWrapped(languages, regular, 9.8, ink, 14); }
+
+  if (citizenship || secondCitizenship || residenceCountry || structuredLocation) {
+    sectionHeading('Personal & Location Details');
+    if (citizenship) drawWrapped('Citizenship / Nationality: ' + citizenship + (secondCitizenship ? ' / ' + secondCitizenship : ''), regular, 9.6, ink, 13.5);
+    if (residenceCountry) drawWrapped('Current residence: ' + residenceCountry, regular, 9.6, ink, 13.5);
+    if (address) drawWrapped('Address: ' + address, regular, 9.6, ink, 13.5);
+    if (structuredLocation) drawWrapped('Administrative location: ' + structuredLocation, regular, 9.6, ink, 13.5);
+  }
+
+  if (includeIdentity && (passport || nationalId || residenceId || workStatus || passportExpiry || residenceExpiry)) {
+    sectionHeading('Identity & Work Authorization');
+    if (passport) drawWrapped('Passport / travel document: ' + passport + (passportExpiry ? ' (expires ' + passportExpiry + ')' : ''), regular, 9.5, ink, 13);
+    if (nationalId) drawWrapped('National ID / identity document: ' + nationalId, regular, 9.5, ink, 13);
+    if (residenceId) drawWrapped('Residence permit / Iqama: ' + residenceId + (residenceExpiry ? ' (expires ' + residenceExpiry + ')' : ''), regular, 9.5, ink, 13);
+    if (workStatus) drawWrapped('Work authorization: ' + workStatus, regular, 9.5, ink, 13);
+  }
+
+  const bytes = await pdfDoc.save();
+  download(bytes, name.replace(/\s+/g, '_') + '_International_CV.pdf');
+  status.textContent = 'Professional international CV downloaded.';
+  status.classList.remove('empty');
+});
+
+/* ---------------------------------------------------------------
+
+--------------------------------------------------------------- */
+document.getElementById('letter-download').addEventListener('click', async () => {
+  const status = document.getElementById('letter-status');
+  const name = document.getElementById('lt-name').value.trim();
+  const body = document.getElementById('lt-body').value.trim();
+  if (!name) { status.textContent = 'Add your full name first.'; status.classList.remove('empty'); return; }
+  if (!body) { status.textContent = 'Write (or insert) a letter body first.'; status.classList.remove('empty'); return; }
+
+  const email = document.getElementById('lt-email').value.trim();
+  const phone = document.getElementById('lt-phone').value.trim();
+  const location = document.getElementById('lt-location').value.trim();
+  const company = document.getElementById('lt-company').value.trim();
+  const position = document.getElementById('lt-position').value.trim();
+  const hm = document.getElementById('lt-hm').value.trim();
+  const date = document.getElementById('lt-date').value.trim();
+
+  const { PDFDocument, rgb } = PDFLib;
+  const pdfDoc = await PDFDocument.create();
+  const { regular, bold } = await loadFonts(pdfDoc);
+
+  const pageW = 595.28, pageH = 841.89, margin = 60;
+  const maxWidth = pageW - margin * 2;
+  const ink = rgb(0.06, 0.09, 0.16);
+  const grey = rgb(0.36, 0.42, 0.39);
+
+  let page = pdfDoc.addPage([pageW, pageH]);
+  let y = pageH - margin;
+
+  function newPageIfNeeded(next) {
+    if (y - next < margin) { page = pdfDoc.addPage([pageW, pageH]); y = pageH - margin; }
+  }
+  function drawWrapped(text, font, size, color, lineHeight) {
+    makeWrapper(font, size, maxWidth)(text).forEach(line => {
+      newPageIfNeeded(lineHeight);
+      page.drawText(line, { x: margin, y, size, font, color });
+      y -= lineHeight;
+    });
+  }
+
+  page.drawText(name, { x: margin, y, size: 15, font: bold, color: ink });
+  y -= 17;
+  const contact = [location, phone, email].filter(Boolean).join('   |   ');
+  if (contact) { page.drawText(contact, { x: margin, y, size: 9.5, font: regular, color: grey }); y -= 26; }
+  else y -= 10;
+
+  if (date) { page.drawText(date, { x: margin, y, size: 10, font: regular, color: ink }); y -= 26; }
+
+  if (hm) { page.drawText(hm, { x: margin, y, size: 10, font: regular, color: ink }); y -= 14; }
+  if (company) { page.drawText(company, { x: margin, y, size: 10, font: regular, color: ink }); y -= 14; }
+  y -= 12;
+
+  const greeting = hm ? `Dear ${hm.replace(/^(Mr\.|Ms\.|Mrs\.|Dr\.)\s*/i, '$1 ')},` : 'Dear Hiring Manager,';
+  page.drawText(greeting, { x: margin, y, size: 10.5, font: regular, color: ink });
+  y -= 22;
+
+  const subject = position && company ? `Re: Application for ${position} at ${company}` : (position ? `Re: Application for ${position}` : '');
+  if (subject) { page.drawText(subject, { x: margin, y, size: 10.5, font: bold, color: ink }); y -= 22; }
+
+  const paragraphs = body.split(/\n\s*\n/);
+  paragraphs.forEach((p, i) => {
+    drawWrapped(p.replace(/\n/g, ' '), regular, 10.5, ink, 15.5);
+    if (i < paragraphs.length - 1) y -= 10;
+  });
+
+  y -= 20;
+  newPageIfNeeded(50);
+  page.drawText('Sincerely,', { x: margin, y, size: 10.5, font: regular, color: ink });
+  y -= 30;
+  page.drawText(name, { x: margin, y, size: 11, font: bold, color: ink });
+
+  const bytes = await pdfDoc.save();
+  download(bytes, name.replace(/\s+/g, '_') + '_Cover_Letter.pdf');
+  status.textContent = 'Cover letter downloaded.';
+  status.classList.remove('empty');
+});
+</script>
+</body>
+</html>
