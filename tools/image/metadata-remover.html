@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metadata Remover — Ride Bangla Tools</title>
+<meta name="description" content="Remove hidden EXIF data, GPS location and camera details from a photo, or strip metadata from a video — free, no sign-up, runs entirely in your browser.">
+<link rel="canonical" href="https://tools.ridebangla.bd/image/metadata-remover.html">
+<meta property="og:title" content="Metadata Remover — Ride Bangla Tools">
+<meta property="og:description" content="Remove hidden EXIF data, GPS location and camera details from a photo, or strip metadata from a video — free, no sign-up, runs entirely in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/image/metadata-remover.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://tools.ridebangla.bd/image/"}, {"@type": "ListItem", "position": 3, "name": "Metadata Remover", "item": "https://tools.ridebangla.bd/image/metadata-remover.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Metadata Remover", "description": "Remove hidden EXIF data, GPS location and camera details from a photo, or strip metadata from a video, entirely in the browser.", "url": "https://tools.ridebangla.bd/image/metadata-remover.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Metadata Remover free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Metadata Remover is completely free, with no sign-up and no watermark on what you download."}}, {"@type": "Question", "name": "Is my photo or video uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Photos are processed with your browser's own canvas, and videos are processed by an engine that runs entirely on your device. Your file itself is never uploaded anywhere."}}, {"@type": "Question", "name": "What kind of metadata does this remove?", "acceptedAnswer": {"@type": "Answer", "text": "For photos: EXIF data such as camera make and model, the exact date and time taken, and GPS location if your phone recorded one, plus any editing-software tags. For videos: embedded metadata such as GPS location, device model and creation date stored in the file container."}}]}</script>
+<style>
+.mr-bar{height:6px;border-radius:4px;background:var(--ink-800);overflow:hidden;margin-top:10px;display:none;}
+.mr-bar-fill{height:100%;width:0%;background:var(--brass);transition:width .2s;}
+.mr-status{font-size:12.5px;color:var(--text-lo);margin-top:8px;min-height:16px;}
+.mr-found{margin-top:14px;}
+.mr-found-row{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:7px 0;border-bottom:1px solid var(--line);}
+.mr-found-row:last-child{border-bottom:0;}
+.mr-found-row .k{color:var(--text-lo);font-family:var(--font-mono);font-size:11.5px;}
+.mr-found-row .v{color:var(--text-hi);font-weight:600;text-align:right;word-break:break-word;}
+.mr-clean{display:flex;align-items:center;gap:8px;color:var(--brass-hi);font-weight:600;font-size:14px;}
+.mr-privacy-note{font-size:12.5px;color:var(--text-lo);margin-top:10px;}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/" style="color:var(--text-hi)">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Metadata Remover</div>
+    <h1>Metadata Remover</h1>
+    <p class="lede">Photos and videos carry hidden data you can't see — camera model, exact date/time, sometimes even the GPS location where it was taken. Clean that out before you share the file, right in your browser.</p>
+  </div>
+</section>
+
+<section class="tool-body" style="padding-top:28px;">
+  <div class="container" style="max-width:900px;margin:0 auto;padding:0;">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="photo">Photo</button>
+      <button class="tab-btn" data-tab="video">Video</button>
+    </div>
+
+    <!-- ============ PHOTO TAB ============ -->
+    <div class="tab-panel panel" id="tab-photo">
+      <div class="field">
+        <label>Choose a photo</label>
+        <input type="file" id="mrImgIn" accept="image/*">
+        <div class="hint">Works with JPG, PNG and WEBP. The file is read on your device only.</div>
+      </div>
+
+      <div class="mr-found" id="mrImgFound" hidden></div>
+
+      <div class="mr-bar" id="mrImgBar"><div class="mr-bar-fill" id="mrImgBarFill"></div></div>
+      <div class="mr-status" id="mrImgStatus"></div>
+
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn" id="mrImgBtn">Remove metadata</button>
+        <a class="btn ghost" id="mrImgDl" style="display:none;">Download cleaned photo</a>
+      </div>
+      <p class="mr-privacy-note">The photo is redrawn on a blank canvas inside your browser — that process discards every metadata block by construction, so nothing needs to be "detected" correctly for it to be removed.</p>
+    </div>
+
+    <!-- ============ VIDEO TAB ============ -->
+    <div class="tab-panel panel" id="tab-video" hidden>
+      <div class="field">
+        <label>Choose a video</label>
+        <input type="file" id="mrVidIn" accept="video/*">
+        <div class="hint">Works with MP4, WEBM and MOV. Large files take longer — everything still happens on your device.</div>
+      </div>
+      <p style="font-size:13px;color:var(--text-lo);">The first time you use this tab, your browser downloads a small video-processing engine (a one-time download, typically under a minute on a normal connection). After that it's cached and future videos start right away.</p>
+
+      <div class="mr-bar" id="mrVidBar"><div class="mr-bar-fill" id="mrVidBarFill"></div></div>
+      <div class="mr-status" id="mrVidStatus"></div>
+
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn" id="mrVidBtn">Remove metadata</button>
+        <a class="btn ghost" id="mrVidDl" style="display:none;">Download cleaned video</a>
+      </div>
+      <p class="mr-privacy-note">The video's picture and sound are copied as-is (no re-encoding, no quality loss) — only the metadata container around them is rebuilt without the old tags.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ---------------------------------------------------------------
+   Small shared helpers
+------------------------------------------------------------------*/
+function mrLoadScript(src) {
+  return new Promise((resolve, reject) => {
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = function () { reject(new Error('Failed to load ' + src)); };
+    document.head.appendChild(s);
+  });
+}
+function mrBaseName(name) {
+  var idx = name.lastIndexOf('.');
+  return idx > 0 ? name.slice(0, idx) : name;
+}
+function mrExt(name) {
+  var idx = name.lastIndexOf('.');
+  return idx > 0 ? name.slice(idx).toLowerCase() : '';
+}
+
+/* ---------------------------------------------------------------
+   Tabs
+------------------------------------------------------------------*/
+document.querySelectorAll('.tab-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('tab-photo').hidden = btn.dataset.tab !== 'photo';
+    document.getElementById('tab-video').hidden = btn.dataset.tab !== 'video';
+  });
+});
+
+/* ---------------------------------------------------------------
+   PHOTO: read + show any EXIF found, then strip via canvas redraw
+------------------------------------------------------------------*/
+(function () {
+  var input = document.getElementById('mrImgIn');
+  var foundBox = document.getElementById('mrImgFound');
+  var bar = document.getElementById('mrImgBar');
+  var barFill = document.getElementById('mrImgBarFill');
+  var status = document.getElementById('mrImgStatus');
+  var btn = document.getElementById('mrImgBtn');
+  var dl = document.getElementById('mrImgDl');
+  var currentFile = null;
+  var exifrLoaded = false;
+
+  function renderFound(tags) {
+    if (!tags) {
+      foundBox.innerHTML = '<div class="mr-found-row"><span class="k">Scan</span><span class="v">Could not read a metadata preview for this file — it will still be fully stripped when you click Remove.</span></div>';
+      foundBox.hidden = false;
+      return;
+    }
+    var rows = [];
+    if (tags.Make || tags.Model) rows.push(['Camera', [tags.Make, tags.Model].filter(Boolean).join(' ')]);
+    if (tags.Software) rows.push(['Software', tags.Software]);
+    if (tags.DateTimeOriginal || tags.CreateDate) {
+      var d = tags.DateTimeOriginal || tags.CreateDate;
+      rows.push(['Date taken', d instanceof Date ? d.toLocaleString() : String(d)]);
+    }
+    if (typeof tags.latitude === 'number' && typeof tags.longitude === 'number') {
+      rows.push(['GPS location', tags.latitude.toFixed(5) + ', ' + tags.longitude.toFixed(5)]);
+    }
+    if (!rows.length) {
+      foundBox.innerHTML = '<div class="mr-clean">✓ No identifying metadata found in this file.</div>';
+      foundBox.hidden = false;
+      return;
+    }
+    foundBox.innerHTML = '<div class="section-label" style="margin-top:0;">Found in this file</div>' +
+      rows.map(function (r) {
+        return '<div class="mr-found-row"><span class="k">' + r[0] + '</span><span class="v">' + r[1].replace(/</g, '&lt;') + '</span></div>';
+      }).join('');
+    foundBox.hidden = false;
+  }
+
+  async function ensureExifr() {
+    if (exifrLoaded) return;
+    try {
+      await mrLoadScript('https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js');
+      exifrLoaded = true;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  input.addEventListener('change', async function (e) {
+    currentFile = e.target.files[0] || null;
+    dl.style.display = 'none';
+    foundBox.hidden = true;
+    status.textContent = '';
+    if (!currentFile) return;
+
+    status.textContent = 'Scanning for metadata…';
+    await ensureExifr();
+    var tags = null;
+    try {
+      if (window.exifr) tags = await window.exifr.parse(currentFile, true);
+    } catch (err) {
+      tags = null;
+    }
+    renderFound(tags);
+    status.textContent = '';
+  });
+
+  btn.addEventListener('click', function () {
+    if (!currentFile) { alert('Choose a photo first.'); return; }
+    dl.style.display = 'none';
+    bar.style.display = 'block';
+    barFill.style.width = '40%';
+    status.textContent = 'Removing metadata…';
+
+    var img = new Image();
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      img.onload = function () {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        barFill.style.width = '80%';
+
+        var keepsAlpha = currentFile.type === 'image/png' || currentFile.type === 'image/webp' || currentFile.type === 'image/gif';
+        var mime = keepsAlpha ? 'image/png' : 'image/jpeg';
+        var quality = mime === 'image/jpeg' ? 0.95 : undefined;
+
+        canvas.toBlob(function (blob) {
+          bar.style.display = 'none';
+          if (!blob) {
+            status.textContent = 'Could not process this file — try a different photo.';
+            return;
+          }
+          var url = URL.createObjectURL(blob);
+          var outExt = mime === 'image/png' ? '.png' : '.jpg';
+          dl.href = url;
+          dl.download = mrBaseName(currentFile.name) + '-clean' + outExt;
+          dl.style.display = 'inline-block';
+          dl.textContent = 'Download cleaned photo';
+          status.textContent = 'Done — all metadata removed.';
+        }, mime, quality);
+      };
+      img.onerror = function () {
+        bar.style.display = 'none';
+        status.textContent = "Your browser couldn't open this image format. Try converting it to JPG or PNG first.";
+      };
+      img.src = e.target.result;
+    };
+    reader.onerror = function () {
+      bar.style.display = 'none';
+      status.textContent = 'Could not read this file.';
+    };
+    reader.readAsDataURL(currentFile);
+  });
+})();
+
+/* ---------------------------------------------------------------
+   VIDEO: strip container metadata with ffmpeg.wasm (-map_metadata -1)
+------------------------------------------------------------------*/
+(function () {
+  var input = document.getElementById('mrVidIn');
+  var bar = document.getElementById('mrVidBar');
+  var barFill = document.getElementById('mrVidBarFill');
+  var status = document.getElementById('mrVidStatus');
+  var btn = document.getElementById('mrVidBtn');
+  var dl = document.getElementById('mrVidDl');
+  var currentFile = null;
+  var ffmpeg = null;
+
+  input.addEventListener('change', function (e) {
+    currentFile = e.target.files[0] || null;
+    dl.style.display = 'none';
+    status.textContent = '';
+  });
+
+  async function ensureFFmpeg() {
+    if (ffmpeg) return ffmpeg;
+    if (!window.FFmpeg) {
+      await mrLoadScript('https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js');
+    }
+    var createFFmpeg = window.FFmpeg.createFFmpeg;
+    ffmpeg = createFFmpeg({
+      log: false,
+      corePath: 'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
+      progress: function (p) {
+        if (p && typeof p.ratio === 'number' && p.ratio >= 0) {
+          barFill.style.width = Math.min(100, Math.round(p.ratio * 100)) + '%';
+        }
+      }
+    });
+    await ffmpeg.load();
+    return ffmpeg;
+  }
+
+  btn.addEventListener('click', async function () {
+    if (!currentFile) { alert('Choose a video first.'); return; }
+    dl.style.display = 'none';
+    bar.style.display = 'block';
+    barFill.style.width = '0%';
+
+    try {
+      status.textContent = 'Loading video engine (first time only)…';
+      var ff = await ensureFFmpeg();
+      var fetchFile = window.FFmpeg.fetchFile;
+
+      var ext = mrExt(currentFile.name) || '.mp4';
+      var inName = 'input' + ext;
+      var outName = 'output' + ext;
+
+      status.textContent = 'Processing video…';
+      ff.FS('writeFile', inName, await fetchFile(currentFile));
+      await ff.run('-i', inName, '-map_metadata', '-1', '-c', 'copy', outName);
+      var data = ff.FS('readFile', outName);
+
+      try { ff.FS('unlink', inName); } catch (e1) {}
+      try { ff.FS('unlink', outName); } catch (e2) {}
+
+      var blob = new Blob([data.buffer], { type: currentFile.type || 'video/mp4' });
+      var url = URL.createObjectURL(blob);
+      dl.href = url;
+      dl.download = mrBaseName(currentFile.name) + '-clean' + ext;
+      dl.style.display = 'inline-block';
+      dl.textContent = 'Download cleaned video';
+      status.textContent = 'Done — metadata removed, video and audio untouched.';
+      bar.style.display = 'none';
+    } catch (err) {
+      console.error('Video metadata removal failed:', err);
+      status.textContent = "Something went wrong processing this video. Try an MP4 file, or a smaller file if this one is very large.";
+      bar.style.display = 'none';
+    }
+  });
+})();
+</script>
+
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Metadata Remover</h2>
+    <ol class="how-steps">
+      <li>Pick the <b>Photo</b> or <b>Video</b> tab depending on your file.</li>
+      <li>Choose the file — for photos, anything found (camera model, GPS location, date) is listed so you can see what's being removed.</li>
+      <li>Click "Remove metadata" and download the cleaned file.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Metadata Remover free to use?</summary>
+        <p>Yes. Metadata Remover is completely free, with no sign-up and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my photo or video uploaded to a server?</summary>
+        <p>No. Photos are processed with your browser's own canvas, and videos are processed by an engine that runs entirely on your device. Your file itself is never uploaded anywhere.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What kind of metadata does this remove?</summary>
+        <p>For photos: EXIF data such as camera make and model, the exact date and time taken, and GPS location if your phone recorded one, plus any editing-software tags. For videos: embedded metadata such as GPS location, device model and creation date stored in the file container.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Image</h3>
+    <div class="related-list">
+      <a href="photo-editor.html">Photo Editor</a>
+      <a href="background-remover.html">Background Remover</a>
+      <a href="image-compressor.html">Image Compressor</a>
+      <a href="image-resizer.html">Image Resizer</a>
+      <a href="../image/">All Image tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+</body>
+</html>
