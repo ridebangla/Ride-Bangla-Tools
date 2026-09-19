@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image to Base64 — Ride Bangla Tools</title>
+<meta name="description" content="Convert an image file into a Base64 data URI for embedding directly in HTML or CSS.">
+<link rel="canonical" href="https://tools.ridebangla.bd/image/image-to-base64.html">
+<meta property="og:title" content="Image to Base64 — Ride Bangla Tools">
+<meta property="og:description" content="Convert an image file into a Base64 data URI for embedding directly in HTML or CSS.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/image/image-to-base64.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://tools.ridebangla.bd/image/"}, {"@type": "ListItem", "position": 3, "name": "Image to Base64", "item": "https://tools.ridebangla.bd/image/image-to-base64.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Image to Base64", "description": "Convert an image file into a Base64 data URI for embedding directly in HTML or CSS.", "url": "https://tools.ridebangla.bd/image/image-to-base64.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Image to Base64 free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Image to Base64 is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Image to Base64 runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Will this reduce the quality of my image?", "acceptedAnswer": {"@type": "Answer", "text": "You control the balance between file size and quality with the settings on the page, so you can compare the result before you rely on it."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/" style="color:var(--text-hi)">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Image to Base64</div>
+    <h1>Image to Base64</h1>
+    <p class="lede">Turn any image into a ready-to-paste Base64 data URI — perfect for embedding icons and small graphics directly in your HTML or CSS.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field">
+      <label>Choose an image</label>
+      <input type="file" id="imgIn" accept="image/*">
+      <div class="hint">Stays entirely in your browser.</div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Max size (px)</label>
+        <select id="maxSize">
+          <option value="64">64 (tiny icon)</option>
+          <option value="128">128</option>
+          <option value="256" selected>256 (recommended)</option>
+          <option value="512">512</option>
+          <option value="1024">1024</option>
+          <option value="0">Original size</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Format</label>
+        <select id="fmt">
+          <option value="image/webp" selected>WebP (smallest)</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/png">PNG (keeps transparency)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Quality: <span id="qVal">80</span>%</label>
+      <input type="range" id="quality" min="10" max="100" value="80" style="width:100%;">
+      <div class="hint">Lower quality = shorter code. Not used for PNG.</div>
+    </div>
+    <img id="preview" style="display:none;max-width:100%;max-height:260px;border-radius:8px;border:1px solid var(--line);margin-top:6px;">
+  </div>
+  <div class="panel">
+    <div class="field">
+      <label>Base64 data URI</label>
+      <div class="output empty" id="out" style="max-height:140px;overflow:auto;word-break:break-all;font-size:12px;">Choose an image to see its Base64 output here.</div>
+      <div class="hint" id="note"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="copyBtn">Copy Base64</button>
+      <button class="btn ghost" id="copyImgBtn">Copy &lt;img&gt; tag</button>
+      <button class="btn ghost" id="copyCssBtn">Copy CSS</button>
+      <button class="btn ghost" id="txtBtn">Download .txt</button>
+    </div>
+    <div class="stat-grid" id="stats" style="display:none;">
+      <div class="stat"><div class="n" id="sizeKb">–</div><div class="l">Original KB</div></div>
+      <div class="stat"><div class="n" id="b64Kb">–</div><div class="l">Base64 KB</div></div>
+      <div class="stat"><div class="n" id="dimTxt">–</div><div class="l">Output px</div></div>
+    </div>
+  </div>
+</section>
+<script>
+const imgIn = document.getElementById('imgIn');
+const preview = document.getElementById('preview');
+const out = document.getElementById('out');
+const note = document.getElementById('note');
+const stats = document.getElementById('stats');
+const maxSizeEl = document.getElementById('maxSize');
+const fmtEl = document.getElementById('fmt');
+const qEl = document.getElementById('quality');
+const qVal = document.getElementById('qVal');
+let currentB64 = '';
+let currentFile = null;
+let busy = false, again = false;
+
+function loadImage(file){
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => { URL.revokeObjectURL(url); resolve(im); };
+    im.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Could not read this image')); };
+    im.src = url;
+  });
+}
+
+async function convert(){
+  if (!currentFile) return;
+  if (busy) { again = true; return; }
+  busy = true;
+  try {
+    const im = await loadImage(currentFile);
+    const maxSide = parseInt(maxSizeEl.value, 10);
+    let w = im.naturalWidth || im.width, h = im.naturalHeight || im.height;
+    if (maxSide > 0 && Math.max(w, h) > maxSide) {
+      const s = maxSide / Math.max(w, h);
+      w = Math.max(1, Math.round(w * s));
+      h = Math.max(1, Math.round(h * s));
+    }
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    const fmt = fmtEl.value;
+    if (fmt === 'image/jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); } // JPEG has no transparency
+    ctx.drawImage(im, 0, 0, w, h);
+    let data = c.toDataURL(fmt, parseInt(qEl.value, 10) / 100);
+    if (fmt === 'image/webp' && data.indexOf('data:image/webp') !== 0) {
+      data = c.toDataURL('image/jpeg', parseInt(qEl.value, 10) / 100); // browser without WebP support
+    }
+    currentB64 = data;
+    out.textContent = data;
+    out.classList.remove('empty');
+    preview.src = data;
+    preview.style.display = 'block';
+    const kb = data.length / 1024;
+    document.getElementById('sizeKb').textContent = (currentFile.size / 1024).toFixed(1);
+    document.getElementById('b64Kb').textContent = kb.toFixed(1);
+    document.getElementById('dimTxt').textContent = w + '×' + h;
+    stats.style.display = 'grid';
+    note.textContent = kb > 100
+      ? 'This code is long. Pick a smaller size or lower quality to shorten it.'
+      : 'Tap "Copy" — no need to scroll through the code.';
+  } catch (err) {
+    out.textContent = 'Error: ' + err.message;
+    out.classList.add('empty');
+  }
+  busy = false;
+  if (again) { again = false; convert(); }
+}
+
+imgIn.addEventListener('change', () => {
+  currentFile = imgIn.files[0] || null;
+  convert();
+});
+maxSizeEl.addEventListener('change', convert);
+fmtEl.addEventListener('change', convert);
+qEl.addEventListener('input', () => { qVal.textContent = qEl.value; });
+qEl.addEventListener('change', convert);
+
+document.getElementById('copyBtn').addEventListener('click', () => rbCopy(currentB64));
+document.getElementById('copyImgBtn').addEventListener('click', () => {
+  if (currentB64) rbCopy('<img src="' + currentB64 + '" alt="">');
+});
+document.getElementById('copyCssBtn').addEventListener('click', () => {
+  if (currentB64) rbCopy('background-image: url("' + currentB64 + '");');
+});
+document.getElementById('txtBtn').addEventListener('click', () => {
+  if (!currentB64) return;
+  const url = URL.createObjectURL(new Blob([currentB64], { type: 'text/plain' }));
+  const a = document.createElement('a');
+  a.href = url; a.download = 'base64.txt';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Image to Base64</h2>
+    <ol class="how-steps">
+      <li>Choose an image from your device.</li>
+      <li>Pick a max size (256 px is a good default) and quality — smaller means shorter code.</li>
+      <li>Tap "Copy Base64", "Copy &lt;img&gt; tag" or "Copy CSS" and paste it where you need it.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Image to Base64 free to use?</summary>
+        <p>Yes. Image to Base64 is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. Image to Base64 runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Will this reduce the quality of my image?</summary>
+        <p>You control the balance between file size and quality with the settings on the page, so you can compare the result before you rely on it.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Image</h3>
+    <div class="related-list">
+      <a href="photo-editor.html">Photo Editor</a>
+      <a href="background-remover.html">Background Remover</a>
+      <a href="image-compressor.html">Image Compressor</a>
+      <a href="image-resizer.html">Image Resizer</a>
+      <a href="../image/">All Image tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+</body>
+</html>
