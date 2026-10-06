@@ -1,0 +1,433 @@
+{
+  "nav": {
+    "allTools": "Semua alat",
+    "pdf": "PDF",
+    "image": "Gambar",
+    "calculator": "Kalkulator",
+    "converter": "Konverter",
+    "text": "Teks",
+    "seo": "SEO",
+    "developer": "Pengembang",
+    "qr": "Kode QR",
+    "datetime": "Tanggal & waktu",
+    "finance": "Keuangan",
+    "career": "Karier",
+    "about": "Tentang",
+    "privacy": "Privasi"
+  },
+  "hero": {
+    "eyebrow": "31+ ALAT GRATIS · TANPA DAFTAR",
+    "title": "Alat online gratis untuk <span class=\"accent\">versi pintarmu.</span>",
+    "lede": "Edit foto, buat CV, hasilkan kode QR, konversi file, hapus metadata tersembunyi dan lainnya — 31 alat kecil yang masing-masing mengerjakan satu hal dengan sempurna. Tanpa instal, tanpa daftar, dan file-mu tak pernah keluar dari browser.",
+    "searchPh": "Cari alat — mis. \"pdf\", \"qr\", \"umur\"",
+    "trust1b": "100% gratis",
+    "trust1t": "tanpa biaya tersembunyi",
+    "trust2b": "Tanpa daftar",
+    "trust2t": "langsung mulai",
+    "trust3b": "Aman & privat",
+    "trust3t": "berjalan di browsermu"
+  },
+  "showcase": {
+    "eyebrow": "PRODUK RIDE BANGLA",
+    "title": "Didukung oleh <span class=\"gold\">Ride Bangla Limited</span>",
+    "tag": "Ride. Makanan. Antar. Kurir.",
+    "tagSub": "Platform alat resmi Ride Bangla Limited",
+    "text": "Alat gratis ini dibuat dan dirawat oleh tim di balik Ride Bangla — super-app Bangladesh untuk ride-sharing, antar makanan, kurir, dan layanan digital. Jelajahi platform utama kami, atau kenali tim IT yang merancang dan mengembangkan semuanya.",
+    "cta1": "Kunjungi situs utama",
+    "cta2": "IT & pengembangan"
+  },
+  "companybar": {
+    "main": "Situs utama",
+    "it": "IT & pengembangan"
+  },
+  "common": {
+    "download": "Unduh",
+    "downloadResult": "Unduh hasil",
+    "calculate": "Hitung",
+    "generate": "Buat",
+    "copy": "Salin",
+    "copied": "Tersalin!",
+    "chooseFile": "Pilih file",
+    "upload": "Unggah",
+    "removeMetadata": "Hapus metadata",
+    "format": "Format",
+    "minify": "Minifikasi",
+    "convert": "Konversi",
+    "reset": "Atur ulang",
+    "downloadPhoto": "Unduh foto bersih",
+    "downloadVideo": "Unduh video bersih",
+    "downloadPdf": "Unduh PDF bersih",
+    "search": "Cari",
+    "close": "Tutup",
+    "back": "Kembali",
+    "open": "Buka",
+    "tools": "alat",
+    "popularTools": "Alat populer",
+    "allToolsTitle": "Semua alat"
+  },
+  "tools": {
+    "faq": "Pertanyaan umum",
+    "howTo": "Cara menggunakan {tool}",
+    "freeQ": "Apakah {tool} gratis?",
+    "freeA": "Ya. {tool} sepenuhnya gratis — tanpa daftar, tanpa batas harian, dan tanpa watermark pada unduhan.",
+    "dataQ": "Apakah dataku diunggah ke server?",
+    "dataA": "Tidak. {tool} berjalan sepenuhnya di browser-mu dengan JavaScript — apa pun yang kamu ketik atau unggah tak pernah keluar dari perangkatmu.",
+    "moreIn": "Lainnya di {cat}",
+    "accurateQ": "Seberapa akurat hasilnya?",
+    "accurateA": "Perhitungan memakai rumus standar untuk angka ini, jadi hasilnya tepat untuk angka yang kamu masukkan — selalu periksa ulang masukan, karena keluaran hanya seakurat yang kamu ketik."
+  },
+  "toolmeta": {
+    "calculator-bmi-calculator": {
+      "title": "Kalkulator BMI",
+      "lede": "Masukkan tinggi-berat, dapatkan BMI instan dengan kategori WHO.",
+      "labels": {
+        "Height (cm)": "Tinggi (cm)",
+        "Weight (kg)": "Berat (kg)",
+        "Your BMI": "BMI-mu"
+      }
+    },
+    "calculator-percentage-calculator": {
+      "title": "Kalkulator persen",
+      "lede": "Hitung X% dari angka atau persentase antar angka — mudah.",
+      "labels": {
+        "X (%)": "X (%)"
+      }
+    },
+    "converter-base-converter": {
+      "title": "Konverter basis",
+      "lede": "Beralih antara biner, oktal, desimal, heksadesimal sekali klik.",
+      "labels": {
+        "Binary": "Biner",
+        "Octal": "Oktal",
+        "Decimal": "Desimal",
+        "Hexadecimal": "Heksadesimal"
+      }
+    },
+    "converter-unit-converter": {
+      "title": "Konverter satuan",
+      "lede": "Dari meter ke mil, kilo ke pon, Celsius ke Fahrenheit.",
+      "labels": {
+        "Category": "Kategori",
+        "From": "Dari",
+        "To": "Ke",
+        "Value": "Nilai",
+        "Result": "Hasil"
+      }
+    },
+    "date-time-age-calculator": {
+      "title": "Kalkulator umur",
+      "lede": "Penasaran umur tepatmu? Masukkan tanggal lahir.",
+      "labels": {
+        "Date of birth": "Tanggal lahir",
+        "As of": "Per"
+      }
+    },
+    "date-time-date-difference-calculator": {
+      "title": "Selisih tanggal",
+      "lede": "Dapatkan selisih tepat antara dua tanggal.",
+      "labels": {
+        "Start date": "Tanggal mulai",
+        "End date": "Tanggal akhir"
+      }
+    },
+    "developer-color-converter": {
+      "title": "Konverter warna",
+      "lede": "Pindahkan warna antara HEX, RGB, HSL dengan pratinjau.",
+      "labels": {
+        "HEX": "HEX",
+        "RGB": "RGB",
+        "HSL": "HSL"
+      }
+    },
+    "developer-json-formatter": {
+      "title": "Formatter JSON",
+      "lede": "Tempel JSON berantakan — tervalidasi dan rapi.",
+      "labels": {
+        "Input JSON": "JSON masukan",
+        "Output": "Keluaran"
+      }
+    },
+    "developer-password-generator": {
+      "title": "Generator kata sandi",
+      "lede": "Buat kata sandi kuat dan acak dalam hitungan detik.",
+      "labels": {
+        "Password": "Kata sandi"
+      }
+    },
+    "finance-compound-interest-calculator": {
+      "title": "Bunga majemuk",
+      "lede": "Lihat tabunganmu tumbuh — masukkan jumlah, iuran, suku.",
+      "labels": {
+        "Initial investment ($)": "Investasi awal ($)",
+        "Monthly contribution ($)": "Iuran bulanan ($)",
+        "Annual interest rate (%)": "Suku tahunan (%)",
+        "Years to grow": "Tahun",
+        "Compounding frequency": "Frekuensi",
+        "Future value": "Nilai masa depan"
+      }
+    },
+    "finance-loan-emi-calculator": {
+      "title": "Kalkulator EMI",
+      "lede": "Rencana pinjam? Masukkan jumlah, suku, tenor — lihat cicilan bulanan.",
+      "labels": {
+        "Loan amount": "Jumlah pinjaman",
+        "Annual interest rate (%)": "Suku tahunan (%)",
+        "Term (months)": "Tenor (bulan)",
+        "Monthly instalment (EMI)": "Cicilan bulanan (EMI)"
+      }
+    },
+    "finance-mortgage-calculator": {
+      "title": "Kalkulator KPR",
+      "lede": "Masukkan harga, DP, suku, tenor.",
+      "labels": {
+        "Amount": "Jumlah"
+      }
+    },
+    "finance-simple-interest-calculator": {
+      "title": "Bunga sederhana",
+      "lede": "Hitung bunga sederhana atas suatu jumlah.",
+      "labels": {
+        "Amount": "Jumlah"
+      }
+    },
+    "image-background-remover": {
+      "title": "Penghapus latar",
+      "lede": "Hapus latar foto apa pun dengan AI — 100% di browser.",
+      "labels": {
+        "Choose a photo": "Pilih foto",
+        "Background": "Latar",
+        "Foreground": "Latar depan"
+      }
+    },
+    "image-heic-to-jpg": {
+      "title": "HEIC ke JPG",
+      "lede": "Ubah foto HEIC iPhone ke JPG universal seketika.",
+      "labels": {
+        "Choose images": "Pilih gambar",
+        "Choose HEIC / HEIF photos": "Pilih foto HEIC/HEIF"
+      }
+    },
+    "image-image-compressor": {
+      "title": "Kompresor gambar",
+      "lede": "Kecilkan fotomu dengan kontrol kualitas.",
+      "labels": {
+        "Choose a photo": "Pilih foto",
+        "JPEG quality": "Kualitas JPEG",
+        "Max size (px)": "Ukuran maks (px)"
+      }
+    },
+    "image-image-resizer": {
+      "title": "Pengubah ukuran",
+      "lede": "Ubah ukuran dalam piksel atau persen.",
+      "labels": {
+        "Choose an image": "Pilih gambar",
+        "Width (px)": "Lebar (px)",
+        "Height (px)": "Tinggi (px)"
+      }
+    },
+    "image-image-to-base64": {
+      "title": "Gambar ke Base64",
+      "lede": "Encode gambar apa pun ke Base64.",
+      "labels": {
+        "Choose an image": "Pilih gambar",
+        "Base64 data URI": "URI data Base64"
+      }
+    },
+    "image-metadata-remover": {
+      "title": "Penghapus metadata",
+      "lede": "Hapus metadata EXIF/GPS tersembunyi dari foto, video, PDF.",
+      "labels": {}
+    },
+    "image-photo-editor": {
+      "title": "Editor foto",
+      "lede": "Kecerahan, kontras, filter, putar — di browser.",
+      "labels": {
+        "Choose a photo": "Pilih foto"
+      }
+    },
+    "pdf-image-to-pdf": {
+      "title": "Gambar ke PDF",
+      "lede": "Ubah gambar jadi satu PDF yang bisa diunduh.",
+      "labels": {
+        "Choose images (JPG or PNG, any order)": "Pilih gambar (JPG/PNG)"
+      }
+    },
+    "pdf-merge-pdf": {
+      "title": "Gabung PDF",
+      "lede": "Gabungkan banyak PDF jadi satu dokumen.",
+      "labels": {
+        "Choose PDF files": "Pilih file PDF"
+      }
+    },
+    "pdf-text-to-pdf": {
+      "title": "Teks ke PDF",
+      "lede": "Ubah teks biasa jadi PDF bersih yang bisa diunduh.",
+      "labels": {
+        "Your text": "Teks-mu",
+        "Font size": "Ukuran font",
+        "Document title": "Judul dokumen"
+      }
+    },
+    "qr-qr-code-generator": {
+      "title": "Generator QR",
+      "lede": "Buat kode QR untuk tautan, teks, kontak.",
+      "labels": {
+        "Text or URL": "Teks atau URL"
+      }
+    },
+    "qr-wifi-qr-generator": {
+      "title": "QR Wi-Fi",
+      "lede": "Gabung Wi-Fi dengan memindai — tanpa ketik kata sandi.",
+      "labels": {
+        "Password": "Kata sandi",
+        "Network name (SSID)": "Nama jaringan (SSID)"
+      }
+    },
+    "seo-meta-tag-generator": {
+      "title": "Generator meta tag",
+      "lede": "Buat tag SEO + Open Graph + Twitter Card.",
+      "labels": {
+        "Page title": "Judul halaman",
+        "Meta description": "Deskripsi meta",
+        "Page URL": "URL halaman",
+        "Image URL (for social sharing)": "URL gambar",
+        "Generated tags": "Tag yang dibuat"
+      }
+    },
+    "seo-slug-generator": {
+      "title": "Generator slug",
+      "lede": "Buat slug URL dari judul apa pun.",
+      "labels": {
+        "Slug": "Slug"
+      }
+    },
+    "text-case-converter": {
+      "title": "Pengubah huruf",
+      "lede": "KAPITAL, kecil, Judul — ubah seketika.",
+      "labels": {
+        "Your text": "Teks-mu"
+      }
+    },
+    "text-lorem-ipsum-generator": {
+      "title": "Generator Lorem Ipsum",
+      "lede": "Teks pengisi untuk desainmu.",
+      "labels": {}
+    },
+    "text-word-counter": {
+      "title": "Penghitung kata",
+      "lede": "Kata, karakter, kalimat, waktu baca — seketika.",
+      "labels": {
+        "Your text": "Teks-mu",
+        "Status": "Status"
+      }
+    },
+    "career-cv-cover-letter-builder": {
+      "title": "Pembuat CV & surat",
+      "lede": "Isi sekali — unduh CV profesional dan surat lamaran.",
+      "labels": {
+        "Full name": "Nama lengkap",
+        "Email": "Email",
+        "Phone": "Telepon",
+        "Company": "Perusahaan",
+        "Job title": "Jabatan",
+        "Target role / title": "Posisi target",
+        "Location": "Lokasi",
+        "LinkedIn / portfolio (optional)": "LinkedIn/portofolio (opsional)",
+        "Profile photo (optional)": "Foto profil (opsional)",
+        "Photo shape": "Bentuk foto",
+        "Colour theme": "Tema warna",
+        "Page size": "Ukuran halaman",
+        "Country of citizenship / nationality": "Kewarganegaraan",
+        "Second citizenship (optional)": "Kewarganegaraan kedua (opsional)",
+        "Current residence country": "Negara tempat tinggal",
+        "Gender": "Jenis kelamin",
+        "Marital status": "Status pernikahan",
+        "Father's name": "Nama ayah",
+        "Company name": "Nama perusahaan",
+        "Position applying for": "Posisi yang dilamar",
+        "Hiring manager's name (optional)": "Manajer perekrutan (opsional)",
+        "Date": "Tanggal",
+        "Dates": "Tanggal",
+        "Degree / qualification": "Gelar",
+        "Institution": "Institusi",
+        "What you did": "Tugas Anda",
+        "Result / details (optional)": "Hasil (opsional)"
+      }
+    }
+  },
+  "dl": {
+    "Age": "Umur",
+    "Annual rate": "Suku tahunan",
+    "Approx. months": "Kira-kira bulan",
+    "As of": "Per",
+    "BMI": "BMI",
+    "Binary": "Biner",
+    "Category": "Kategori",
+    "Characters": "Karakter",
+    "Characters (no spaces)": "Karakter (tanpa spasi)",
+    "Date of birth": "Tanggal lahir",
+    "Decimal": "Desimal",
+    "Down payment": "DP",
+    "End date": "Tanggal akhir",
+    "From": "Dari",
+    "Future value": "Nilai masa depan",
+    "HEX": "HEX",
+    "HSL": "HSL",
+    "Height": "Tinggi",
+    "Hexadecimal": "Heksadesimal",
+    "Home price": "Harga",
+    "Initial investment": "Investasi awal",
+    "Insurance": "Asuransi",
+    "Interest": "Bunga",
+    "Interest earned": "Bunga diperoleh",
+    "Length": "Panjang",
+    "Loan amount": "Jumlah pinjaman",
+    "Monthly EMI": "Cicilan bulanan",
+    "Monthly contribution": "Iuran bulanan",
+    "Monthly total": "Total bulanan",
+    "Octal": "Oktal",
+    "Paragraphs": "Paragraf",
+    "Principal": "Pokok",
+    "Principal & interest": "Pokok & bunga",
+    "RGB": "RGB",
+    "Rate": "Suku",
+    "Reading time": "Waktu baca",
+    "Result": "Hasil",
+    "Sentences": "Kalimat",
+    "Slug": "Slug",
+    "Start date": "Tanggal mulai",
+    "Tax": "Pajak",
+    "Tenure (months)": "Tenor (bulan)",
+    "Term": "Tenor",
+    "Time (years)": "Waktu (tahun)",
+    "Title": "Judul",
+    "To": "Ke",
+    "Total contributions": "Total iuran",
+    "Total cost": "Total biaya",
+    "Total days": "Total hari",
+    "Total days lived": "Hari hidup",
+    "Total interest": "Total bunga",
+    "Total payable": "Total bayar",
+    "Weeks": "Minggu",
+    "Weight": "Berat",
+    "Words": "Kata",
+    "Years": "Tahun",
+    "Generated placeholder text": "Teks yang dibuat",
+    "Generated meta tags": "Meta tag yang dibuat",
+    "Generated password": "Kata sandi yang dibuat",
+    "Formatted JSON": "JSON yang diformat"
+  },
+  "msg": {
+    "processing": "Memproses…",
+    "done": "Selesai.",
+    "doneMeta": "Selesai — metadata dihapus.",
+    "error": "Error — coba lagi.",
+    "cantRead": "File tidak bisa dibaca.",
+    "loading": "Memuat…",
+    "noMeta": "Tidak ada metadata — file sudah bersih.",
+    "netErr": "Gagal memuat. Periksa internet.",
+    "typeFirst": "Ketik dulu.",
+    "building": "Membuat PDF…",
+    "chooseFile": "Pilih file dulu."
+  }
+}

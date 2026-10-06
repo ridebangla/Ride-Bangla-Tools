@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Converter — Ride Bangla Tools</title>
+<meta name="description" content="Convert text to UPPERCASE, lowercase, Title Case, Sentence case and more instantly. Free online case converter for writers and developers — no signup.">
+<link rel="canonical" href="https://tools.ridebangla.bd/text/case-converter.html">
+<meta property="og:title" content="Case Converter — Ride Bangla Tools">
+<meta property="og:description" content="Convert text to UPPERCASE, lowercase, Title Case, Sentence case and more instantly. Free online case converter — no signup needed.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/text/case-converter.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Text Tools", "item": "https://tools.ridebangla.bd/text/"}, {"@type": "ListItem", "position": 3, "name": "Case Converter", "item": "https://tools.ridebangla.bd/text/case-converter.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Case Converter", "description": "Convert text between UPPERCASE, lowercase, Title Case, Sentence case, alternating case and inverse case instantly in your browser.", "url": "https://tools.ridebangla.bd/text/case-converter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Case Converter free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Case Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Case Converter runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Which letter cases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg cAsE and iNVERSE cAsE \u2014 six conversions, applied instantly as you type."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/" style="color:var(--text-hi)">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+      <a href="../help-center.html">Help Center</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Text</a> / Case Converter</div>
+    <h1>Case Converter</h1>
+    <p class="lede">Type or paste your text, then convert it instantly — UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg cAsE or iNVERSE cAsE. Nothing leaves your browser.</p>
+  </div>
+</section>
+<section class="tool-body">
+  <div class="panel">
+    <div class="field">
+      <label>Your text</label>
+      <textarea id="ccIn" placeholder="Start typing or paste text here…" style="min-height:200px;"></textarea>
+    </div>
+    <div class="btn-row" style="flex-wrap:wrap;gap:10px;">
+      <button class="btn" data-case="upper" type="button">UPPERCASE</button>
+      <button class="btn ghost" data-case="lower" type="button">lowercase</button>
+      <button class="btn ghost" data-case="title" type="button">Title Case</button>
+      <button class="btn ghost" data-case="sentence" type="button">Sentence case</button>
+      <button class="btn ghost" data-case="alternate" type="button">aLtErNaTiNg</button>
+      <button class="btn ghost" data-case="inverse" type="button">iNVERSE</button>
+    </div>
+    <div class="field" style="margin-top:18px;">
+      <label>Converted output <span class="hint" id="ccCase" style="margin-left:8px;"></span></label>
+      <textarea id="ccOut" readonly placeholder="Your converted text will appear here…" style="min-height:200px;"></textarea>
+    </div>
+    <div class="stat-grid" style="margin-top:6px;">
+      <div class="stat"><div class="n" id="ccWords">0</div><div class="l">Words</div></div>
+      <div class="stat"><div class="n" id="ccChars">0</div><div class="l">Characters</div></div>
+    </div>
+    <div class="btn-row" style="margin-top:16px;">
+      <button class="btn" id="ccCopy" type="button">Copy</button>
+      <button class="btn ghost" id="ccClear" type="button">Clear</button>
+      <button class="btn-download" id="ccDl" type="button">Download .txt</button>
+<button type="button" class="btn ghost" id="aiBtn12">✨ Improve with AI</button>
+    </div>
+  </div>
+</section>
+<script>
+const ccIn = document.getElementById('ccIn');
+const ccOut = document.getElementById('ccOut');
+const ccCase = document.getElementById('ccCase');
+let currentCase = 'upper';
+const caseNames = { upper: 'UPPERCASE', lower: 'lowercase', title: 'Title Case', sentence: 'Sentence case', alternate: 'aLtErNaTiNg cAsE', inverse: 'iNVERSE cAsE' };
+
+function toTitle(s) {
+  return s.toLowerCase().split(/(\s+)/).map(function (w) {
+    return w ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+  }).join('');
+}
+function toSentence(s) {
+  return s.toLowerCase().replace(/(^\s*[a-z])|([.!?]\s*[a-z])/g, function (m) { return m.toUpperCase(); });
+}
+function toAlternate(s) {
+  let i = 0;
+  return s.split('').map(function (ch) {
+    if (/[a-zA-Z]/.test(ch)) { i++; return i % 2 ? ch.toLowerCase() : ch.toUpperCase(); }
+    return ch;
+  }).join('');
+}
+function toInverse(s) {
+  return s.split('').map(function (ch) {
+    return ch === ch.toUpperCase() ? ch.toLowerCase() : ch.toUpperCase();
+  }).join('');
+}
+const converters = {
+  upper: function (s) { return s.toUpperCase(); },
+  lower: function (s) { return s.toLowerCase(); },
+  title: toTitle,
+  sentence: toSentence,
+  alternate: toAlternate,
+  inverse: toInverse
+};
+function convert() {
+  const v = ccIn.value;
+  ccOut.value = v ? converters[currentCase](v) : '';
+  ccCase.textContent = v ? '— ' + caseNames[currentCase] : '';
+  const words = v.trim() ? v.trim().split(/\s+/).length : 0;
+  document.getElementById('ccWords').textContent = words;
+  document.getElementById('ccChars').textContent = ccOut.value.length;
+}
+document.querySelectorAll('[data-case]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    currentCase = btn.getAttribute('data-case');
+    document.querySelectorAll('[data-case]').forEach(function (b) {
+      b.classList.toggle('btn', b === btn);
+      b.classList.toggle('ghost', b !== btn);
+    });
+    convert();
+    ccIn.focus();
+  });
+});
+ccIn.addEventListener('input', convert);
+document.getElementById('ccCopy').addEventListener('click', function () {
+  if (ccOut.value) rbCopy(ccOut.value);
+});
+document.getElementById('ccClear').addEventListener('click', function () {
+  ccIn.value = ''; convert(); ccIn.focus();
+});
+document.getElementById('ccDl').addEventListener('click', function () {
+  if (!ccOut.value) return;
+  const blob = new Blob([ccOut.value], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'converted-text.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+});
+convert();
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Case Converter</h2>
+    <ol class="how-steps">
+      <li>Type or paste your text into the input box above.</li>
+      <li>Click a case button — UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg or iNVERSE — the output updates live as you type.</li>
+      <li>Copy the result, download it as a .txt file, or clear to start over.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Case Converter free to use?</summary>
+        <p>Yes. Case Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. Case Converter runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which letter cases are supported?</summary>
+        <p>UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg cAsE and iNVERSE cAsE — six conversions, applied instantly as you type.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Text</h3>
+    <div class="related-list">
+      <a href="word-counter.html">Word Counter</a>
+      <a href="lorem-ipsum-generator.html">Lorem Ipsum Generator</a>
+      <a href="../text/">All Text tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+<script src="../assets/ai.js"></script>
+
+<script>
+(function() {
+  var btn = document.getElementById('aiBtn12');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.querySelector('textarea'); return t?t.value:''; }, function(r) { var t=document.querySelector('textarea'); if(t){ t.value=r; t.dispatchEvent(new Event('input')); } });
+    });
+  }
+})();
+</script>
+</body>
+</html>

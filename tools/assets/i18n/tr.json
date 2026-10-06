@@ -1,0 +1,433 @@
+{
+  "nav": {
+    "allTools": "Tüm araçlar",
+    "pdf": "PDF",
+    "image": "Görsel",
+    "calculator": "Hesap makinesi",
+    "converter": "Dönüştürücü",
+    "text": "Metin",
+    "seo": "SEO",
+    "developer": "Geliştirici",
+    "qr": "QR kodu",
+    "datetime": "Tarih ve saat",
+    "finance": "Finans",
+    "career": "Kariyer",
+    "about": "Hakkında",
+    "privacy": "Gizlilik"
+  },
+  "hero": {
+    "eyebrow": "31+ ÜCRETSİZ ARAÇ · KAYIT GEREKMEZ",
+    "title": "Daha akıllı bir sen için <span class=\"accent\">ücretsiz çevrimiçi araçlar.</span>",
+    "lede": "Fotoğraf düzenle, CV oluştur, QR kod üret, dosya dönüştür, gizli meta verileri sil ve daha fazlası — her biri tek işi mükemmel yapan 31 küçük araç. Kurulum yok, kayıt yok ve dosyaların tarayıcından asla çıkmaz.",
+    "searchPh": "Araç ara — örn. \"pdf\", \"qr\", \"yaş\"",
+    "trust1b": "%100 ücretsiz",
+    "trust1t": "gizli ücret yok",
+    "trust2b": "Kayıt yok",
+    "trust2t": "hemen başla",
+    "trust3b": "Güvenli ve gizli",
+    "trust3t": "tarayıcında çalışır"
+  },
+  "showcase": {
+    "eyebrow": "BİR RIDE BANGLA ÜRÜNÜ",
+    "title": "<span class=\"gold\">Ride Bangla Limited</span> destekli",
+    "tag": "Yolculuk. Yemek. Teslimat. Kurye.",
+    "tagSub": "Ride Bangla Limited resmi araç platformu",
+    "text": "Bu ücretsiz araçlar, Bangladeş'in süper uygulaması Ride Bangla'nın (araç paylaşımı, yemek teslimatı, kurye ve dijital hizmetler) arkasındaki ekip tarafından oluşturulup sürdürülüyor. Ana platformumuzu keşfet veya her şeyi tasarlayıp geliştiren IT ekibiyle tanış.",
+    "cta1": "Ana siteyi ziyaret et",
+    "cta2": "IT ve geliştirme"
+  },
+  "companybar": {
+    "main": "Ana site",
+    "it": "IT ve geliştirme"
+  },
+  "common": {
+    "download": "İndir",
+    "downloadResult": "Sonucu indir",
+    "calculate": "Hesapla",
+    "generate": "Oluştur",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı!",
+    "chooseFile": "Dosya seç",
+    "upload": "Yükle",
+    "removeMetadata": "Meta verileri sil",
+    "format": "Biçimlendir",
+    "minify": "Küçült",
+    "convert": "Dönüştür",
+    "reset": "Sıfırla",
+    "downloadPhoto": "Temiz fotoğrafı indir",
+    "downloadVideo": "Temiz videoyu indir",
+    "downloadPdf": "Temiz PDF indir",
+    "search": "Ara",
+    "close": "Kapat",
+    "back": "Geri",
+    "open": "Aç",
+    "tools": "araç",
+    "popularTools": "Popüler araçlar",
+    "allToolsTitle": "Tüm araçlar"
+  },
+  "tools": {
+    "faq": "Sık sorulan sorular",
+    "howTo": "{tool} nasıl kullanılır",
+    "freeQ": "{tool} ücretsiz mi?",
+    "freeA": "Evet. {tool} tamamen ücretsizdir — kayıt yok, günlük limit yok ve indirdiklerinizde filigran yok.",
+    "dataQ": "Verilerim sunucuya yükleniyor mu?",
+    "dataA": "Hayır. {tool} tamamen tarayıcınızda JavaScript ile çalışır — yazdığınız veya yüklediğiniz hiçbir şey cihazınızdan çıkmaz.",
+    "moreIn": "{cat} içinde daha fazla",
+    "accurateQ": "Sonuç ne kadar doğru?",
+    "accurateA": "Hesaplamada bu değerin standart formülü kullanılır, bu yüzden sonuç girdiğiniz sayılar için kesindir — girdileri her zaman iki kez kontrol edin, çünkü çıktı yalnızca yazdığınız kadar doğrudur."
+  },
+  "toolmeta": {
+    "calculator-bmi-calculator": {
+      "title": "BMI Hesaplayıcı",
+      "lede": "Boy-kilo girin, WHO kategorileriyle anında BMI alın.",
+      "labels": {
+        "Height (cm)": "Boy (cm)",
+        "Weight (kg)": "Kilo (kg)",
+        "Your BMI": "BMI’niz"
+      }
+    },
+    "calculator-percentage-calculator": {
+      "title": "Yüzde Hesaplayıcı",
+      "lede": "X% hesaplama ve oran bulma — kolayca.",
+      "labels": {
+        "X (%)": "X (%)"
+      }
+    },
+    "converter-base-converter": {
+      "title": "Taban Dönüştürücü",
+      "lede": "İkili, sekizli, onlu ve onaltılı arasında tek tıkla geçiş.",
+      "labels": {
+        "Binary": "İkili",
+        "Octal": "Sekizli",
+        "Decimal": "Onlu",
+        "Hexadecimal": "Onaltılı"
+      }
+    },
+    "converter-unit-converter": {
+      "title": "Birim Dönüştürücü",
+      "lede": "Metre-mil, kilo-pound, Celsius-Fahrenheit.",
+      "labels": {
+        "Category": "Kategori",
+        "From": "Nereden",
+        "To": "Nereye",
+        "Value": "Değer",
+        "Result": "Sonuç"
+      }
+    },
+    "date-time-age-calculator": {
+      "title": "Yaş Hesaplayıcı",
+      "lede": "Tam yaşınızı mı merak ediyorsunuz? Doğum tarihi girin.",
+      "labels": {
+        "Date of birth": "Doğum tarihi",
+        "As of": "İtibariyle"
+      }
+    },
+    "date-time-date-difference-calculator": {
+      "title": "Tarih Farkı",
+      "lede": "İki tarih arasındaki net farkı bulun.",
+      "labels": {
+        "Start date": "Başlangıç",
+        "End date": "Bitiş"
+      }
+    },
+    "developer-color-converter": {
+      "title": "Renk Dönüştürücü",
+      "lede": "HEX, RGB, HSL arasında canlı önizlemeyle geçiş.",
+      "labels": {
+        "HEX": "HEX",
+        "RGB": "RGB",
+        "HSL": "HSL"
+      }
+    },
+    "developer-json-formatter": {
+      "title": "JSON Biçimlendirici",
+      "lede": "Dağınık JSON yapıştırın — doğrulansın ve güzelleşsin.",
+      "labels": {
+        "Input JSON": "Girdi JSON",
+        "Output": "Çıktı"
+      }
+    },
+    "developer-password-generator": {
+      "title": "Şifre Oluşturucu",
+      "lede": "Saniyeler içinde güçlü, rastgele şifreler.",
+      "labels": {
+        "Password": "Şifre"
+      }
+    },
+    "finance-compound-interest-calculator": {
+      "title": "Bileşik Faiz",
+      "lede": "Birikimlerinizin büyümesini izleyin — tutar, katkı, oran girin.",
+      "labels": {
+        "Initial investment ($)": "Başlangıç ($)",
+        "Monthly contribution ($)": "Aylık katkı ($)",
+        "Annual interest rate (%)": "Yıllık oran (%)",
+        "Years to grow": "Yıl",
+        "Compounding frequency": "Sıklık",
+        "Future value": "Gelecek değer"
+      }
+    },
+    "finance-loan-emi-calculator": {
+      "title": "Kredi EMI Hesaplayıcı",
+      "lede": "Tutar, oran, vade girin — aylık taksiti görün.",
+      "labels": {
+        "Loan amount": "Kredi tutarı",
+        "Annual interest rate (%)": "Yıllık oran (%)",
+        "Term (months)": "Vade (ay)",
+        "Monthly instalment (EMI)": "Aylık taksit (EMI)"
+      }
+    },
+    "finance-mortgage-calculator": {
+      "title": "Konut Kredisi Hesaplayıcı",
+      "lede": "Fiyat, peşinat, oran, vade girin.",
+      "labels": {
+        "Amount": "Tutar"
+      }
+    },
+    "finance-simple-interest-calculator": {
+      "title": "Basit Faiz",
+      "lede": "Tutara basit faiz hesaplayın.",
+      "labels": {
+        "Amount": "Tutar"
+      }
+    },
+    "image-background-remover": {
+      "title": "Arka Plan Silici",
+      "lede": "Yapay zekâyla her fotoğraftan arka planı silin — %100 tarayıcıda.",
+      "labels": {
+        "Choose a photo": "Fotoğraf seçin",
+        "Background": "Arka plan",
+        "Foreground": "Ön plan"
+      }
+    },
+    "image-heic-to-jpg": {
+      "title": "HEIC’den JPG’ye",
+      "lede": "iPhone HEIC fotoğraflarını anında evrensel JPG’ye çevirin.",
+      "labels": {
+        "Choose images": "Görsel seçin",
+        "Choose HEIC / HEIF photos": "HEIC/HEIF fotoğraf seçin"
+      }
+    },
+    "image-image-compressor": {
+      "title": "Görsel Sıkıştırıcı",
+      "lede": "Kaliteyi ayarlayarak fotoğrafları küçültün.",
+      "labels": {
+        "Choose a photo": "Fotoğraf seçin",
+        "JPEG quality": "JPEG kalitesi",
+        "Max size (px)": "Maks. boyut (px)"
+      }
+    },
+    "image-image-resizer": {
+      "title": "Görsel Boyutlandırıcı",
+      "lede": "Piksel veya yüzdeyle boyut değiştirin.",
+      "labels": {
+        "Choose an image": "Görsel seçin",
+        "Width (px)": "Genişlik (px)",
+        "Height (px)": "Yükseklik (px)"
+      }
+    },
+    "image-image-to-base64": {
+      "title": "Görselden Base64’e",
+      "lede": "Her görseli Base64’e kodlayın.",
+      "labels": {
+        "Choose an image": "Görsel seçin",
+        "Base64 data URI": "Base64 veri URI"
+      }
+    },
+    "image-metadata-remover": {
+      "title": "Meta Veri Silici",
+      "lede": "Foto, video, PDF’ten gizli EXIF/GPS verilerini silin.",
+      "labels": {}
+    },
+    "image-photo-editor": {
+      "title": "Fotoğraf Editörü",
+      "lede": "Parlaklık, kontrast, filtre, döndürme — tarayıcıda.",
+      "labels": {
+        "Choose a photo": "Fotoğraf seçin"
+      }
+    },
+    "pdf-image-to-pdf": {
+      "title": "Görselden PDF’e",
+      "lede": "Görselleri tek indirilebilir PDF yapın.",
+      "labels": {
+        "Choose images (JPG or PNG, any order)": "Görsel seçin (JPG/PNG)"
+      }
+    },
+    "pdf-merge-pdf": {
+      "title": "PDF Birleştir",
+      "lede": "Birden çok PDF’yi tek belgede birleştirin.",
+      "labels": {
+        "Choose PDF files": "PDF dosyaları seçin"
+      }
+    },
+    "pdf-text-to-pdf": {
+      "title": "Metinden PDF’e",
+      "lede": "Düz metni temiz, indirilebilir PDF yapın.",
+      "labels": {
+        "Your text": "Metniniz",
+        "Font size": "Yazı boyutu",
+        "Document title": "Belge başlığı"
+      }
+    },
+    "qr-qr-code-generator": {
+      "title": "QR Kod Oluşturucu",
+      "lede": "Bağlantı, metin, kişi için QR kodları.",
+      "labels": {
+        "Text or URL": "Metin veya URL"
+      }
+    },
+    "qr-wifi-qr-generator": {
+      "title": "Wi-Fi QR Oluşturucu",
+      "lede": "Taratarak Wi-Fi’ye katılın — şifre yazmadan.",
+      "labels": {
+        "Password": "Şifre",
+        "Network name (SSID)": "Ağ adı (SSID)"
+      }
+    },
+    "seo-meta-tag-generator": {
+      "title": "Meta Etiket Oluşturucu",
+      "lede": "SEO + Open Graph + Twitter Card etiketleri.",
+      "labels": {
+        "Page title": "Sayfa başlığı",
+        "Meta description": "Meta açıklama",
+        "Page URL": "Sayfa URL",
+        "Image URL (for social sharing)": "Görsel URL",
+        "Generated tags": "Oluşturulan etiketler"
+      }
+    },
+    "seo-slug-generator": {
+      "title": "Slug Oluşturucu",
+      "lede": "Her başlıktan URL slug’ı oluşturun.",
+      "labels": {
+        "Slug": "Slug"
+      }
+    },
+    "text-case-converter": {
+      "title": "Harf Dönüştürücü",
+      "lede": "BÜYÜK, küçük, Başlık — anında dönüştürün.",
+      "labels": {
+        "Your text": "Metniniz"
+      }
+    },
+    "text-lorem-ipsum-generator": {
+      "title": "Lorem Ipsum Oluşturucu",
+      "lede": "Tasarımlar için yer tutucu metin.",
+      "labels": {}
+    },
+    "text-word-counter": {
+      "title": "Kelime Sayacı",
+      "lede": "Kelime, karakter, cümle, okuma süresi — anında.",
+      "labels": {
+        "Your text": "Metniniz",
+        "Status": "Durum"
+      }
+    },
+    "career-cv-cover-letter-builder": {
+      "title": "CV ve Ön Yazı Oluşturucu",
+      "lede": "Bir kez doldurun — profesyonel CV ve ön yazı indirin.",
+      "labels": {
+        "Full name": "Ad Soyad",
+        "Email": "E-posta",
+        "Phone": "Telefon",
+        "Company": "Şirket",
+        "Job title": "Pozisyon",
+        "Target role / title": "Hedef pozisyon",
+        "Location": "Konum",
+        "LinkedIn / portfolio (optional)": "LinkedIn/portföy (isteğe bağlı)",
+        "Profile photo (optional)": "Profil fotoğrafı (isteğe bağlı)",
+        "Photo shape": "Fotoğraf şekli",
+        "Colour theme": "Renk teması",
+        "Page size": "Sayfa boyutu",
+        "Country of citizenship / nationality": "Vatandaşlık ülkesi",
+        "Second citizenship (optional)": "İkinci vatandaşlık (isteğe bağlı)",
+        "Current residence country": "İkamet ülkesi",
+        "Gender": "Cinsiyet",
+        "Marital status": "Medeni durum",
+        "Father's name": "Baba adı",
+        "Company name": "Şirket adı",
+        "Position applying for": "Başvurulan pozisyon",
+        "Hiring manager's name (optional)": "İşe alım yetkilisi (isteğe bağlı)",
+        "Date": "Tarih",
+        "Dates": "Tarihler",
+        "Degree / qualification": "Diploma",
+        "Institution": "Kurum",
+        "What you did": "Yaptıklarınız",
+        "Result / details (optional)": "Sonuç (isteğe bağlı)"
+      }
+    }
+  },
+  "dl": {
+    "Age": "Yaş",
+    "Annual rate": "Yıllık oran",
+    "Approx. months": "Yaklaşık ay",
+    "As of": "İtibariyle",
+    "BMI": "BMI",
+    "Binary": "İkili",
+    "Category": "Kategori",
+    "Characters": "Karakter",
+    "Characters (no spaces)": "Karakter (boşluksuz)",
+    "Date of birth": "Doğum tarihi",
+    "Decimal": "Onlu",
+    "Down payment": "Peşinat",
+    "End date": "Bitiş tarihi",
+    "From": "Nereden",
+    "Future value": "Gelecek değer",
+    "HEX": "HEX",
+    "HSL": "HSL",
+    "Height": "Boy",
+    "Hexadecimal": "Onaltılı",
+    "Home price": "Fiyat",
+    "Initial investment": "Başlangıç",
+    "Insurance": "Sigorta",
+    "Interest": "Faiz",
+    "Interest earned": "Kazanılan faiz",
+    "Length": "Uzunluk",
+    "Loan amount": "Kredi tutarı",
+    "Monthly EMI": "Aylık taksit",
+    "Monthly contribution": "Aylık katkı",
+    "Monthly total": "Aylık toplam",
+    "Octal": "Sekizli",
+    "Paragraphs": "Paragraf",
+    "Principal": "Anapara",
+    "Principal & interest": "Anapara ve faiz",
+    "RGB": "RGB",
+    "Rate": "Oran",
+    "Reading time": "Okuma süresi",
+    "Result": "Sonuç",
+    "Sentences": "Cümle",
+    "Slug": "Slug",
+    "Start date": "Başlangıç",
+    "Tax": "Vergi",
+    "Tenure (months)": "Vade (ay)",
+    "Term": "Vade",
+    "Time (years)": "Süre (yıl)",
+    "Title": "Başlık",
+    "To": "Nereye",
+    "Total contributions": "Toplam katkı",
+    "Total cost": "Toplam maliyet",
+    "Total days": "Toplam gün",
+    "Total days lived": "Yaşanan gün",
+    "Total interest": "Toplam faiz",
+    "Total payable": "Toplam ödeme",
+    "Weeks": "Hafta",
+    "Weight": "Kilo",
+    "Words": "Kelime",
+    "Years": "Yıl",
+    "Generated placeholder text": "Oluşturulan metin",
+    "Generated meta tags": "Oluşturulan meta etiketler",
+    "Generated password": "Oluşturulan şifre",
+    "Formatted JSON": "Biçimlendirilmiş JSON"
+  },
+  "msg": {
+    "processing": "İşleniyor…",
+    "done": "Tamam.",
+    "doneMeta": "Tamam — meta veriler silindi.",
+    "error": "Hata — tekrar deneyin.",
+    "cantRead": "Dosya okunamadı.",
+    "loading": "Yükleniyor…",
+    "noMeta": "Meta veri yok — dosya zaten temiz.",
+    "netErr": "Yüklenemedi. İnterneti kontrol edin.",
+    "typeFirst": "Önce bir şey yazın.",
+    "building": "PDF oluşturuluyor…",
+    "chooseFile": "Önce dosya seçin."
+  }
+}

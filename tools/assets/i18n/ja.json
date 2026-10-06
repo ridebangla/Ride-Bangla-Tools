@@ -1,0 +1,433 @@
+{
+  "nav": {
+    "allTools": "すべてのツール",
+    "pdf": "PDF",
+    "image": "画像",
+    "calculator": "計算機",
+    "converter": "変換",
+    "text": "テキスト",
+    "seo": "SEO",
+    "developer": "開発者",
+    "qr": "QRコード",
+    "datetime": "日時",
+    "finance": "金融",
+    "career": "キャリア",
+    "about": "概要",
+    "privacy": "プライバシー"
+  },
+  "hero": {
+    "eyebrow": "31以上の無料ツール · 登録不要",
+    "title": "賢いあなたのための<span class=\"accent\">無料オンラインツール。</span>",
+    "lede": "写真を編集し、履歴書を作成し、QRコードを生成し、ファイルを変換し、隠れたメタデータを削除 — それぞれ1つのことを完璧にこなす31の小さなツール。インストール不要、登録不要、ファイルがブラウザから出ることはありません。",
+    "searchPh": "ツールを検索 — 例:「pdf」「qr」「年齢」",
+    "trust1b": "100%無料",
+    "trust1t": "隠れた料金なし",
+    "trust2b": "登録不要",
+    "trust2t": "すぐに開始",
+    "trust3b": "安全＆プライベート",
+    "trust3t": "ブラウザで動作"
+  },
+  "showcase": {
+    "eyebrow": "RIDE BANGLA製品",
+    "title": "<span class=\"gold\">Ride Bangla Limited</span>提供",
+    "tag": "ライド。フード。デリバリー。クーリエ。",
+    "tagSub": "Ride Bangla Limited公式ツールプラットフォーム",
+    "text": "これらの無料ツールは、バングラデシュのスーパーアプリRide Bangla（ライドシェア、フードデリバリー、クーリエ、デジタルサービス）の背後にあるチームによって作成・維持されています。メインプラットフォームを探索するか、すべてを設計・開発するITチームをご覧ください。",
+    "cta1": "メインサイトを見る",
+    "cta2": "IT・開発"
+  },
+  "companybar": {
+    "main": "メインサイト",
+    "it": "IT・開発"
+  },
+  "common": {
+    "download": "ダウンロード",
+    "downloadResult": "結果をダウンロード",
+    "calculate": "計算",
+    "generate": "生成",
+    "copy": "コピー",
+    "copied": "コピーしました!",
+    "chooseFile": "ファイルを選択",
+    "upload": "アップロード",
+    "removeMetadata": "メタデータを削除",
+    "format": "フォーマット",
+    "minify": "最小化",
+    "convert": "変換",
+    "reset": "リセット",
+    "downloadPhoto": "クリーンな写真をダウンロード",
+    "downloadVideo": "クリーンな動画をダウンロード",
+    "downloadPdf": "クリーンなPDFをダウンロード",
+    "search": "検索",
+    "close": "閉じる",
+    "back": "戻る",
+    "open": "開く",
+    "tools": "ツール",
+    "popularTools": "人気のツール",
+    "allToolsTitle": "すべてのツール"
+  },
+  "tools": {
+    "faq": "よくある質問",
+    "howTo": "{tool}の使い方",
+    "freeQ": "{tool}は無料ですか?",
+    "freeA": "はい。{tool}は完全無料です — 登録不要、1日の制限なし、ダウンロードに透かしなし。",
+    "dataQ": "データはサーバーにアップロードされますか?",
+    "dataA": "いいえ。{tool}はJavaScriptでブラウザ内のみで動作します — 入力やアップロードしたものがデバイスから出ることはありません。",
+    "moreIn": "{cat}のその他",
+    "accurateQ": "結果の精度は?",
+    "accurateA": "計算にはこの数値の標準式を使用するため、入力した数値に対して結果は正確です — 出力は入力した内容次第なので、入力は必ず再確認してください。"
+  },
+  "toolmeta": {
+    "calculator-bmi-calculator": {
+      "title": "BMI計算機",
+      "lede": "身長と体重を入力してBMIを即座に計算。WHO基準で判定。",
+      "labels": {
+        "Height (cm)": "身長 (cm)",
+        "Weight (kg)": "体重 (kg)",
+        "Your BMI": "あなたのBMI"
+      }
+    },
+    "calculator-percentage-calculator": {
+      "title": "パーセント計算機",
+      "lede": "X%の計算や割合計算を簡単に。",
+      "labels": {
+        "X (%)": "X (%)"
+      }
+    },
+    "converter-base-converter": {
+      "title": "基数変換",
+      "lede": "2進数・8進数・10進数・16進数をワンクリックで変換。",
+      "labels": {
+        "Binary": "2進数",
+        "Octal": "8進数",
+        "Decimal": "10進数",
+        "Hexadecimal": "16進数"
+      }
+    },
+    "converter-unit-converter": {
+      "title": "単位変換",
+      "lede": "メートル→マイル、キロ→ポンド、摂氏→華氏など。",
+      "labels": {
+        "Category": "カテゴリ",
+        "From": "変換元",
+        "To": "変換先",
+        "Value": "値",
+        "Result": "結果"
+      }
+    },
+    "date-time-age-calculator": {
+      "title": "年齢計算機",
+      "lede": "正確な年齢を知りたい?生年月日を入力。",
+      "labels": {
+        "Date of birth": "生年月日",
+        "As of": "基準日"
+      }
+    },
+    "date-time-date-difference-calculator": {
+      "title": "日付差分計算",
+      "lede": "2つの日付の正確な差を計算。",
+      "labels": {
+        "Start date": "開始日",
+        "End date": "終了日"
+      }
+    },
+    "developer-color-converter": {
+      "title": "色変換",
+      "lede": "HEX・RGB・HSL間で色を変換、ライブプレビュー付き。",
+      "labels": {
+        "HEX": "HEX",
+        "RGB": "RGB",
+        "HSL": "HSL"
+      }
+    },
+    "developer-json-formatter": {
+      "title": "JSONフォーマッタ",
+      "lede": "乱雑なJSONを貼り付け — 検証して整形。",
+      "labels": {
+        "Input JSON": "入力JSON",
+        "Output": "出力"
+      }
+    },
+    "developer-password-generator": {
+      "title": "パスワード生成",
+      "lede": "数秒で強力なランダムパスワードを生成。",
+      "labels": {
+        "Password": "パスワード"
+      }
+    },
+    "finance-compound-interest-calculator": {
+      "title": "複利計算機",
+      "lede": "貯蓄の成長を確認 — 初期額・積立・利率を入力。",
+      "labels": {
+        "Initial investment ($)": "初期投資 ($)",
+        "Monthly contribution ($)": "毎月の積立 ($)",
+        "Annual interest rate (%)": "年利率 (%)",
+        "Years to grow": "年数",
+        "Compounding frequency": "複利頻度",
+        "Future value": "将来価値"
+      }
+    },
+    "finance-loan-emi-calculator": {
+      "title": "ローンEMI計算機",
+      "lede": "金額・利率・期間を入力して月々の返済額を確認。",
+      "labels": {
+        "Loan amount": "借入金額",
+        "Annual interest rate (%)": "年利率 (%)",
+        "Term (months)": "期間 (月)",
+        "Monthly instalment (EMI)": "月々の返済額 (EMI)"
+      }
+    },
+    "finance-mortgage-calculator": {
+      "title": "住宅ローン計算機",
+      "lede": "価格・頭金・利率・期間を入力。",
+      "labels": {
+        "Amount": "金額"
+      }
+    },
+    "finance-simple-interest-calculator": {
+      "title": "単利計算機",
+      "lede": "元金に対する単利を計算。",
+      "labels": {
+        "Amount": "金額"
+      }
+    },
+    "image-background-remover": {
+      "title": "背景除去",
+      "lede": "AIで写真の背景を除去 — ブラウザで100%処理。",
+      "labels": {
+        "Choose a photo": "写真を選択",
+        "Background": "背景",
+        "Foreground": "前景"
+      }
+    },
+    "image-heic-to-jpg": {
+      "title": "HEIC→JPG変換",
+      "lede": "iPhoneのHEIC写真を汎用JPGに即変換。",
+      "labels": {
+        "Choose images": "画像を選択",
+        "Choose HEIC / HEIF photos": "HEIC/HEIF写真を選択"
+      }
+    },
+    "image-image-compressor": {
+      "title": "画像圧縮",
+      "lede": "画質を調整して写真を軽量化。",
+      "labels": {
+        "Choose a photo": "写真を選択",
+        "JPEG quality": "JPEG品質",
+        "Max size (px)": "最大サイズ (px)"
+      }
+    },
+    "image-image-resizer": {
+      "title": "画像リサイズ",
+      "lede": "ピクセルまたはパーセントでサイズ変更。",
+      "labels": {
+        "Choose an image": "画像を選択",
+        "Width (px)": "幅 (px)",
+        "Height (px)": "高さ (px)"
+      }
+    },
+    "image-image-to-base64": {
+      "title": "画像→Base64",
+      "lede": "画像をBase64データURIにエンコード。",
+      "labels": {
+        "Choose an image": "画像を選択",
+        "Base64 data URI": "Base64データURI"
+      }
+    },
+    "image-metadata-remover": {
+      "title": "メタデータ削除",
+      "lede": "写真・動画・PDFの隠れたEXIF/GPSメタデータを削除。",
+      "labels": {}
+    },
+    "image-photo-editor": {
+      "title": "写真編集",
+      "lede": "明るさ・コントラスト・フィルター・回転。",
+      "labels": {
+        "Choose a photo": "写真を選択"
+      }
+    },
+    "pdf-image-to-pdf": {
+      "title": "画像→PDF",
+      "lede": "画像を1つのダウンロード可能なPDFに。",
+      "labels": {
+        "Choose images (JPG or PNG, any order)": "画像を選択 (JPG/PNG)"
+      }
+    },
+    "pdf-merge-pdf": {
+      "title": "PDF結合",
+      "lede": "複数のPDFを1つの文書に結合。",
+      "labels": {
+        "Choose PDF files": "PDFファイルを選択"
+      }
+    },
+    "pdf-text-to-pdf": {
+      "title": "テキスト→PDF",
+      "lede": "プレーンテキストをクリーンなPDFに。",
+      "labels": {
+        "Your text": "テキスト",
+        "Font size": "フォントサイズ",
+        "Document title": "文書タイトル"
+      }
+    },
+    "qr-qr-code-generator": {
+      "title": "QRコード生成",
+      "lede": "リンク・テキスト・連絡先のQRコードを作成。",
+      "labels": {
+        "Text or URL": "テキストまたはURL"
+      }
+    },
+    "qr-wifi-qr-generator": {
+      "title": "Wi-Fi QR生成",
+      "lede": "スキャンでWi-Fi接続 — パスワード入力不要。",
+      "labels": {
+        "Password": "パスワード",
+        "Network name (SSID)": "ネットワーク名 (SSID)"
+      }
+    },
+    "seo-meta-tag-generator": {
+      "title": "メタタグ生成",
+      "lede": "SEO+Open Graph+Twitter Cardタグを生成。",
+      "labels": {
+        "Page title": "ページタイトル",
+        "Meta description": "メタディスクリプション",
+        "Page URL": "ページURL",
+        "Image URL (for social sharing)": "画像URL",
+        "Generated tags": "生成タグ"
+      }
+    },
+    "seo-slug-generator": {
+      "title": "スラッグ生成",
+      "lede": "タイトルからURL用スラッグを作成。",
+      "labels": {
+        "Slug": "スラッグ"
+      }
+    },
+    "text-case-converter": {
+      "title": "大文字小文字変換",
+      "lede": "大文字・小文字・タイトル形式に即変換。",
+      "labels": {
+        "Your text": "テキスト"
+      }
+    },
+    "text-lorem-ipsum-generator": {
+      "title": "Lorem Ipsum生成",
+      "lede": "デザイン用のダミーテキスト。",
+      "labels": {}
+    },
+    "text-word-counter": {
+      "title": "文字数カウンタ",
+      "lede": "単語・文字・文・読了時間を即計算。",
+      "labels": {
+        "Your text": "テキスト",
+        "Status": "ステータス"
+      }
+    },
+    "career-cv-cover-letter-builder": {
+      "title": "履歴書・カバーレタービルダー",
+      "lede": "一度入力するだけでプロの履歴書とカバーレターをダウンロード。",
+      "labels": {
+        "Full name": "氏名",
+        "Email": "メール",
+        "Phone": "電話",
+        "Company": "会社",
+        "Job title": "職種",
+        "Target role / title": "希望職種",
+        "Location": "所在地",
+        "LinkedIn / portfolio (optional)": "LinkedIn/ポートフォリオ (任意)",
+        "Profile photo (optional)": "プロフィール写真 (任意)",
+        "Photo shape": "写真の形",
+        "Colour theme": "カラーテーマ",
+        "Page size": "ページサイズ",
+        "Country of citizenship / nationality": "国籍",
+        "Second citizenship (optional)": "第二国籍 (任意)",
+        "Current residence country": "居住国",
+        "Gender": "性別",
+        "Marital status": "婚姻状況",
+        "Father's name": "父親の名前",
+        "Company name": "会社名",
+        "Position applying for": "応募職種",
+        "Hiring manager's name (optional)": "採用担当者 (任意)",
+        "Date": "日付",
+        "Dates": "期間",
+        "Degree / qualification": "学位/資格",
+        "Institution": "教育機関",
+        "What you did": "業務内容",
+        "Result / details (optional)": "結果 (任意)"
+      }
+    }
+  },
+  "dl": {
+    "Age": "年齢",
+    "Annual rate": "年利率",
+    "Approx. months": "約ヶ月",
+    "As of": "基準日",
+    "BMI": "BMI",
+    "Binary": "2進数",
+    "Category": "カテゴリ",
+    "Characters": "文字数",
+    "Characters (no spaces)": "文字数 (空白なし)",
+    "Date of birth": "生年月日",
+    "Decimal": "10進数",
+    "Down payment": "頭金",
+    "End date": "終了日",
+    "From": "変換元",
+    "Future value": "将来価値",
+    "HEX": "HEX",
+    "HSL": "HSL",
+    "Height": "身長",
+    "Hexadecimal": "16進数",
+    "Home price": "価格",
+    "Initial investment": "初期投資",
+    "Insurance": "保険",
+    "Interest": "利息",
+    "Interest earned": "獲得利息",
+    "Length": "長さ",
+    "Loan amount": "借入金額",
+    "Monthly EMI": "月々の返済額",
+    "Monthly contribution": "毎月の積立",
+    "Monthly total": "月合計",
+    "Octal": "8進数",
+    "Paragraphs": "段落",
+    "Principal": "元金",
+    "Principal & interest": "元金と利息",
+    "RGB": "RGB",
+    "Rate": "利率",
+    "Reading time": "読了時間",
+    "Result": "結果",
+    "Sentences": "文",
+    "Slug": "スラッグ",
+    "Start date": "開始日",
+    "Tax": "税金",
+    "Tenure (months)": "期間 (月)",
+    "Term": "期間",
+    "Time (years)": "期間 (年)",
+    "Title": "タイトル",
+    "To": "変換先",
+    "Total contributions": "積立合計",
+    "Total cost": "総コスト",
+    "Total days": "総日数",
+    "Total days lived": "生存日数",
+    "Total interest": "利息合計",
+    "Total payable": "支払総額",
+    "Weeks": "週",
+    "Weight": "体重",
+    "Words": "単語",
+    "Years": "年",
+    "Generated placeholder text": "生成テキスト",
+    "Generated meta tags": "生成メタタグ",
+    "Generated password": "生成パスワード",
+    "Formatted JSON": "整形済みJSON"
+  },
+  "msg": {
+    "processing": "処理中…",
+    "done": "完了。",
+    "doneMeta": "完了 — メタデータを削除しました。",
+    "error": "エラー — もう一度お試しください。",
+    "cantRead": "ファイルを読み取れません。",
+    "loading": "読み込み中…",
+    "noMeta": "メタデータなし — ファイルはクリーンです。",
+    "netErr": "読み込めませんでした。インターネットを確認してください。",
+    "typeFirst": "先に入力してください。",
+    "building": "PDF作成中…",
+    "chooseFile": "先にファイルを選択してください。"
+  }
+}
