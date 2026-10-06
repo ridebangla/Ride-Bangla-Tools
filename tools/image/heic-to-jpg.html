@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HEIC to JPG Converter — Ride Bangla Tools</title>
+<meta name="description" content="Convert iPhone HEIC photos to JPG online for free. Fast HEIC to JPG converter — upload .heic files from iOS and download universal JPG images instantly.">
+<link rel="canonical" href="https://tools.ridebangla.bd/image/heic-to-jpg.html">
+<meta property="og:title" content="HEIC to JPG Converter — Ride Bangla Tools">
+<meta property="og:description" content="Convert iPhone HEIC photos to JPG online for free. Fast HEIC to JPG converter — upload .heic files from iOS and download universal JPG images instantly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/image/heic-to-jpg.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://tools.ridebangla.bd/image/"}, {"@type": "ListItem", "position": 3, "name": "HEIC to JPG Converter", "item": "https://tools.ridebangla.bd/image/heic-to-jpg.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "HEIC to JPG Converter", "description": "Convert iPhone HEIC and HEIF photos to universal JPG images online for free. Runs entirely in your browser.", "url": "https://tools.ridebangla.bd/image/heic-to-jpg.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is HEIC to JPG Converter free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. HEIC to JPG Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "What is a HEIC file?", "acceptedAnswer": {"@type": "Answer", "text": "HEIC (High Efficiency Image Container) is the default photo format on iPhones and iPads since iOS 11. It saves storage space but is not supported by many apps, websites and Windows programs — converting to JPG makes your photos work everywhere."}}, {"@type": "Question", "name": "Will converting to JPG reduce my photo quality?", "acceptedAnswer": {"@type": "Answer", "text": "The converter uses a high JPEG quality setting (92 by default, adjustable up to 100). At these settings you will not notice any difference, and the resulting JPG opens on every device, app and website."}}]}</script>
+<style>
+  .heic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-top:16px;}
+  .heic-card{border:1px solid var(--line);border-radius:var(--radius-md);background:var(--ink-850);padding:10px;display:flex;flex-direction:column;gap:8px;}
+  .heic-card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;background:#0b0f0d;}
+  .heic-name{font-size:12.5px;color:var(--text-mid);word-break:break-all;}
+  .heic-error{font-size:13px;color:#e5484d;background:rgba(229,72,77,.08);border:1px solid rgba(229,72,77,.3);border-radius:8px;padding:10px 12px;}
+  input[type="range"]{width:100%;accent-color:var(--brass);}
+  .quality-row{display:flex;align-items:center;gap:10px;}
+  .quality-row output{font-family:var(--font-mono);font-size:13px;color:var(--text-hi);min-width:34px;text-align:right;}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/" style="color:var(--text-hi)">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / HEIC to JPG</div>
+    <h1>HEIC to JPG Converter</h1>
+    <p class="lede">iPhone photos save as HEIC — but most websites, apps and Windows PCs can't open them. Convert your HEIC photos to universal JPG right here, free, with nothing uploaded anywhere.</p>
+  </div>
+</section>
+
+<section class="tool-body" style="padding-top:28px;">
+  <div class="container" style="max-width:900px;margin:0 auto;padding:0;">
+    <div class="panel">
+      <div class="field">
+        <label>Choose HEIC / HEIF photos</label>
+        <input type="file" id="heicIn" accept=".heic,.heif,image/heic,image/heif" multiple>
+        <div class="hint">Works with .heic and .heif files from iPhone and iPad. You can select multiple photos at once — files never leave your browser.</div>
+      </div>
+      <div class="field">
+        <label>JPEG quality</label>
+        <div class="quality-row">
+          <input type="range" id="quality" min="10" max="100" value="92">
+          <output id="qualityVal">92</output>
+        </div>
+        <div class="hint">Higher = better quality, larger file. 92 is a great balance for photos.</div>
+      </div>
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn" id="convertBtn" type="button">Convert to JPG</button>
+        <button class="btn ghost" id="clearBtn" type="button">Clear</button>
+      </div>
+      <div class="field" style="margin-top:14px;"><div class="output empty" id="heicStatus">Choose one or more HEIC photos to begin.</div></div>
+      <div class="heic-grid" id="heicResults"></div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+<script>
+function heicLoadScript(src) {
+  return new Promise(function (resolve, reject) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = function () { reject(new Error('Failed to load ' + src)); };
+    document.head.appendChild(s);
+  });
+}
+function heicBaseName(name) {
+  var i = name.lastIndexOf('.');
+  return i > 0 ? name.slice(0, i) : name;
+}
+
+var heicFiles = [];
+var fileIn = document.getElementById('heicIn');
+var quality = document.getElementById('quality');
+var qualityVal = document.getElementById('qualityVal');
+var convertBtn = document.getElementById('convertBtn');
+var clearBtn = document.getElementById('clearBtn');
+var status = document.getElementById('heicStatus');
+var results = document.getElementById('heicResults');
+var lastUrls = [];
+
+quality.addEventListener('input', function () {
+  qualityVal.textContent = quality.value;
+});
+
+fileIn.addEventListener('change', function (e) {
+  heicFiles = Array.prototype.slice.call(e.target.files || []);
+  results.innerHTML = '';
+  if (heicFiles.length) {
+    status.textContent = heicFiles.length + ' file(s) selected — click "Convert to JPG".';
+    status.classList.remove('empty');
+  } else {
+    status.textContent = 'Choose one or more HEIC photos to begin.';
+    status.classList.add('empty');
+  }
+});
+
+clearBtn.addEventListener('click', function () {
+  heicFiles = [];
+  fileIn.value = '';
+  results.innerHTML = '';
+  lastUrls.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) {} });
+  lastUrls = [];
+  status.textContent = 'Choose one or more HEIC photos to begin.';
+  status.classList.add('empty');
+});
+
+async function ensureHeic2any() {
+  if (window.heic2any) return true;
+  try {
+    await heicLoadScript('https://unpkg.com/heic2any@0.0.4/dist/heic2any.min.js');
+  } catch (e) {}
+  return !!window.heic2any;
+}
+
+convertBtn.addEventListener('click', async function () {
+  if (!heicFiles.length) { alert('Choose at least one HEIC file first.'); return; }
+  status.classList.remove('empty');
+  status.textContent = 'Loading converter engine…';
+  var ready = await ensureHeic2any();
+  if (!ready) {
+    status.textContent = 'The converter engine could not load. Check your internet connection and try again.';
+    return;
+  }
+  var q = (parseInt(quality.value, 10) || 92) / 100;
+  results.innerHTML = '';
+  lastUrls.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) {} });
+  lastUrls = [];
+  var done = 0, failed = 0;
+  for (var i = 0; i < heicFiles.length; i++) {
+    var file = heicFiles[i];
+    status.textContent = 'Converting ' + (i + 1) + ' of ' + heicFiles.length + '…';
+    try {
+      var out = await window.heic2any({ blob: file, toType: 'image/jpeg', quality: q });
+      var blobs = Array.isArray(out) ? out : [out];
+      blobs.forEach(function (blob, idx) {
+        if (!blob || !(blob instanceof Blob)) throw new Error('bad output');
+        var url = URL.createObjectURL(blob);
+        lastUrls.push(url);
+        var suffix = blobs.length > 1 ? '-' + (idx + 1) : '';
+        var fname = heicBaseName(file.name) + suffix + '.jpg';
+        var card = document.createElement('div');
+        card.className = 'heic-card';
+        var img = document.createElement('img');
+        img.src = url;
+        img.alt = fname;
+        var nm = document.createElement('div');
+        nm.className = 'heic-name';
+        nm.textContent = fname;
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = fname;
+        a.className = 'btn ghost';
+        a.textContent = 'Download JPG';
+        card.appendChild(img);
+        card.appendChild(nm);
+        card.appendChild(a);
+        results.appendChild(card);
+      });
+      done++;
+    } catch (err) {
+      failed++;
+      console.error('HEIC convert failed:', err);
+      var eb = document.createElement('div');
+      eb.className = 'heic-error';
+      eb.textContent = 'Could not convert "' + file.name + '". Make sure it is a valid HEIC/HEIF photo.';
+      results.appendChild(eb);
+    }
+  }
+  status.textContent = failed
+    ? 'Done: ' + done + ' converted, ' + failed + ' failed.'
+    : 'Done — ' + done + ' photo(s) converted to JPG. Click a download button to save.';
+});
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use HEIC to JPG Converter</h2>
+    <ol class="how-steps">
+      <li>Choose one or more HEIC or HEIF photos from your iPhone or iPad (you can select several at once).</li>
+      <li>Adjust the JPEG quality if you like — 92 gives excellent quality at a sensible file size.</li>
+      <li>Click "Convert to JPG" and download each photo — the JPG opens everywhere.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is HEIC to JPG Converter free to use?</summary>
+        <p>Yes. HEIC to JPG Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is a HEIC file?</summary>
+        <p>HEIC (High Efficiency Image Container) is the default photo format on iPhones and iPads since iOS 11. It saves storage space but is not supported by many apps, websites and Windows programs — converting to JPG makes your photos work everywhere.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Will converting to JPG reduce my photo quality?</summary>
+        <p>The converter uses a high JPEG quality setting (92 by default, adjustable up to 100). At these settings you will not notice any difference, and the resulting JPG opens on every device, app and website.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Image</h3>
+    <div class="related-list">
+      <a href="image-compressor.html">Image Compressor</a>
+      <a href="background-remover.html">Background Remover</a>
+      <a href="../image/">All Image tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+</body>
+</html>
