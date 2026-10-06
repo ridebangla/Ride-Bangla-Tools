@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON Formatter — Ride Bangla Tools</title>
+<meta name="description" content="Validate, pretty-print and minify JSON in one click, with clear error messages. Free online JSON formatter for developers — no signup required.">
+<link rel="canonical" href="https://tools.ridebangla.bd/developer/json-formatter.html">
+<meta property="og:title" content="JSON Formatter — Ride Bangla Tools">
+<meta property="og:description" content="Validate, pretty-print and minify JSON in one click, with clear error messages. Free online JSON formatter for developers — no signup required.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/developer/json-formatter.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://tools.ridebangla.bd/developer/"}, {"@type": "ListItem", "position": 3, "name": "JSON Formatter", "item": "https://tools.ridebangla.bd/developer/json-formatter.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "JSON Formatter", "description": "Validate and pretty-print JSON, or minify it back down to a single line.", "url": "https://tools.ridebangla.bd/developer/json-formatter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is JSON Formatter free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. JSON Formatter is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. JSON Formatter runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Is it safe to paste sensitive code or data here?", "acceptedAnswer": {"@type": "Answer", "text": "Since processing happens locally in your browser and nothing is sent anywhere, it's as safe as any other action on your own device \u2014 but as a habit, avoid pasting real passwords or production secrets into any web tool."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/logo-256.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/" style="color:var(--text-hi)">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / JSON Formatter</div>
+    <h1>JSON Formatter</h1>
+    <p class="lede">Paste messy JSON and get it validated and beautifully pretty-printed — or squeeze it back down to a single minified line.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field"><label>Input JSON</label><textarea id="input" style="min-height:280px;">{"name":"Ride Bangla","services":["ride","food","courier"],"active":true}</textarea></div>
+    <div class="btn-row">
+      <button class="btn" id="format">Format (pretty-print)</button>
+      <button class="btn ghost" id="minify">Minify</button>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="field"><label>Output</label><div class="output empty" id="out">Formatted or minified JSON will appear here.</div></div>
+    <div class="btn-row"><button class="btn ghost" id="copyJson">Copy output</button>
+<button class="btn ghost" id="dlResult" type="button">Download</button></div>
+  </div>
+</section>
+<script>
+function run(minify) {
+  const input = document.getElementById('input').value;
+  const out = document.getElementById('out');
+  try {
+    const parsed = JSON.parse(input);
+    out.textContent = minify ? JSON.stringify(parsed) : JSON.stringify(parsed, null, 2);
+    out.classList.remove('empty');
+    out.style.color = 'var(--text-hi)';
+  } catch (e) {
+    out.textContent = 'Invalid JSON: ' + e.message;
+    out.style.color = 'var(--red-err)';
+  }
+}
+document.getElementById('format').addEventListener('click', () => run(false));
+document.getElementById('minify').addEventListener('click', () => run(true));
+document.getElementById('copyJson').addEventListener('click', () => rbCopy(document.getElementById('out').textContent));
+run(false);
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use JSON Formatter</h2>
+    <ol class="how-steps">
+      <li>Open the fields above and enter or upload what JSON Formatter needs.</li>
+      <li>Adjust any options until the preview or output looks right.</li>
+      <li>Click the button to get your result — instantly, in this tab.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is JSON Formatter free to use?</summary>
+        <p>Yes. JSON Formatter is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. JSON Formatter runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is it safe to paste sensitive code or data here?</summary>
+        <p>Since processing happens locally in your browser and nothing is sent anywhere, it's as safe as any other action on your own device — but as a habit, avoid pasting real passwords or production secrets into any web tool.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Developer</h3>
+    <div class="related-list">
+      <a href="color-converter.html">Color Converter</a>
+      <a href="password-generator.html">Password Generator</a>
+      <a href="../developer/">All Developer tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js"></script>
+<script src="../assets/ads-sitewide.js"></script>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const T=id=>{const e=$(id);return e?e.innerText.trim():'';};
+const V=id=>{const e=$(id);return e?(('value' in e)?e.value.trim():e.innerText.trim()):'';};
+function rbDL(name,lines){
+  const h1=document.querySelector('h1');
+  const head=[h1?h1.innerText.trim():'Ride Bangla Tools','tools.ridebangla.bd',new Date().toLocaleString(),'========================================'];
+  const blob=new Blob([head.concat(lines).join('\n')],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+}
+$('dlResult').addEventListener('click',()=>{
+  const o=T('out');
+  if(!o||/will appear here/i.test(o)){alert('Please format some JSON first.');return;}
+  rbDL('formatted.json.txt',['Formatted JSON:','',''+o]);
+});
+})();
+</script>
+</body>
+</html>
