@@ -92,7 +92,7 @@ function isValidUrl(s) {
 
 async function tryShorten(url) {
   // Via same-origin proxy (avoids browser CORS blocks)
-  const res = await fetch('/api/rb', {
+  const res = await fetch('/api/shorten', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ url })
