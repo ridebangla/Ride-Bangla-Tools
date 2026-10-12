@@ -100,102 +100,6 @@
   </div>
 </section>
 
-<section class="slider-sec" aria-label="Ride Bangla services">
-  <div class="container">
-    <div class="rb-slider" id="rb-slider">
-      <div class="rb-track">
-        <figure class="rb-slide is-active"><img src="assets/slides/slide-1-tools-overview.webp" alt="Ride Bangla Limited - 31+ free tools" width="1600" height="900"></figure>
-        <figure class="rb-slide"><img src="assets/slides/slide-2-our-services.webp" alt="Ride Bangla Limited - our services" width="1600" height="900" loading="lazy"></figure>
-        <figure class="rb-slide"><img src="assets/slides/slide-3-it-services.webp" alt="Ride Bangla IT Team - our IT services" width="1600" height="900" loading="lazy"></figure>
-        <figure class="rb-slide"><img src="assets/slides/slide-4-it-team.webp" alt="Ride Bangla IT Team" width="1600" height="900" loading="lazy"></figure>
-      </div>
-      <button class="rb-nav rb-prev" type="button" aria-label="Previous slide">&#8249;</button>
-      <button class="rb-nav rb-next" type="button" aria-label="Next slide">&#8250;</button>
-      <div class="rb-dots"></div>
-    </div>
-  </div>
-</section>
-
-<script>
-(function(){
-  /* ---- Hero video: tries WITH SOUND first (sound on by default).
-     If the browser blocks sound-autoplay (first visit on mobile), falls back
-     to muted autoplay. The button always shows the real state; one tap
-     toggles sound, and once on it STAYS on across loops. ---- */
-  var v=document.getElementById('hero-video'), b=document.getElementById('hero-sound');
-  if(v&&b){
-    function label(){
-      b.innerHTML = v.muted ? '&#x1F507; Tap for sound' : '&#x1F50A; Sound on';
-      b.setAttribute('aria-label', v.muted ? 'Turn video sound on' : 'Turn video sound off');
-    }
-    function tryPlay(){ var p=v.play(); if(p&&p.catch){p.catch(function(){});} }
-    function mutedFallback(){
-      v.muted = true;
-      tryPlay();
-      label();
-    }
-    v.muted = false; /* sound ON by default */
-    var pr = v.play();
-    if(pr && pr.then){
-      pr.then(function(){ label(); }).catch(function(){ mutedFallback(); });
-    }else{
-      label();
-    }
-    function unlock(){
-      if(v.muted){ v.muted=false; tryPlay(); label(); }
-    }
-    ['pointerdown','keydown','touchstart'].forEach(function(e){
-      document.addEventListener(e, unlock, {once:true, capture:true});
-    });
-    b.addEventListener('click', function(e){
-      e.stopPropagation();
-      v.muted = !v.muted;
-      if(!v.muted){ tryPlay(); }
-      label();
-    });
-  }
-})();
-(function(){
-  /* ---- Auto image slider ---- */
-  var root=document.getElementById('rb-slider'); if(!root) return;
-  var slides=[].slice.call(root.querySelectorAll('.rb-slide')), dotsBox=root.querySelector('.rb-dots'), i=0, timer, DELAY=5000;
-  slides.forEach(function(_,n){ var d=document.createElement('button'); d.type='button'; d.setAttribute('aria-label','Slide '+(n+1)); d.addEventListener('click',function(){go(n);start();}); dotsBox.appendChild(d); });
-  var dots=[].slice.call(dotsBox.children);
-  function go(n){ i=(n+slides.length)%slides.length; slides.forEach(function(s,k){s.classList.toggle('is-active',k===i);}); dots.forEach(function(d,k){d.classList.toggle('on',k===i);}); }
-  function start(){ clearInterval(timer); timer=setInterval(function(){go(i+1);},DELAY); }
-  root.querySelector('.rb-prev').addEventListener('click',function(){go(i-1);start();});
-  root.querySelector('.rb-next').addEventListener('click',function(){go(i+1);start();});
-  root.addEventListener('mouseenter',function(){clearInterval(timer);}); root.addEventListener('mouseleave',start);
-  var x0=null; root.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
-  root.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>40){go(dx<0?i+1:i-1);start();} x0=null; });
-  go(0); start();
-})();
-</script>
-
-<!-- ===== Ride Bangla Limited — company showcase (luxury band) ===== -->
-<section class="rb-showcase" aria-label="About Ride Bangla Limited">
-  <div class="rb-showcase-inner">
-    <div>
-      <span class="rb-showcase-eyebrow" data-i18n="showcase.eyebrow">A RIDE BANGLA PRODUCT</span>
-      <h2 data-i18n="showcase.title">Powered by <span class="gold">Ride Bangla Limited</span></h2>
-      <p data-i18n="showcase.text">These free tools are built and maintained by the team behind Ride Bangla — Bangladesh's super-app for ride-sharing, food delivery, courier and digital services. Explore our main platform, or meet the IT team that designs and develops it all.</p>
-      <div class="rb-showcase-cta">
-        <a class="rb-btn rb-btn-gold" href="https://ridebangla.bd" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          <span data-i18n="showcase.cta1">Visit Main Website</span>
-        </a>
-        <a class="rb-btn rb-btn-ghost" href="https://it.ridebangla.bd" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          <span data-i18n="showcase.cta2">IT &amp; Development</span>
-        </a>
-      </div>
-    </div>
-    <div class="rb-showcase-logo">
-      <img src="assets/brand-logo-main.png" alt="Ride Bangla Limited — Ride. Food. Delivery. Courier">
-      <div class="rb-showcase-tag"><span data-i18n="showcase.tag">Ride. Food. Delivery. Courier.</span><small data-i18n="showcase.tagSub">Official tools platform of Ride Bangla Limited</small></div>
-    </div>
-  </div>
-</section>
 
 <section class="popular-tools">
   <div class="container">
@@ -472,6 +376,29 @@
       </div>
   </div>
 </section>
+<section class="rb-showcase" aria-label="About Ride Bangla Limited">
+  <div class="rb-showcase-inner">
+    <div>
+      <span class="rb-showcase-eyebrow" data-i18n="showcase.eyebrow">A RIDE BANGLA PRODUCT</span>
+      <h2 data-i18n="showcase.title">Powered by <span class="gold">Ride Bangla Limited</span></h2>
+      <p data-i18n="showcase.text">These free tools are built and maintained by the team behind Ride Bangla — Bangladesh's super-app for ride-sharing, food delivery, courier and digital services. Explore our main platform, or meet the IT team that designs and develops it all.</p>
+      <div class="rb-showcase-cta">
+        <a class="rb-btn rb-btn-gold" href="https://ridebangla.bd" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span data-i18n="showcase.cta1">Visit Main Website</span>
+        </a>
+        <a class="rb-btn rb-btn-ghost" href="https://it.ridebangla.bd" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <span data-i18n="showcase.cta2">IT &amp; Development</span>
+        </a>
+      </div>
+    </div>
+    <div class="rb-showcase-logo">
+      <img src="assets/brand-logo-main.png" alt="Ride Bangla Limited — Ride. Food. Delivery. Courier">
+      <div class="rb-showcase-tag"><span data-i18n="showcase.tag">Ride. Food. Delivery. Courier.</span><small data-i18n="showcase.tagSub">Official tools platform of Ride Bangla Limited</small></div>
+    </div>
+  </div>
+</section>
 <section class="ad-slot ad-slot-leaderboard">
   <div class="container ad-wrap">
     <span class="ad-label">Advertisement</span>
@@ -480,6 +407,21 @@
         atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
       </script>
       <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="slider-sec" aria-label="Ride Bangla services">
+  <div class="container">
+    <div class="rb-slider" id="rb-slider">
+      <div class="rb-track">
+        <figure class="rb-slide is-active"><img src="assets/slides/slide-1-tools-overview.webp" alt="Ride Bangla Limited - 31+ free tools" width="1600" height="900"></figure>
+        <figure class="rb-slide"><img src="assets/slides/slide-2-our-services.webp" alt="Ride Bangla Limited - our services" width="1600" height="900" loading="lazy"></figure>
+        <figure class="rb-slide"><img src="assets/slides/slide-3-it-services.webp" alt="Ride Bangla IT Team - our IT services" width="1600" height="900" loading="lazy"></figure>
+        <figure class="rb-slide"><img src="assets/slides/slide-4-it-team.webp" alt="Ride Bangla IT Team" width="1600" height="900" loading="lazy"></figure>
+      </div>
+      <button class="rb-nav rb-prev" type="button" aria-label="Previous slide">&#8249;</button>
+      <button class="rb-nav rb-next" type="button" aria-label="Next slide">&#8250;</button>
+      <div class="rb-dots"></div>
     </div>
   </div>
 </section>
