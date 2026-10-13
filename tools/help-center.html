@@ -118,8 +118,25 @@
   var input = document.getElementById('hcInput');
   var sendBtn = document.getElementById('hcSend');
 
-  function linkify(text) {
+  // M-01 fix (stored XSS): escape ALL HTML BEFORE linkify. The old code
+  // inserted AI output with innerHTML after linkify only, so a model
+  // reply containing e.g. <img onerror=...> would execute. Now every
+  // message is escaped first; linkify then inserts only our own trusted
+  // <a> tags around plain ridebangla.bd URLs. User messages get the same
+  // full escaping (previously only '<' was escaped).
+  function escapeHtml(text) {
     return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function linkify(escapedText) {
+    // Input must already be escaped via escapeHtml(). The <a> tags below
+    // are the only HTML inserted, and their href/text come from the
+    // matched URL in the escaped text.
+    return escapedText
       .replace(/https:\/\/ridebangla\.bd(\/\S*)?/g, '<a href="$&" target="_blank" rel="noopener">$&</a>')
       .replace(/https:\/\/it\.ridebangla\.bd(\/\S*)?/g, '<a href="$&" target="_blank" rel="noopener">$&</a>')
       .replace(/https:\/\/tools\.ridebangla\.bd(\/\S*)?/g, '<a href="$&" target="_blank" rel="noopener">$&</a>');
@@ -128,7 +145,7 @@
   function addMsg(text, who) {
     var d = document.createElement('div');
     d.className = 'hc-msg hc-' + who;
-    d.innerHTML = who === 'ai' ? linkify(text) : text.replace(/</g, '&lt;');
+    d.innerHTML = who === 'ai' ? linkify(escapeHtml(text)) : escapeHtml(text);
     msgs.appendChild(d);
     msgs.scrollTop = msgs.scrollHeight;
     return d;
@@ -179,3 +196,4 @@
 </script>
 </body>
 </html>
+
