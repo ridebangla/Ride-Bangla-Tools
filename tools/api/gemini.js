@@ -1,17 +1,89 @@
 // Vercel Serverless Function: Gemini AI proxy
 // Env var name: GEMINI_API_KEY (set in Vercel dashboard → Environment Variables)
 // Security: API key never leaves the server. Client calls /api/gemini only.
+//
+// Abuse protection (2026-10-13):
+//  - CORS restricted to our own origins (no more wildcard '*').
+//  - Per-IP sliding-window rate limit (in-memory, per serverless instance).
+//    Note: on Vercel each instance keeps its own counter, so this stops
+//    casual/scripted abuse, not a distributed botnet. If abuse persists,
+//    move to a shared store (e.g. Upstash Redis rate limiting).
 
 const GEMINI_MODEL = 'gemini-3.8-flash';
 const MAX_INPUT = 4000;
 
+// ---- Rate limiting (in-memory, per instance) ----
+const RATE_LIMIT = 30; // requests
+const RATE_WINDOW_MS = 60 * 60 * 1000; // per hour, per IP
+const ipHits = new Map(); // ip -> { count, windowStart }
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  // Opportunistic cleanup so the map cannot grow forever.
+  if (ipHits.size > 5000) {
+    for (const [key, val] of ipHits) {
+      if (now - val.windowStart > RATE_WINDOW_MS) ipHits.delete(key);
+    }
+  }
+  const rec = ipHits.get(ip);
+  if (!rec || now - rec.windowStart > RATE_WINDOW_MS) {
+    ipHits.set(ip, { count: 1, windowStart: now });
+    return { limited: false, retryAfter: 0 };
+  }
+  rec.count += 1;
+  if (rec.count > RATE_LIMIT) {
+    const retryAfter = Math.ceil((rec.windowStart + RATE_WINDOW_MS - now) / 1000);
+    return { limited: true, retryAfter };
+  }
+  return { limited: false, retryAfter: 0 };
+}
+
+function getClientIp(req) {
+  const fwd = req.headers['x-forwarded-for'];
+  if (typeof fwd === 'string' && fwd.length > 0) return fwd.split(',')[0].trim();
+  return (req.socket && req.socket.remoteAddress) || 'unknown';
+}
+
+// ---- CORS allowlist ----
+const ALLOWED_ORIGINS = [
+  'https://tools.ridebangla.bd',
+  'https://www.tools.ridebangla.bd',
+];
+
+function isOriginAllowed(origin) {
+  if (!origin) return true; // non-browser clients (curl, server-to-server)
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  try {
+    const u = new URL(origin);
+    // Vercel preview deployments of this project
+    if (u.protocol === 'https:' && u.hostname.endsWith('.vercel.app')) return true;
+    // Local development
+    if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') return true;
+  } catch {
+    return false;
+  }
+  return false;
+}
+
 export default async function handler(req, res) {
-  // CORS for same-origin (Vercel handles this, but be explicit)
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  if (origin && isOriginAllowed(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
+
+  // Browsers on disallowed origins are blocked by CORS above; still enforce
+  // the rate limit for every caller, including direct scripts.
+  const ip = getClientIp(req);
+  const rl = isRateLimited(ip);
+  if (rl.limited) {
+    res.setHeader('Retry-After', String(rl.retryAfter));
+    return res.status(429).json({ error: 'RATE_LIMITED', message: `Too many AI requests. Try again in ${rl.retryAfter} seconds.` });
+  }
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
