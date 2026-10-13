@@ -1,0 +1,10 @@
+# Secrets — never commit these (M-62)
+.env
+.env.*
+!.env.example
+
+# Vercel
+.vercel
+
+# Dependencies
+node_modules/
