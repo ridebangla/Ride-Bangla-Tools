@@ -1,15 +1,155 @@
 // Vercel Serverless Function: URL Shortener proxy
 // No API key needed. Proxies to TinyURL (primary) and is.gd (fallback).
 // Client calls /api/shorten only — avoids browser CORS blocks.
+//
+// M-04 hardening:
+//  - CORS restricted to the Tools origin (was `*` — anyone could use
+//    Ride Bangla's infra as a free shortening backend for phishing links).
+//  - Per-IP sliding-window rate limit (30 req/hour) with trusted client
+//    IP (x-vercel-forwarded-for / last XFF entry, never first).
+//  - Blocklist: private/loopback/link-local/metadata hosts, our own
+//    providers (no re-shortening loops), other URL shorteners (no
+//    laundering already-hidden destinations), plus an env-configurable
+//    host blocklist (SHORTEN_BLOCKED_HOSTS, comma-separated, exact or
+//    suffix match).
+//  - Live phishing/malware-feed check is NOT implemented here: it needs
+//    a Google Safe Browsing API key. OWNER STEPS: enable Safe Browsing
+//    API in Google Cloud, set SAFE_BROWSING_API_KEY in Vercel env, and
+//    query threats.lookup before shortening. Until then, the static
+//    blocklist + rate limit above are the controls in place.
 
 const MAX_URL_LEN = 8000;
 
+// ---- Trusted client IP (same rule as tools/api/gemini.js) ----
+function getClientIp(req) {
+  const vercelFwd = req.headers['x-vercel-forwarded-for'];
+  if (typeof vercelFwd === 'string' && vercelFwd.length > 0) {
+    const first = vercelFwd.split(',')[0].trim();
+    if (first) return first;
+  }
+  const fwd = req.headers['x-forwarded-for'];
+  if (typeof fwd === 'string' && fwd.length > 0) {
+    const parts = fwd.split(',').map((p) => p.trim()).filter(Boolean);
+    if (parts.length > 0) return parts[parts.length - 1];
+  }
+  return (req.socket && req.socket.remoteAddress) || 'unknown';
+}
+
+// ---- Rate limiting (in-memory, per instance) ----
+const RATE_LIMIT = 30;
+const RATE_WINDOW_MS = 60 * 60 * 1000;
+const ipHits = new Map();
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  if (ipHits.size > 5000) {
+    for (const [key, val] of ipHits) {
+      if (now - val.windowStart > RATE_WINDOW_MS) ipHits.delete(key);
+    }
+  }
+  const rec = ipHits.get(ip);
+  if (!rec || now - rec.windowStart > RATE_WINDOW_MS) {
+    ipHits.set(ip, { count: 1, windowStart: now });
+    return { limited: false, retryAfter: 0 };
+  }
+  rec.count += 1;
+  if (rec.count > RATE_LIMIT) {
+    const retryAfter = Math.ceil((rec.windowStart + RATE_WINDOW_MS - now) / 1000);
+    return { limited: true, retryAfter };
+  }
+  return { limited: false, retryAfter: 0 };
+}
+
+// ---- CORS allowlist ----
+const ALLOWED_ORIGINS = [
+  'https://tools.ridebangla.bd',
+  'https://www.tools.ridebangla.bd',
+];
+
+function isOriginAllowed(origin) {
+  if (!origin) return true;
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  const extra = (process.env.SHORTEN_PREVIEW_ORIGINS || '')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+  if (extra.includes(origin)) return true;
+  try {
+    const u = new URL(origin);
+    if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') return true;
+  } catch {
+    return false;
+  }
+  return false;
+}
+
+// ---- URL blocklist ----
+const BLOCKED_HOSTS = [
+  'localhost',
+  'metadata.google.internal',
+  // Our own providers — no re-shortening loops.
+  'tinyurl.com',
+  'is.gd',
+  // Other shorteners — a short link hides its destination; do not let
+  // this endpoint launder an already-hidden destination.
+  'bit.ly',
+  't.co',
+  'goo.gl',
+  'cutt.ly',
+  'shorturl.at',
+  'tiny.cc',
+  'ow.ly',
+  'rb.gy',
+  'rebrand.ly',
+  'buff.ly',
+];
+
+function isPrivateIPv4(host) {
+  const m = host.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (!m) return false;
+  const [a, b] = [Number(m[1]), Number(m[2])];
+  if (a === 10) return true;
+  if (a === 172 && b >= 16 && b <= 31) return true;
+  if (a === 192 && b === 168) return true;
+  if (a === 127) return true;
+  if (a === 169 && b === 254) return true;
+  if (a === 0 || a >= 224) return true;
+  return false;
+}
+
+function isBlockedHost(hostname) {
+  const host = hostname.toLowerCase().replace(/\.$/, '');
+  if (host.endsWith('.localhost')) return true;
+  if (host === '::1' || host === '[::1]') return true;
+  if (host.startsWith('fe80:') || host.startsWith('fc') || host.startsWith('fd')) return true;
+  if (isPrivateIPv4(host)) return true;
+  const envList = (process.env.SHORTEN_BLOCKED_HOSTS || '')
+    .split(',')
+    .map((h) => h.trim().toLowerCase())
+    .filter(Boolean);
+  for (const blocked of [...BLOCKED_HOSTS, ...envList]) {
+    if (host === blocked || host.endsWith('.' + blocked)) return true;
+  }
+  return false;
+}
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  if (origin && isOriginAllowed(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
+
+  const ip = getClientIp(req);
+  const rl = isRateLimited(ip);
+  if (rl.limited) {
+    res.setHeader('Retry-After', String(rl.retryAfter));
+    return res.status(429).json({ error: 'RATE_LIMITED', message: `Too many shorten requests. Try again in ${rl.retryAfter} seconds.` });
+  }
 
   let body;
   try {
@@ -30,6 +170,9 @@ export default async function handler(req, res) {
   try {
     const u = new URL(url);
     if (u.protocol !== 'http:' && u.protocol !== 'https:') throw new Error('bad protocol');
+    if (isBlockedHost(u.hostname)) {
+      return res.status(400).json({ error: 'URL host is not allowed' });
+    }
   } catch {
     return res.status(400).json({ error: 'Invalid URL' });
   }
