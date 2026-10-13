@@ -171,17 +171,23 @@ RULES:
   };
 
   try {
-    // Retry on transient errors (503 overloaded, 429 rate-limited)
-    const MAX_RETRIES = 3;
-    let lastErr = '';
-    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    // M-59: at most ONE retry, and only on 503 (model overloaded). Never
+    // retry on 429 — retrying into a rate limit amplifies cost/abuse.
+    // The old 3-attempt loop is removed.
+    const MAX_ATTEMPTS = 2;
+    let lastStatus = 0;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
       const r = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: systemPrompts[task] + '\n\n' + prompt }] }],
+            // M-59: system prompt goes in systemInstruction, NOT
+            // concatenated into the user text (concatenation lets a
+            // prompt-injection in user input steer/exfiltrate it).
+            systemInstruction: { parts: [{ text: systemPrompts[task] }] },
+            contents: [{ parts: [{ text: prompt }] }],
             generationConfig: { maxOutputTokens: task === 'help-chat' ? 800 : 500, temperature: 0.7 },
           }),
         }
@@ -191,18 +197,23 @@ RULES:
         const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
         return res.status(200).json({ result: text.trim() });
       }
-      lastErr = (await r.text()).slice(0, 200);
-      // Retry with backoff on transient errors
-      if ((r.status === 503 || r.status === 429) && attempt < MAX_RETRIES) {
-        await new Promise(resolve => setTimeout(resolve, attempt * 2000));
+      lastStatus = r.status;
+      // M-59: generic error to the client — NEVER forward upstream
+      // (Google) error detail. Server log only.
+      console.error('Gemini upstream error', r.status, (await r.text()).slice(0, 200));
+      if (r.status === 503 && attempt < MAX_ATTEMPTS) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
         continue;
       }
-      return res.status(502).json({ error: 'Gemini API error', detail: lastErr });
+      return res.status(502).json({ error: 'Gemini API error' });
     }
-    return res.status(502).json({ error: 'Gemini API error', detail: lastErr });
+    return res.status(502).json({ error: 'Gemini API error' });
   } catch (e) {
-    return res.status(500).json({ error: 'AI request failed', detail: String(e).slice(0, 200) });
+    // M-59: generic error; no exception detail to the client.
+    console.error('Gemini proxy failure', String(e).slice(0, 200));
+    return res.status(500).json({ error: 'AI request failed' });
   }
 }
+
 
 
