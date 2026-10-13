@@ -6,8 +6,16 @@
 //  - CORS restricted to our own origins (no more wildcard '*').
 //  - Per-IP sliding-window rate limit (in-memory, per serverless instance).
 //    Note: on Vercel each instance keeps its own counter, so this stops
-//    casual/scripted abuse, not a distributed botnet. If abuse persists,
-//    move to a shared store (e.g. Upstash Redis rate limiting).
+//    casual/scripted abuse, not a distributed botnet. Moving to a shared
+//    store is BLOCKED until the owner wires Upstash Redis (see below).
+//    SHARED-STORE STEPS (owner): 1) In Vercel Dashboard -> Storage ->
+//    Create Upstash Redis for this project. 2) It sets
+//    UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN env vars.
+//    3) Replace the in-memory ipHits Map with @upstash/ratelimit
+//    (sliding window, same 30 req/hour/IP). 4) Redeploy.
+//    SPEND CAP (owner): in Google Cloud Console -> Billing -> Budgets &
+//    alerts, set a per-key daily budget + alert on the project that owns
+//    GEMINI_API_KEY, before enabling billing on that key.
 
 const GEMINI_MODEL = 'gemini-3.8-flash';
 const MAX_INPUT = 4000;
@@ -39,8 +47,22 @@ function isRateLimited(ip) {
 }
 
 function getClientIp(req) {
+  // H-12 fix: NEVER trust the FIRST entry of X-Forwarded-For — it is
+  // client-controlled (Vercel appends the real IP AFTER any
+  // client-supplied entries, so the first entry is spoofable and an
+  // attacker could rotate it to dodge the rate limit).
+  // Trust only Vercel's own header, else the LAST XFF entry (the one
+  // added by the last trusted proxy), else the socket address.
+  const vercelFwd = req.headers['x-vercel-forwarded-for'];
+  if (typeof vercelFwd === 'string' && vercelFwd.length > 0) {
+    const first = vercelFwd.split(',')[0].trim();
+    if (first) return first;
+  }
   const fwd = req.headers['x-forwarded-for'];
-  if (typeof fwd === 'string' && fwd.length > 0) return fwd.split(',')[0].trim();
+  if (typeof fwd === 'string' && fwd.length > 0) {
+    const parts = fwd.split(',').map((p) => p.trim()).filter(Boolean);
+    if (parts.length > 0) return parts[parts.length - 1];
+  }
   return (req.socket && req.socket.remoteAddress) || 'unknown';
 }
 
@@ -173,3 +195,4 @@ RULES:
     return res.status(500).json({ error: 'AI request failed', detail: String(e).slice(0, 200) });
   }
 }
+
