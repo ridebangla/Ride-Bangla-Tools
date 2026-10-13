@@ -66,7 +66,13 @@ function getClientIp(req) {
   return (req.socket && req.socket.remoteAddress) || 'unknown';
 }
 
-// ---- CORS allowlist ----
+// ---- CORS allowlist (M-03 fix) ----
+// Only the production Tools origin is allowed. The previous
+// `*.vercel.app` wildcard is REMOVED: any attacker could deploy a free
+// Vercel page and drive visitors' browsers to call this API.
+// Explicit preview URLs, if ever needed, go in the GEMINI_PREVIEW_ORIGINS
+// env var (comma-separated full origins, e.g.
+// https://ride-bangla-tools-git-branch-owner.vercel.app) — never a wildcard.
 const ALLOWED_ORIGINS = [
   'https://tools.ridebangla.bd',
   'https://www.tools.ridebangla.bd',
@@ -75,11 +81,14 @@ const ALLOWED_ORIGINS = [
 function isOriginAllowed(origin) {
   if (!origin) return true; // non-browser clients (curl, server-to-server)
   if (ALLOWED_ORIGINS.includes(origin)) return true;
+  const extra = (process.env.GEMINI_PREVIEW_ORIGINS || '')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+  if (extra.includes(origin)) return true;
   try {
     const u = new URL(origin);
-    // Vercel preview deployments of this project
-    if (u.protocol === 'https:' && u.hostname.endsWith('.vercel.app')) return true;
-    // Local development
+    // Local development only
     if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') return true;
   } catch {
     return false;
@@ -195,4 +204,5 @@ RULES:
     return res.status(500).json({ error: 'AI request failed', detail: String(e).slice(0, 200) });
   }
 }
+
 
