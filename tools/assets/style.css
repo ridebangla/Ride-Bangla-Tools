@@ -78,7 +78,7 @@ p{margin:0 0 1em;color:var(--text-mid);max-width:64ch;}
   padding:14px 20px;max-width:var(--container);margin:0 auto;
 }
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto;}
-.brand img{width:34px;height:34px;border-radius:9px;flex:none;}
+.brand img{width:34px;height:34px;object-fit:contain;border-radius:9px;flex:none;}
 .brand .name{font-family:var(--font-display);font-weight:600;font-size:17px;color:var(--text-hi);}
 .brand .name small{display:block;font-family:var(--font-mono);font-size:10px;font-weight:400;color:var(--text-lo);letter-spacing:.04em;}
 .site-nav{display:flex;gap:2px;}
@@ -542,13 +542,12 @@ a.btn-download::before,button.btn-download::before{content:'\2B07';font-size:18p
   display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
 }
 .rb-company-brand{
-  display:inline-flex;align-items:center;background:#fff;border-radius:12px;
+  display:inline-flex;align-items:center;background:transparent;border:1px solid rgba(255,255,255,.18);border-radius:12px;
   padding:5px 14px 5px 10px;line-height:0;
-  box-shadow:0 2px 14px rgba(0,0,0,.28), inset 0 0 0 1px rgba(14,122,59,.12);
-  transition:transform .25s ease, box-shadow .25s ease;
+  transition:transform .25s ease, border-color .25s ease;
 }
-.rb-company-brand:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.35);}
-.rb-company-brand img{height:42px;width:auto;display:block;border-radius:6px;}
+.rb-company-brand:hover{transform:translateY(-1px);border-color:rgba(212,175,55,.6);}
+.rb-company-brand img{height:42px;width:auto;display:block;}
 .rb-company-links{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .rb-clink{
   display:inline-flex;align-items:center;gap:8px;
@@ -609,8 +608,7 @@ a.btn-download::before,button.btn-download::before{content:'\2B07';font-size:18p
 }
 .rb-btn-ghost:hover{border-color:rgba(212,175,55,.7);}
 .rb-showcase-logo{
-  background:#fff;border-radius:22px;padding:34px 30px;text-align:center;
-  box-shadow:0 24px 70px rgba(0,0,0,.45), inset 0 0 0 1px rgba(212,175,55,.35);
+  background:transparent;border:1px solid rgba(212,175,55,.28);border-radius:22px;padding:34px 30px;text-align:center;
   position:relative;
 }
 .rb-showcase-logo::before{
@@ -761,8 +759,10 @@ a.btn-download::before,button.btn-download::before{content:'\2B07';font-size:18p
 .hero-has-video .trust-item b{color:#fff;}
 .hero-has-video .scribble{color:rgba(255,255,255,.9);}
 .hero-sound{position:absolute;right:18px;top:18px;z-index:5;border:0;cursor:pointer;border-radius:999px;padding:10px 16px;
-  background:rgba(0,0,0,.6);color:#fff;font:600 13px var(--font-body);backdrop-filter:blur(6px);}
+  background:rgba(0,0,0,.6);color:#fff;font:600 13px var(--font-body);backdrop-filter:blur(6px);
+  display:inline-flex;align-items:center;gap:8px;}
 .hero-sound:hover{background:rgba(0,0,0,.8);}
+.hero-sound svg{flex:none;}
 @media(max-width:640px){.hero-has-video{min-height:70vh;}.hero-has-video .hero-shade{background:rgba(8,20,14,.62);}}
 
 .slider-sec{padding:28px 0 8px;background:var(--ink-900);}

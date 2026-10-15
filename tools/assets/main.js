@@ -36,6 +36,26 @@
     search.addEventListener('input', run);
     run();
   }
+  // Hero video: ensure autoplay attempt + sound toggle button
+  var heroVideo = document.getElementById('hero-video');
+  var heroSound = document.getElementById('hero-sound');
+  if (heroVideo) {
+    // Some browsers block autoplay even when muted; retry play on first interaction
+    var tryPlay = function () {
+      var p = heroVideo.play();
+      if (p && p.catch) p.catch(function () {});
+    };
+    if (heroVideo.paused) tryPlay();
+    document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+  }
+  if (heroVideo && heroSound) {
+    heroSound.addEventListener('click', function () {
+      heroVideo.muted = !heroVideo.muted;
+      var label = heroSound.querySelector('span');
+      if (label) label.textContent = heroVideo.muted ? 'Tap for sound' : 'Sound on';
+      heroSound.setAttribute('aria-label', heroVideo.muted ? 'Turn video sound on' : 'Turn video sound off');
+    });
+  }
 })();
 
 // Copy-to-clipboard helper used by tool pages
