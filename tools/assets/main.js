@@ -36,17 +36,34 @@
     search.addEventListener('input', run);
     run();
   }
-  // Hero video: ensure autoplay attempt + sound toggle button
+  // Hero video: bulletproof autoplay — muted+playsinline should allow it,
+  // but mobile browsers are strict, so retry on every plausible trigger.
   var heroVideo = document.getElementById('hero-video');
   var heroSound = document.getElementById('hero-sound');
   if (heroVideo) {
-    // Some browsers block autoplay even when muted; retry play on first interaction
+    var playAttempted = false;
     var tryPlay = function () {
-      var p = heroVideo.play();
-      if (p && p.catch) p.catch(function () {});
+      if (!heroVideo.paused && !heroVideo.ended) return;
+      try {
+        var p = heroVideo.play();
+        if (p && p.catch) p.catch(function () { playAttempted = false; });
+        else playAttempted = true;
+      } catch (e) { playAttempted = false; }
     };
-    if (heroVideo.paused) tryPlay();
+    // Try immediately, on metadata/canplay, and on every user/environment signal
+    tryPlay();
+    heroVideo.addEventListener('loadedmetadata', tryPlay);
+    heroVideo.addEventListener('canplay', tryPlay);
+    heroVideo.addEventListener('canplaythrough', tryPlay);
     document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+    document.addEventListener('click', tryPlay, { once: true });
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) tryPlay();
+    });
+    // Last resort: if still paused after 2.5s, show poster cleanly (no broken state)
+    setTimeout(function () {
+      if (heroVideo.paused && !playAttempted) tryPlay();
+    }, 2500);
   }
   if (heroVideo && heroSound) {
     heroSound.addEventListener('click', function () {
