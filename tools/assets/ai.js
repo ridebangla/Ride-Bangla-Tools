@@ -55,7 +55,7 @@
   async function aiButton(btn, task, getPrompt, onResult) {
     const orig = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = '⏳ AI…';
+    btn.innerHTML = 'AI…';
     const prompt = getPrompt();
     if (!prompt || !prompt.trim()) {
       btn.disabled = false; btn.innerHTML = orig;

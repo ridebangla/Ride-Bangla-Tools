@@ -65,7 +65,7 @@
   </div>
   <div class="panel">
     <div class="field"><label>Generated tags</label><div class="output" id="out"></div></div>
-    <div class="btn-row"><button type="button" class="btn" id="copyMeta">Copy tags</button><button class="btn-download" id="dlResult" type="button">Download</button><button type="button" class="btn ghost" id="aiTags">✨ Generate with AI</button></div>
+    <div class="btn-row"><button type="button" class="btn" id="copyMeta">Copy tags</button><button class="btn-download" id="dlResult" type="button">Download</button><button type="button" class="btn ghost" id="aiTags">Generate with AI</button></div>
   </div>
 </section>
 <script>
@@ -86,8 +86,8 @@ function upd() {
 <meta property="og:type" content="website">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Meta Tag Generator Free Online — SEO Meta Tags Builder | Ride Bangla Tools">
-<meta name="twitter:description" content="Generate SEO meta tags for your website: title, description, Open Graph and Twitter cards. Free, no signup.">
+<meta name="twitter:title" content="${t}">
+<meta name="twitter:description" content="${d}">
 <meta name="twitter:image" content="${img}">`;
   document.getElementById('out').textContent = out;
 }

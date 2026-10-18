@@ -111,7 +111,7 @@ function fmtSize(b) {
 }
 
 function setStatus(msg, isEmpty) {
-  const el = document.getElementById('status');
+  const el = document.getElementById('mergeStatus');
   if (!el) return;
   el.textContent = msg;
   el.classList.toggle('empty', !!isEmpty);
@@ -353,7 +353,7 @@ render();
 <script src="../assets/ads-sitewide.js?v=3"></script>
 
 <script src="../assets/ai.js?v=3"></script>
-<div class="btn-row" style="margin:12px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
+<div class="btn-row" style="margin:12px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">AI Tips</button></div>
 
 <script>
 (function() {

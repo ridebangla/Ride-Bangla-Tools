@@ -63,11 +63,11 @@
 
 <div class="hc-wrap">
   <div class="hc-hero">
-    <h1>💬 Help Center</h1>
+    <h1>Help Center</h1>
     <p>Ask our AI assistant anything about Ride Bangla — our services, free tools, IT team, or how to use this site. Ask in any language.</p>
     <div class="hc-links">
-      <a class="btn" href="https://ridebangla.bd" target="_blank" rel="noopener">🌐 ridebangla.bd</a>
-      <a class="btn ghost" href="https://it.ridebangla.bd" target="_blank" rel="noopener">💻 it.ridebangla.bd</a>
+      <a class="btn" href="https://ridebangla.bd" target="_blank" rel="noopener">ridebangla.bd</a>
+      <a class="btn ghost" href="https://it.ridebangla.bd" target="_blank" rel="noopener">it.ridebangla.bd</a>
     </div>
   </div>
 
@@ -80,7 +80,7 @@
 
   <div class="hc-chat">
     <div class="hc-msgs" id="hcMsgs">
-      <div class="hc-msg hc-ai">👋 Hello! I'm the Ride Bangla assistant. Ask me anything about our services, tools, or company — in any language!</div>
+      <div class="hc-msg hc-ai">Hello! I'm the Ride Bangla assistant. Ask me anything about our services, tools, or company — in any language!</div>
     </div>
     <div class="hc-input-row">
       <textarea id="hcInput" placeholder="Type your question here… (any language)" rows="3" maxlength="1000" style="flex:1;padding:12px 16px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;outline:none;resize:vertical;font-family:inherit;"></textarea>
@@ -88,9 +88,9 @@
     </div>
   </div>
   <div style="text-align:center;margin-top:12px;">
-      <button type="button" id="hcClear" class="btn ghost" style="font-size:13px;padding:8px 18px;">🗑️ Clear Chat</button>
+      <button type="button" id="hcClear" class="btn ghost" style="font-size:13px;padding:8px 18px;">Clear Chat</button>
     </div>
-    <p class="hc-note">🔒 Your messages are never saved — they disappear when you leave or clear the chat.<br>Powered by AI · For official info visit <a href="https://ridebangla.bd" target="_blank" rel="noopener">ridebangla.bd</a></p>
+    <p class="hc-note">Your messages are never saved — they disappear when you leave or clear the chat.<br>Powered by AI · For official info visit <a href="https://ridebangla.bd" target="_blank" rel="noopener">ridebangla.bd</a></p>
 </div>
 
 <footer class="site-footer">
@@ -170,7 +170,7 @@
     sendBtn.disabled = false;
 
     if (r.notDeployed) {
-      addMsg('⚠️ AI service is not deployed yet. The site owner needs to redeploy on Vercel for AI to work. Meanwhile, visit ridebangla.bd for help!', 'ai');
+      addMsg('AI service is not deployed yet. The site owner needs to redeploy on Vercel for AI to work. Meanwhile, visit ridebangla.bd for help!', 'ai');
     } else if (r.notConfigured) {
       addMsg('AI is not configured yet. Please visit ridebangla.bd for help!', 'ai');
     } else if (!r.ok) {
@@ -186,7 +186,7 @@
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input.value); }
   });
   document.getElementById('hcClear').addEventListener('click', function() {
-    msgs.innerHTML = '<div class="hc-msg hc-ai">👋 Hello! I\'m the Ride Bangla assistant. Ask me anything about our services, tools, or company — in any language!</div>';
+    msgs.innerHTML = '<div class="hc-msg hc-ai">Hello! I\'m the Ride Bangla assistant. Ask me anything about our services, tools, or company — in any language!</div>';
   });
   // Privacy: ensure NO chat persistence (no localStorage/sessionStorage used)
 

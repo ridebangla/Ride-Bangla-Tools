@@ -157,7 +157,7 @@ ABOUT RIDE BANGLA:
 - Ride Bangla is a Bangladeshi digital services company offering ride-sharing, food delivery, courier/parcel delivery, and online services.
 - Main website: https://ridebangla.bd
 - IT Team website: https://it.ridebangla.bd (web development, app development, IT services)
-- Free online tools: https://tools.ridebangla.bd (31 free tools - calculators, converters, PDF tools, image tools, QR generators, SEO tools)
+- Free online tools: https://tools.ridebangla.bd (32 free tools - calculators, converters, PDF tools, image tools, QR generators, SEO tools)
 - Leadership: Enamul Seddik (Co-Founder & CEO), Emon Seddik (Co-Founder & Director), Obayedur Rahman Shaikh (Marketing Director), Tabassum Nisha (IT Team Director)
 - Contact: via the main website https://ridebangla.bd
 

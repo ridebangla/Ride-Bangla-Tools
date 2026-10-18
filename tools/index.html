@@ -504,6 +504,42 @@
       });
     }
   })();
+  // Hero slider: prev/next arrows + dots (were present in markup but unwired)
+  (function () {
+    var slider = document.getElementById('rb-slider');
+    if (!slider) return;
+    var slides = slider.querySelectorAll('.rb-slide');
+    var dotsBox = slider.querySelector('.rb-dots');
+    var prev = slider.querySelector('.rb-prev');
+    var next = slider.querySelector('.rb-next');
+    if (!slides.length) return;
+    var cur = 0;
+    function go(n) {
+      cur = (n + slides.length) % slides.length;
+      for (var i = 0; i < slides.length; i++) {
+        slides[i].classList.toggle('is-active', i === cur);
+      }
+      if (dotsBox) {
+        for (var j = 0; j < dotsBox.children.length; j++) {
+          dotsBox.children[j].classList.toggle('on', j === cur);
+        }
+      }
+    }
+    if (dotsBox) {
+      for (var k = 0; k < slides.length; k++) {
+        (function (idx) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.setAttribute('aria-label', 'Go to slide ' + (idx + 1));
+          b.addEventListener('click', function () { go(idx); });
+          dotsBox.appendChild(b);
+        })(k);
+      }
+    }
+    if (prev) prev.addEventListener('click', function () { go(cur - 1); });
+    if (next) next.addEventListener('click', function () { go(cur + 1); });
+    go(0);
+  })();
 </script>
 
 </body>

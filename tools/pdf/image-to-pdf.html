@@ -67,7 +67,7 @@
       <div id="thumbs" class="stat-grid"></div>
       <div class="btn-row">
         <button type="button" class="btn-download" id="buildPdf">Build PDF</button>
-<button type="button" class="btn ghost" id="aiBtn20">✨ AI Tips</button>
+<button type="button" class="btn ghost" id="aiBtn20">AI Tips</button>
         <button type="button" class="btn ghost" id="clearImgs">Clear</button>
       </div>
       <div class="field" style="margin-top:16px;">
@@ -90,7 +90,7 @@ input.addEventListener('change', () => {
     const url = URL.createObjectURL(f);
     const stat = document.createElement('div');
     stat.className = 'stat';
-    stat.innerHTML = `<img src="${url}" style="width:100%;border-radius:6px;margin-bottom:6px;"><div class="l">${(f.size/1024).toFixed(0)} KB</div>`;
+    stat.innerHTML = `<img src="${url}" alt="Page thumbnail" style="width:100%;border-radius:6px;margin-bottom:6px;"><div class="l">${(f.size/1024).toFixed(0)} KB</div>`;
     thumbs.appendChild(stat);
   });
   status.textContent = files.length ? files.length + ' image(s) ready.' : 'Add one or more images to begin.';
