@@ -1,0 +1,83 @@
+{
+  "companybar": {
+    "it": "IT & Development",
+    "main": "Main Website"
+  },
+  "hero": {
+    "eyebrow": "54 FREE TOOLS · NO SIGNUP REQUIRED",
+    "lede": "Edit photos, build a CV, generate QR codes, convert files, wipe hidden metadata and more — 54 small tools that each do one job well. Nothing to install, nothing to sign up for, and your files never leave your browser.",
+    "searchPh": "Search tools — e.g. \"pdf\", \"qr\", \"age\"",
+    "title": "Free online tools for a <span class=\"accent\">smarter you.</span>",
+    "trust1b": "100% Free",
+    "trust1t": "no hidden charges",
+    "trust2b": "No Signup",
+    "trust2t": "start instantly",
+    "trust3b": "Secure & Private",
+    "trust3t": "runs in your browser",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
+  },
+  "nav": {
+    "about": "About",
+    "allTools": "All Tools",
+    "calculator": "Calculator",
+    "career": "Career",
+    "converter": "Converter",
+    "datetime": "Date & Time",
+    "developer": "Developer",
+    "finance": "Finance",
+    "image": "Image",
+    "pdf": "PDF",
+    "privacy": "Privacy",
+    "qr": "QR Code",
+    "seo": "SEO",
+    "text": "Text",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
+  },
+  "showcase": {
+    "cta1": "Visit Main Website",
+    "cta2": "IT & Development",
+    "eyebrow": "A RIDE BANGLA PRODUCT",
+    "tag": "Ride. Food. Delivery. Courier.",
+    "tagSub": "Official tools platform of Ride Bangla Limited",
+    "text": "These free tools are built and maintained by the team behind Ride Bangla — Bangladesh's super-app for ride-sharing, food delivery, courier and digital services. Explore our main platform, or meet the IT team that designs and develops it all.",
+    "title": "Powered by <span class=\"gold\">Ride Bangla Limited</span>"
+  },
+  "common": {
+    "download": "Download",
+    "downloadResult": "Download result",
+    "calculate": "Calculate",
+    "generate": "Generate",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "chooseFile": "Choose file",
+    "upload": "Upload",
+    "removeMetadata": "Remove metadata",
+    "format": "Format",
+    "minify": "Minify",
+    "convert": "Convert",
+    "reset": "Reset",
+    "downloadPhoto": "Download cleaned photo",
+    "downloadVideo": "Download cleaned video",
+    "downloadPdf": "Download cleaned PDF",
+    "search": "Search",
+    "close": "Close",
+    "back": "Back",
+    "open": "Open",
+    "tools": "tools",
+    "popularTools": "Popular tools",
+    "allToolsTitle": "All tools"
+  },
+  "tools": {
+    "faq": "Frequently asked questions",
+    "howTo": "How to use {tool}",
+    "freeQ": "Is {tool} free to use?",
+    "freeA": "Yes. {tool} is completely free, with no sign-up, no daily limit, and no watermark on what you download.",
+    "dataQ": "Is my data uploaded to a server?",
+    "dataA": "No. {tool} runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.",
+    "moreIn": "More in {cat}",
+    "accurateQ": "How accurate is the result?",
+    "accurateA": "The calculation uses the standard formula for this figure, so the result is exact for the numbers you enter — always double-check the inputs, since the output is only as accurate as what you type in."
+  }
+}

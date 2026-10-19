@@ -1,0 +1,437 @@
+{
+  "nav": {
+    "allTools": "सभी टूल",
+    "pdf": "PDF",
+    "image": "इमेज",
+    "calculator": "कैलकुलेटर",
+    "converter": "कन्वर्टर",
+    "text": "टेक्स्ट",
+    "seo": "SEO",
+    "developer": "डेवलपर",
+    "qr": "QR कोड",
+    "datetime": "तारीख व समय",
+    "finance": "फाइनेंस",
+    "career": "करियर",
+    "about": "हमारे बारे में",
+    "privacy": "प्राइवेसी",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
+  },
+  "hero": {
+    "eyebrow": "54 मुफ्त टूल · साइनअप नहीं",
+    "title": "समझदार आपके लिए <span class=\"accent\">मुफ्त ऑनलाइन टूल।</span>",
+    "lede": "फोटो एडिट करें, CV बनाएं, QR कोड जनरेट करें, फाइल कन्वर्ट करें, छिपा मेटाडेटा हटाएं और भी बहुत कुछ — 54 छोटे टूल जो एक-एक काम बढ़िया करते हैं। कुछ इंस्टॉल नहीं, साइनअप नहीं, और आपकी फाइलें ब्राउज़र से बाहर नहीं जातीं।",
+    "searchPh": "टूल खोजें — जैसे \"pdf\", \"qr\", \"उम्र\"",
+    "trust1b": "100% मुफ्त",
+    "trust1t": "कोई छिपा शुल्क नहीं",
+    "trust2b": "साइनअप नहीं",
+    "trust2t": "तुरंत शुरू करें",
+    "trust3b": "सुरक्षित व प्राइवेट",
+    "trust3t": "आपके ब्राउज़र में चलता है",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
+  },
+  "showcase": {
+    "eyebrow": "RIDE BANGLA का प्रोडक्ट",
+    "title": "<span class=\"gold\">Ride Bangla Limited</span> द्वारा संचालित",
+    "tag": "राइड। फूड। डिलीवरी। कूरियर।",
+    "tagSub": "Ride Bangla Limited का आधिकारिक टूल प्लेटफॉर्म",
+    "text": "ये मुफ्त टूल Ride Bangla के पीछे की टीम बनाती और संभालती है — बांग्लादेश का सुपर-ऐप, राइड-शेयरिंग, फूड डिलीवरी, कूरियर और डिजिटल सेवाओं के लिए। हमारा मुख्य प्लेटफॉर्म देखें, या उस IT टीम से मिलें जो यह सब डिज़ाइन और डेवलप करती है।",
+    "cta1": "मुख्य वेबसाइट देखें",
+    "cta2": "IT व डेवलपमेंट"
+  },
+  "companybar": {
+    "main": "मुख्य वेबसाइट",
+    "it": "IT व डेवलपमेंट"
+  },
+  "common": {
+    "download": "डाउनलोड",
+    "downloadResult": "रिजल्ट डाउनलोड करें",
+    "calculate": "गणना करें",
+    "generate": "बनाएं",
+    "copy": "कॉपी",
+    "copied": "कॉपी हो गया!",
+    "chooseFile": "फाइल चुनें",
+    "upload": "अपलोड",
+    "removeMetadata": "मेटाडेटा हटाएं",
+    "format": "फॉर्मेट करें",
+    "minify": "मिनिफाई करें",
+    "convert": "कन्वर्ट करें",
+    "reset": "रीसेट",
+    "downloadPhoto": "साफ फोटो डाउनलोड करें",
+    "downloadVideo": "साफ वीडियो डाउनलोड करें",
+    "downloadPdf": "साफ PDF डाउनलोड करें",
+    "search": "खोजें",
+    "close": "बंद करें",
+    "back": "पीछे",
+    "open": "खोलें",
+    "tools": "टूल",
+    "popularTools": "लोकप्रिय टूल",
+    "allToolsTitle": "सभी टूल"
+  },
+  "tools": {
+    "faq": "अक्सर पूछे जाने वाले प्रश्न",
+    "howTo": "{tool} का उपयोग कैसे करें",
+    "freeQ": "क्या {tool} मुफ्त है?",
+    "freeA": "हां। {tool} पूरी तरह मुफ्त है — कोई साइन-अप नहीं, कोई दैनिक सीमा नहीं, और डाउनलोड पर कोई वॉटरमार्क नहीं।",
+    "dataQ": "क्या मेरा डेटा सर्वर पर अपलोड होता है?",
+    "dataA": "नहीं। {tool} पूरी तरह आपके ब्राउज़र में JavaScript से चलता है — आप जो टाइप या अपलोड करते हैं वह कभी आपका डिवाइस नहीं छोड़ता।",
+    "moreIn": "{cat} में और देखें",
+    "accurateQ": "परिणाम कितना सटीक है?",
+    "accurateA": "गणना में इस संख्या का मानक फॉर्मूला इस्तेमाल होता है, इसलिए आपके दर्ज नंबरों के लिए परिणाम सटीक है — इनपुट हमेशा दोबारा जांचें, क्योंकि आउटपुट उतना ही सटीक है जितना आप टाइप करते हैं।"
+  },
+  "toolmeta": {
+    "calculator-bmi-calculator": {
+      "title": "BMI कैलकुलेटर",
+      "lede": "ऊंचाई-वजन डालें और तुरंत BMI पाएं, WHO कैटेगरी के साथ।",
+      "labels": {
+        "Height (cm)": "ऊंचाई (cm)",
+        "Weight (kg)": "वजन (kg)",
+        "Your BMI": "आपका BMI"
+      }
+    },
+    "calculator-percentage-calculator": {
+      "title": "प्रतिशत कैलकुलेटर",
+      "lede": "X% निकालें या प्रतिशत हिस्सा जानें — आसान।",
+      "labels": {
+        "X (%)": "X (%)"
+      }
+    },
+    "converter-base-converter": {
+      "title": "संख्या प्रणाली कन्वर्टर",
+      "lede": "बाइनरी, ऑक्टल, डेसिमल, हेक्साडेसिमल — एक क्लिक में।",
+      "labels": {
+        "Binary": "बाइनरी",
+        "Octal": "ऑक्टल",
+        "Decimal": "डेसिमल",
+        "Hexadecimal": "हेक्साडेसिमल"
+      }
+    },
+    "converter-unit-converter": {
+      "title": "इकाई कन्वर्टर",
+      "lede": "मीटर-मील, किलो-पाउंड, सेल्सियस-फारेनहाइट।",
+      "labels": {
+        "Category": "श्रेणी",
+        "From": "से",
+        "To": "तक",
+        "Value": "मान",
+        "Result": "परिणाम"
+      }
+    },
+    "date-time-age-calculator": {
+      "title": "उम्र कैलकुलेटर",
+      "lede": "सटीक उम्र जाननी है? जन्मतिथि डालें।",
+      "labels": {
+        "Date of birth": "जन्मतिथि",
+        "As of": "तक"
+      }
+    },
+    "date-time-date-difference-calculator": {
+      "title": "तारीख अंतर",
+      "lede": "दो तारीखों के बीच सटीक अंतर पाएं।",
+      "labels": {
+        "Start date": "शुरुआती तारीख",
+        "End date": "अंतिम तारीख"
+      }
+    },
+    "developer-color-converter": {
+      "title": "रंग कन्वर्टर",
+      "lede": "HEX, RGB, HSL के बीच रंग बदलें — लाइव प्रीव्यू।",
+      "labels": {
+        "HEX": "HEX",
+        "RGB": "RGB",
+        "HSL": "HSL"
+      }
+    },
+    "developer-json-formatter": {
+      "title": "JSON फॉर्मेटर",
+      "lede": "बिखरा JSON पेस्ट करें — वैलिडेटेड और सुंदर।",
+      "labels": {
+        "Input JSON": "इनपुट JSON",
+        "Output": "आउटपुट"
+      }
+    },
+    "developer-password-generator": {
+      "title": "पासवर्ड जनरेटर",
+      "lede": "सेकंडों में मजबूत, रैंडम पासवर्ड बनाएं।",
+      "labels": {
+        "Password": "पासवर्ड"
+      }
+    },
+    "finance-compound-interest-calculator": {
+      "title": "चक्रवृद्धि ब्याज",
+      "lede": "बचत कैसे बढ़ती है देखें — राशि, योगदान, दर डालें।",
+      "labels": {
+        "Initial investment ($)": "प्रारंभिक निवेश ($)",
+        "Monthly contribution ($)": "मासिक योगदान ($)",
+        "Annual interest rate (%)": "वार्षिक दर (%)",
+        "Years to grow": "वर्ष",
+        "Compounding frequency": "आवृत्ति",
+        "Future value": "भविष्य मूल्य"
+      }
+    },
+    "finance-loan-emi-calculator": {
+      "title": "लोन EMI कैलकुलेटर",
+      "lede": "राशि, दर, अवधि डालें — मासिक EMI देखें।",
+      "labels": {
+        "Loan amount": "लोन राशि",
+        "Annual interest rate (%)": "वार्षिक दर (%)",
+        "Term (months)": "अवधि (महीने)",
+        "Monthly instalment (EMI)": "मासिक किस्त (EMI)"
+      }
+    },
+    "finance-mortgage-calculator": {
+      "title": "मॉर्गेज कैलकुलेटर",
+      "lede": "कीमत, डाउन पेमेंट, दर, अवधि डालें।",
+      "labels": {
+        "Amount": "राशि"
+      }
+    },
+    "finance-simple-interest-calculator": {
+      "title": "साधारण ब्याज",
+      "lede": "मूलधन पर साधारण ब्याज निकालें।",
+      "labels": {
+        "Amount": "राशि"
+      }
+    },
+    "image-background-remover": {
+      "title": "बैकग्राउंड रिमूवर",
+      "lede": "AI से फोटो का बैकग्राउंड हटाएं — 100% ब्राउज़र में।",
+      "labels": {
+        "Choose a photo": "फोटो चुनें",
+        "Background": "बैकग्राउंड",
+        "Foreground": "फोरग्राउंड"
+      }
+    },
+    "image-heic-to-jpg": {
+      "title": "HEIC से JPG",
+      "lede": "iPhone HEIC फोटो तुरंत JPG में बदलें।",
+      "labels": {
+        "Choose images": "इमेज चुनें",
+        "Choose HEIC / HEIF photos": "HEIC/HEIF फोटो चुनें"
+      }
+    },
+    "image-image-compressor": {
+      "title": "इमेज कंप्रेसर",
+      "lede": "क्वालिटी कंट्रोल के साथ फोटो छोटी करें।",
+      "labels": {
+        "Choose a photo": "फोटो चुनें",
+        "JPEG quality": "JPEG क्वालिटी",
+        "Max size (px)": "अधिकतम आकार (px)"
+      }
+    },
+    "image-image-resizer": {
+      "title": "इमेज रीसाइज़र",
+      "lede": "पिक्सल या प्रतिशत से साइज़ बदलें।",
+      "labels": {
+        "Choose an image": "इमेज चुनें",
+        "Width (px)": "चौड़ाई (px)",
+        "Height (px)": "ऊंचाई (px)"
+      }
+    },
+    "image-image-to-base64": {
+      "title": "इमेज से Base64",
+      "lede": "किसी भी इमेज को Base64 में बदलें।",
+      "labels": {
+        "Choose an image": "इमेज चुनें",
+        "Base64 data URI": "Base64 डेटा URI"
+      }
+    },
+    "image-metadata-remover": {
+      "title": "मेटाडेटा रिमूवर",
+      "lede": "फोटो, वीडियो, PDF से छिपा EXIF/GPS मेटाडेटा हटाएं।",
+      "labels": {}
+    },
+    "image-photo-editor": {
+      "title": "फोटो एडिटर",
+      "lede": "ब्राइटनेस, कंट्रास्ट, फिल्टर, रोटेट — ब्राउज़र में।",
+      "labels": {
+        "Choose a photo": "फोटो चुनें"
+      }
+    },
+    "pdf-image-to-pdf": {
+      "title": "इमेज से PDF",
+      "lede": "इमेज को एक डाउनलोड योग्य PDF बनाएं।",
+      "labels": {
+        "Choose images (JPG or PNG, any order)": "इमेज चुनें (JPG/PNG)"
+      }
+    },
+    "pdf-merge-pdf": {
+      "title": "PDF मर्ज",
+      "lede": "कई PDF को एक दस्तावेज़ में मिलाएं।",
+      "labels": {
+        "Choose PDF files": "PDF फाइल चुनें"
+      }
+    },
+    "pdf-text-to-pdf": {
+      "title": "टेक्स्ट से PDF",
+      "lede": "सादे टेक्स्ट को साफ PDF बनाएं।",
+      "labels": {
+        "Your text": "आपका टेक्स्ट",
+        "Font size": "फॉन्ट साइज",
+        "Document title": "दस्तावेज़ शीर्षक"
+      }
+    },
+    "qr-qr-code-generator": {
+      "title": "QR कोड जनरेटर",
+      "lede": "लिंक, टेक्स्ट, संपर्क के लिए QR बनाएं।",
+      "labels": {
+        "Text or URL": "टेक्स्ट या URL"
+      }
+    },
+    "qr-wifi-qr-generator": {
+      "title": "Wi-Fi QR जनरेटर",
+      "lede": "स्कैन करके Wi-Fi से जुड़ें — पासवर्ड टाइप नहीं।",
+      "labels": {
+        "Password": "पासवर्ड",
+        "Network name (SSID)": "नेटवर्क नाम (SSID)"
+      }
+    },
+    "seo-meta-tag-generator": {
+      "title": "मेटा टैग जनरेटर",
+      "lede": "SEO + Open Graph + Twitter Card टैग बनाएं।",
+      "labels": {
+        "Page title": "पेज शीर्षक",
+        "Meta description": "मेटा विवरण",
+        "Page URL": "पेज URL",
+        "Image URL (for social sharing)": "इमेज URL",
+        "Generated tags": "जनरेटेड टैग"
+      }
+    },
+    "seo-slug-generator": {
+      "title": "स्लग जनरेटर",
+      "lede": "किसी भी शीर्षक से URL स्लग बनाएं।",
+      "labels": {
+        "Slug": "स्लग"
+      }
+    },
+    "text-case-converter": {
+      "title": "केस कन्वर्टर",
+      "lede": "बड़े, छोटे, शीर्षक — तुरंत बदलें।",
+      "labels": {
+        "Your text": "आपका टेक्स्ट"
+      }
+    },
+    "text-lorem-ipsum-generator": {
+      "title": "Lorem Ipsum जनरेटर",
+      "lede": "डिज़ाइन के लिए डमी टेक्स्ट।",
+      "labels": {}
+    },
+    "text-word-counter": {
+      "title": "शब्द काउंटर",
+      "lede": "शब्द, अक्षर, वाक्य, पढ़ने का समय — तुरंत।",
+      "labels": {
+        "Your text": "आपका टेक्स्ट",
+        "Status": "स्थिति"
+      }
+    },
+    "career-cv-cover-letter-builder": {
+      "title": "CV व कवर लेटर बिल्डर",
+      "lede": "एक बार भरें — प्रोफेशनल CV और कवर लेटर डाउनलोड करें।",
+      "labels": {
+        "Full name": "पूरा नाम",
+        "Email": "ईमेल",
+        "Phone": "फोन",
+        "Company": "कंपनी",
+        "Job title": "पद",
+        "Target role / title": "लक्ष्य पद",
+        "Location": "स्थान",
+        "LinkedIn / portfolio (optional)": "LinkedIn/पोर्टफोलियो (वैकल्पिक)",
+        "Profile photo (optional)": "प्रोफाइल फोटो (वैकल्पिक)",
+        "Photo shape": "फोटो आकार",
+        "Colour theme": "रंग थीम",
+        "Page size": "पेज साइज",
+        "Country of citizenship / nationality": "नागरिकता देश",
+        "Second citizenship (optional)": "दूसरी नागरिकता (वैकल्पिक)",
+        "Current residence country": "निवास देश",
+        "Gender": "लिंग",
+        "Marital status": "वैवाहिक स्थिति",
+        "Father's name": "पिता का नाम",
+        "Company name": "कंपनी का नाम",
+        "Position applying for": "आवेदित पद",
+        "Hiring manager's name (optional)": "भर्ती प्रबंधक (वैकल्पिक)",
+        "Date": "तारीख",
+        "Dates": "तारीखें",
+        "Degree / qualification": "डिग्री",
+        "Institution": "संस्थान",
+        "What you did": "आपने क्या किया",
+        "Result / details (optional)": "परिणाम (वैकल्पिक)"
+      }
+    }
+  },
+  "dl": {
+    "Age": "उम्र",
+    "Annual rate": "वार्षिक दर",
+    "Approx. months": "लगभग महीने",
+    "As of": "तक",
+    "BMI": "BMI",
+    "Binary": "बाइनरी",
+    "Category": "श्रेणी",
+    "Characters": "अक्षर",
+    "Characters (no spaces)": "अक्षर (बिना स्पेस)",
+    "Date of birth": "जन्मतिथि",
+    "Decimal": "डेसिमल",
+    "Down payment": "डाउन पेमेंट",
+    "End date": "अंतिम तारीख",
+    "From": "से",
+    "Future value": "भविष्य मूल्य",
+    "HEX": "HEX",
+    "HSL": "HSL",
+    "Height": "ऊंचाई",
+    "Hexadecimal": "हेक्साडेसिमल",
+    "Home price": "कीमत",
+    "Initial investment": "प्रारंभिक निवेश",
+    "Insurance": "बीमा",
+    "Interest": "ब्याज",
+    "Interest earned": "अर्जित ब्याज",
+    "Length": "लंबाई",
+    "Loan amount": "लोन राशि",
+    "Monthly EMI": "मासिक EMI",
+    "Monthly contribution": "मासिक योगदान",
+    "Monthly total": "मासिक कुल",
+    "Octal": "ऑक्टल",
+    "Paragraphs": "पैराग्राफ",
+    "Principal": "मूलधन",
+    "Principal & interest": "मूलधन व ब्याज",
+    "RGB": "RGB",
+    "Rate": "दर",
+    "Reading time": "पढ़ने का समय",
+    "Result": "परिणाम",
+    "Sentences": "वाक्य",
+    "Slug": "स्लग",
+    "Start date": "शुरुआती तारीख",
+    "Tax": "कर",
+    "Tenure (months)": "अवधि (महीने)",
+    "Term": "अवधि",
+    "Time (years)": "समय (वर्ष)",
+    "Title": "शीर्षक",
+    "To": "तक",
+    "Total contributions": "कुल योगदान",
+    "Total cost": "कुल लागत",
+    "Total days": "कुल दिन",
+    "Total days lived": "जिए दिन",
+    "Total interest": "कुल ब्याज",
+    "Total payable": "कुल देय",
+    "Weeks": "सप्ताह",
+    "Weight": "वजन",
+    "Words": "शब्द",
+    "Years": "वर्ष",
+    "Generated placeholder text": "जनरेटेड टेक्स्ट",
+    "Generated meta tags": "जनरेटेड मेटा टैग",
+    "Generated password": "जनरेटेड पासवर्ड",
+    "Formatted JSON": "फॉर्मेटेड JSON"
+  },
+  "msg": {
+    "processing": "प्रोसेस हो रहा…",
+    "done": "हो गया।",
+    "doneMeta": "हो गया — मेटाडेटा हटाया गया।",
+    "error": "त्रुटि — पुनः प्रयास करें।",
+    "cantRead": "फाइल पढ़ी नहीं जा सकी।",
+    "loading": "लोड हो रहा…",
+    "noMeta": "कोई मेटाडेटा नहीं — फाइल साफ है।",
+    "netErr": "लोड नहीं हो सका। इंटरनेट जांचें।",
+    "typeFirst": "पहले कुछ लिखें।",
+    "building": "PDF बन रहा…",
+    "chooseFile": "पहले फाइल चुनें।"
+  }
+}

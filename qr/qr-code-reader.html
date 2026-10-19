@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free QR Code Reader &amp; Scanner Online — Decode QR from Image or Camera | Ride Bangla Tools</title>
+<meta name="description" content="Free QR code reader: scan QR codes with your camera or decode them from an uploaded image. Reads URLs, WiFi codes, vCards and text. No signup, 100% in your browser.">
+<link rel="canonical" href="https://tools.ridebangla.bd/qr/qr-code-reader.html">
+<meta property="og:title" content="Free QR Code Reader &amp; Scanner Online — Decode QR from Image or Camera | Ride Bangla Tools">
+<meta property="og:description" content="Free QR code reader: scan QR codes with your camera or decode them from an uploaded image. Reads URLs, WiFi codes, vCards and text. No signup.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/qr/qr-code-reader.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/icon-192.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="manifest" href="../assets/manifest.webmanifest">
+<meta name="theme-color" content="#0B3D24">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "QR Code Tools", "item": "https://tools.ridebangla.bd/qr/"}, {"@type": "ListItem", "position": 3, "name": "QR Code Reader", "item": "https://tools.ridebangla.bd/qr/qr-code-reader.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "QR Code Reader", "description": "Decode any QR code from an uploaded image or live camera scan — URLs, WiFi codes, vCards and plain text.", "url": "https://tools.ridebangla.bd/qr/qr-code-reader.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is QR Code Reader free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. QR Code Reader is completely free, with no sign-up and no daily limit."}}, {"@type": "Question", "name": "Is my image uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. QR Code Reader runs entirely in your browser using JavaScript — nothing you upload or scan ever leaves your device."}}, {"@type": "Question", "name": "What kinds of QR codes can it read?", "acceptedAnswer": {"@type": "Answer", "text": "URLs, WiFi network codes, vCards, plain text, payment details and any other standard QR payload."}}]}</script>
+<style>
+.qr-drop{border:2px dashed var(--border,#e5e7eb);border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;transition:border-color .15s, background .15s;background:rgba(0,0,0,.015)}
+.qr-drop:hover,.qr-drop.over{border-color:var(--primary,#2563eb);background:rgba(37,99,235,.05)}
+.qr-drop input{display:none}
+#camWrap{display:none;text-align:center}
+#camVideo{width:100%;max-width:480px;border-radius:12px;background:#000}
+.qr-result{word-break:break-word}
+.qr-result .payload{background:var(--card,#fff);border:1px solid var(--border,#e5e7eb);border-radius:10px;padding:12px;font-family:var(--font-mono,monospace);font-size:13px;white-space:pre-wrap}
+.qr-type{display:inline-block;font-size:12px;font-weight:700;background:#E9F7EF;color:#0B6B3A;border-radius:999px;padding:4px 12px;margin-bottom:8px}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Homepage</a>
+      <a href="../#all-tools">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/" style="color:var(--text-hi)">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+      <a href="../about.html">About</a>
+      <a href="../help-center.html#contact">Help Center</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../privacy.html">Privacy Policy</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">QR Code</a> / QR Code Reader</div>
+    <h1>QR Code Reader &amp; Scanner</h1>
+    <p class="lede">Point your camera at any QR code — or upload a photo of one — and read what it says instantly. URLs, WiFi passwords, vCards, payment details: decoded right here, free, with nothing uploaded anywhere.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field"><label>Scan with camera</label>
+      <div class="btn-row">
+        <button type="button" class="btn" id="camStart">Start camera scan</button>
+        <button type="button" class="btn ghost" id="camStop" style="display:none">Stop camera</button>
+      </div>
+      <div id="camWrap"><video id="camVideo" playsinline muted></video>
+      <p style="font-size:12.5px;color:var(--muted,#6b7280)">Hold the QR code steady inside the frame.</p></div>
+    </div>
+    <div class="field"><label>Or decode from an image</label>
+      <div class="qr-drop" id="drop">
+        <input type="file" id="fileIn" accept="image/*">
+        <div style="font-size:15px;font-weight:600">Drop a QR image here, or click to choose</div>
+        <div style="font-size:12.5px;color:var(--muted,#6b7280);margin-top:6px">PNG, JPG or WebP — a photo or screenshot of any QR code</div>
+      </div>
+    </div>
+    </div>
+  <div class="panel">
+    <div class="field"><label>Decoded result</label>
+      <div id="resultBox"><p id="qrStatus" style="color:var(--muted,#6b7280)">No QR scanned yet — use the camera or upload an image.</p></div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn ghost" id="copyBtn" style="display:none">Copy result</button>
+      <a class="btn ghost" id="openBtn" style="display:none" target="_blank" rel="noopener">Open link</a>
+    </div>
+  </div>
+</section>
+
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use QR Code Reader</h2>
+    <ol class="how-steps">
+      <li>Click "Start camera scan" and point your camera at the QR code — or upload a photo/screenshot of one.</li>
+      <li>The decoded text appears instantly, with links made clickable and WiFi details laid out clearly.</li>
+      <li>Copy the result or open the link right away. Nothing is uploaded — it all happens on your device.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is QR Code Reader free to use?</summary>
+        <p>Yes. QR Code Reader is completely free, with no sign-up and no daily limit.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my image uploaded to a server?</summary>
+        <p>No. QR Code Reader runs entirely in your browser using JavaScript — nothing you upload or scan ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What kinds of QR codes can it read?</summary>
+        <p>URLs, WiFi network codes, vCards, plain text, payment details and any other standard QR payload.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in QR Code</h3>
+    <div class="related-list">
+      <a href="qr-code-generator.html">QR Code Generator</a>
+      <a href="payment-qr-generator.html">Payment QR Code Generator</a>
+      <a href="wifi-qr-generator.html">Wi-Fi QR Generator</a>
+      <a href="../qr/">All QR Code tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../business/">Business</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla Limited. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js?v=3"></script>
+<script src="../assets/ads-sitewide.js?v=3"></script>
+<script src="../assets/jsqr.min.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+  var statusEl = document.getElementById('qrStatus');
+  var resultBox = document.getElementById('resultBox');
+  var copyBtn = document.getElementById('copyBtn');
+  var openBtn = document.getElementById('openBtn');
+  var lastText = '';
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function detectType(t) {
+    if (/^WIFI:/i.test(t)) return 'WiFi network';
+    if (/^https?:\/\//i.test(t)) return 'Link';
+    if (/^BEGIN:VCARD/i.test(t)) return 'Contact (vCard)';
+    if (/^mailto:|^tel:|^smsto:/i.test(t)) return 'Contact link';
+    return 'Text';
+  }
+  function showResult(text) {
+    lastText = text;
+    var type = detectType(text);
+    var html = '<span class="qr-type">' + esc(type) + '</span><div class="payload">' + esc(text) + '</div>';
+    if (type === 'WiFi network') {
+      var ssid = (text.match(/S:([^;]*)/) || [])[1] || '';
+      var pw = (text.match(/P:([^;]*)/) || [])[1] || '';
+      html += '<p style="margin-top:10px;font-size:13.5px">Network: <b>' + esc(ssid) + '</b>' +
+        (pw ? '<br>Password: <b>' + esc(pw) + '</b>' : '<br>No password') + '</p>';
+    }
+    resultBox.innerHTML = '<div class="qr-result">' + html + '</div>';
+    copyBtn.style.display = '';
+    if (type === 'Link') { openBtn.style.display = ''; openBtn.href = text; }
+    else openBtn.style.display = 'none';
+  }
+  function fail(msg) {
+    resultBox.innerHTML = '<p id="qrStatus" style="color:#B91C1C">' + esc(msg) + '</p>';
+    copyBtn.style.display = 'none'; openBtn.style.display = 'none';
+  }
+  copyBtn.addEventListener('click', function () {
+    if (!lastText) return;
+    if (navigator.clipboard) navigator.clipboard.writeText(lastText).catch(function () {});
+    copyBtn.textContent = 'Copied!';
+    setTimeout(function () { copyBtn.textContent = 'Copy result'; }, 1500);
+  });
+
+  function decodeImageData(imgData) {
+    try {
+      var code = jsQR(imgData.data, imgData.width, imgData.height);
+      return code && code.data ? code.data : null;
+    } catch (e) { return null; }
+  }
+  function handleFile(file) {
+    if (!file || file.type.indexOf('image/') !== 0) { fail('Please choose an image file.'); return; }
+    resultBox.innerHTML = '<p id="qrStatus" style="color:var(--muted,#6b7280)">Reading image…</p>';
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function () {
+      URL.revokeObjectURL(url);
+      var max = 1200, s = Math.min(1, max / Math.max(img.width, img.height));
+      var c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      var x = c.getContext('2d');
+      x.drawImage(img, 0, 0, c.width, c.height);
+      var d = decodeImageData(x.getImageData(0, 0, c.width, c.height));
+      if (d) showResult(d);
+      else fail('No QR code found in that image. Try a clearer, well-lit photo.');
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); fail('Could not read that image.'); };
+    img.src = url;
+  }
+  var drop = document.getElementById('drop');
+  var fileIn = document.getElementById('fileIn');
+  drop.addEventListener('click', function () { fileIn.click(); });
+  fileIn.addEventListener('change', function () { if (fileIn.files[0]) handleFile(fileIn.files[0]); fileIn.value = ''; });
+  ['dragover', 'dragenter'].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); });
+  });
+  drop.addEventListener('drop', function (e) {
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+
+  /* camera scanning */
+  var stream = null, rafId = null, scanning = false;
+  var video = document.getElementById('camVideo');
+  var camWrap = document.getElementById('camWrap');
+  var camStart = document.getElementById('camStart');
+  var camStop = document.getElementById('camStop');
+  var scanCanvas = document.createElement('canvas');
+  function tick() {
+    if (!scanning) return;
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      scanCanvas.width = video.videoWidth; scanCanvas.height = video.videoHeight;
+      var x = scanCanvas.getContext('2d');
+      x.drawImage(video, 0, 0);
+      var d = decodeImageData(x.getImageData(0, 0, scanCanvas.width, scanCanvas.height));
+      if (d) { showResult(d); stopCam(); return; }
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+  function stopCam() {
+    scanning = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    stream = null;
+    camWrap.style.display = 'none';
+    camStart.style.display = ''; camStop.style.display = 'none';
+  }
+  camStart.addEventListener('click', function () {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      fail('Camera is not available in this browser. Upload an image instead.');
+      return;
+    }
+    resultBox.innerHTML = '<p id="qrStatus" style="color:var(--muted,#6b7280)">Starting camera…</p>';
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(function (st) {
+      stream = st;
+      video.srcObject = st;
+      video.play();
+      scanning = true;
+      camWrap.style.display = '';
+      camStart.style.display = 'none'; camStop.style.display = '';
+      tick();
+    }).catch(function () {
+      fail('Could not access the camera. Check permissions, or upload an image instead.');
+    });
+  });
+  camStop.addEventListener('click', stopCam);
+})();
+</script>
+</body>
+</html>

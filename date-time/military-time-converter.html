@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Military Time Converter Free — 12h to 24h Online | Ride Bangla Tools</title>
+<meta name="description" content="Convert military time free — 24-hour to 12-hour clock and back, with a handy chart. No signup. Free forever — no signup, runs entirely in your browser.">
+<link rel="canonical" href="https://tools.ridebangla.bd/date-time/military-time-converter.html">
+<meta property="og:title" content="Military Time Converter Free — 12h to 24h Online | Ride Bangla Tools">
+<meta property="og:description" content="Convert military time free — 24-hour to 12-hour clock and back, with a handy chart. No signup. Free forever — no signup, runs entirely in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/date-time/military-time-converter.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/icon-192.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="manifest" href="../assets/manifest.webmanifest">
+<meta name="theme-color" content="#0B3D24">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Date & Time Tools", "item": "https://tools.ridebangla.bd/date-time/"}, {"@type": "ListItem", "position": 3, "name": "Military Time Converter", "item": "https://tools.ridebangla.bd/date-time/military-time-converter.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Military Time Converter", "description": "Convert military time (24-hour) to standard 12-hour time and back. Instant conversion chart included — free, no signup.", "url": "https://tools.ridebangla.bd/date-time/military-time-converter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Military Time Converter free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Military Time Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download."}},{"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Military Time Converter runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device."}},{"@type": "Question", "name": "What is military time?", "acceptedAnswer": {"@type": "Answer", "text": "Military time is the 24-hour clock: hours run 00–23, so 1:00 PM becomes 1300 and midnight is 0000. It removes all AM/PM confusion."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Homepage</a>
+      <a href="../#all-tools">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/" style="color:var(--text-hi)">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../business/">Business</a>
+      <a href="../career/">Career</a>
+      <a href="../about.html">About</a>
+      <a href="../help-center.html#contact">Help Center</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../privacy.html">Privacy Policy</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Date & Time</a> / Military Time Converter</div>
+    <h1>Military Time Converter</h1>
+    <p class="lede">Convert between 24-hour military time and standard 12-hour AM/PM time — both directions, instantly.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field"><label>24-hour (military) time — e.g. 1430</label><input type="text" id="mil" inputmode="numeric" placeholder="1430" maxlength="5"></div>
+    <div class="field"><label>12-hour time — e.g. 2:30 PM</label><input type="text" id="std" placeholder="2:30 PM"></div>
+    <div class="field"><label>Result</label><div class="output" id="out">—</div></div>
+  </div>
+  <div class="panel">
+    <div class="field"><label>Quick conversion chart</label><div class="output" id="chart" style="font-size:13px;line-height:1.9;"></div></div>
+  </div>
+</section>
+<script>
+const milEl=document.getElementById('mil'),stdEl=document.getElementById('std'),outEl=document.getElementById('out');
+function toStd(h,m){
+  const ap=h<12?'AM':'PM';let hh=h%12;if(hh===0)hh=12;
+  return hh+':'+String(m).padStart(2,'0')+' '+ap;
+}
+function toMil(h,ap,m){
+  if(ap==='AM'&&h===12)h=0;if(ap==='PM'&&h!==12)h+=12;
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+}
+milEl.addEventListener('input',()=>{
+  const v=milEl.value.replace(/\D/g,'');
+  if(v.length===3||v.length===4){
+    const h=parseInt(v.slice(0,v.length-2),10),m=parseInt(v.slice(-2),10);
+    if(h<24&&m<60){const s=toStd(h,m);stdEl.value=s;outEl.textContent=v+' → '+s;return;}
+  }
+  outEl.textContent=v?'Enter 3–4 digits, e.g. 930 or 1430.':'—';
+});
+stdEl.addEventListener('input',()=>{
+  const mt=stdEl.value.trim().toUpperCase().match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$/);
+  if(mt){
+    let h=parseInt(mt[1],10);const m=parseInt(mt[2]||'0',10);
+    if(h>=1&&h<=12&&m<60){const s=toMil(h,mt[3],m);milEl.value=s.replace(':','');outEl.textContent=stdEl.value.trim()+' → '+s;return;}
+  }
+  outEl.textContent=stdEl.value.trim()?'Use a format like 2:30 PM or 11 AM.':'—';
+});
+(function(){
+  const rows=[[0,'12:00 AM'],[6,'6:00 AM'],[9,'9:00 AM'],[12,'12:00 PM'],[15,'3:00 PM'],[18,'6:00 PM'],[21,'9:00 PM'],[23,'11:00 PM']];
+  document.getElementById('chart').innerHTML=rows.map(r=>'<div><strong>'+String(r[0]).padStart(2,'0')+':00</strong> &nbsp;→&nbsp; '+r[1]+'</div>').join('');
+})();
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Military Time Converter</h2>
+    <ol class="how-steps">
+      <li>Enter a time in either the 24-hour or 12-hour field.</li>
+      <li>The other format appears instantly.</li>
+      <li>Use the quick chart for common conversions.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Military Time Converter free to use?</summary>
+        <p>Yes. Military Time Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. Military Time Converter runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is military time?</summary>
+        <p>Military time is the 24-hour clock: hours run 00–23, so 1:00 PM becomes 1300 and midnight is 0000. It removes all AM/PM confusion.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Date & Time</h3>
+    <div class="related-list">
+      <a href="time-zone-converter.html">Time Zone Converter</a>
+      <a href="date-difference-calculator.html">Date Difference Calculator</a>
+      <a href="../date-time/">All Date & Time tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../business/">Business</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla Limited. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js?v=3"></script>
+<script src="../assets/ads-sitewide.js?v=3"></script>
+</body>
+</html>

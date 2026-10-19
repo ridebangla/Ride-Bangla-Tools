@@ -1,0 +1,437 @@
+{
+  "nav": {
+    "allTools": "Wszystkie narzędzia",
+    "pdf": "PDF",
+    "image": "Obraz",
+    "calculator": "Kalkulator",
+    "converter": "Konwerter",
+    "text": "Tekst",
+    "seo": "SEO",
+    "developer": "Deweloper",
+    "qr": "Kod QR",
+    "datetime": "Data i godzina",
+    "finance": "Finanse",
+    "career": "Kariera",
+    "about": "O nas",
+    "privacy": "Prywatność",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
+  },
+  "hero": {
+    "eyebrow": "54 DARMOWYCH NARZĘDZI · BEZ REJESTRACJI",
+    "title": "Darmowe narzędzia online dla <span class=\"accent\">mądrzejszego Ciebie.</span>",
+    "lede": "Edytuj zdjęcia, twórz CV, generuj kody QR, konwertuj pliki, usuwaj ukryte metadane i więcej — 54 małych narzędzi, z których każde doskonale robi jedną rzecz. Nic do instalowania, bez rejestracji, a Twoje pliki nigdy nie opuszczają przeglądarki.",
+    "searchPh": "Szukaj narzędzi — np. \"pdf\", \"qr\", \"wiek\"",
+    "trust1b": "100% za darmo",
+    "trust1t": "bez ukrytych opłat",
+    "trust2b": "Bez rejestracji",
+    "trust2t": "zacznij od razu",
+    "trust3b": "Bezpieczne i prywatne",
+    "trust3t": "działa w Twojej przeglądarce",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
+  },
+  "showcase": {
+    "eyebrow": "PRODUKT RIDE BANGLA",
+    "title": "Zapewniane przez <span class=\"gold\">Ride Bangla Limited</span>",
+    "tag": "Przejazdy. Jedzenie. Dostawa. Kurier.",
+    "tagSub": "Oficjalna platforma narzędzi Ride Bangla Limited",
+    "text": "Te darmowe narzędzia są tworzone i utrzymywane przez zespół stojący za Ride Bangla — superaplikację Bangladeszu do wspólnych przejazdów, dostawy jedzenia, usług kurierskich i usług cyfrowych. Odkryj naszą główną platformę lub poznaj zespół IT, który to wszystko projektuje i rozwija.",
+    "cta1": "Odwiedź stronę główną",
+    "cta2": "IT i rozwój"
+  },
+  "companybar": {
+    "main": "Strona główna",
+    "it": "IT i rozwój"
+  },
+  "common": {
+    "download": "Pobierz",
+    "downloadResult": "Pobierz wynik",
+    "calculate": "Oblicz",
+    "generate": "Generuj",
+    "copy": "Kopiuj",
+    "copied": "Skopiowano!",
+    "chooseFile": "Wybierz plik",
+    "upload": "Prześlij",
+    "removeMetadata": "Usuń metadane",
+    "format": "Formatuj",
+    "minify": "Minifikuj",
+    "convert": "Konwertuj",
+    "reset": "Resetuj",
+    "downloadPhoto": "Pobierz oczyszczone zdjęcie",
+    "downloadVideo": "Pobierz oczyszczone wideo",
+    "downloadPdf": "Pobierz oczyszczony PDF",
+    "search": "Szukaj",
+    "close": "Zamknij",
+    "back": "Wróć",
+    "open": "Otwórz",
+    "tools": "narzędzi",
+    "popularTools": "Popularne narzędzia",
+    "allToolsTitle": "Wszystkie narzędzia"
+  },
+  "tools": {
+    "faq": "Częste pytania",
+    "howTo": "Jak używać {tool}",
+    "freeQ": "Czy {tool} jest darmowy?",
+    "freeA": "Tak. {tool} jest całkowicie darmowy — bez rejestracji, bez dziennego limitu i bez znaku wodnego na pobieranych plikach.",
+    "dataQ": "Czy moje dane są przesyłane na serwer?",
+    "dataA": "Nie. {tool} działa w całości w Twojej przeglądarce dzięki JavaScript — nic, co wpiszesz lub prześlesz, nie opuszcza Twojego urządzenia.",
+    "moreIn": "Więcej w {cat}",
+    "accurateQ": "Jak dokładny jest wynik?",
+    "accurateA": "Obliczenia używają standardowego wzoru dla tej wartości, więc wynik jest dokładny dla wpisanych liczb — zawsze sprawdzaj dane wejściowe, bo wynik jest tak dokładny, jak to, co wpiszesz."
+  },
+  "toolmeta": {
+    "calculator-bmi-calculator": {
+      "title": "Kalkulator BMI",
+      "lede": "Wpisz wzrost i wagę — natychmiastowe BMI z kategoriami WHO.",
+      "labels": {
+        "Height (cm)": "Wzrost (cm)",
+        "Weight (kg)": "Waga (kg)",
+        "Your BMI": "Twoje BMI"
+      }
+    },
+    "calculator-percentage-calculator": {
+      "title": "Kalkulator procentów",
+      "lede": "Procenty bez bólu — oblicz X% liczby lub udział procentowy.",
+      "labels": {
+        "X (%)": "X (%)"
+      }
+    },
+    "converter-base-converter": {
+      "title": "Konwerter systemów",
+      "lede": "Przełączaj między binarnym, ósemkowym, dziesiętnym i szesnastkowym.",
+      "labels": {
+        "Binary": "Binarny",
+        "Octal": "Ósemkowy",
+        "Decimal": "Dziesiętny",
+        "Hexadecimal": "Szesnastkowy"
+      }
+    },
+    "converter-unit-converter": {
+      "title": "Konwerter jednostek",
+      "lede": "Z metrów na mile, z kilowatów na funty, z Celsjusza na Fahrenheita.",
+      "labels": {
+        "Category": "Kategoria",
+        "From": "Z",
+        "To": "Do",
+        "Value": "Wartość",
+        "Result": "Wynik"
+      }
+    },
+    "date-time-age-calculator": {
+      "title": "Kalkulator wieku",
+      "lede": "Ile masz dokładnie lat? Wpisz datę urodzenia.",
+      "labels": {
+        "Date of birth": "Data urodzenia",
+        "As of": "Na dzień"
+      }
+    },
+    "date-time-date-difference-calculator": {
+      "title": "Różnica dat",
+      "lede": "Odliczanie lub retrospektywa — dokładna różnica między datami.",
+      "labels": {
+        "Start date": "Data początkowa",
+        "End date": "Data końcowa"
+      }
+    },
+    "developer-color-converter": {
+      "title": "Konwerter kolorów",
+      "lede": "Przenoś kolor między HEX, RGB i HSL z podglądem na żywo.",
+      "labels": {
+        "HEX": "HEX",
+        "RGB": "RGB",
+        "HSL": "HSL"
+      }
+    },
+    "developer-json-formatter": {
+      "title": "Formater JSON",
+      "lede": "Wklej nieuporządkowany JSON — zwalidowany i ładnie sformatowany.",
+      "labels": {
+        "Input JSON": "Wejściowy JSON",
+        "Output": "Wynik"
+      }
+    },
+    "developer-password-generator": {
+      "title": "Generator haseł",
+      "lede": "Twórz silne, losowe hasła w kilka sekund.",
+      "labels": {
+        "Password": "Hasło"
+      }
+    },
+    "finance-compound-interest-calculator": {
+      "title": "Procent składany",
+      "lede": "Zobacz, jak rosną oszczędności — kwota, wpłaty i stopa.",
+      "labels": {
+        "Initial investment ($)": "Inwestycja początkowa ($)",
+        "Monthly contribution ($)": "Miesięczna wpłata ($)",
+        "Annual interest rate (%)": "Roczna stopa (%)",
+        "Years to grow": "Lata",
+        "Compounding frequency": "Częstotliwość",
+        "Future value": "Wartość przyszła"
+      }
+    },
+    "finance-loan-emi-calculator": {
+      "title": "Kalkulator raty",
+      "lede": "Planujesz kredyt? Wpisz kwotę, stopę i okres — zobacz miesięczną ratę.",
+      "labels": {
+        "Loan amount": "Kwota kredytu",
+        "Annual interest rate (%)": "Roczna stopa (%)",
+        "Term (months)": "Okres (miesiące)",
+        "Monthly instalment (EMI)": "Miesięczna rata (EMI)"
+      }
+    },
+    "finance-mortgage-calculator": {
+      "title": "Kalkulator hipoteczny",
+      "lede": "Kupujesz dom? Wpisz cenę, wkład, stopę i okres.",
+      "labels": {
+        "Amount": "Kwota"
+      }
+    },
+    "finance-simple-interest-calculator": {
+      "title": "Procent prosty",
+      "lede": "Oblicz proste odsetki od kapitału.",
+      "labels": {
+        "Amount": "Kwota"
+      }
+    },
+    "image-background-remover": {
+      "title": "Usuwanie tła",
+      "lede": "Usuń tło z każdego zdjęcia dzięki AI — 100% w przeglądarce.",
+      "labels": {
+        "Choose a photo": "Wybierz zdjęcie",
+        "Background": "Tło",
+        "Foreground": "Pierwszy plan"
+      }
+    },
+    "image-heic-to-jpg": {
+      "title": "HEIC na JPG",
+      "lede": "Konwertuj zdjęcia HEIC z iPhone na uniwersalny JPG.",
+      "labels": {
+        "Choose images": "Wybierz obrazy",
+        "Choose HEIC / HEIF photos": "Wybierz zdjęcia HEIC/HEIF"
+      }
+    },
+    "image-image-compressor": {
+      "title": "Kompresor obrazów",
+      "lede": "Zmniejsz zdjęcia, kontrolując jakość.",
+      "labels": {
+        "Choose a photo": "Wybierz zdjęcie",
+        "JPEG quality": "Jakość JPEG",
+        "Max size (px)": "Maks. rozmiar (px)"
+      }
+    },
+    "image-image-resizer": {
+      "title": "Zmiana rozmiaru",
+      "lede": "Zmień rozmiar w pikselach lub procentach.",
+      "labels": {
+        "Choose an image": "Wybierz obraz",
+        "Width (px)": "Szerokość (px)",
+        "Height (px)": "Wysokość (px)"
+      }
+    },
+    "image-image-to-base64": {
+      "title": "Obraz na Base64",
+      "lede": "Zakoduj obraz jako Base64.",
+      "labels": {
+        "Choose an image": "Wybierz obraz",
+        "Base64 data URI": "URI danych Base64"
+      }
+    },
+    "image-metadata-remover": {
+      "title": "Usuwanie metadanych",
+      "lede": "Usuń ukryte metadane EXIF/GPS ze zdjęć, filmów i PDF.",
+      "labels": {}
+    },
+    "image-photo-editor": {
+      "title": "Edytor zdjęć",
+      "lede": "Jasność, kontrast, filtry i obrót — w przeglądarce.",
+      "labels": {
+        "Choose a photo": "Wybierz zdjęcie"
+      }
+    },
+    "pdf-image-to-pdf": {
+      "title": "Obraz do PDF",
+      "lede": "Zamień obrazy w jeden plik PDF do pobrania.",
+      "labels": {
+        "Choose images (JPG or PNG, any order)": "Wybierz obrazy (JPG lub PNG)"
+      }
+    },
+    "pdf-merge-pdf": {
+      "title": "Łączenie PDF",
+      "lede": "Połącz wiele plików PDF w jeden dokument.",
+      "labels": {
+        "Choose PDF files": "Wybierz pliki PDF"
+      }
+    },
+    "pdf-text-to-pdf": {
+      "title": "Tekst do PDF",
+      "lede": "Zamień tekst w czysty plik PDF do pobrania.",
+      "labels": {
+        "Your text": "Twój tekst",
+        "Font size": "Rozmiar czcionki",
+        "Document title": "Tytuł dokumentu"
+      }
+    },
+    "qr-qr-code-generator": {
+      "title": "Generator QR",
+      "lede": "Twórz kody QR do linków, tekstów i kontaktów.",
+      "labels": {
+        "Text or URL": "Tekst lub URL"
+      }
+    },
+    "qr-wifi-qr-generator": {
+      "title": "QR Wi-Fi",
+      "lede": "Dołącz do Wi-Fi skanując — bez wpisywania hasła.",
+      "labels": {
+        "Password": "Hasło",
+        "Network name (SSID)": "Nazwa sieci (SSID)"
+      }
+    },
+    "seo-meta-tag-generator": {
+      "title": "Generator meta tagów",
+      "lede": "Twórz tagi SEO + Open Graph + Twitter Card.",
+      "labels": {
+        "Page title": "Tytuł strony",
+        "Meta description": "Meta opis",
+        "Page URL": "URL strony",
+        "Image URL (for social sharing)": "URL obrazu",
+        "Generated tags": "Wygenerowane tagi"
+      }
+    },
+    "seo-slug-generator": {
+      "title": "Generator slugów",
+      "lede": "Twórz przyjazne slugi URL z każdego tytułu.",
+      "labels": {
+        "Slug": "Slug"
+      }
+    },
+    "text-case-converter": {
+      "title": "Zmiana wielkości liter",
+      "lede": "WIELKIE, małe, Tytułowe — konwertuj natychmiast.",
+      "labels": {
+        "Your text": "Twój tekst"
+      }
+    },
+    "text-lorem-ipsum-generator": {
+      "title": "Generator Lorem Ipsum",
+      "lede": "Tekst wypełniacz do projektów.",
+      "labels": {}
+    },
+    "text-word-counter": {
+      "title": "Licznik słów",
+      "lede": "Słowa, znaki, zdania i czas czytania natychmiast.",
+      "labels": {
+        "Your text": "Twój tekst",
+        "Status": "Status"
+      }
+    },
+    "career-cv-cover-letter-builder": {
+      "title": "Kreator CV i listu",
+      "lede": "Wypełnij raz — pobierz profesjonalne CV i list motywacyjny.",
+      "labels": {
+        "Full name": "Imię i nazwisko",
+        "Email": "E-mail",
+        "Phone": "Telefon",
+        "Company": "Firma",
+        "Job title": "Stanowisko",
+        "Target role / title": "Docelowe stanowisko",
+        "Location": "Lokalizacja",
+        "LinkedIn / portfolio (optional)": "LinkedIn / portfolio (opcjonalnie)",
+        "Profile photo (optional)": "Zdjęcie profilowe (opcjonalnie)",
+        "Photo shape": "Kształt zdjęcia",
+        "Colour theme": "Motyw kolorystyczny",
+        "Page size": "Rozmiar strony",
+        "Country of citizenship / nationality": "Kraj obywatelstwa",
+        "Second citizenship (optional)": "Drugie obywatelstwo (opcjonalnie)",
+        "Current residence country": "Kraj zamieszkania",
+        "Gender": "Płeć",
+        "Marital status": "Stan cywilny",
+        "Father's name": "Imię ojca",
+        "Company name": "Nazwa firmy",
+        "Position applying for": "Stanowisko",
+        "Hiring manager's name (optional)": "Rekruter (opcjonalnie)",
+        "Date": "Data",
+        "Dates": "Daty",
+        "Degree / qualification": "Wykształcenie",
+        "Institution": "Instytucja",
+        "What you did": "Obowiązki",
+        "Result / details (optional)": "Wynik (opcjonalnie)"
+      }
+    }
+  },
+  "dl": {
+    "Age": "Wiek",
+    "Annual rate": "Stopa roczna",
+    "Approx. months": "Ok. miesięcy",
+    "As of": "Na dzień",
+    "BMI": "BMI",
+    "Binary": "Binarny",
+    "Category": "Kategoria",
+    "Characters": "Znaki",
+    "Characters (no spaces)": "Znaki (bez spacji)",
+    "Date of birth": "Data urodzenia",
+    "Decimal": "Dziesiętny",
+    "Down payment": "Wkład własny",
+    "End date": "Data końcowa",
+    "From": "Z",
+    "Future value": "Wartość przyszła",
+    "HEX": "HEX",
+    "HSL": "HSL",
+    "Height": "Wzrost",
+    "Hexadecimal": "Szesnastkowy",
+    "Home price": "Cena",
+    "Initial investment": "Inwestycja początkowa",
+    "Insurance": "Ubezpieczenie",
+    "Interest": "Odsetki",
+    "Interest earned": "Zyskane odsetki",
+    "Length": "Długość",
+    "Loan amount": "Kwota kredytu",
+    "Monthly EMI": "Rata miesięczna",
+    "Monthly contribution": "Wpłata miesięczna",
+    "Monthly total": "Suma miesięczna",
+    "Octal": "Ósemkowy",
+    "Paragraphs": "Akapity",
+    "Principal": "Kapitał",
+    "Principal & interest": "Kapitał i odsetki",
+    "RGB": "RGB",
+    "Rate": "Stopa",
+    "Reading time": "Czas czytania",
+    "Result": "Wynik",
+    "Sentences": "Zdania",
+    "Slug": "Slug",
+    "Start date": "Data początkowa",
+    "Tax": "Podatek",
+    "Tenure (months)": "Okres (miesiące)",
+    "Term": "Okres",
+    "Time (years)": "Czas (lata)",
+    "Title": "Tytuł",
+    "To": "Do",
+    "Total contributions": "Wpłaty łącznie",
+    "Total cost": "Koszt całkowity",
+    "Total days": "Dni łącznie",
+    "Total days lived": "Przeżyte dni",
+    "Total interest": "Odsetki łącznie",
+    "Total payable": "Do zapłaty",
+    "Weeks": "Tygodnie",
+    "Weight": "Waga",
+    "Words": "Słowa",
+    "Years": "Lata",
+    "Generated placeholder text": "Wygenerowany tekst",
+    "Generated meta tags": "Wygenerowane meta tagi",
+    "Generated password": "Wygenerowane hasło",
+    "Formatted JSON": "Sformatowany JSON"
+  },
+  "msg": {
+    "processing": "Przetwarzanie…",
+    "done": "Gotowe.",
+    "doneMeta": "Gotowe — usunięto metadane.",
+    "error": "Błąd — spróbuj ponownie.",
+    "cantRead": "Nie można odczytać pliku.",
+    "loading": "Ładowanie…",
+    "noMeta": "Brak metadanych — plik już czysty.",
+    "netErr": "Nie można załadować. Sprawdź internet.",
+    "typeFirst": "Najpierw coś wpisz.",
+    "building": "Tworzenie PDF…",
+    "chooseFile": "Najpierw wybierz plik."
+  }
+}

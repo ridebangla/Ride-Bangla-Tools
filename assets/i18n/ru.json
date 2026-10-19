@@ -1,0 +1,437 @@
+{
+  "nav": {
+    "allTools": "Все инструменты",
+    "pdf": "PDF",
+    "image": "Изображение",
+    "calculator": "Калькулятор",
+    "converter": "Конвертер",
+    "text": "Текст",
+    "seo": "SEO",
+    "developer": "Разработчик",
+    "qr": "QR-код",
+    "datetime": "Дата и время",
+    "finance": "Финансы",
+    "career": "Карьера",
+    "about": "О нас",
+    "privacy": "Конфиденциальность",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
+  },
+  "hero": {
+    "eyebrow": "54 БЕСПЛАТНЫХ ИНСТРУМЕНТОВ · БЕЗ РЕГИСТРАЦИИ",
+    "title": "Бесплатные онлайн-инструменты для <span class=\"accent\">более умного вас.</span>",
+    "lede": "Редактируйте фото, создавайте резюме, генерируйте QR-коды, конвертируйте файлы, удаляйте скрытые метаданные и многое другое — 54 небольшой инструмент, каждый из которых отлично делает одно дело. Ничего устанавливать не нужно, без регистрации, и ваши файлы никогда не покидают браузер.",
+    "searchPh": "Поиск инструментов — напр. \"pdf\", \"qr\", \"возраст\"",
+    "trust1b": "100% бесплатно",
+    "trust1t": "без скрытых платежей",
+    "trust2b": "Без регистрации",
+    "trust2t": "начните мгновенно",
+    "trust3b": "Безопасно и приватно",
+    "trust3t": "работает в вашем браузере",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
+  },
+  "showcase": {
+    "eyebrow": "ПРОДУКТ RIDE BANGLA",
+    "title": "На базе <span class=\"gold\">Ride Bangla Limited</span>",
+    "tag": "Поездки. Еда. Доставка. Курьер.",
+    "tagSub": "Официальная платформа инструментов Ride Bangla Limited",
+    "text": "Эти бесплатные инструменты создаются и поддерживаются командой Ride Bangla — супераппа Бангладеш для райдшеринга, доставки еды, курьерских и цифровых услуг. Изучите нашу основную платформу или познакомьтесь с IT-командой, которая всё проектирует и разрабатывает.",
+    "cta1": "Перейти на главный сайт",
+    "cta2": "IT и разработка"
+  },
+  "companybar": {
+    "main": "Главный сайт",
+    "it": "IT и разработка"
+  },
+  "common": {
+    "download": "Скачать",
+    "downloadResult": "Скачать результат",
+    "calculate": "Рассчитать",
+    "generate": "Создать",
+    "copy": "Копировать",
+    "copied": "Скопировано!",
+    "chooseFile": "Выбрать файл",
+    "upload": "Загрузить",
+    "removeMetadata": "Удалить метаданные",
+    "format": "Форматировать",
+    "minify": "Минифицировать",
+    "convert": "Конвертировать",
+    "reset": "Сбросить",
+    "downloadPhoto": "Скачать очищенное фото",
+    "downloadVideo": "Скачать очищенное видео",
+    "downloadPdf": "Скачать очищенный PDF",
+    "search": "Поиск",
+    "close": "Закрыть",
+    "back": "Назад",
+    "open": "Открыть",
+    "tools": "инструмента",
+    "popularTools": "Популярные инструменты",
+    "allToolsTitle": "Все инструменты"
+  },
+  "tools": {
+    "faq": "Частые вопросы",
+    "howTo": "Как пользоваться {tool}",
+    "freeQ": "{tool} бесплатный?",
+    "freeA": "Да. {tool} полностью бесплатен — без регистрации, без дневного лимита и без водяных знаков на скачанном.",
+    "dataQ": "Мои данные загружаются на сервер?",
+    "dataA": "Нет. {tool} полностью работает в вашем браузере на JavaScript — ничто из введённого или загруженного не покидает ваше устройство.",
+    "moreIn": "Ещё в {cat}",
+    "accurateQ": "Насколько точен результат?",
+    "accurateA": "В расчёте используется стандартная формула для этого значения, поэтому результат точен для введённых чисел — всегда перепроверяйте ввод, ведь результат точен настолько, насколько точен ваш ввод."
+  },
+  "toolmeta": {
+    "calculator-bmi-calculator": {
+      "title": "Калькулятор ИМТ",
+      "lede": "Введите рост и вес — мгновенный ИМТ по категориям ВОЗ.",
+      "labels": {
+        "Height (cm)": "Рост (см)",
+        "Weight (kg)": "Вес (кг)",
+        "Your BMI": "Ваш ИМТ"
+      }
+    },
+    "calculator-percentage-calculator": {
+      "title": "Калькулятор процентов",
+      "lede": "Легко считайте X% от числа или долю в процентах.",
+      "labels": {
+        "X (%)": "X (%)"
+      }
+    },
+    "converter-base-converter": {
+      "title": "Конвертер систем счисления",
+      "lede": "Переключайтесь между двоичной, восьмеричной, десятичной и шестнадцатеричной.",
+      "labels": {
+        "Binary": "Двоичная",
+        "Octal": "Восьмеричная",
+        "Decimal": "Десятичная",
+        "Hexadecimal": "Шестнадцатеричная"
+      }
+    },
+    "converter-unit-converter": {
+      "title": "Конвертер единиц",
+      "lede": "Из метров в мили, из кило в фунты, из Цельсия в Фаренгейт.",
+      "labels": {
+        "Category": "Категория",
+        "From": "Из",
+        "To": "В",
+        "Value": "Значение",
+        "Result": "Результат"
+      }
+    },
+    "date-time-age-calculator": {
+      "title": "Калькулятор возраста",
+      "lede": "Хотите точный возраст? Введите дату рождения.",
+      "labels": {
+        "Date of birth": "Дата рождения",
+        "As of": "На дату"
+      }
+    },
+    "date-time-date-difference-calculator": {
+      "title": "Разница дат",
+      "lede": "Точная разница между двумя датами.",
+      "labels": {
+        "Start date": "Начальная дата",
+        "End date": "Конечная дата"
+      }
+    },
+    "developer-color-converter": {
+      "title": "Конвертер цветов",
+      "lede": "Переводите цвет между HEX, RGB и HSL с живым предпросмотром.",
+      "labels": {
+        "HEX": "HEX",
+        "RGB": "RGB",
+        "HSL": "HSL"
+      }
+    },
+    "developer-json-formatter": {
+      "title": "Форматировщик JSON",
+      "lede": "Вставьте небрежный JSON — проверка и красивое форматирование.",
+      "labels": {
+        "Input JSON": "Входной JSON",
+        "Output": "Вывод"
+      }
+    },
+    "developer-password-generator": {
+      "title": "Генератор паролей",
+      "lede": "Создавайте надёжные случайные пароли за секунды.",
+      "labels": {
+        "Password": "Пароль"
+      }
+    },
+    "finance-compound-interest-calculator": {
+      "title": "Сложный процент",
+      "lede": "Смотрите, как растут сбережения — сумма, взносы, ставка.",
+      "labels": {
+        "Initial investment ($)": "Начальная сумма ($)",
+        "Monthly contribution ($)": "Ежемесячный взнос ($)",
+        "Annual interest rate (%)": "Годовая ставка (%)",
+        "Years to grow": "Годы",
+        "Compounding frequency": "Периодичность",
+        "Future value": "Будущая стоимость"
+      }
+    },
+    "finance-loan-emi-calculator": {
+      "title": "Кредитный калькулятор",
+      "lede": "Введите сумму, ставку и срок — узнайте ежемесячный платёж.",
+      "labels": {
+        "Loan amount": "Сумма кредита",
+        "Annual interest rate (%)": "Годовая ставка (%)",
+        "Term (months)": "Срок (мес.)",
+        "Monthly instalment (EMI)": "Ежемесячный платёж"
+      }
+    },
+    "finance-mortgage-calculator": {
+      "title": "Ипотечный калькулятор",
+      "lede": "Введите цену, взнос, ставку и срок.",
+      "labels": {
+        "Amount": "Сумма"
+      }
+    },
+    "finance-simple-interest-calculator": {
+      "title": "Простой процент",
+      "lede": "Рассчитайте простой процент на сумму.",
+      "labels": {
+        "Amount": "Сумма"
+      }
+    },
+    "image-background-remover": {
+      "title": "Удаление фона",
+      "lede": "Удаляйте фон с любого фото с помощью ИИ — 100% в браузере.",
+      "labels": {
+        "Choose a photo": "Выберите фото",
+        "Background": "Фон",
+        "Foreground": "Передний план"
+      }
+    },
+    "image-heic-to-jpg": {
+      "title": "HEIC в JPG",
+      "lede": "Конвертируйте HEIC с iPhone в универсальный JPG мгновенно.",
+      "labels": {
+        "Choose images": "Выберите изображения",
+        "Choose HEIC / HEIF photos": "Выберите фото HEIC/HEIF"
+      }
+    },
+    "image-image-compressor": {
+      "title": "Сжатие изображений",
+      "lede": "Уменьшайте фото, контролируя качество.",
+      "labels": {
+        "Choose a photo": "Выберите фото",
+        "JPEG quality": "Качество JPEG",
+        "Max size (px)": "Макс. размер (px)"
+      }
+    },
+    "image-image-resizer": {
+      "title": "Изменение размера",
+      "lede": "Меняйте размер в пикселях или процентах.",
+      "labels": {
+        "Choose an image": "Выберите изображение",
+        "Width (px)": "Ширина (px)",
+        "Height (px)": "Высота (px)"
+      }
+    },
+    "image-image-to-base64": {
+      "title": "Изображение в Base64",
+      "lede": "Кодируйте любое изображение в Base64.",
+      "labels": {
+        "Choose an image": "Выберите изображение",
+        "Base64 data URI": "Data-URI Base64"
+      }
+    },
+    "image-metadata-remover": {
+      "title": "Удаление метаданных",
+      "lede": "Удаляйте скрытые EXIF/GPS-метаданные из фото, видео и PDF.",
+      "labels": {}
+    },
+    "image-photo-editor": {
+      "title": "Фоторедактор",
+      "lede": "Яркость, контраст, фильтры и поворот — в браузере.",
+      "labels": {
+        "Choose a photo": "Выберите фото"
+      }
+    },
+    "pdf-image-to-pdf": {
+      "title": "Изображение в PDF",
+      "lede": "Превратите изображения в один скачиваемый PDF.",
+      "labels": {
+        "Choose images (JPG or PNG, any order)": "Выберите изображения (JPG/PNG)"
+      }
+    },
+    "pdf-merge-pdf": {
+      "title": "Объединение PDF",
+      "lede": "Соедините несколько PDF в один документ.",
+      "labels": {
+        "Choose PDF files": "Выберите PDF-файлы"
+      }
+    },
+    "pdf-text-to-pdf": {
+      "title": "Текст в PDF",
+      "lede": "Превратите обычный текст в чистый скачиваемый PDF.",
+      "labels": {
+        "Your text": "Ваш текст",
+        "Font size": "Размер шрифта",
+        "Document title": "Заголовок документа"
+      }
+    },
+    "qr-qr-code-generator": {
+      "title": "Генератор QR-кодов",
+      "lede": "Создавайте QR-коды для ссылок, текстов и контактов.",
+      "labels": {
+        "Text or URL": "Текст или URL"
+      }
+    },
+    "qr-wifi-qr-generator": {
+      "title": "QR для Wi-Fi",
+      "lede": "Подключайтесь к Wi-Fi сканированием — без ввода пароля.",
+      "labels": {
+        "Password": "Пароль",
+        "Network name (SSID)": "Имя сети (SSID)"
+      }
+    },
+    "seo-meta-tag-generator": {
+      "title": "Генератор мета-тегов",
+      "lede": "Создавайте SEO + Open Graph + Twitter Card теги.",
+      "labels": {
+        "Page title": "Заголовок страницы",
+        "Meta description": "Мета-описание",
+        "Page URL": "URL страницы",
+        "Image URL (for social sharing)": "URL изображения",
+        "Generated tags": "Сгенерированные теги"
+      }
+    },
+    "seo-slug-generator": {
+      "title": "Генератор слагов",
+      "lede": "Создавайте URL-слаги из любого заголовка.",
+      "labels": {
+        "Slug": "Слаг"
+      }
+    },
+    "text-case-converter": {
+      "title": "Регистр текста",
+      "lede": "ВЕРХНИЙ, нижний, Заголовок — конвертируйте мгновенно.",
+      "labels": {
+        "Your text": "Ваш текст"
+      }
+    },
+    "text-lorem-ipsum-generator": {
+      "title": "Генератор Lorem Ipsum",
+      "lede": "Текст-заполнитель для дизайнов.",
+      "labels": {}
+    },
+    "text-word-counter": {
+      "title": "Счётчик слов",
+      "lede": "Слова, символы, предложения и время чтения — мгновенно.",
+      "labels": {
+        "Your text": "Ваш текст",
+        "Status": "Статус"
+      }
+    },
+    "career-cv-cover-letter-builder": {
+      "title": "Конструктор резюме",
+      "lede": "Заполните один раз — скачайте профессиональное резюме и письмо.",
+      "labels": {
+        "Full name": "Полное имя",
+        "Email": "Почта",
+        "Phone": "Телефон",
+        "Company": "Компания",
+        "Job title": "Должность",
+        "Target role / title": "Целевая должность",
+        "Location": "Местоположение",
+        "LinkedIn / portfolio (optional)": "LinkedIn/портфолио (необязательно)",
+        "Profile photo (optional)": "Фото профиля (необязательно)",
+        "Photo shape": "Форма фото",
+        "Colour theme": "Цветовая тема",
+        "Page size": "Размер страницы",
+        "Country of citizenship / nationality": "Гражданство",
+        "Second citizenship (optional)": "Второе гражданство (необязательно)",
+        "Current residence country": "Страна проживания",
+        "Gender": "Пол",
+        "Marital status": "Семейное положение",
+        "Father's name": "Имя отца",
+        "Company name": "Название компании",
+        "Position applying for": "Желаемая должность",
+        "Hiring manager's name (optional)": "Менеджер по найму (необязательно)",
+        "Date": "Дата",
+        "Dates": "Даты",
+        "Degree / qualification": "Образование",
+        "Institution": "Учреждение",
+        "What you did": "Обязанности",
+        "Result / details (optional)": "Результат (необязательно)"
+      }
+    }
+  },
+  "dl": {
+    "Age": "Возраст",
+    "Annual rate": "Годовая ставка",
+    "Approx. months": "Прим. месяцев",
+    "As of": "На дату",
+    "BMI": "ИМТ",
+    "Binary": "Двоичная",
+    "Category": "Категория",
+    "Characters": "Символы",
+    "Characters (no spaces)": "Символы (без пробелов)",
+    "Date of birth": "Дата рождения",
+    "Decimal": "Десятичная",
+    "Down payment": "Взнос",
+    "End date": "Конечная дата",
+    "From": "Из",
+    "Future value": "Будущая стоимость",
+    "HEX": "HEX",
+    "HSL": "HSL",
+    "Height": "Рост",
+    "Hexadecimal": "Шестнадцатеричная",
+    "Home price": "Цена",
+    "Initial investment": "Начальная сумма",
+    "Insurance": "Страховка",
+    "Interest": "Процент",
+    "Interest earned": "Заработанный процент",
+    "Length": "Длина",
+    "Loan amount": "Сумма кредита",
+    "Monthly EMI": "Ежемесячный платёж",
+    "Monthly contribution": "Ежемесячный взнос",
+    "Monthly total": "Месячный итог",
+    "Octal": "Восьмеричная",
+    "Paragraphs": "Абзацы",
+    "Principal": "Сумма",
+    "Principal & interest": "Сумма и проценты",
+    "RGB": "RGB",
+    "Rate": "Ставка",
+    "Reading time": "Время чтения",
+    "Result": "Результат",
+    "Sentences": "Предложения",
+    "Slug": "Слаг",
+    "Start date": "Начальная дата",
+    "Tax": "Налог",
+    "Tenure (months)": "Срок (мес.)",
+    "Term": "Срок",
+    "Time (years)": "Время (годы)",
+    "Title": "Заголовок",
+    "To": "В",
+    "Total contributions": "Взносы всего",
+    "Total cost": "Общая стоимость",
+    "Total days": "Всего дней",
+    "Total days lived": "Прожито дней",
+    "Total interest": "Проценты всего",
+    "Total payable": "К оплате",
+    "Weeks": "Недели",
+    "Weight": "Вес",
+    "Words": "Слова",
+    "Years": "Годы",
+    "Generated placeholder text": "Сгенерированный текст",
+    "Generated meta tags": "Сгенерированные мета-теги",
+    "Generated password": "Сгенерированный пароль",
+    "Formatted JSON": "Форматированный JSON"
+  },
+  "msg": {
+    "processing": "Обработка…",
+    "done": "Готово.",
+    "doneMeta": "Готово — метаданные удалены.",
+    "error": "Ошибка — попробуйте снова.",
+    "cantRead": "Не удалось прочитать файл.",
+    "loading": "Загрузка…",
+    "noMeta": "Метаданных нет — файл уже чист.",
+    "netErr": "Не удалось загрузить. Проверьте интернет.",
+    "typeFirst": "Сначала введите текст.",
+    "building": "Создание PDF…",
+    "chooseFile": "Сначала выберите файл."
+  }
+}

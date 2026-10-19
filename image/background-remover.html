@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Background Remover Free — Remove Image Background (AI) | Ride Bangla Tools</title>
+<meta name="description" content="Remove background from images free with AI — one click, clean cutouts. No signup, runs in your browser. Free forever — no signup, runs entirely in your browser.">
+<link rel="canonical" href="https://tools.ridebangla.bd/image/background-remover.html">
+<meta property="og:title" content="Background Remover Free — Remove Image Background (AI) | Ride Bangla Tools">
+<meta property="og:description" content="Remove background from images free with AI — one click, clean cutouts. No signup, runs in your browser. Free forever — no signup, runs entirely in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/image/background-remover.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/icon-192.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="manifest" href="../assets/manifest.webmanifest">
+<meta name="theme-color" content="#0B3D24">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://tools.ridebangla.bd/image/"}, {"@type": "ListItem", "position": 3, "name": "Background Remover", "item": "https://tools.ridebangla.bd/image/background-remover.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Background Remover", "description": "Remove the background from a photo automatically, right in your browser, using an on-device AI model — no upload, no sign-up.", "url": "https://tools.ridebangla.bd/image/background-remover.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Background Remover free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Background Remover is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my photo uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Your photo is processed on your own device by an AI model running in the browser. Only that model itself (not your photo) is fetched over the network, the first time you use the tool."}}, {"@type": "Question", "name": "Why does the first run take longer?", "acceptedAnswer": {"@type": "Answer", "text": "The first time you use Background Remover, your browser downloads a small AI model so it can run the removal locally. After that first download, your browser caches it and later uses are much faster."}}]}</script>
+<style>
+.br-canvas-wrap{background:repeating-conic-gradient(#f1f3f5 0% 25%, #fff 0% 50%) 50% / 20px 20px;border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:280px;max-height:60vh;}
+.br-canvas-wrap canvas, .br-canvas-wrap img{max-width:100%;max-height:60vh;display:block;}
+.br-status{font-family:var(--font-mono);font-size:13px;color:var(--text-lo);margin-top:10px;min-height:18px;}
+.br-bar{height:6px;border-radius:4px;background:var(--ink-800);overflow:hidden;margin-top:8px;display:none;}
+.br-bar-fill{height:100%;width:0%;background:var(--brass);transition:width .2s;}
+.br-bar.indet .br-bar-fill{width:35% !important;transition:none;animation:brSlide 1.1s ease-in-out infinite alternate;}
+@keyframes brSlide{from{transform:translateX(0);}to{transform:translateX(185%);}}
+.br-note{font-size:13px;color:var(--text-lo);margin-top:8px;}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Homepage</a>
+      <a href="../#all-tools">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/" style="color:var(--text-hi)">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../business/">Business</a>
+      <a href="../career/">Career</a>
+      <a href="../about.html">About</a>
+      <a href="../help-center.html#contact">Help Center</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../privacy.html">Privacy Policy</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Background Remover</div>
+    <h1>Background Remover</h1>
+    <p class="lede">Remove the background from a photo automatically — an AI model runs right in your browser, so the photo itself never leaves your device.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field">
+      <label>Choose a photo</label>
+      <input type="file" id="brIn" accept="image/*">
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Background</label>
+        <select id="brBg">
+          <option value="transparent">Transparent</option>
+          <option value="#ffffff">White</option>
+          <option value="#dbe9f7">Light blue</option>
+          <option value="#e6e6e6">Light grey</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Strength: <span id="brTolVal">30</span></label>
+        <input type="range" id="brTol" min="5" max="80" value="30" style="width:100%;">
+      </div>
+    </div>
+    <p class="br-note">Fast mode removes a plain-colour background (wall, sheet, studio backdrop) in about a second — no download needed. If parts of the background stay, raise Strength; if parts of the person disappear, lower it.</p>
+    <div class="br-bar" id="brBar"><div class="br-bar-fill" id="brBarFill"></div></div>
+    <div class="br-status" id="brStatus">Choose a photo to start.</div>
+    <div class="btn-row" style="margin-top:16px;">
+      <button type="button" class="btn-download" id="brDl" style="display:none;">Download PNG</button>
+<button type="button" class="btn ghost" id="aiBtn16">AI Tips</button>
+      <button type="button" class="btn ghost" id="brOpen" style="display:none;">Open image</button>
+    </div>
+    <p class="br-note" id="brSaveHint" style="display:none;">If the download does not start, press and hold the picture and choose "Save image".</p>
+    <div id="brAiBox" style="display:none;margin-top:18px;padding-top:14px;border-top:1px solid var(--line);">
+      <button type="button" class="btn ghost" id="brAi">Try AI mode (for busy backgrounds)</button>
+      <p class="br-note" id="brWait">AI mode works on any background but is heavy: the first time it downloads about 45 MB, and on a phone the screen can look frozen for 1–3 minutes while it works. Keep this tab open and wait.</p>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="br-canvas-wrap"><img id="brPreview" alt="" style="display:none;"></div>
+  </div>
+</section>
+<script type="module">
+  const fileIn = document.getElementById('brIn');
+  const preview = document.getElementById('brPreview');
+  const dlBtn = document.getElementById('brDl');
+  const openBtn = document.getElementById('brOpen');
+  const saveHint = document.getElementById('brSaveHint');
+  const status = document.getElementById('brStatus');
+  const bar = document.getElementById('brBar');
+  const barFill = document.getElementById('brBarFill');
+  const bgSel = document.getElementById('brBg');
+  const tolEl = document.getElementById('brTol');
+  const tolVal = document.getElementById('brTolVal');
+  const aiBox = document.getElementById('brAiBox');
+  const aiBtn = document.getElementById('brAi');
+
+  const MAX_SIDE = 1200;   // working size (keeps phones fast and memory-safe)
+  let srcFile = null;      // the photo the person chose
+  let srcCanvas = null;    // photo scaled to MAX_SIDE
+  let cutCanvas = null;    // result with transparent background
+  let resultUrl = null;
+  let busy = false;
+  let mode = 'fast';
+
+  /* =================== load photo =================== */
+  async function loadPhoto(file){
+    let bmp;
+    try { bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+    catch (e) { bmp = await createImageBitmap(file); }
+    const longest = Math.max(bmp.width, bmp.height);
+    const scale = longest > MAX_SIDE ? MAX_SIDE / longest : 1;
+    const c = document.createElement('canvas');
+    c.width = Math.max(1, Math.round(bmp.width * scale));
+    c.height = Math.max(1, Math.round(bmp.height * scale));
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    bmp.close && bmp.close();
+    return c;
+  }
+
+  /* =================== FAST MODE: plain-background remover =================== */
+  function median(arr){ arr.sort((x, y) => x - y); return arr[arr.length >> 1]; }
+
+  function fastCut(canvas, tol){
+    const w = canvas.width, h = canvas.height;
+    const ctx = canvas.getContext('2d');
+    const img = ctx.getImageData(0, 0, w, h);
+    const d = img.data;
+
+    // background colour = median colour of the photo's outer border
+    const rs = [], gs = [], bs = [];
+    const take = (x, y) => { const i = (y * w + x) * 4; rs.push(d[i]); gs.push(d[i+1]); bs.push(d[i+2]); };
+    const step = Math.max(1, Math.floor(Math.max(w, h) / 400));
+    for (let x = 0; x < w; x += step) { take(x, 0); take(x, h - 1); }
+    for (let y = 0; y < h; y += step) { take(0, y); take(w - 1, y); }
+    const R = median(rs), G = median(gs), B = median(bs);
+
+    const maxDist = 15 + tol * 1.6;      // how far from the border colour still counts as background
+    const stepTol = 4 + tol * 0.5;       // how fast the colour may change between neighbouring pixels (soft gradients)
+    const maxD2 = maxDist * maxDist, stepT2 = stepTol * stepTol;
+
+    const bg = new Uint8Array(w * h);    // 1 = background
+    const queue = new Int32Array(w * h);
+    let qh = 0, qt = 0;
+
+    const dist2 = (i) => { const dr = d[i]-R, dg = d[i+1]-G, db = d[i+2]-B; return dr*dr + dg*dg + db*db; };
+    const seed = (x, y) => { const p = y * w + x; if (!bg[p] && dist2(p * 4) <= maxD2) { bg[p] = 1; queue[qt++] = p; } };
+    for (let x = 0; x < w; x++) { seed(x, 0); seed(x, h - 1); }
+    for (let y = 0; y < h; y++) { seed(0, y); seed(w - 1, y); }
+
+    while (qh < qt) {
+      const p = queue[qh++];
+      const x = p % w, y = (p / w) | 0;
+      const i = p * 4;
+      const tryN = (nx, ny) => {
+        const q = ny * w + nx;
+        if (bg[q]) return;
+        const j = q * 4;
+        const dr = d[j]-d[i], dg = d[j+1]-d[i+1], db = d[j+2]-d[i+2];
+        if (dr*dr + dg*dg + db*db > stepT2) return;
+        if (dist2(j) > maxD2) return;
+        bg[q] = 1; queue[qt++] = q;
+      };
+      if (x > 0) tryN(x - 1, y);
+      if (x < w - 1) tryN(x + 1, y);
+      if (y > 0) tryN(x, y - 1);
+      if (y < h - 1) tryN(x, y + 1);
+    }
+
+    // alpha: 255 = keep, 0 = background. Shave 1px off the edge, then soften it.
+    let alpha = new Uint8Array(w * h);
+    for (let p = 0; p < alpha.length; p++) alpha[p] = bg[p] ? 0 : 255;
+    const eroded = new Uint8Array(alpha);
+    for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+      const p = y * w + x;
+      if (alpha[p] && (!alpha[p-1] || !alpha[p+1] || !alpha[p-w] || !alpha[p+w])) eroded[p] = 0;
+    }
+    const soft = new Uint8Array(w * h);
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      let sum = 0, n = 0;
+      for (let oy = -1; oy <= 1; oy++) { const yy = y + oy; if (yy < 0 || yy >= h) continue;
+        for (let ox = -1; ox <= 1; ox++) { const xx = x + ox; if (xx < 0 || xx >= w) continue; sum += eroded[yy * w + xx]; n++; } }
+      soft[y * w + x] = (sum / n) | 0;
+    }
+
+    const out = document.createElement('canvas');
+    out.width = w; out.height = h;
+    const octx = out.getContext('2d');
+    const oimg = octx.createImageData(w, h);
+    const od = oimg.data;
+    for (let p = 0, i = 0; p < soft.length; p++, i += 4) {
+      od[i] = d[i]; od[i+1] = d[i+1]; od[i+2] = d[i+2]; od[i+3] = soft[p];
+    }
+    octx.putImageData(oimg, 0, 0);
+    return out;
+  }
+
+  /* =================== show result (with chosen background) =================== */
+  async function render(){
+    if (!cutCanvas) return;
+    const out = document.createElement('canvas');
+    out.width = cutCanvas.width; out.height = cutCanvas.height;
+    const ctx = out.getContext('2d');
+    if (bgSel.value !== 'transparent') { ctx.fillStyle = bgSel.value; ctx.fillRect(0, 0, out.width, out.height); }
+    ctx.drawImage(cutCanvas, 0, 0);
+    const blob = await new Promise(r => out.toBlob(r, 'image/png'));
+    if (!blob) { status.textContent = 'Could not create the image. Please try again.'; return; }
+    if (resultUrl) URL.revokeObjectURL(resultUrl);
+    resultUrl = URL.createObjectURL(blob);
+    preview.src = resultUrl;
+    preview.style.display = 'block';
+    dlBtn.style.display = 'inline-block';
+    openBtn.style.display = 'inline-block';
+    saveHint.style.display = 'block';
+  }
+
+  let fastTimer = null;
+  async function runFast(){
+    if (!srcCanvas) return;
+    mode = 'fast';
+    stopBar();
+    status.textContent = 'Removing background…';
+    await new Promise(r => setTimeout(r, 30));   // let the screen update first
+    try {
+      cutCanvas = fastCut(srcCanvas, parseInt(tolEl.value, 10));
+      await render();
+      status.textContent = 'Done! Tap "Download PNG". Not perfect? Change Strength, or try AI mode below.';
+    } catch (err) {
+      console.error(err);
+      status.textContent = 'Something went wrong: ' + (err && err.message ? err.message : 'unknown error');
+    }
+  }
+
+  fileIn.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    dlBtn.style.display = openBtn.style.display = saveHint.style.display = 'none';
+    preview.style.display = 'none';
+    status.textContent = 'Reading photo…';
+    try {
+      srcFile = file;
+      srcCanvas = await loadPhoto(file);
+      aiBox.style.display = 'block';
+      await runFast();
+    } catch (err) {
+      console.error(err);
+      status.textContent = 'Could not open this photo. Please try a JPG or PNG.';
+    }
+  });
+
+  tolEl.addEventListener('input', () => {
+    tolVal.textContent = tolEl.value;
+    clearTimeout(fastTimer);
+    fastTimer = setTimeout(() => { if (srcCanvas && !busy) runFast(); }, 250);
+  });
+  bgSel.addEventListener('change', () => { if (cutCanvas) render(); });
+
+  dlBtn.addEventListener('click', () => {
+    if (!resultUrl) return;
+    const a = document.createElement('a');
+    a.href = resultUrl;
+    a.download = 'background-removed.png';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+  openBtn.addEventListener('click', () => { if (resultUrl) window.open(resultUrl, '_blank'); });
+
+  /* =================== AI MODE (optional, slow on phones) =================== */
+  const VERSION = '1.7.0';
+  const LIB_URLS = [
+    'https://cdn.jsdelivr.net/npm/@imgly/background-removal@' + VERSION + '/+esm',
+    'https://esm.sh/@imgly/background-removal@' + VERSION
+  ];
+  const DATA_URLS = [
+    'https://staticimgly.com/@imgly/background-removal-data/' + VERSION + '/dist/',
+    'https://cdn.jsdelivr.net/npm/@imgly/background-removal-data@' + VERSION + '/dist/'
+  ];
+  let removeBackground = null;
+  let files = {}, shownPct = 0, phase = 'idle';
+
+  function stopBar(){ bar.classList.remove('indet'); bar.style.display = 'none'; phase = 'idle'; }
+
+  function onProgress(key, current, total){
+    key = String(key);
+    if (key.indexOf('fetch') !== -1 && phase !== 'process') {
+      phase = 'download';
+      files[key] = { c: current || 0, t: total || 0 };
+      let c = 0, t = 0;
+      Object.keys(files).forEach(k => { c += files[k].c; t += files[k].t; });
+      if (t > 0) { const pct = Math.min(99, Math.floor(c / t * 100)); if (pct > shownPct) shownPct = pct; barFill.style.width = shownPct + '%'; }
+      status.textContent = 'AI mode, step 1 of 2 — downloading the AI model (first time only)… ' + shownPct + '%';
+    } else if (key.indexOf('compute') !== -1) {
+      if (phase !== 'process') {
+        phase = 'process';
+        bar.classList.add('indet');
+        status.textContent = 'AI mode, step 2 of 2 — the AI is working. The screen may look frozen for 1–3 minutes on a phone. Please keep this tab open and wait…';
+      }
+    }
+  }
+
+  async function loadLib(){
+    if (removeBackground) return true;
+    for (const url of LIB_URLS) {
+      try { const mod = await import(url); if (mod && mod.removeBackground) { removeBackground = mod.removeBackground; return true; } }
+      catch (err) { console.warn('Library load failed from', url, err); }
+    }
+    return false;
+  }
+
+  aiBtn.addEventListener('click', async () => {
+    if (!srcCanvas || busy) return;
+    busy = true; aiBtn.disabled = true; mode = 'ai';
+    files = {}; shownPct = 0; phase = 'loading';
+    bar.style.display = 'block'; bar.classList.remove('indet'); barFill.style.width = '0%';
+    status.textContent = 'AI mode — loading…';
+    await new Promise(r => setTimeout(r, 50));
+    try {
+      if (!(await loadLib())) throw new Error('Could not load the AI engine. Check your internet connection.');
+      const input = await new Promise(r => srcCanvas.toBlob(r, 'image/png'));
+      let blob = null, lastErr = null;
+      for (let i = 0; i < DATA_URLS.length && !blob; i++) {
+        try {
+          blob = await removeBackground(input, { publicPath: DATA_URLS[i], model: 'isnet_quint8', device: 'cpu', output: { format: 'image/png' }, progress: onProgress });
+        } catch (err) { lastErr = err; console.warn('AI failed with', DATA_URLS[i], err); files = {}; shownPct = 0; phase = 'loading'; }
+      }
+      if (!blob) throw (lastErr || new Error('Unknown error'));
+      const bmp = await createImageBitmap(blob);
+      const c = document.createElement('canvas'); c.width = bmp.width; c.height = bmp.height;
+      c.getContext('2d').drawImage(bmp, 0, 0); bmp.close && bmp.close();
+      cutCanvas = c;
+      await render();
+      stopBar();
+      status.textContent = 'AI mode done! Tap "Download PNG".';
+    } catch (err) {
+      console.error(err);
+      stopBar();
+      status.textContent = 'AI mode failed: ' + (err && err.message ? err.message : 'unknown error') + ' — the fast result above is still available.';
+    } finally {
+      busy = false; aiBtn.disabled = false;
+    }
+  });
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Background Remover</h2>
+    <ol class="how-steps">
+      <li>Choose a photo from your device.</li>
+      <li>The plain background is removed in about a second. Adjust Strength or pick a new background colour if you like.</li>
+      <li>Tap "Download PNG" to save. For busy backgrounds, try AI mode (slower).</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Background Remover free to use?</summary>
+        <p>Yes. Background Remover is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my photo uploaded to a server?</summary>
+        <p>No. Your photo is processed on your own device by an AI model running in the browser. Only that model itself (not your photo) is fetched over the network, the first time you use the tool.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Why does the first run take longer?</summary>
+        <p>The first time you use Background Remover, your browser downloads a small AI model so it can run the removal locally. After that first download, your browser caches it and later uses are much faster.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Image</h3>
+    <div class="related-list">
+      <a href="photo-editor.html">Photo Editor</a>
+      <a href="image-compressor.html">Image Compressor</a>
+      <a href="image-to-base64.html">Image to Base64</a>
+      <a href="image-resizer.html">Image Resizer</a>
+      <a href="../image/">All Image tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../business/">Business</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla Limited. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js?v=3"></script>
+<script src="../assets/ads-sitewide.js?v=3"></script>
+
+<script src="../assets/ai.js?v=6"></script>
+
+<script>
+(function() {
+  var btn = document.getElementById('aiBtn16');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: background remover. Give usage tips.'; }, function(r) { alert(r); });
+    });
+  }
+})();
+</script>
+</body>
+</html>

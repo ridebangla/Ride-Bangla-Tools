@@ -1,0 +1,437 @@
+{
+  "nav": {
+    "allTools": "كل الأدوات",
+    "pdf": "PDF",
+    "image": "صورة",
+    "calculator": "حاسبة",
+    "converter": "محول",
+    "text": "نص",
+    "seo": "SEO",
+    "developer": "مطور",
+    "qr": "رمز QR",
+    "datetime": "التاريخ والوقت",
+    "finance": "المالية",
+    "career": "المهنة",
+    "about": "من نحن",
+    "privacy": "الخصوصية",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
+  },
+  "hero": {
+    "eyebrow": "54 أداة مجانية · بدون تسجيل",
+    "title": "أدوات مجانية عبر الإنترنت <span class=\"accent\">لنسخة أذكى منك.</span>",
+    "lede": "حرّر الصور، أنشئ سيرة ذاتية، ولّد رموز QR، حوّل الملفات، أزل البيانات الوصفية المخفية والمزيد — 54 أداة صغيرة يتقن كل منها مهمة واحدة. لا تثبيت، لا تسجيل، وملفاتك لا تغادر متصفحك أبدًا.",
+    "searchPh": "ابحث عن أداة — مثل \"pdf\"، \"qr\"، \"عمر\"",
+    "trust1b": "مجاني 100%",
+    "trust1t": "بدون رسوم خفية",
+    "trust2b": "بدون تسجيل",
+    "trust2t": "ابدأ فورًا",
+    "trust3b": "آمن وخاص",
+    "trust3t": "يعمل في متصفحك",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
+  },
+  "showcase": {
+    "eyebrow": "منتج من RIDE BANGLA",
+    "title": "بدعم من <span class=\"gold\">Ride Bangla Limited</span>",
+    "tag": "رحلات. طعام. توصيل. بريد سريع.",
+    "tagSub": "منصة الأدوات الرسمية لشركة Ride Bangla Limited",
+    "text": "هذه الأدوات المجانية يصنعها ويحافظ عليها الفريق وراء Ride Bangla — التطبيق الخارق في بنغلاديش لمشاركة الرحلات وتوصيل الطعام والبريد السريع والخدمات الرقمية. استكشف منصتنا الرئيسية أو تعرف على فريق تقنية المعلومات الذي يصمم كل شيء ويطوره.",
+    "cta1": "زيارة الموقع الرئيسي",
+    "cta2": "تقنية المعلومات والتطوير"
+  },
+  "companybar": {
+    "main": "الموقع الرئيسي",
+    "it": "تقنية المعلومات والتطوير"
+  },
+  "common": {
+    "download": "تحميل",
+    "downloadResult": "تحميل النتيجة",
+    "calculate": "احسب",
+    "generate": "إنشاء",
+    "copy": "نسخ",
+    "copied": "تم النسخ!",
+    "chooseFile": "اختر ملفًا",
+    "upload": "رفع",
+    "removeMetadata": "إزالة البيانات الوصفية",
+    "format": "تنسيق",
+    "minify": "تصغير",
+    "convert": "تحويل",
+    "reset": "إعادة ضبط",
+    "downloadPhoto": "تحميل الصورة النظيفة",
+    "downloadVideo": "تحميل الفيديو النظيف",
+    "downloadPdf": "تحميل PDF النظيف",
+    "search": "بحث",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "open": "فتح",
+    "tools": "أداة",
+    "popularTools": "الأدوات الشائعة",
+    "allToolsTitle": "كل الأدوات"
+  },
+  "tools": {
+    "faq": "الأسئلة الشائعة",
+    "howTo": "كيفية استخدام {tool}",
+    "freeQ": "هل {tool} مجاني؟",
+    "freeA": "نعم. {tool} مجاني تمامًا — بدون تسجيل، بدون حد يومي، وبدون علامة مائية على ما تحمّله.",
+    "dataQ": "هل تُرفع بياناتي إلى خادم؟",
+    "dataA": "لا. {tool} يعمل بالكامل في متصفحك باستخدام JavaScript — لا شيء مما تكتبه أو ترفعه يغادر جهازك.",
+    "moreIn": "المزيد في {cat}",
+    "accurateQ": "ما مدى دقة النتيجة؟",
+    "accurateA": "يستخدم الحساب الصيغة القياسية لهذا الرقم، لذا فالنتيجة دقيقة للأرقام التي تدخلها — تحقق دائمًا من المدخلات، فالناتج دقيق بقدر ما تكتبه."
+  },
+  "toolmeta": {
+    "calculator-bmi-calculator": {
+      "title": "حاسبة مؤشر كتلة الجسم",
+      "lede": "أدخل الطول والوزن واحصل على مؤشر كتلة الجسم فورًا مع فئات منظمة الصحة العالمية.",
+      "labels": {
+        "Height (cm)": "الطول (سم)",
+        "Weight (kg)": "الوزن (كجم)",
+        "Your BMI": "مؤشر كتلة جسمك"
+      }
+    },
+    "calculator-percentage-calculator": {
+      "title": "حاسبة النسب المئوية",
+      "lede": "احسب X% من رقم أو النسبة بين رقمين بسهولة.",
+      "labels": {
+        "X (%)": "X (%)"
+      }
+    },
+    "converter-base-converter": {
+      "title": "محول أنظمة الأعداد",
+      "lede": "تنقل بين الثنائي والثماني والعشري والسداسي عشر بنقرة.",
+      "labels": {
+        "Binary": "ثنائي",
+        "Octal": "ثماني",
+        "Decimal": "عشري",
+        "Hexadecimal": "سداسي عشر"
+      }
+    },
+    "converter-unit-converter": {
+      "title": "محول الوحدات",
+      "lede": "من متر إلى ميل، وكيلو إلى رطل، ومئوية إلى فهرنهايت.",
+      "labels": {
+        "Category": "الفئة",
+        "From": "من",
+        "To": "إلى",
+        "Value": "القيمة",
+        "Result": "النتيجة"
+      }
+    },
+    "date-time-age-calculator": {
+      "title": "حاسبة العمر",
+      "lede": "تريد عمرك الدقيق؟ أدخل تاريخ الميلاد.",
+      "labels": {
+        "Date of birth": "تاريخ الميلاد",
+        "As of": "بتاريخ"
+      }
+    },
+    "date-time-date-difference-calculator": {
+      "title": "فرق التاريخ",
+      "lede": "احصل على الفرق الدقيق بين تاريخين.",
+      "labels": {
+        "Start date": "تاريخ البدء",
+        "End date": "تاريخ الانتهاء"
+      }
+    },
+    "developer-color-converter": {
+      "title": "محول الألوان",
+      "lede": "انقل اللون بين HEX وRGB وHSL مع معاينة حية.",
+      "labels": {
+        "HEX": "HEX",
+        "RGB": "RGB",
+        "HSL": "HSL"
+      }
+    },
+    "developer-json-formatter": {
+      "title": "منسق JSON",
+      "lede": "الصق JSON غير مرتب — تحقق وتنسيق جميل.",
+      "labels": {
+        "Input JSON": "إدخال JSON",
+        "Output": "المخرجات"
+      }
+    },
+    "developer-password-generator": {
+      "title": "مولد كلمات المرور",
+      "lede": "أنشئ كلمة مرور قوية وعشوائية في ثوانٍ.",
+      "labels": {
+        "Password": "كلمة المرور"
+      }
+    },
+    "finance-compound-interest-calculator": {
+      "title": "الفائدة المركبة",
+      "lede": "شاهد مدخراتك تنمو — أدخل المبلغ والمساهمات والمعدل.",
+      "labels": {
+        "Initial investment ($)": "الاستثمار الأولي ($)",
+        "Monthly contribution ($)": "المساهمة الشهرية ($)",
+        "Annual interest rate (%)": "المعدل السنوي (%)",
+        "Years to grow": "السنوات",
+        "Compounding frequency": "التكرار",
+        "Future value": "القيمة المستقبلية"
+      }
+    },
+    "finance-loan-emi-calculator": {
+      "title": "حاسبة أقساط القرض",
+      "lede": "أدخل المبلغ والمعدل والمدة لرؤية القسط الشهري.",
+      "labels": {
+        "Loan amount": "مبلغ القرض",
+        "Annual interest rate (%)": "المعدل السنوي (%)",
+        "Term (months)": "المدة (أشهر)",
+        "Monthly instalment (EMI)": "القسط الشهري"
+      }
+    },
+    "finance-mortgage-calculator": {
+      "title": "حاسبة الرهن العقاري",
+      "lede": "أدخل السعر والدفعة المقدمة والمعدل والمدة.",
+      "labels": {
+        "Amount": "المبلغ"
+      }
+    },
+    "finance-simple-interest-calculator": {
+      "title": "الفائدة البسيطة",
+      "lede": "احسب الفائدة البسيطة على مبلغ.",
+      "labels": {
+        "Amount": "المبلغ"
+      }
+    },
+    "image-background-remover": {
+      "title": "مزيل الخلفية",
+      "lede": "أزل خلفية أي صورة بالذكاء الاصطناعي — 100% في المتصفح.",
+      "labels": {
+        "Choose a photo": "اختر صورة",
+        "Background": "الخلفية",
+        "Foreground": "المقدمة"
+      }
+    },
+    "image-heic-to-jpg": {
+      "title": "HEIC إلى JPG",
+      "lede": "حوّل صور HEIC من آيفون إلى JPG فورًا.",
+      "labels": {
+        "Choose images": "اختر صورًا",
+        "Choose HEIC / HEIF photos": "اختر صور HEIC/HEIF"
+      }
+    },
+    "image-image-compressor": {
+      "title": "ضاغط الصور",
+      "lede": "صغّر صورك مع التحكم بالجودة.",
+      "labels": {
+        "Choose a photo": "اختر صورة",
+        "JPEG quality": "جودة JPEG",
+        "Max size (px)": "الحجم الأقصى (px)"
+      }
+    },
+    "image-image-resizer": {
+      "title": "تغيير حجم الصور",
+      "lede": "غيّر الحجم بالبكسل أو النسبة.",
+      "labels": {
+        "Choose an image": "اختر صورة",
+        "Width (px)": "العرض (px)",
+        "Height (px)": "الارتفاع (px)"
+      }
+    },
+    "image-image-to-base64": {
+      "title": "صورة إلى Base64",
+      "lede": "رمّز أي صورة إلى Base64.",
+      "labels": {
+        "Choose an image": "اختر صورة",
+        "Base64 data URI": "URI بيانات Base64"
+      }
+    },
+    "image-metadata-remover": {
+      "title": "مزيل البيانات الوصفية",
+      "lede": "أزل بيانات EXIF/GPS المخفية من الصور والفيديو وPDF.",
+      "labels": {}
+    },
+    "image-photo-editor": {
+      "title": "محرر الصور",
+      "lede": "السطوع والتباين والفلاتر والتدوير — في المتصفح.",
+      "labels": {
+        "Choose a photo": "اختر صورة"
+      }
+    },
+    "pdf-image-to-pdf": {
+      "title": "صورة إلى PDF",
+      "lede": "حوّل الصور إلى PDF واحد قابل للتحميل.",
+      "labels": {
+        "Choose images (JPG or PNG, any order)": "اختر الصور (JPG أو PNG)"
+      }
+    },
+    "pdf-merge-pdf": {
+      "title": "دمج PDF",
+      "lede": "اجمع ملفات PDF متعددة في مستند واحد.",
+      "labels": {
+        "Choose PDF files": "اختر ملفات PDF"
+      }
+    },
+    "pdf-text-to-pdf": {
+      "title": "نص إلى PDF",
+      "lede": "حوّل النص العادي إلى PDF نظيف قابل للتحميل.",
+      "labels": {
+        "Your text": "نصك",
+        "Font size": "حجم الخط",
+        "Document title": "عنوان المستند"
+      }
+    },
+    "qr-qr-code-generator": {
+      "title": "مولد QR",
+      "lede": "أنشئ رموز QR للروابط والنصوص وجهات الاتصال.",
+      "labels": {
+        "Text or URL": "نص أو رابط"
+      }
+    },
+    "qr-wifi-qr-generator": {
+      "title": "QR للواي فاي",
+      "lede": "انضم للواي فاي بالمسح — بدون كتابة كلمة المرور.",
+      "labels": {
+        "Password": "كلمة المرور",
+        "Network name (SSID)": "اسم الشبكة (SSID)"
+      }
+    },
+    "seo-meta-tag-generator": {
+      "title": "مولد وسوم ميتا",
+      "lede": "ولّد وسوم SEO + Open Graph + Twitter Card.",
+      "labels": {
+        "Page title": "عنوان الصفحة",
+        "Meta description": "الوصف التعريفي",
+        "Page URL": "رابط الصفحة",
+        "Image URL (for social sharing)": "رابط الصورة",
+        "Generated tags": "الوسوم المولدة"
+      }
+    },
+    "seo-slug-generator": {
+      "title": "مولد الروابط",
+      "lede": "أنشئ روابط URL من أي عنوان.",
+      "labels": {
+        "Slug": "الرابط"
+      }
+    },
+    "text-case-converter": {
+      "title": "محول حالة الأحرف",
+      "lede": "كبيرة، صغيرة، عنوان — حوّل فورًا.",
+      "labels": {
+        "Your text": "نصك"
+      }
+    },
+    "text-lorem-ipsum-generator": {
+      "title": "مولد Lorem Ipsum",
+      "lede": "نص تجريبي لتصاميمك.",
+      "labels": {}
+    },
+    "text-word-counter": {
+      "title": "عداد الكلمات",
+      "lede": "الكلمات والأحرف والجمل ووقت القراءة فورًا.",
+      "labels": {
+        "Your text": "نصك",
+        "Status": "الحالة"
+      }
+    },
+    "career-cv-cover-letter-builder": {
+      "title": "منشئ السيرة الذاتية",
+      "lede": "املأ مرة واحدة وحمّل سيرة احترافية وخطاب تغطية.",
+      "labels": {
+        "Full name": "الاسم الكامل",
+        "Email": "البريد",
+        "Phone": "الهاتف",
+        "Company": "الشركة",
+        "Job title": "المسمى",
+        "Target role / title": "الدور المستهدف",
+        "Location": "الموقع",
+        "LinkedIn / portfolio (optional)": "لينكدإن/معرض أعمال (اختياري)",
+        "Profile photo (optional)": "الصورة الشخصية (اختياري)",
+        "Photo shape": "شكل الصورة",
+        "Colour theme": "سمة اللون",
+        "Page size": "حجم الصفحة",
+        "Country of citizenship / nationality": "بلد الجنسية",
+        "Second citizenship (optional)": "جنسية ثانية (اختياري)",
+        "Current residence country": "بلد الإقامة",
+        "Gender": "الجنس",
+        "Marital status": "الحالة الاجتماعية",
+        "Father's name": "اسم الأب",
+        "Company name": "اسم الشركة",
+        "Position applying for": "المنصب المتقدم له",
+        "Hiring manager's name (optional)": "مسؤول التوظيف (اختياري)",
+        "Date": "التاريخ",
+        "Dates": "التواريخ",
+        "Degree / qualification": "الشهادة",
+        "Institution": "المؤسسة",
+        "What you did": "مهامك",
+        "Result / details (optional)": "النتيجة (اختياري)"
+      }
+    }
+  },
+  "dl": {
+    "Age": "العمر",
+    "Annual rate": "المعدل السنوي",
+    "Approx. months": "أشهر تقريبًا",
+    "As of": "بتاريخ",
+    "BMI": "مؤشر كتلة الجسم",
+    "Binary": "ثنائي",
+    "Category": "الفئة",
+    "Characters": "الأحرف",
+    "Characters (no spaces)": "الأحرف (بدون مسافات)",
+    "Date of birth": "تاريخ الميلاد",
+    "Decimal": "عشري",
+    "Down payment": "الدفعة المقدمة",
+    "End date": "تاريخ الانتهاء",
+    "From": "من",
+    "Future value": "القيمة المستقبلية",
+    "HEX": "HEX",
+    "HSL": "HSL",
+    "Height": "الطول",
+    "Hexadecimal": "سداسي عشر",
+    "Home price": "السعر",
+    "Initial investment": "الاستثمار الأولي",
+    "Insurance": "التأمين",
+    "Interest": "الفائدة",
+    "Interest earned": "الفائدة المكتسبة",
+    "Length": "الطول",
+    "Loan amount": "مبلغ القرض",
+    "Monthly EMI": "القسط الشهري",
+    "Monthly contribution": "المساهمة الشهرية",
+    "Monthly total": "الإجمالي الشهري",
+    "Octal": "ثماني",
+    "Paragraphs": "الفقرات",
+    "Principal": "المبلغ الأساسي",
+    "Principal & interest": "الأساسي والفائدة",
+    "RGB": "RGB",
+    "Rate": "المعدل",
+    "Reading time": "وقت القراءة",
+    "Result": "النتيجة",
+    "Sentences": "الجمل",
+    "Slug": "الرابط",
+    "Start date": "تاريخ البدء",
+    "Tax": "الضريبة",
+    "Tenure (months)": "المدة (أشهر)",
+    "Term": "المدة",
+    "Time (years)": "المدة (سنوات)",
+    "Title": "العنوان",
+    "To": "إلى",
+    "Total contributions": "إجمالي المساهمات",
+    "Total cost": "التكلفة الإجمالية",
+    "Total days": "إجمالي الأيام",
+    "Total days lived": "أيام العمر",
+    "Total interest": "إجمالي الفائدة",
+    "Total payable": "إجمالي المستحق",
+    "Weeks": "الأسابيع",
+    "Weight": "الوزن",
+    "Words": "الكلمات",
+    "Years": "السنوات",
+    "Generated placeholder text": "نص مولّد",
+    "Generated meta tags": "وسوم ميتا مولّدة",
+    "Generated password": "كلمة مرور مولّدة",
+    "Formatted JSON": "JSON منسق"
+  },
+  "msg": {
+    "processing": "جارٍ المعالجة…",
+    "done": "تم.",
+    "doneMeta": "تم — أُزيلت البيانات الوصفية.",
+    "error": "خطأ — حاول مجددًا.",
+    "cantRead": "تعذر قراءة الملف.",
+    "loading": "جارٍ التحميل…",
+    "noMeta": "لا توجد بيانات وصفية — الملف نظيف.",
+    "netErr": "تعذر التحميل. تحقق من الإنترنت.",
+    "typeFirst": "اكتب شيئًا أولًا.",
+    "building": "جارٍ إنشاء PDF…",
+    "chooseFile": "اختر ملفًا أولًا."
+  }
+}

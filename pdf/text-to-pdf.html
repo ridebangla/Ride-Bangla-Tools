@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text to PDF Converter Free — TXT to PDF Online | Ride Bangla Tools</title>
+<meta name="description" content="Convert text to PDF free online. Paste or type text and download a clean PDF document — no signup required. Free forever — no signup, text stays private.">
+<link rel="canonical" href="https://tools.ridebangla.bd/pdf/text-to-pdf.html">
+<meta property="og:title" content="Text to PDF Converter Free — TXT to PDF Online | Ride Bangla Tools">
+<meta property="og:description" content="Convert text to PDF free online. Paste or type text and download a clean PDF document — no signup required. Free forever — no signup, text stays private.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/pdf/text-to-pdf.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/icon-192.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="manifest" href="../assets/manifest.webmanifest">
+<meta name="theme-color" content="#0B3D24">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://tools.ridebangla.bd/pdf/"}, {"@type": "ListItem", "position": 3, "name": "Text to PDF", "item": "https://tools.ridebangla.bd/pdf/text-to-pdf.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Text to PDF", "description": "Turn plain text into a clean, downloadable PDF document.", "url": "https://tools.ridebangla.bd/pdf/text-to-pdf.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Text to PDF free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Text to PDF is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Text to PDF runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "What's the maximum file size I can use?", "acceptedAnswer": {"@type": "Answer", "text": "Because everything runs in your browser instead of on a server, there's no fixed upload cap \u2014 very large files just take a little longer to process on your device."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Homepage</a>
+      <a href="../#all-tools">All Tools</a>
+      <a href="../pdf/" style="color:var(--text-hi)">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../business/">Business</a>
+      <a href="../career/">Career</a>
+      <a href="../about.html">About</a>
+      <a href="../help-center.html#contact">Help Center</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../privacy.html">Privacy Policy</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">PDF</a> / Text to PDF</div>
+    <h1>Text to PDF</h1>
+    <p class="lede">Paste your text and download a clean, ready-to-share PDF in seconds.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field">
+      <label>Your text</label>
+      <textarea id="txt" placeholder="Paste or type any text here…" style="min-height:320px;"></textarea>
+    </div>
+    <div class="row">
+      <div class="field"><label>Document title</label><input type="text" id="docTitle" value="Document"></div>
+      <div class="field"><label>Font size</label>
+        <select id="fontSize"><option>10</option><option selected>12</option><option>14</option><option>16</option></select>
+      </div>
+    </div>
+    <div class="btn-row"><button type="button" class="btn-download" id="makePdf">Download PDF</button>
+<button type="button" class="btn ghost" id="aiBtn10">Improve with AI</button></div>
+  </div>
+  <div class="panel">
+    <div class="field"><label>Status</label><div class="output empty" id="pdfStatus">Nothing generated yet.</div></div>
+    <p style="font-size:13px;">Text wraps automatically across A4 pages. Great for quickly turning notes, letters or scripts into a shareable PDF.</p>
+  </div>
+</section>
+<script src="../assets/pdf-lib.min.js"></script>
+<script>if (!window.PDFLib) { document.write('<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/script>'); }</script>
+<script>
+document.getElementById('makePdf').addEventListener('click', async () => {
+  const text = document.getElementById('txt').value;
+  const status = document.getElementById('pdfStatus');
+  if (!text.trim()) { status.textContent = 'Type some text first.'; status.classList.remove('empty'); return; }
+  const size = parseInt(document.getElementById('fontSize').value, 10);
+  const { PDFDocument } = PDFLib;
+  const pdfDoc = await PDFDocument.create();
+  // Unicode-safe rendering: draw text on canvas (browser handles Bengali/Arabic/etc.
+  // shaping natively), then embed each page as an image in the PDF.
+  const pageW = 595.28, pageH = 841.89, margin = 50;
+  const maxWidth = pageW - margin * 2;
+  const scale = 2;
+  const lineHeight = size * 1.5;
+  const fontStack = size + 'px "Hind Siliguri","Noto Sans Bengali","Noto Sans Arabic","Noto Sans Devanagari",sans-serif';
+  const meas = document.createElement('canvas').getContext('2d');
+  meas.font = fontStack;
+  const isRtl = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(text);
+
+  function wrapLine(line) {
+    // CJK text has no spaces: fall back to character-based wrapping
+    const isCjk = /[\u3040-\u30FF\u3400-\u4DBF\u4E00-\u9FFF\uAC00-\uD7AF]/.test(line);
+    if (isCjk && !line.includes(' ')) {
+      const out = []; let cur = '';
+      for (const ch of line) {
+        if (meas.measureText(cur + ch).width > maxWidth && cur) { out.push(cur); cur = ch; }
+        else cur += ch;
+      }
+      out.push(cur);
+      return out;
+    }
+    const words = line.split(' ');
+    const out = []; let cur = '';
+    words.forEach(w => {
+      const test = cur ? cur + ' ' + w : w;
+      if (meas.measureText(test).width > maxWidth && cur) { out.push(cur); cur = w; }
+      else cur = test;
+    });
+    out.push(cur);
+    return out;
+  }
+
+  let lines = [];
+  text.split('\n').forEach(l => { lines = lines.concat(l.length ? wrapLine(l) : ['']); });
+  const linesPerPage = Math.max(1, Math.floor((pageH - margin * 2) / lineHeight));
+
+  for (let p = 0; p < lines.length; p += linesPerPage) {
+    const pageLines = lines.slice(p, p + linesPerPage);
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(pageW * scale); canvas.height = Math.round(pageH * scale);
+    const ctx = canvas.getContext('2d');
+    ctx.scale(scale, scale);
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, pageW, pageH);
+    ctx.fillStyle = '#1a1a1a'; ctx.font = fontStack; ctx.textBaseline = 'top';
+    if (isRtl) { ctx.direction = 'rtl'; ctx.textAlign = 'right'; }
+    let y = margin;
+    const tx = isRtl ? pageW - margin : margin;
+    pageLines.forEach(line => { ctx.fillText(line, tx, y); y += lineHeight; });
+    const pngImage = await pdfDoc.embedPng(canvas.toDataURL('image/png'));
+    const page = pdfDoc.addPage([pageW, pageH]);
+    page.drawImage(pngImage, { x: 0, y: 0, width: pageW, height: pageH });
+  }
+
+  const bytes = await pdfDoc.save();
+  const blob = new Blob([bytes], { type: 'application/pdf' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (document.getElementById('docTitle').value || 'document') + '.pdf';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  status.textContent = 'PDF downloaded — ' + lines.length + ' line(s).';
+  status.classList.remove('empty');
+});
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Text to PDF</h2>
+    <ol class="how-steps">
+      <li>Open the fields above and enter or upload what Text to PDF needs.</li>
+      <li>Adjust any options until the preview or output looks right.</li>
+      <li>Click the button to get your result — instantly, in this tab.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Text to PDF free to use?</summary>
+        <p>Yes. Text to PDF is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. Text to PDF runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What's the maximum file size I can use?</summary>
+        <p>Because everything runs in your browser instead of on a server, there's no fixed upload cap — very large files just take a little longer to process on your device.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in PDF</h3>
+    <div class="related-list">
+      <a href="image-to-pdf.html">Image to PDF</a>
+      <a href="../pdf/">All PDF tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../business/">Business</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla Limited. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js?v=3"></script>
+<script src="../assets/ads-sitewide.js?v=3"></script>
+
+<script src="../assets/ai.js?v=6"></script>
+
+<script>
+(function() {
+  var btn = document.getElementById('aiBtn10');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.getElementById('txt'); return t?t.value:''; }, function(r) { document.getElementById('txt').value = r; });
+    });
+  }
+})();
+</script>
+</body>
+</html>
