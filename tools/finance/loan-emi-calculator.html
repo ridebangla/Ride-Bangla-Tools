@@ -76,7 +76,7 @@ function calc() {
   const p = parseFloat(document.getElementById('p').value);
   const annualR = parseFloat(document.getElementById('r').value);
   const n = parseFloat(document.getElementById('n').value);
-  if (!p || !n || !annualR) return;
+  if (isNaN(p) || isNaN(n) || isNaN(annualR) || p <= 0 || n <= 0 || annualR < 0) return;
   const r = annualR / 12 / 100;
   const emi = r === 0 ? p / n : (p * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
   const total = emi * n;

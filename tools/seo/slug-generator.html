@@ -77,7 +77,8 @@ function slugify() {
     .replace(/['"]/g, '')
     .replace(/[^a-z0-9\s-]/g, ' ')
     .trim()
-    .split(/\s+/);
+    .split(/\s+/)
+    .filter(Boolean);
   if (document.getElementById('removeStop').checked) {
     words = words.filter(w => !STOP.has(w));
   }

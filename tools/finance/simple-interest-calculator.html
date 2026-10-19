@@ -75,7 +75,7 @@ function calc() {
   const p = parseFloat(document.getElementById('p').value);
   const r = parseFloat(document.getElementById('r').value);
   const t = parseFloat(document.getElementById('t').value);
-  if (!p || !r || !t) return;
+  if (isNaN(p) || isNaN(r) || isNaN(t) || p <= 0 || t <= 0 || r < 0) return;
   const si = (p*r*t)/100;
   document.getElementById('si').textContent = si.toLocaleString(undefined,{maximumFractionDigits:0});
   document.getElementById('total').textContent = (p+si).toLocaleString(undefined,{maximumFractionDigits:0});

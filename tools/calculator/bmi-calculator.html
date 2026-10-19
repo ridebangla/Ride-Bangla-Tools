@@ -75,7 +75,13 @@
 function calcBmi() {
   const h = parseFloat(document.getElementById('h').value) / 100;
   const w = parseFloat(document.getElementById('w').value);
-  if (!h || !w) return;
+  if (!(h > 0) || !(w > 0)) {
+    document.getElementById('bmiOut').textContent = '–';
+    const elc = document.getElementById('bmiCat');
+    elc.textContent = '–';
+    elc.style.color = '';
+    return;
+  }
   const bmi = w / (h*h);
   document.getElementById('bmiOut').textContent = bmi.toFixed(1);
   let cat, color;
