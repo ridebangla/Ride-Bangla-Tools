@@ -210,7 +210,7 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
       rows.push(['GPS location', tags.latitude.toFixed(5) + ', ' + tags.longitude.toFixed(5)]);
     }
     if (!rows.length) {
-      foundBox.innerHTML = '<div class="mr-clean">✓ No identifying metadata found in this file.</div>';
+      foundBox.innerHTML = '<div class="mr-clean">No identifying metadata found in this file.</div>';
       foundBox.hidden = false;
       return;
     }
