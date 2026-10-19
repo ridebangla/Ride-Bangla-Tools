@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Free Business Name Generator — Catchy Brand Name Ideas</title>
-<meta name="description" content="Generate catchy business name ideas free — enter a keyword, pick your industry and style, get brandable names with domain suggestions. No signup, instant.">
+<title>Free Business Name Generator — Catchy Brand Name Ideas | Ride Bangla Tools</title>
+<meta name="description" content="Generate catchy business name ideas free — type a keyword, pick your industry and style, and get brandable names with domain-style suggestions. No signup, instant results.">
 <link rel="canonical" href="https://tools.ridebangla.bd/business/business-name-generator.html">
-<meta property="og:title" content="Free Business Name Generator — Catchy Brand Name Ideas">
-<meta property="og:description" content="Generate catchy business name ideas free — enter a keyword, pick your industry and style, get brandable names with domain suggestions. No signup, instant.">
+<meta property="og:title" content="Free Business Name Generator — Catchy Brand Name Ideas | Ride Bangla Tools">
+<meta property="og:description" content="Generate catchy business name ideas free — type a keyword, pick your industry and style, and get brandable names with domain-style suggestions. No signup, instant results.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/business/business-name-generator.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Business Tools", "item": "https://tools.ridebangla.bd/business/"}, {"@type": "ListItem", "position": 3, "name": "Business Name Generator", "item": "https://tools.ridebangla.bd/business/business-name-generator.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Business Name Generator", "description": "Generate catchy business name ideas free — enter a keyword, pick your industry and style, get brandable names with domain suggestions. No signup, instant.", "url": "https://tools.ridebangla.bd/business/business-name-generator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Business Name Generator", "description": "Generate catchy business name ideas free — type a keyword, pick your industry and style, and get brandable names with domain-style suggestions. No signup, instant results.", "url": "https://tools.ridebangla.bd/business/business-name-generator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the business name generator free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — completely free, unlimited ideas, no sign-up."}}, {"@type": "Question", "name": "Can I use a generated name for my real business?", "acceptedAnswer": {"@type": "Answer", "text": "The ideas are yours to use, but always check trademark registries and domain availability in your country before launching."}}, {"@type": "Question", "name": "Does it check if the .com domain is free?", "acceptedAnswer": {"@type": "Answer", "text": "It shows the domain-style spelling so you can check quickly, but live availability needs a registrar’s lookup — we don’t guess."}}, {"@type": "Question", "name": "How are the names made?", "acceptedAnswer": {"@type": "Answer", "text": "By combining brandable syllables, industry words and your keyword in several proven naming patterns — every click gives a fresh batch."}}, {"@type": "Question", "name": "Is my keyword sent anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. Name generation runs entirely in your browser; nothing leaves your device."}}]}</script>
 </head>
 <body>
@@ -239,11 +239,15 @@
     }
     if (style === 'keyword' && kw) {
       var k = cap(kw);
-      var tails = ['Lab','Hub','Works','Co','ly','ify','Pro','Plus','Go','Nest','HQ','Base','Line','Loop','Mint','Pilot','Shift','Stack','Stream','Wave','Zen','Nova','Edge','Bloom','Craft','Forge','Spark','Wise'];
-      var r = Math.random();
-      if (r < 0.5) return k + pick(tails);
-      if (r < 0.8) return pick(PRE) + k.toLowerCase();
-      return k + pick(MID);
+      var tails = ['Lab','Hub','Works','Co','ly','ify','Pro','Plus','Go','Nest','HQ','ly',
+        'Stack','Base','Loop','Line','Craft','Smith','Mint','Pilot','Forge','Sprint',
+        'Desk','Wave','House','Club','Studio','Cart','Box','Bay','Port','Lane','Park',
+        'Spot','Zone','Dept','Supply','Goods','Market','Trade','Works','Foundry',
+        'Collective','Union','Society','Guild','Circle','Tribe'];
+      var heads = ['Get','Go','My','The','We','Up','On','Hi'];
+      // mix suffix-style and prefix-style so batches stay unique
+      if (Math.random() < 0.3) return pick(heads) + k;
+      return k + pick(tails);
     }
     return brandable(kw);
   }

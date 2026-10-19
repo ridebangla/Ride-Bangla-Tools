@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Free URL Shortener Online — Shorten Links</title>
+<title>Free URL Shortener Online — Shorten Links | Ride Bangla Tools</title>
 <meta name="description" content="Shorten long URLs free online — clean short links in one click. No signup required. Free forever — no signup, everything runs privately in your browser.">
 <link rel="canonical" href="https://tools.ridebangla.bd/seo/url-shortener.html">
-<meta property="og:title" content="Free URL Shortener Online — Shorten Links">
+<meta property="og:title" content="Free URL Shortener Online — Shorten Links | Ride Bangla Tools">
 <meta property="og:description" content="Shorten long URLs free online — clean short links in one click. No signup required. Free forever — no signup, everything runs privately in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/seo/url-shortener.html">
@@ -95,8 +95,12 @@ const copyBtn = document.getElementById('copyBtn');
 
 function isValidUrl(s) {
   try {
+    if (/\s/.test(s)) return false; // spaces are never valid in a typed URL
     const u = new URL(s);
-    return u.protocol === 'http:' || u.protocol === 'https:';
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return false;
+    const h = u.hostname;
+    // plausible host: dotted domain, localhost, IP literal
+    return h === 'localhost' || h.indexOf('.') !== -1 || /^\d+\.\d+\.\d+\.\d+$/.test(h) || h.charAt(0) === '[';
   } catch (e) { return false; }
 }
 

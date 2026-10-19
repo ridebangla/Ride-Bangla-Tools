@@ -1,3 +1,0 @@
-Contact: https://ridebangla.bd
-Expires: 2027-10-13T00:00:00.000Z
-Preferred-Languages: en, bn

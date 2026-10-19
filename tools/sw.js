@@ -1,5 +1,5 @@
 /* Ride Bangla Tools — service worker (offline-capable PWA) */
-var CACHE = 'rb-tools-v1';
+var CACHE = 'rb-tools-v2';
 var CORE = [
   '/',
   '/index.html',

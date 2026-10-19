@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Free Invoice Generator — Make Professional Invoices Online (PDF)</title>
+<title>Free Invoice Generator — Make Professional Invoices Online (PDF) | Ride Bangla Tools</title>
 <meta name="description" content="Create professional invoices online free — add items, tax and discount, preview live, and download a clean PDF. No signup, everything stays in your browser.">
 <link rel="canonical" href="https://tools.ridebangla.bd/business/invoice-generator.html">
-<meta property="og:title" content="Free Invoice Generator — Make Professional Invoices Online (PDF)">
+<meta property="og:title" content="Free Invoice Generator — Make Professional Invoices Online (PDF) | Ride Bangla Tools">
 <meta property="og:description" content="Create professional invoices online free — add items, tax and discount, preview live, and download a clean PDF. No signup, everything stays in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/business/invoice-generator.html">
@@ -239,8 +239,8 @@ function addRow(desc, qty, rate) {
   if (desc) tr.querySelector('.d').value = desc;
   if (qty != null) tr.querySelector('.q').value = qty;
   if (rate != null) tr.querySelector('.r').value = rate;
-  tr.querySelector('.del').addEventListener('click', function () { tr.remove(); if (window.recalc) window.recalc(); });
-  tr.querySelectorAll('input').forEach(function (i) { i.addEventListener('input', function () { if (window.recalc) window.recalc(); }); });
+  tr.querySelector('.del').addEventListener('click', function () { tr.remove(); recalc(); });
+  tr.querySelectorAll('input').forEach(function (i) { i.addEventListener('input', recalc); });
   tb.appendChild(tr);
 }
 function getItems() {
@@ -264,6 +264,7 @@ function val(id) { var el = document.getElementById(id); return el ? el.value.tr
 function todayISO() { return new Date().toISOString().slice(0, 10); }
 
 (function () {
+  window.recalc = recalc; // global addRow() binds bare `recalc`; hoisted below
   document.getElementById('docNo').value = 'INV-' + new Date().getFullYear() + '-' + String(Math.floor(1000 + Math.random() * 9000));
   document.getElementById('invDate').value = todayISO();
   var due = new Date(); due.setDate(due.getDate() + 14);
@@ -276,7 +277,11 @@ function todayISO() { return new Date().toISOString().slice(0, 10); }
   addRow('Website design — homepage', 1, 150);
   addRow('Logo design', 1, 80);
   document.getElementById('addItem').addEventListener('click', function () { addRow('', 1, 0); });
-  window.recalc = function () {
+  ['fromName','fromAddr','toName','toAddr','docNo','invDate','dueDate','currency','taxRate','discPct','notes'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', recalc);
+  });
+
+  function recalc() {
     var sym = document.getElementById('currency').value;
     var items = getItems();
     var t = calcTotals(items, parseFloat(document.getElementById('taxRate').value) || 0, parseFloat(document.getElementById('discPct').value) || 0);
@@ -301,18 +306,14 @@ function todayISO() { return new Date().toISOString().slice(0, 10); }
       try { localStorage.setItem('rb_biz_profile', JSON.stringify({ fromName: val('fromName'), fromAddr: val('fromAddr') })); } catch (e) {}
     }
   };
-  ['fromName','fromAddr','toName','toAddr','docNo','invDate','dueDate','currency','taxRate','discPct','notes'].forEach(function (id) {
-    document.getElementById(id).addEventListener('input', function () { window.recalc(); });
-  });
-
   function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  window.recalc();
+  recalc();
 
   document.getElementById('printBtn').addEventListener('click', function () { window.print(); });
   document.getElementById('dlPdf').addEventListener('click', async function () {
     var btn = this; btn.disabled = true; btn.textContent = 'Building PDF…';
     try {
-      if (!window.PDFLib) await loadScript('../assets/pdf-lib.min.js');
+      if (!window.PDFLib) await loadScript('https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js');
       var sym = document.getElementById('currency').value;
       var items = getItems().filter(function (it) { return it.desc || it.qty || it.rate; });
       var r = await RB_BIZPDF.makeDoc('INVOICE', {

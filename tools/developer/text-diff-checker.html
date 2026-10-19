@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Text Diff Checker — Compare Two Texts Online Free</title>
+<title>Text Diff Checker — Compare Two Texts Online Free | Ride Bangla Tools</title>
 <meta name="description" content="Compare two texts online free — paste the original and the changed version to see exactly which lines were added or removed. No signup, instant line diff.">
 <link rel="canonical" href="https://tools.ridebangla.bd/developer/text-diff-checker.html">
-<meta property="og:title" content="Text Diff Checker — Compare Two Texts Online Free">
+<meta property="og:title" content="Text Diff Checker — Compare Two Texts Online Free | Ride Bangla Tools">
 <meta property="og:description" content="Compare two texts online free — paste the original and the changed version to see exactly which lines were added or removed. No signup, instant line diff.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/developer/text-diff-checker.html">
@@ -219,23 +219,6 @@
   function run() {
     var a = document.getElementById('a').value.split('\n');
     var b = document.getElementById('b').value.split('\n');
-    var box = document.getElementById('diffOut');
-    if (a.length * b.length > 4000000) {
-      // large inputs: fall back to a simple positional comparison
-      box.innerHTML = '';
-      var n = Math.max(a.length, b.length), lines = 0, chars = 0;
-      for (var k = 0; k < n; k++) {
-        var x = a[k], yy = b[k];
-        if (x === yy) { var d0 = document.createElement('div'); d0.className = 'dc'; d0.textContent = '  ' + (x == null ? '' : x); box.appendChild(d0); }
-        else {
-          if (x != null) { var d1 = document.createElement('div'); d1.className = 'dl'; d1.textContent = '- ' + x; box.appendChild(d1); lines++; chars += x.length; }
-          if (yy != null) { var d2 = document.createElement('div'); d2.className = 'al'; d2.textContent = '+ ' + yy; box.appendChild(d2); lines++; chars += yy.length; }
-        }
-      }
-      document.getElementById('statLines').textContent = lines;
-      document.getElementById('statChars').textContent = chars;
-      return;
-    }
     var d = diffLines(a, b);
     var box = document.getElementById('diffOut');
     box.innerHTML = '';
