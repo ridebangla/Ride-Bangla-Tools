@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text Diff Checker — Compare Two Texts Online Free</title>
+<meta name="description" content="Compare two texts online free — paste the original and the changed version to see exactly which lines were added or removed. No signup, instant line diff.">
+<link rel="canonical" href="https://tools.ridebangla.bd/developer/text-diff-checker.html">
+<meta property="og:title" content="Text Diff Checker — Compare Two Texts Online Free">
+<meta property="og:description" content="Compare two texts online free — paste the original and the changed version to see exactly which lines were added or removed. No signup, instant line diff.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/developer/text-diff-checker.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/icon-192.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="manifest" href="../assets/manifest.webmanifest">
+<meta name="theme-color" content="#0B3D24">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://tools.ridebangla.bd/developer/"}, {"@type": "ListItem", "position": 3, "name": "Text Diff Checker", "item": "https://tools.ridebangla.bd/developer/text-diff-checker.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Text Diff Checker", "description": "Compare two texts online free — paste the original and the changed version to see exactly which lines were added or removed. No signup, instant line diff.", "url": "https://tools.ridebangla.bd/developer/text-diff-checker.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the text diff checker free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — completely free, no sign-up, unlimited comparisons."}}, {"@type": "Question", "name": "How does the comparison work?", "acceptedAnswer": {"@type": "Answer", "text": "It compares your texts line by line: removed lines show in red, added lines in green, unchanged lines in gray."}}, {"@type": "Question", "name": "Is my text uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. The diff runs entirely in your browser with JavaScript — nothing you paste ever leaves your device."}}, {"@type": "Question", "name": "Can it compare code?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — it works great for code, config files, articles, contracts and any other text."}}, {"@type": "Question", "name": "What do the stats mean?", "acceptedAnswer": {"@type": "Answer", "text": "\"Lines changed\" counts added plus removed lines; \"Characters changed\" totals the characters in those lines."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Homepage</a>
+      <a href="../#all-tools">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/" style="color:var(--text-hi)">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../business/">Business</a>
+      <a href="../career/">Career</a>
+      <a href="../about.html">About</a>
+      <a href="../help-center.html#contact">Help Center</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../privacy.html">Privacy Policy</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / Text Diff Checker</div>
+    <h1>Text Diff Checker</h1>
+    <p class="lede">Spot every change between two texts in seconds — paste the original and the new version, and the differences light up line by line. Free, instant, nothing uploaded.</p>
+  </div>
+</section>
+<section class="tool-body">
+  <div class="panel">
+    <style>
+    .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:700px){.diff-grid{grid-template-columns:1fr}}
+    #diffOut{font-family:var(--mono,monospace);font-size:12.5px;white-space:pre-wrap;border:1px solid var(--border,#e5e7eb);border-radius:10px;padding:12px;max-height:420px;overflow:auto;background:var(--card,#fff)}
+    .dl{background:#FEE2E2;display:block}
+    .al{background:#DCFCE7;display:block}
+    .dc{color:var(--muted,#6b7280);display:block}
+    </style>
+    <div class="diff-grid">
+      <div class="field"><label>Original text</label><textarea id="a" rows="10" placeholder="Paste the original text here…"></textarea></div>
+      <div class="field"><label>Changed text</label><textarea id="b" rows="10" placeholder="Paste the changed text here…"></textarea></div>
+    </div>
+    <div class="btn-row"><button type="button" class="btn" id="cmp">Compare texts</button>
+      <button type="button" class="btn ghost" id="clr">Clear</button></div>
+    <div class="field" style="margin-top:12px"><label>Difference <span style="font-weight:400;font-size:12px;color:var(--muted,#6b7280)">— red = removed, green = added</span></label>
+      <div id="diffOut">Run a comparison to see the differences.</div></div>
+    <div class="tot-line"><span>Lines changed</span><b id="statLines">0</b></div>
+    <div class="tot-line"><span>Characters changed</span><b id="statChars">0</b></div>
+  </div>
+</section>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Text Diff Checker</h2>
+    <ol class="how-steps">
+        <li>Paste the original text in the left box.</li>
+        <li>Paste the changed version in the right box.</li>
+        <li>Click Compare texts.</li>
+        <li>Review the highlighted differences and the change statistics.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is the text diff checker free?</summary>
+        <p>Yes — completely free, no sign-up, unlimited comparisons.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How does the comparison work?</summary>
+        <p>It compares your texts line by line: removed lines show in red, added lines in green, unchanged lines in gray.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my text uploaded to a server?</summary>
+        <p>No. The diff runs entirely in your browser with JavaScript — nothing you paste ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can it compare code?</summary>
+        <p>Yes — it works great for code, config files, articles, contracts and any other text.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What do the stats mean?</summary>
+        <p>"Lines changed" counts added plus removed lines; "Characters changed" totals the characters in those lines.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Developer</h3>
+    <div class="related-list">
+      <a href="json-formatter.html">JSON Formatter</a>
+      <a href="csv-to-json-converter.html">CSV to JSON Converter</a>
+      <a href="markdown-to-html.html">Markdown to HTML</a>
+      <a href="../developer/">All Developer tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../business/">Business</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla Limited. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js?v=3"></script>
+<script src="../assets/ads-sitewide.js?v=3"></script>
+<script>
+
+(function () {
+  // LCS-based line diff
+  function diffLines(a, b) {
+    var n = a.length, m = b.length;
+    var dp = [];
+    for (var i = 0; i <= n; i++) { dp.push(new Array(m + 1).fill(0)); }
+    for (var i = n - 1; i >= 0; i--)
+      for (var j = m - 1; j >= 0; j--)
+        dp[i][j] = a[i] === b[j] ? dp[i+1][j+1] + 1 : Math.max(dp[i+1][j], dp[i][j+1]);
+    var out = [], i = 0, j = 0;
+    while (i < n && j < m) {
+      if (a[i] === b[j]) { out.push({ t: ' ', s: a[i] }); i++; j++; }
+      else if (dp[i+1][j] >= dp[i][j+1]) { out.push({ t: '-', s: a[i] }); i++; }
+      else { out.push({ t: '+', s: b[j] }); j++; }
+    }
+    while (i < n) out.push({ t: '-', s: a[i++] });
+    while (j < m) out.push({ t: '+', s: b[j++] });
+    return out;
+  }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function run() {
+    var a = document.getElementById('a').value.split('\n');
+    var b = document.getElementById('b').value.split('\n');
+    var box = document.getElementById('diffOut');
+    if (a.length * b.length > 4000000) {
+      // large inputs: fall back to a simple positional comparison
+      box.innerHTML = '';
+      var n = Math.max(a.length, b.length), lines = 0, chars = 0;
+      for (var k = 0; k < n; k++) {
+        var x = a[k], yy = b[k];
+        if (x === yy) { var d0 = document.createElement('div'); d0.className = 'dc'; d0.textContent = '  ' + (x == null ? '' : x); box.appendChild(d0); }
+        else {
+          if (x != null) { var d1 = document.createElement('div'); d1.className = 'dl'; d1.textContent = '- ' + x; box.appendChild(d1); lines++; chars += x.length; }
+          if (yy != null) { var d2 = document.createElement('div'); d2.className = 'al'; d2.textContent = '+ ' + yy; box.appendChild(d2); lines++; chars += yy.length; }
+        }
+      }
+      document.getElementById('statLines').textContent = lines;
+      document.getElementById('statChars').textContent = chars;
+      return;
+    }
+    var d = diffLines(a, b);
+    var box = document.getElementById('diffOut');
+    box.innerHTML = '';
+    var lines = 0, chars = 0;
+    d.forEach(function (r) {
+      var div = document.createElement('div');
+      div.className = r.t === '-' ? 'dl' : (r.t === '+' ? 'al' : 'dc');
+      div.textContent = r.t + ' ' + r.s;
+      box.appendChild(div);
+      if (r.t !== ' ') { lines++; chars += r.s.length; }
+    });
+    document.getElementById('statLines').textContent = lines;
+    document.getElementById('statChars').textContent = chars;
+  }
+  document.getElementById('cmp').addEventListener('click', run);
+  document.getElementById('clr').addEventListener('click', function () {
+    document.getElementById('a').value = ''; document.getElementById('b').value = '';
+    document.getElementById('diffOut').textContent = 'Run a comparison to see the differences.';
+    document.getElementById('statLines').textContent = '0';
+    document.getElementById('statChars').textContent = '0';
+  });
+})();
+
+</script>
+</body>
+</html>

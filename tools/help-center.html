@@ -17,6 +17,8 @@
 <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="assets/manifest.webmanifest">
+<meta name="theme-color" content="#0B3D24">
 <link rel="stylesheet" href="assets/style.css?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,6 +89,7 @@
       <a href="./qr/">QR Code</a>
       <a href="./date-time/">Date & Time</a>
       <a href="./finance/">Finance</a>
+      <a href="business/">Business</a>
       <a href="./career/">Career</a>
       <a href="./about.html">About</a>
       <a href="./help-center.html#contact">Help Center</a>
@@ -187,7 +190,7 @@
   <div class="container cols">
     <div>
       <strong>Ride Bangla Tools</strong>
-      <p>42 free tools. No signup. Your files never leave your device.</p>
+      <p>54 free tools. No signup. Your files never leave your device.</p>
     </div>
     <div>
       <strong>Company</strong>
@@ -202,7 +205,7 @@
 
 <script src="assets/main.js?v=3"></script>
 <script src="assets/ads-sitewide.js?v=3"></script>
-<script src="assets/ai.js?v=4"></script>
+<script src="assets/ai.js?v=6"></script>
 <script>
 (function() {
   var msgs = document.getElementById('hcMsgs');
@@ -262,7 +265,7 @@
     if (r.notDeployed) {
       addMsg('AI service is not deployed yet. The site owner needs to redeploy on Vercel for AI to work. Meanwhile, visit ridebangla.bd for help!', 'ai');
     } else if (r.notConfigured) {
-      addMsg('AI is not configured yet. Please visit ridebangla.bd for help!', 'ai');
+      addMsg(r.message || 'AI is not configured yet. Please visit ridebangla.bd for help!', 'ai');
     } else if (!r.ok) {
       addMsg('Sorry, I had trouble answering. Try again or visit ridebangla.bd', 'ai');
     } else {

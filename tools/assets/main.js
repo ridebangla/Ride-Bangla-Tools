@@ -6,7 +6,62 @@
     toggle.addEventListener('click', function () {
       nav.classList.toggle('open');
     });
+    // close the drawer when a link is tapped
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) nav.classList.remove('open');
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') nav.classList.remove('open');
+    });
   }
+
+  // Header search panel (injected): the search button in the header opens a
+  // real search field — the hero video carries no search bar (user decision).
+  (function headerSearch() {
+    var header = document.querySelector('.site-header');
+    var btn = document.getElementById('header-search-btn');
+    if (!header || !btn || document.getElementById('header-search')) return;
+    var panel = document.createElement('div');
+    panel.className = 'header-search';
+    panel.id = 'header-search';
+    panel.hidden = true;
+    panel.innerHTML =
+      '<div class="hs-inner">' +
+      '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>' +
+      '<input id="tool-search" type="text" data-i18n-ph="hero.searchPh" placeholder="Search tools \u2014 e.g. \u0022pdf\u0022, \u0022qr\u0022, \u0022age\u0022" autocomplete="off" aria-label="Search tools">' +
+      '<button type="button" class="hs-close" aria-label="Close search">\u00d7</button>' +
+      '</div>' +
+      '<div class="search-count" id="search-count"></div>';
+    header.appendChild(panel);
+    var input = panel.querySelector('#tool-search');
+    function open() {
+      panel.hidden = false;
+      // re-run i18n for the injected placeholder if the i18n engine is ready
+      if (window.rbApplyI18n) { try { window.rbApplyI18n(); } catch (e) {} }
+      setTimeout(function () { input.focus(); }, 30);
+    }
+    function close() { panel.hidden = true; }
+    btn.addEventListener('click', function () {
+      if (panel.hidden) open(); else close();
+    });
+    panel.querySelector('.hs-close').addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+    });
+    // typing in header search scrolls the tool catalog into view (homepage)
+    var scrolled = false;
+    input.addEventListener('input', function () {
+      if (scrolled) return;
+      var cat = document.getElementById('all-tools');
+      if (cat) {
+        var r = cat.getBoundingClientRect();
+        if (r.top > window.innerHeight || r.bottom < 0) {
+          scrolled = true;
+          cat.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  })();
 
   // Homepage / category live search
   var search = document.getElementById('tool-search');
@@ -198,3 +253,10 @@ function rbToast(msg) {
     inject();
   }
 })();
+
+// PWA: register service worker (offline-capable)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
+}
