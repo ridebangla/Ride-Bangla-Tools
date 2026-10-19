@@ -13,7 +13,10 @@
     "finance": "Finanzas",
     "career": "Carrera",
     "about": "Acerca de",
-    "privacy": "Privacidad"
+    "privacy": "Privacidad",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
   },
   "hero": {
     "eyebrow": "32 HERRAMIENTAS GRATIS · SIN REGISTRO",
@@ -25,7 +28,8 @@
     "trust2b": "Sin registro",
     "trust2t": "empieza al instante",
     "trust3b": "Seguro y privado",
-    "trust3t": "funciona en tu navegador"
+    "trust3t": "funciona en tu navegador",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
   },
   "showcase": {
     "eyebrow": "UN PRODUCTO DE RIDE BANGLA",

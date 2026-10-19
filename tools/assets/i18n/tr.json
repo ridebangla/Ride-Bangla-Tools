@@ -13,7 +13,10 @@
     "finance": "Finans",
     "career": "Kariyer",
     "about": "Hakkında",
-    "privacy": "Gizlilik"
+    "privacy": "Gizlilik",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
   },
   "hero": {
     "eyebrow": "32 ÜCRETSİZ ARAÇ · KAYIT GEREKMEZ",
@@ -25,7 +28,8 @@
     "trust2b": "Kayıt yok",
     "trust2t": "hemen başla",
     "trust3b": "Güvenli ve gizli",
-    "trust3t": "tarayıcında çalışır"
+    "trust3t": "tarayıcında çalışır",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
   },
   "showcase": {
     "eyebrow": "BİR RIDE BANGLA ÜRÜNÜ",

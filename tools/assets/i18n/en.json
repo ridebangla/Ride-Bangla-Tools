@@ -4,8 +4,8 @@
     "main": "Main Website"
   },
   "hero": {
-    "eyebrow": "32 FREE TOOLS · NO SIGNUP REQUIRED",
-    "lede": "Edit photos, build a CV, generate QR codes, convert files, wipe hidden metadata and more — 31 small tools that each do one job well. Nothing to install, nothing to sign up for, and your files never leave your browser.",
+    "eyebrow": "42 FREE TOOLS · NO SIGNUP REQUIRED",
+    "lede": "Edit photos, build a CV, generate QR codes, convert files, wipe hidden metadata and more — 42 small tools that each do one job well. Nothing to install, nothing to sign up for, and your files never leave your browser.",
     "searchPh": "Search tools — e.g. \"pdf\", \"qr\", \"age\"",
     "title": "Free online tools for a <span class=\"accent\">smarter you.</span>",
     "trust1b": "100% Free",
@@ -13,7 +13,8 @@
     "trust2b": "No Signup",
     "trust2t": "start instantly",
     "trust3b": "Secure & Private",
-    "trust3t": "runs in your browser"
+    "trust3t": "runs in your browser",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
   },
   "nav": {
     "about": "About",
@@ -29,7 +30,10 @@
     "privacy": "Privacy",
     "qr": "QR Code",
     "seo": "SEO",
-    "text": "Text"
+    "text": "Text",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
   },
   "showcase": {
     "cta1": "Visit Main Website",

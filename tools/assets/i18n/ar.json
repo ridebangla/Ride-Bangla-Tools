@@ -13,7 +13,10 @@
     "finance": "المالية",
     "career": "المهنة",
     "about": "من نحن",
-    "privacy": "الخصوصية"
+    "privacy": "الخصوصية",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
   },
   "hero": {
     "eyebrow": "32 أداة مجانية · بدون تسجيل",
@@ -25,7 +28,8 @@
     "trust2b": "بدون تسجيل",
     "trust2t": "ابدأ فورًا",
     "trust3b": "آمن وخاص",
-    "trust3t": "يعمل في متصفحك"
+    "trust3t": "يعمل في متصفحك",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
   },
   "showcase": {
     "eyebrow": "منتج من RIDE BANGLA",

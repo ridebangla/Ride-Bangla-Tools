@@ -13,7 +13,10 @@
     "finance": "金融",
     "career": "キャリア",
     "about": "概要",
-    "privacy": "プライバシー"
+    "privacy": "プライバシー",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
   },
   "hero": {
     "eyebrow": "32の無料ツール · 登録不要",
@@ -25,7 +28,8 @@
     "trust2b": "登録不要",
     "trust2t": "すぐに開始",
     "trust3b": "安全＆プライベート",
-    "trust3t": "ブラウザで動作"
+    "trust3t": "ブラウザで動作",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
   },
   "showcase": {
     "eyebrow": "RIDE BANGLA製品",

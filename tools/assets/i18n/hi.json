@@ -13,7 +13,10 @@
     "finance": "फाइनेंस",
     "career": "करियर",
     "about": "हमारे बारे में",
-    "privacy": "प्राइवेसी"
+    "privacy": "प्राइवेसी",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
   },
   "hero": {
     "eyebrow": "32 मुफ्त टूल · साइनअप नहीं",
@@ -25,7 +28,8 @@
     "trust2b": "साइनअप नहीं",
     "trust2t": "तुरंत शुरू करें",
     "trust3b": "सुरक्षित व प्राइवेट",
-    "trust3t": "आपके ब्राउज़र में चलता है"
+    "trust3t": "आपके ब्राउज़र में चलता है",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
   },
   "showcase": {
     "eyebrow": "RIDE BANGLA का प्रोडक्ट",

@@ -15,7 +15,8 @@
 
   // href (as written in nav) -> dictionary key
   var NAV_MAP = {
-    './': 'nav.allTools', '../': 'nav.allTools', '/': 'nav.allTools',
+    './': 'nav.homepage', '../': 'nav.homepage', '/': 'nav.homepage',
+    './#all-tools': 'nav.allTools', '../#all-tools': 'nav.allTools',
     'pdf/': 'nav.pdf', '../pdf/': 'nav.pdf',
     'image/': 'nav.image', '../image/': 'nav.image',
     'calculator/': 'nav.calculator', '../calculator/': 'nav.calculator',
@@ -28,7 +29,9 @@
     'finance/': 'nav.finance', '../finance/': 'nav.finance',
     'career/': 'nav.career', '../career/': 'nav.career',
     'about.html': 'nav.about', '../about.html': 'nav.about',
-    'privacy.html': 'nav.privacy', '../privacy.html': 'nav.privacy'
+    'privacy.html': 'nav.privacy', '../privacy.html': 'nav.privacy',
+    'terms.html': 'nav.terms', '../terms.html': 'nav.terms',
+    'help-center.html#contact': 'nav.helpCenter', '../help-center.html#contact': 'nav.helpCenter'
   };
 
   function detect() {

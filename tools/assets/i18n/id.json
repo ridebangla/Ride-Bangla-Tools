@@ -13,7 +13,10 @@
     "finance": "Keuangan",
     "career": "Karier",
     "about": "Tentang",
-    "privacy": "Privasi"
+    "privacy": "Privasi",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
   },
   "hero": {
     "eyebrow": "32 ALAT GRATIS · TANPA DAFTAR",
@@ -25,7 +28,8 @@
     "trust2b": "Tanpa daftar",
     "trust2t": "langsung mulai",
     "trust3b": "Aman & privat",
-    "trust3t": "berjalan di browsermu"
+    "trust3t": "berjalan di browsermu",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
   },
   "showcase": {
     "eyebrow": "PRODUK RIDE BANGLA",

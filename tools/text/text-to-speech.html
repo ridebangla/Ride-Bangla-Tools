@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text to Speech Online Free — Convert Text to Voice | Ride Bangla Tools</title>
+<meta name="description" content="Convert text to natural speech online free. Choose a voice, adjust speed and pitch, listen instantly — right in your browser.">
+<link rel="canonical" href="https://tools.ridebangla.bd/text/text-to-speech.html">
+<meta property="og:title" content="Text to Speech Online Free — Convert Text to Voice | Ride Bangla Tools">
+<meta property="og:description" content="Convert text to natural speech online free. Choose a voice, adjust speed and pitch, listen instantly — right in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/text/text-to-speech.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Text Tools", "item": "https://tools.ridebangla.bd/text/"}, {"@type": "ListItem", "position": 3, "name": "Text to Speech", "item": "https://tools.ridebangla.bd/text/text-to-speech.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Text to Speech", "description": "Convert text to natural speech online free. Choose a voice, adjust speed and pitch, listen instantly — right in your browser.", "url": "https://tools.ridebangla.bd/text/text-to-speech.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Text to Speech free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Text to Speech is completely free, with no sign-up, no daily limit, and no watermark on what you download."}},{"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Text to Speech runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device."}},{"@type": "Question", "name": "Which languages and voices are available?", "acceptedAnswer": {"@type": "Answer", "text": "The voices come from your device and browser, so the list depends on your system — most devices include several English voices and often other languages too."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Homepage</a>
+      <a href="../#all-tools">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/" style="color:var(--text-hi)">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+      <a href="../about.html">About</a>
+      <a href="../help-center.html#contact">Help Center</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../privacy.html">Privacy Policy</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Text</a> / Text to Speech</div>
+    <h1>Text to Speech</h1>
+    <p class="lede">Turn any text into spoken audio — pick a voice, tune the speed and pitch, then listen. Perfect for proofreading, learning and accessibility.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field"><label>Text to speak</label><textarea id="text" style="min-height:140px;" placeholder="Type or paste text here…"></textarea></div>
+    <div class="field"><label>Voice</label><select id="voice"><option>Loading voices…</option></select></div>
+    <div class="field"><label>Speed: <span id="rateVal">1</span>×</label><input type="range" id="rate" min="0.5" max="2" step="0.1" value="1" style="width:100%;"></div>
+    <div class="field"><label>Pitch: <span id="pitchVal">1</span></label><input type="range" id="pitch" min="0" max="2" step="0.1" value="1" style="width:100%;"></div>
+    <div class="btn-row"><button type="button" class="btn" id="speak">Speak</button><button type="button" class="btn ghost" id="stop">Stop</button></div>
+  </div>
+  <div class="panel">
+    <div class="field"><label>Status</label><div class="output" id="status">Ready. Voices are provided by your browser and device.</div></div>
+    <div class="field"><label>Reading stats</label><div class="output" id="stats">—</div></div>
+  </div>
+</section>
+<script>
+const synth=window.speechSynthesis;
+const textEl=document.getElementById('text'),voiceEl=document.getElementById('voice');
+function loadVoices(){
+  const vs=synth?synth.getVoices():[];
+  voiceEl.innerHTML='';
+  if(!vs.length){voiceEl.innerHTML='<option>No voices found on this device</option>';return;}
+  vs.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v.name+' ('+v.lang+')'+(v.default?' — default':'');voiceEl.appendChild(o);});
+}
+if(synth){loadVoices();synth.onvoiceschanged=loadVoices;}
+document.getElementById('rate').addEventListener('input',e=>document.getElementById('rateVal').textContent=e.target.value);
+document.getElementById('pitch').addEventListener('input',e=>document.getElementById('pitchVal').textContent=e.target.value);
+textEl.addEventListener('input',()=>{
+  const w=textEl.value.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('stats').textContent=w+' words · ~'+Math.max(1,Math.round(w/150))+' min at normal speed';
+});
+document.getElementById('speak').addEventListener('click',()=>{
+  if(!synth){alert('Speech is not supported in this browser.');return;}
+  const t=textEl.value.trim();if(!t){alert('Please enter some text first.');return;}
+  synth.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  const vs=synth.getVoices();if(vs.length&&voiceEl.value!=='')u.voice=vs[parseInt(voiceEl.value,10)];
+  u.rate=parseFloat(document.getElementById('rate').value);
+  u.pitch=parseFloat(document.getElementById('pitch').value);
+  u.onend=()=>document.getElementById('status').textContent='Finished.';
+  u.onerror=e=>document.getElementById('status').textContent='Speech error: '+(e.error||'unknown');
+  synth.speak(u);
+  document.getElementById('status').textContent='Speaking…';
+});
+document.getElementById('stop').addEventListener('click',()=>{if(synth)synth.cancel();document.getElementById('status').textContent='Stopped.';});
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Text to Speech</h2>
+    <ol class="how-steps">
+      <li>Type or paste your text in the box.</li>
+      <li>Pick a voice and adjust the speed and pitch sliders.</li>
+      <li>Click Speak to listen — Stop halts playback at any time.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Text to Speech free to use?</summary>
+        <p>Yes. Text to Speech is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. Text to Speech runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which languages and voices are available?</summary>
+        <p>The voices come from your device and browser, so the list depends on your system — most devices include several English voices and often other languages too.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Text</h3>
+    <div class="related-list">
+      <a href="word-counter.html">Word Counter</a>
+      <a href="case-converter.html">Case Converter</a>
+      <a href="../text/">All Text tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js?v=3"></script>
+<script src="../assets/ads-sitewide.js?v=3"></script>
+</body>
+</html>

@@ -13,7 +13,10 @@
     "finance": "Finanza",
     "career": "Carriera",
     "about": "Chi siamo",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "homepage": "Homepage",
+    "terms": "Terms & Conditions",
+    "helpCenter": "Help Center"
   },
   "hero": {
     "eyebrow": "32 STRUMENTI GRATIS · NESSUNA REGISTRAZIONE",
@@ -25,7 +28,8 @@
     "trust2b": "Senza registrazione",
     "trust2t": "inizia subito",
     "trust3b": "Sicuro e privato",
-    "trust3t": "funziona nel tuo browser"
+    "trust3t": "funziona nel tuo browser",
+    "tagline": "Convert, compress, calculate and create — right in your browser."
   },
   "showcase": {
     "eyebrow": "UN PRODOTTO RIDE BANGLA",

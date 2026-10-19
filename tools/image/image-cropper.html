@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Cropper Online Free — Crop Photos to Any Size | Ride Bangla Tools</title>
+<meta name="description" content="Crop images online free. Drag to select the crop area, use aspect-ratio presets, preview and download — all in your browser.">
+<link rel="canonical" href="https://tools.ridebangla.bd/image/image-cropper.html">
+<meta property="og:title" content="Image Cropper Online Free — Crop Photos to Any Size | Ride Bangla Tools">
+<meta property="og:description" content="Crop images online free. Drag to select the crop area, use aspect-ratio presets, preview and download — all in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/image/image-cropper.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://tools.ridebangla.bd/image/"}, {"@type": "ListItem", "position": 3, "name": "Image Cropper", "item": "https://tools.ridebangla.bd/image/image-cropper.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Image Cropper", "description": "Crop images online free. Drag to select the crop area, use aspect-ratio presets, preview and download — all in your browser.", "url": "https://tools.ridebangla.bd/image/image-cropper.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Image Cropper free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Image Cropper is completely free, with no sign-up, no daily limit, and no watermark on what you download."}},{"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Image Cropper runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device."}},{"@type": "Question", "name": "Will cropping reduce my image quality?", "acceptedAnswer": {"@type": "Answer", "text": "No. The cropped area is saved at its original resolution — only the parts outside your selection are removed."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Homepage</a>
+      <a href="../#all-tools">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/" style="color:var(--text-hi)">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../career/">Career</a>
+      <a href="../about.html">About</a>
+      <a href="../help-center.html#contact">Help Center</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../privacy.html">Privacy Policy</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Image Cropper</div>
+    <h1>Image Cropper</h1>
+    <p class="lede">Crop any photo right in your browser — drag to draw the crop box, lock an aspect ratio, then download the cropped image.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field"><label>Choose image</label><input type="file" id="file" accept="image/*"></div>
+    <div class="field"><label>Aspect ratio</label>
+      <select id="ratio"><option value="free">Free</option><option value="1:1">Square (1:1)</option><option value="4:3">4:3</option><option value="3:4">3:4</option><option value="16:9">16:9</option><option value="9:16">9:16</option></select>
+    </div>
+    <div class="field"><label>Crop preview — drag on the image</label><div style="position:relative;display:inline-block;max-width:100%;"><canvas id="cv" style="max-width:100%;border-radius:8px;touch-action:none;cursor:crosshair;"></canvas></div></div>
+    <div class="field"><label>Selection</label><div class="output" id="selInfo">—</div></div>
+    <div class="btn-row"><button type="button" class="btn" id="crop">Crop &amp; Download</button><button type="button" class="btn ghost" id="reset">Reset selection</button></div>
+  </div>
+  <div class="panel">
+    <div class="field"><label>Cropped result</label><div class="output" id="outWrap" style="min-height:120px;text-align:center;"><span style="color:var(--muted)">Your cropped image will appear here</span></div></div>
+  </div>
+</section>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let img=null,scale=1,sel=null,dragging=false,dragStart=null;
+function draw(){
+  if(!img)return;
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.drawImage(img,0,0,cv.width,cv.height);
+  if(sel){
+    ctx.fillStyle='rgba(0,0,0,.45)';
+    ctx.fillRect(0,0,cv.width,sel.y);ctx.fillRect(0,sel.y+sel.h,cv.width,cv.height-sel.y-sel.h);
+    ctx.fillRect(0,sel.y,sel.x,sel.h);ctx.fillRect(sel.x+sel.w,sel.y,cv.width-sel.x-sel.w,sel.h);
+    ctx.strokeStyle='#2563eb';ctx.lineWidth=2;ctx.strokeRect(sel.x,sel.y,sel.w,sel.h);
+  }
+}
+function applyRatio(r){
+  if(r.w&&r.h&&sel){
+    const cx=sel.x+sel.w/2,cy=sel.y+sel.h/2;
+    let w=sel.w,h=w*r.h/r.w;
+    if(h>sel.h){h=sel.h;w=h*r.w/r.h;}
+    if(cx+w/2>cv.width)w=2*(cv.width-cx);if(cx-w/2<0)w=2*cx;
+    if(cy+h/2>cv.height)h=2*(cv.height-cy);if(cy-h/2<0)h=2*cy;
+    sel={x:cx-w/2,y:cy-h/2,w:Math.max(4,w),h:Math.max(4,h)};
+    draw();updateInfo();
+  }
+}
+function updateInfo(){
+  document.getElementById('selInfo').textContent=sel?('x '+Math.round(sel.x/scale)+', y '+Math.round(sel.y/scale)+', '+Math.round(sel.w/scale)+' × '+Math.round(sel.h/scale)+' px'):'—';
+}
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*(cv.width/r.width),y:(e.clientY-r.top)*(cv.height/r.height)};}
+cv.addEventListener('pointerdown',e=>{if(!img)return;dragging=true;dragStart=pos(e);sel={x:dragStart.x,y:dragStart.y,w:0,h:0};cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',e=>{
+  if(!dragging)return;const p=pos(e);
+  let x=Math.min(dragStart.x,p.x),y=Math.min(dragStart.y,p.y),w=Math.abs(p.x-dragStart.x),h=Math.abs(p.y-dragStart.y);
+  x=Math.max(0,x);y=Math.max(0,y);w=Math.min(w,cv.width-x);h=Math.min(h,cv.height-y);
+  const rv=document.getElementById('ratio').value;
+  if(rv!=='free'&&w>4&&h>4){const[a,b]=rv.split(':').map(Number);h=w*b/a;if(y+h>cv.height){h=cv.height-y;w=h*a/b;}}
+  sel={x,y,w,h};draw();updateInfo();
+});
+cv.addEventListener('pointerup',()=>dragging=false);
+document.getElementById('ratio').addEventListener('change',e=>{
+  const v=e.target.value;if(v!=='free'){const[a,b]=v.split(':').map(Number);applyRatio({w:a,h:b});}
+});
+document.getElementById('file').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{const im=new Image();im.onload=()=>{
+    img=im;const maxW=560;scale=Math.min(1,maxW/im.naturalWidth);
+    cv.width=Math.round(im.naturalWidth*scale);cv.height=Math.round(im.naturalHeight*scale);
+    sel={x:cv.width*0.1,y:cv.height*0.1,w:cv.width*0.8,h:cv.height*0.8};
+    draw();updateInfo();
+  };im.src=rd.result;};
+  rd.readAsDataURL(f);
+});
+document.getElementById('reset').addEventListener('click',()=>{if(!img)return;sel={x:cv.width*0.1,y:cv.height*0.1,w:cv.width*0.8,h:cv.height*0.8};draw();updateInfo();});
+document.getElementById('crop').addEventListener('click',()=>{
+  if(!img||!sel||sel.w<4||sel.h<4){alert('Please choose an image and draw a crop area first.');return;}
+  const sx=Math.round(sel.x/scale),sy=Math.round(sel.y/scale),sw=Math.round(sel.w/scale),sh=Math.round(sel.h/scale);
+  const c=document.createElement('canvas');c.width=sw;c.height=sh;
+  c.getContext('2d').drawImage(img,sx,sy,sw,sh,0,0,sw,sh);
+  const w=document.getElementById('outWrap');w.innerHTML='';
+  const pv=c.cloneNode();pv.style.maxWidth='100%';pv.style.borderRadius='8px';w.appendChild(pv);
+  const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='cropped.png';a.click();
+});
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Image Cropper</h2>
+    <ol class="how-steps">
+      <li>Choose an image file from your device.</li>
+      <li>Drag on the preview to draw your crop area (or pick an aspect-ratio preset).</li>
+      <li>Click Crop & Download to save the cropped image.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Image Cropper free to use?</summary>
+        <p>Yes. Image Cropper is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. Image Cropper runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Will cropping reduce my image quality?</summary>
+        <p>No. The cropped area is saved at its original resolution — only the parts outside your selection are removed.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Image</h3>
+    <div class="related-list">
+      <a href="image-resizer.html">Image Resizer</a>
+      <a href="photo-editor.html">Photo Editor</a>
+      <a href="../image/">All Image tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="name">Ride Bangla Tools</div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js?v=3"></script>
+<script src="../assets/ads-sitewide.js?v=3"></script>
+</body>
+</html>
