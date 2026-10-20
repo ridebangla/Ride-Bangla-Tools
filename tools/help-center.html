@@ -209,7 +209,6 @@
 
 <script src="assets/main.js?v=4"></script>
 <script src="assets/ads-sitewide.js?v=3"></script>
-<script src="assets/ai.js?v=6"></script>
 <script>
 (function() {
   var msgs = document.getElementById('hcMsgs');
@@ -249,6 +248,25 @@
     return d;
   }
 
+  // Help chat = the company's OWN AI Agent platform widget
+  // (POST ai.ridebangla.bd/api/chat/widget, public siteKey). The platform
+  // agent supplies the brain (business knowledge) and stores the
+  // conversation in the platform; there is NO local system prompt and no
+  // separate help implementation on this page. Visitor/conversation ids
+  // are session-scoped only — message text is never persisted client-side.
+  var WIDGET_API = 'https://ai.ridebangla.bd/api/chat/widget';
+  var SITE_KEY = 'rbsite-00f37b79c72f4e678febbd82d43bb46c'; // public site key
+  function visitorId() {
+    try {
+      var v = sessionStorage.getItem('rb-help-visitor');
+      if (!v) {
+        v = 'tools-help-' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+        sessionStorage.setItem('rb-help-visitor', v);
+      }
+      return v;
+    } catch (e) { return 'tools-help-anon'; }
+  }
+
   async function send(question) {
     question = (question || '').trim();
     if (!question) return;
@@ -262,18 +280,37 @@
     msgs.appendChild(typing);
     msgs.scrollTop = msgs.scrollHeight;
 
-    var r = await RB_AI.callAI('help-chat', question);
+    var convId = '';
+    try { convId = sessionStorage.getItem('rb-help-conv') || ''; } catch (e) {}
+    var status = 0, d = null;
+    try {
+      var r = await fetch(WIDGET_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          siteKey: SITE_KEY,
+          message: question.slice(0, 5000),
+          visitorId: visitorId(),
+          conversationId: convId || undefined
+        })
+      });
+      status = r.status;
+      try { d = await r.json(); } catch (e) {}
+    } catch (e) { /* network/CORS — honest state below */ }
     typing.remove();
     sendBtn.disabled = false;
 
-    if (r.notDeployed) {
-      addMsg('AI service is not deployed yet. The site owner needs to redeploy on Vercel for AI to work. Meanwhile, visit ridebangla.bd for help!', 'ai');
-    } else if (r.notConfigured) {
-      addMsg(r.message || 'AI is not configured yet. Please visit ridebangla.bd for help!', 'ai');
-    } else if (!r.ok) {
-      addMsg('Sorry, I had trouble answering. Try again or visit ridebangla.bd', 'ai');
+    if (status === 200 && d && d.response) {
+      if (d.conversationId) {
+        try { sessionStorage.setItem('rb-help-conv', d.conversationId); } catch (e) {}
+      }
+      addMsg(d.response, 'ai');
+    } else if (status === 402) {
+      addMsg('The AI assistant is paused right now. Please use the contact form below or visit ridebangla.bd — our team will help you there.', 'ai');
+    } else if (status === 429) {
+      addMsg('Too many messages — please wait a moment and try again.', 'ai');
     } else {
-      addMsg(r.result, 'ai');
+      addMsg('Sorry, I could not reach the assistant just now. Please try again in a moment, or use the contact form below.', 'ai');
     }
     input.focus();
   }
@@ -283,9 +320,11 @@
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input.value); }
   });
   document.getElementById('hcClear').addEventListener('click', function() {
+    try { sessionStorage.removeItem('rb-help-conv'); } catch (e) {}
     msgs.innerHTML = '<div class="hc-msg hc-ai">Hello! I\'m the Ride Bangla assistant. Ask me anything about our services, tools, or company — in any language!</div>';
   });
-  // Privacy: ensure NO chat persistence (no localStorage/sessionStorage used)
+  // Privacy: message text is never persisted client-side; only the
+  // session-scoped visitor/conversation ids live in sessionStorage.
 
   document.getElementById('hcQuick').addEventListener('click', function(e) {
     if (e.target.tagName === 'BUTTON') send(e.target.textContent);
