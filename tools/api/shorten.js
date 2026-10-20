@@ -141,6 +141,16 @@ function isBlockedHost(hostname) {
     }
   }
   if (isPrivateIPv4(host)) return true;
+  // Round-2: wildcard-DNS laundering — a public hostname whose first labels
+  // embed an IP (127.0.0.1.nip.io, 192-168-1-1.sslip.io) resolves straight to
+  // that IP in the clicker's browser. Block when the embedded IP is private.
+  const labels = host.split('.');
+  if (labels.length > 4) {
+    const dotted = labels.slice(0, 4).join('.');
+    if (isPrivateIPv4(dotted)) return true;
+  }
+  const dashed = host.match(/^(\d+)-(\d+)-(\d+)-(\d+)[.-]/);
+  if (dashed && isPrivateIPv4(`${dashed[1]}.${dashed[2]}.${dashed[3]}.${dashed[4]}`)) return true;
   const envList = (process.env.SHORTEN_BLOCKED_HOSTS || '')
     .split(',')
     .map((h) => h.trim().toLowerCase())
@@ -183,6 +193,11 @@ export default async function handler(req, res) {
   url = url.trim();
   if (url.length > MAX_URL_LEN) {
     return res.status(400).json({ error: 'URL too long' });
+  }
+  // Round-2: an explicit non-http(s) scheme (ftp://…, file://…) must not be
+  // smuggled through the https:// prepend (it produced 'https://ftp://…').
+  if (/^[a-z][a-z0-9+.-]*:\/\//i.test(url) && !/^https?:\/\//i.test(url)) {
+    return res.status(400).json({ error: 'Only http(s) URLs can be shortened' });
   }
   if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
   try {
