@@ -154,8 +154,9 @@ function rbToast(msg) {
 }
 
 /* ==========================================================================
-   Ride Bangla Limited — company brand bar (injected on every page)
-   Shows the main company logo + links to ridebangla.bd and it.ridebangla.bd.
+   Ride Bangla Limited — company bar (injected on every page)
+   Links ONLY: ridebangla.bd + it.ridebangla.bd. NO company logo in this bar
+   (user order, repeated 2026-10-20 — the logo pill must never appear here).
    Also appends Privacy Policy / About links to the footer.
    Ad placements are untouched.
    ========================================================================== */
@@ -178,6 +179,17 @@ function rbToast(msg) {
         '</nav>' +
       '</div>';
     document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  // 1b) Enforce links-only bar: strip ANY logo/pill element found inside the
+  //     bar (e.g. left in the DOM by an older cached script or page state).
+  //     The bar must contain exactly the two text links and nothing else.
+  var liveBar = document.querySelector('.rb-company-bar');
+  if (liveBar) {
+    var junk = liveBar.querySelectorAll('.rb-company-brand, .rb-company-brand--icon, img');
+    for (var j = 0; j < junk.length; j++) {
+      if (junk[j].parentNode) junk[j].parentNode.removeChild(junk[j]);
+    }
   }
 
   // 2) Footer — append Privacy Policy + About links under the "Ride Bangla" column
