@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Markdown to HTML Converter Free Online | Ride Bangla Tools</title>
 <meta name="description" content="Convert Markdown to HTML free with live preview. Clean output for blogs &amp; docs — no signup required. Free, instant and private — no signup needed.">
+<meta name="keywords" content="markdown to html converter, convert markdown online, markdown editor preview, md to html free">
 <link rel="canonical" href="https://tools.ridebangla.bd/developer/markdown-to-html.html">
 <meta property="og:title" content="Markdown to HTML Converter Free Online | Ride Bangla Tools">
 <meta property="og:description" content="Convert Markdown to HTML free with live preview. Clean output for blogs &amp; docs — no signup required. Free, instant and private — no signup needed.">
@@ -12,6 +13,9 @@
 <meta property="og:url" content="https://tools.ridebangla.bd/developer/markdown-to-html.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Markdown to HTML Converter Free Online | Ride Bangla Tools">
+<meta name="twitter:description" content="Convert Markdown to HTML free with live preview. Clean output for blogs &amp; docs — no signup required. Free, instant and private — no signup needed.">
+<meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
@@ -76,11 +80,12 @@
   </div>
 </section>
 <script>
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function safeUrl(u){var t=u.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").trim().toLowerCase();if(/^(https?:|mailto:|tel:|#|\/|\.)/.test(t))return u;if(/^data:image\//.test(t))return u;return '#';}
 function inline(s){
   s=esc(s);
-s=s.replace(/`([^`]+)`/g,'<code>$1</code>');s=s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img alt="$1" src="$2">');
-s=s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2">$1</a>');s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+s=s.replace(/`([^`]+)`/g,'<code>$1</code>');s=s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,function(m,a,u){return '<img alt="'+a+'" src="'+safeUrl(u)+'">';});
+s=s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,function(m,a,u){return '<a href="'+safeUrl(u)+'">'+a+'</a>';});s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
 s=s.replace(/(^|\W)\*([^*]+)\*/g,'$1<em>$2</em>');
 s=s.replace(/(^|\W)_([^_\n]+)_/g,'$1<em>$2</em>');return s;}function md(src){const lines=src.split('\n'),out=[];let i=0,list=null;function closeList(){if(list){out.push(list==='ul'?'</ul>':'</ol>');list=null;}}while(i<lines.length){const ln=lines[i];if(/^```/.test(ln)){let code=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){code.push(lines[i]);i++;}i++;out.push('<pre><code>'+esc(code.join('\n'))+'</code></pre>');continue;}const h=ln.match(/^(#{1,6})\s+(.*)/);if(h){closeList();out.push('<h'+h[1].length+'>'+inline(h[2])+'</h'+h[1].length+'>');i++;continue;}if(/^\s*---\s*$/.test(ln)){closeList();out.push('<hr>');i++;continue;}if(/^\s*>/.test(ln)){closeList();out.push('<blockquote>'+inline(ln.replace(/^\s*>\s?/,''))+'</blockquote>');i++;continue;}const ul=ln.match(/^\s*[-*+]\s+(.*)/),ol=ln.match(/^\s*\d+\.\s+(.*)/);if(ul||ol){const want=ul?'ul':'ol';if(list!==want){closeList();out.push('<'+want+'>');list=want;}out.push('<li>'+inline(ul?ul[1]:ol[1])+'</li>');i++;continue;}closeList();if(/^\s*$/.test(ln)){i++;continue;}let para=[ln];i++;while(i<lines.length&&!/^\s*$/.test(lines[i])&&!/^(#{1,6}\s|```|\s*[-*+]\s|\s*\d+\.\s|\s*>|\s*---\s*$)/.test(lines[i])){para.push(lines[i]);i++;}out.push('<p>'+para.map(inline).join('<br>')+'</p>');
   }

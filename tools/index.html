@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free Online Tools — PDF, Image, QR Code, Calculator &amp; More | Ride Bangla Tools</title>
 <meta name="description" content="54 free online tools that run entirely in your browser: PDF converter, image compressor, QR generator, calculators, text tools &amp; more. No signup, 100% free, works worldwide.">
+<meta name="keywords" content="free online tools, pdf tools online, image compressor, qr code generator, online calculator, text tools, ride bangla tools">
 <link rel="canonical" href="https://tools.ridebangla.bd/">
 <meta property="og:title" content="Free Online Tools — PDF, Image, QR Code, Calculator &amp; More | Ride Bangla Tools">
 <meta property="og:description" content="54 free online tools that run entirely in your browser: PDF converter, image compressor, QR generator, calculators, text tools &amp; more. No signup, 100% free, works worldwide.">
@@ -12,6 +13,9 @@
 <meta property="og:url" content="https://tools.ridebangla.bd/">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Online Tools — PDF, Image, QR Code, Calculator &amp; More | Ride Bangla Tools">
+<meta name="twitter:description" content="54 free online tools that run entirely in your browser: PDF converter, image compressor, QR generator, calculators, text tools &amp; more. No signup, 100% free, works worldwide.">
+<meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
@@ -520,7 +524,7 @@
   </div>
 </section>
 <section class="rb-showcase" aria-label="About Ride Bangla Limited">
-  <div class="rb-showcase-inner">
+  <div class="rb-showcase-inner" style="grid-template-columns:1fr;max-width:900px;">
     <div>
       <span class="rb-showcase-eyebrow" data-i18n="showcase.eyebrow">A RIDE BANGLA PRODUCT</span>
       <h2 data-i18n="showcase.title">Powered by <span class="gold">Ride Bangla Limited</span></h2>
@@ -535,10 +539,6 @@
           <span data-i18n="showcase.cta2">IT &amp; Development</span>
         </a>
       </div>
-    </div>
-    <div class="rb-showcase-logo">
-      <img class="mark" src="assets/brand-icon-mark.png" alt="Ride Bangla Limited">
-      <div class="rb-showcase-tag"><span data-i18n="showcase.tag">Ride. Food. Delivery. Courier.</span></div>
     </div>
   </div>
 </section>
@@ -557,8 +557,7 @@
   <div class="container">
     <div class="rb-slider" id="rb-slider">
       <div class="rb-track">
-        <figure class="rb-slide is-active"><img src="assets/slides/slide-1-tools-overview.webp" alt="Ride Bangla Limited - 54 free tools" width="1600" height="900"></figure>
-        <figure class="rb-slide"><img src="assets/slides/slide-2-our-services.webp" alt="Ride Bangla Limited - our services" width="1600" height="900" loading="lazy"></figure>
+        <figure class="rb-slide is-active"><img src="assets/slides/slide-2-our-services.webp" alt="Ride Bangla Limited - our services" width="1600" height="900"></figure>
         <figure class="rb-slide"><img src="assets/slides/slide-3-it-services.webp" alt="Ride Bangla IT Team - our IT services" width="1600" height="900" loading="lazy"></figure>
         <figure class="rb-slide"><img src="assets/slides/slide-4-it-team.webp" alt="Ride Bangla IT Team" width="1600" height="900" loading="lazy"></figure>
       </div>
@@ -592,6 +591,20 @@
       </div>
     </div>
     <div class="why-doodle">Make your digital<br>life easier &#9829;</div>
+  </div>
+</section>
+<section class="reviews-band" id="rb-reviews" aria-label="User reviews">
+  <div class="container">
+    <div class="why-eyebrow">REVIEWS</div>
+    <h3 class="why-title">What people say</h3>
+    <div class="rb-reviews-summary">
+      <span data-rb="avg"></span>
+      <span data-rb="count" class="rb-reviews-count"></span>
+    </div>
+    <div class="rb-reviews-list" data-rb="list"></div>
+    <button type="button" class="rb-btn rb-btn-gold" data-rb="write">Write a review</button>
+    <div data-rb="form-zone" class="rb-review-form-zone"></div>
+    <p data-rb="status" class="rb-review-status" role="status"></p>
   </div>
 </section>
 <footer class="site-footer">
@@ -633,6 +646,7 @@
 </footer>
 <script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
 <script src="assets/main.js?v=3"></script>
+<script src="assets/reviews.js?v=1"></script>
 <script src="assets/ads-sitewide.js?v=3"></script>
 <script>
   (function () {

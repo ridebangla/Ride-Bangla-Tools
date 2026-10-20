@@ -166,9 +166,6 @@ function rbToast(msg) {
     bar.className = 'rb-company-bar';
     bar.innerHTML =
       '<div class="rb-company-inner">' +
-        '<a class="rb-company-brand rb-company-brand--icon" href="https://ridebangla.bd" target="_blank" rel="noopener" aria-label="Ride Bangla Limited — main website">' +
-          '<img src="/assets/brand-icon-mark.png" alt="Ride Bangla Limited">' +
-        '</a>' +
         '<nav class="rb-company-links" aria-label="Ride Bangla company sites">' +
           '<a class="rb-clink" href="https://ridebangla.bd" target="_blank" rel="noopener">' +
             '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>' +

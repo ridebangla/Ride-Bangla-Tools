@@ -149,7 +149,7 @@
     var r = await callAI(task, prompt);
     btn.disabled = false; btn.innerHTML = orig;
     if (r.notConfigured) {
-      alert(r.message || 'AI is not configured for this site yet — please try again later.');
+      alert('AI is not available right now — please try again later, or contact us via the Help Center.');
       return;
     }
     if (r.rateLimited) {
@@ -161,7 +161,13 @@
       return;
     }
     if (!r.ok) {
-      alert('AI failed: ' + (r.error || 'unknown error'));
+      if (r.error === 'bad-site-key') {
+        alert('AI is not available for this site yet — please contact support via the Help Center.');
+      } else if (r.error === 'network' || r.error === 'bad-response' || r.error === 'bad-request') {
+        alert('AI is busy right now — please check your connection and try again in a moment.');
+      } else {
+        alert('AI could not complete that just now — please try again in a moment.');
+      }
       return;
     }
     onResult(r.result);

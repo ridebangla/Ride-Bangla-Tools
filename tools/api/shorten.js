@@ -113,15 +113,33 @@ function isPrivateIPv4(host) {
   if (a === 192 && b === 168) return true;
   if (a === 127) return true;
   if (a === 169 && b === 254) return true;
+  if (a === 100 && b >= 64 && b <= 127) return true; // CGNAT 100.64.0.0/10
   if (a === 0 || a >= 224) return true;
   return false;
 }
 
 function isBlockedHost(hostname) {
-  const host = hostname.toLowerCase().replace(/\.$/, '');
+  // WHATWG URL keeps IPv6 literals bracketed ('[fd00::1]') — strip the
+  // brackets BEFORE the prefix checks, otherwise ULA / link-local /
+  // loopback IPv6 hosts sail straight past them.
+  let host = hostname.toLowerCase().replace(/\.$/, '');
+  if (host.startsWith('[') && host.endsWith(']')) host = host.slice(1, -1);
   if (host.endsWith('.localhost')) return true;
-  if (host === '::1' || host === '[::1]') return true;
+  if (host === '::1' || host === '::') return true;
   if (host.startsWith('fe80:') || host.startsWith('fc') || host.startsWith('fd')) return true;
+  // IPv4-mapped IPv6 — judge the embedded IPv4. WHATWG URL may keep the
+  // dotted form ('::ffff:127.0.0.1') or normalize it to hex groups
+  // ('::ffff:7f00:1'); handle both.
+  if (host.startsWith('::ffff:')) {
+    const tail = host.slice('::ffff:'.length);
+    if (isPrivateIPv4(tail)) return true;
+    const hex = tail.match(/^([0-9a-f]{1,4}):([0-9a-f]{1,4})$/);
+    if (hex) {
+      const hi = parseInt(hex[1], 16), lo = parseInt(hex[2], 16);
+      const v4 = `${hi >> 8}.${hi & 255}.${lo >> 8}.${lo & 255}`;
+      if (isPrivateIPv4(v4)) return true;
+    }
+  }
   if (isPrivateIPv4(host)) return true;
   const envList = (process.env.SHORTEN_BLOCKED_HOSTS || '')
     .split(',')
