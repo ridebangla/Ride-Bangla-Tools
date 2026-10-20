@@ -928,6 +928,8 @@ a.btn-download::before,button.btn-download::before{content:'\2B07';font-size:18p
   border-top:2px solid var(--ink-700);
 }
 .site-footer .brand-col .name{font-size:16px;}
+.site-footer .brand-col .brand-row{display:flex;align-items:center;gap:10px;}
+.site-footer .brand-col .brand-row img{width:34px;height:34px;object-fit:contain;flex:none;}
 
 /* ---------- company bar — align with Tools deep green ---------- */
 .rb-company-bar{
