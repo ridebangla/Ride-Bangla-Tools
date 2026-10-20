@@ -84,6 +84,11 @@
 #docPreview th{background:#0B5C36;color:#fff;text-align:left;padding:8px;font-size:12px}
 #docPreview td{padding:8px;border-bottom:1px solid #eee;font-size:12.5px}
 #docPreview .meta{color:#666;font-size:12px}
+/* Mobile overflow guard (deep-pass fix 2026-10-20): grid min-content sizing pushed the panel to 568px on phones, causing horizontal scroll. min-width:0 lets the tracks shrink to the viewport; desktop layout unchanged. */
+.tool-body{grid-template-columns:minmax(0,1fr)}
+.panel{min-width:0}
+.field{min-width:0}
+.field>*{min-width:0}
 </style>
     <div class="field"><label>Your business name</label><input id="fromName" placeholder="e.g. Nisha Design Studio"></div>
     <div class="field"><label>Your address (line breaks ok)</label><textarea id="fromAddr" rows="2" placeholder="Street, city, country&#10;Phone / email"></textarea></div>
