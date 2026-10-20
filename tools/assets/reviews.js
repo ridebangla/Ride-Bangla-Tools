@@ -46,11 +46,29 @@
     } catch (e) { return ''; }
   }
 
-  function friendlyError(msg) {
-    if (!msg) return 'Sorry — that did not work. Please try again in a moment.';
-    if (/rate|limit|429/i.test(msg)) return 'You have already shared a review recently. Please try again tomorrow.';
-    if (/unauthorized|domain|auth\//i.test(msg)) return 'Sign-in did not complete — please try again, or contact us via the Help Center.';
-    if (/network|fetch/i.test(msg)) return 'Could not reach our servers — check your connection and try again.';
+  function friendlyError(err) {
+    // Accept an Error object (preferred — carries the Firebase error.code)
+    // or a plain string (server error text from the reviews API).
+    var msg = '';
+    var code = '';
+    if (err && typeof err === 'object') {
+      code = err.code || '';
+      msg = err.message || '';
+      // Diagnostics: the real failure class stays visible in the console
+      // instead of being flattened into one generic banner.
+      try { console.error('[rb-reviews]', code || '(no code)', msg); } catch (e) {}
+    } else if (typeof err === 'string') {
+      msg = err;
+    }
+    var hay = (code + ' ' + msg);
+    if (/rate|limit|429/i.test(hay)) return 'You have already shared a review recently. Please try again tomorrow.';
+    if (code === 'auth/unauthorized-domain' || /unauthorized-domain/i.test(hay)) return 'Sign-in is not enabled for this website address yet — please tell us via the Help Center and we will fix it.';
+    if (code === 'auth/operation-not-allowed' || /operation-not-allowed/i.test(hay)) return 'Google sign-in is not switched on yet — please tell us via the Help Center and we will fix it.';
+    if (code === 'auth/popup-blocked' || /popup-blocked/i.test(hay)) return 'Your browser blocked the sign-in window — allow popups for this site, or try again and we will use a full-page sign-in.';
+    if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request' || /popup-closed|cancelled-popup/i.test(hay)) return 'The sign-in window was closed before finishing — tap Continue with Google to try again.';
+    if (code === 'auth/network-request-failed' || /network|failed to fetch/i.test(hay)) return 'Could not reach our servers — check your connection and try again.';
+    if (msg === 'config' || msg === 'sdk') return 'Sign-in is unavailable right now — please try again later, or reach us via the Help Center.';
+    if (/unauthorized|domain|auth\//i.test(hay)) return 'Sign-in did not complete — please try again, or contact us via the Help Center.';
     return 'Sorry — that did not work. Please try again in a moment.';
   }
 
@@ -102,6 +120,7 @@
       if (!d || d.ok !== true) throw new Error('bad-response');
       renderSummary(d.average, d.count);
       renderList(d.reviews);
+      setStatus(''); // data loaded — no stale action error may linger
       return d;
     } catch (e) {
       renderSummary(0, 0);
@@ -144,12 +163,57 @@
     try { return await sdkLoading; } finally { sdkLoading = null; }
   }
 
+  function isMobileBrowser() {
+    try {
+      var ua = navigator.userAgent || '';
+      if (/Android|iPhone|iPad|iPod|Mobile/i.test(ua)) return true;
+      // iPadOS 13+ reports a desktop UA; touch points give it away.
+      if (navigator.maxTouchPoints > 1 && /Macintosh/.test(ua)) return true;
+    } catch (e) {}
+    return false;
+  }
+
   async function googleSignIn() {
     var auth = await ensureAuth();
     var provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
-    var cred = await auth.signInWithPopup(provider);
-    return { user: cred.user, token: await cred.user.getIdToken() };
+    try {
+      var cred = await auth.signInWithPopup(provider);
+      return { user: cred.user, token: await cred.user.getIdToken() };
+    } catch (e) {
+      var code = (e && e.code) || '';
+      // Popup flows strand mobile users (Android Chrome / in-app webviews
+      // block or orphan popups). Fall back to a full-page redirect; the
+      // result is picked up by handleRedirectResult() on return.
+      if (code === 'auth/popup-blocked' || code === 'auth/cancelled-popup-request' ||
+          code === 'auth/popup-closed-by-user' || isMobileBrowser()) {
+        try { sessionStorage.setItem('rb-review-redirect', '1'); } catch (e2) {}
+        await auth.signInWithRedirect(provider);
+        return null; // page is navigating away
+      }
+      throw e;
+    }
+  }
+
+  async function handleRedirectResult() {
+    var flagged = false;
+    try { flagged = !!sessionStorage.getItem('rb-review-redirect'); } catch (e) {}
+    if (!flagged) return;
+    try { sessionStorage.removeItem('rb-review-redirect'); } catch (e) {}
+    try {
+      var auth = await ensureAuth();
+      var cred = await auth.getRedirectResult();
+      if (cred && cred.user) {
+        state.token = await cred.user.getIdToken();
+        state.name = (cred.user.displayName || '').slice(0, 40);
+        setStatus('Signed in — write your review below.');
+        renderForm();
+      }
+    } catch (e) {
+      // A genuine post-redirect failure is an actual user-action failure:
+      // surfacing one honest, specific message here is correct.
+      setStatus(friendlyError(e));
+    }
   }
 
   /* ------------------------------- write UI ----------------------------- */
@@ -164,12 +228,13 @@
     btn.addEventListener('click', function () {
       btn.disabled = true; setStatus('');
       googleSignIn().then(function (r) {
+        if (!r) return; // redirect sign-in in progress — page is leaving
         state.token = r.token;
         state.name = (r.user.displayName || '').slice(0, 40);
         renderForm();
       }).catch(function (e) {
         btn.disabled = false;
-        setStatus(friendlyError(e && e.message));
+        setStatus(friendlyError(e));
       });
     });
     box.appendChild(btn);
@@ -255,4 +320,5 @@
   }
 
   loadReviews();
+  handleRedirectResult();
 })();

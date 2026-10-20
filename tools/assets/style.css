@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
 /* ==========================================================================
    Ride Bangla Tools — design tokens
    Colors sampled directly from ridebangla.bd: single-green brand system —
@@ -19,8 +19,8 @@
   --ink-600:#B4DCC0;
   --line:#E2EBE5;
   --text-hi:#0C1F16;
-  --text-mid:#4E6156;
-  --text-lo:#8A948C;
+  --text-mid:#3C4F43;
+  --text-lo:#55645A;
   --brass:#0E7A3B;
   --brass-hi:#0B6530;
   --brass-ink:#FFFFFF;
@@ -55,6 +55,7 @@ body{
   color:var(--text-hi);
   font-family:var(--font-body);
   font-size:16px;
+  font-weight:600;
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
@@ -88,7 +89,7 @@ p{margin:0 0 1em;color:var(--text-mid);max-width:64ch;}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto;}
 .brand img{width:38px;height:38px;object-fit:contain;flex:none;filter:drop-shadow(0 2px 4px rgba(11,61,46,.14));}
 .brand .name{font-family:var(--font-display);font-weight:600;font-size:17px;color:var(--text-hi);}
-.brand .name small{display:block;font-family:var(--font-mono);font-size:10px;font-weight:400;color:var(--text-lo);letter-spacing:.04em;}
+.brand .name small{display:block;font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--text-lo);letter-spacing:.04em;}
 .site-nav{display:flex;gap:2px;}
 .site-nav a{
   font-size:14px;color:var(--text-mid);padding:8px 12px;border-radius:var(--radius-sm);
@@ -469,7 +470,7 @@ a.btn-download::before,button.btn-download::before{content:'\2B07';font-size:18p
 }
 .why-stat .ic svg{width:19px;height:19px;stroke-width:2;}
 .why-stat h4{font-family:var(--font-display);font-weight:600;font-size:14.5px;color:#FFFFFF;margin:0 0 3px;}
-.why-stat p{font-size:12.5px;color:rgba(255,255,255,.62);margin:0;max-width:26ch;}
+.why-stat p{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.88);margin:0;max-width:26ch;}
 .why-doodle{
   display:none;font-family:var(--font-hand);font-size:18px;color:rgba(255,255,255,.6);
   text-align:right;line-height:1.3;transform:rotate(-2deg);margin-top:30px;
@@ -618,7 +619,7 @@ a.btn-download::before,button.btn-download::before{content:'\2B07';font-size:18p
   background:linear-gradient(100deg,#F3D27A,#D4AF37 60%,#F3D27A);
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.rb-showcase p{color:rgba(255,255,255,.78);font-size:16px;max-width:52ch;margin:0 0 26px;}
+.rb-showcase p{color:rgba(255,255,255,.95);font-weight:600;font-size:16px;max-width:52ch;margin:0 0 26px;}
 .rb-showcase-cta{display:flex;gap:12px;flex-wrap:wrap;}
 .rb-btn{
   display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;
@@ -650,7 +651,7 @@ a.btn-download::before,button.btn-download::before{content:'\2B07';font-size:18p
   font-family:var(--font-display);font-weight:700;color:#0E7A3B;
   font-size:15px;letter-spacing:.04em;
 }
-.rb-showcase-tag small{display:block;font-weight:500;color:var(--text-mid);font-size:12.5px;margin-top:6px;letter-spacing:.02em;}
+.rb-showcase-tag small{display:block;font-weight:600;color:var(--text-mid);font-size:12.5px;margin-top:6px;letter-spacing:.02em;}
 
 @media (max-width:860px){
   .rb-showcase-inner{grid-template-columns:1fr;gap:30px;padding:48px 20px;}
@@ -1014,3 +1015,10 @@ textarea:focus,input:focus,select:focus{border-color:var(--tools-vibrant);}
 .rb-review-textarea{resize:vertical;min-height:96px;}
 .rb-review-status{color:#0C532E;font-size:14px;margin-top:12px;min-height:20px;}
 @media (max-width:640px){.reviews-band{padding:46px 0 40px;}}
+
+/* ---- Readability pass (owner order 2026-10-20): every control's text bold,
+   placeholders dark enough to read — inherits the body 600 rule explicitly
+   because UA stylesheets reset form-control font-weight. ---- */
+input,textarea,select,button{font-weight:600;}
+::placeholder{color:#55645A;font-weight:600;opacity:1;}
+.hero-has-video ::placeholder{color:#3C4F43;}
