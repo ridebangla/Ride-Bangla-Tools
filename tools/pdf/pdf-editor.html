@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF Editor Free Online — Edit PDF Files | Ride Bangla Tools</title>
+<meta name="description" content="Edit PDF files online free — add text, images and a signature, fill PDF forms, reorder, rotate or delete pages, draw and highlight. No signup, no watermark, 100% private — files never leave your browser.">
+<meta name="keywords" content="pdf editor, edit pdf online free, free pdf editor, edit pdf file, online pdf editor, fill pdf form online, sign pdf, annotate pdf">
+<link rel="canonical" href="https://tools.ridebangla.bd/pdf/pdf-editor.html">
+<meta property="og:title" content="PDF Editor Free Online — Edit PDF Files | Ride Bangla Tools">
+<meta property="og:description" content="Edit PDF files online free — add text, images and a signature, fill PDF forms, reorder, rotate or delete pages, draw and highlight. No signup, no watermark, 100% private — files never leave your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/pdf/pdf-editor.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PDF Editor Free Online — Edit PDF Files | Ride Bangla Tools">
+<meta name="twitter:description" content="Edit PDF files online free — add text, images and a signature, fill PDF forms, reorder, rotate or delete pages, draw and highlight. No signup, no watermark, 100% private — files never leave your browser.">
+<meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/icon-192.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="manifest" href="../assets/manifest.webmanifest">
+<meta name="theme-color" content="#0B3D24">
+<link rel="stylesheet" href="../assets/style.css?v=4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://tools.ridebangla.bd/pdf/"}, {"@type": "ListItem", "position": 3, "name": "PDF Editor", "item": "https://tools.ridebangla.bd/pdf/pdf-editor.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "PDF Editor", "description": "Edit PDF files in your browser: add text, images and signatures, fill form fields, reorder, rotate and delete pages, draw, highlight and cover content, then download the edited PDF.", "url": "https://tools.ridebangla.bd/pdf/pdf-editor.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "featureList": "Add text anywhere, Add images, Draw freehand, Highlight and shapes, Whiteout cover blocks, Fill PDF form fields, Add a signature (draw, type or upload), Reorder, rotate and delete pages, Undo and redo, Download edited PDF", "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is PDF Editor free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. PDF Editor is completely free, with no sign-up, no daily limit, and no watermark on the PDF you download."}}, {"@type": "Question", "name": "Is my PDF uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. PDF Editor runs entirely in your browser — your file is opened, edited and saved on your own device and is never uploaded anywhere."}}, {"@type": "Question", "name": "Can I change text that is already in the PDF?", "acceptedAnswer": {"@type": "Answer", "text": "You cannot rewrite a PDF's built-in text directly, but you can cover it: place a Whiteout block over the old text, then type the new text on top with the Text tool. In the downloaded file it looks like a normal edit."}}, {"@type": "Question", "name": "Can I fill in a PDF form?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. If your PDF has fillable form fields, they appear in a Form fields panel above the editor. Type your answers there and they are saved into the downloaded file."}}, {"@type": "Question", "name": "Will my pages keep their quality?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Your original pages are copied into the new file exactly as they are — nothing is re-compressed or rasterised. Your edits are drawn on top as a new layer. One exception: if you reorder the pages of a PDF that has form fields, the fields are flattened into the page — your filled-in answers stay visible, but the fields are no longer editable."}}]}</script>
+<style>
+  /* tool-specific: PDF editor */
+  .pe-drop{border:1.5px dashed var(--line);border-radius:var(--radius-md);padding:26px 18px;text-align:center;color:var(--text-lo);font-size:13.5px;background:var(--ink-850);}
+  .pe-drop.drag{border-color:var(--brass);color:var(--text-hi);}
+  .pe-drop b{color:var(--text-hi);font-size:14.5px;display:block;margin-bottom:4px;}
+  .pe-toolbar{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 10px;}
+  .pe-tbtn{border:1px solid var(--line);background:var(--ink-900);color:var(--text-hi);border-radius:9px;padding:7px 11px;font-size:12.5px;font-weight:600;cursor:pointer;line-height:1;display:inline-flex;align-items:center;gap:6px;}
+  .pe-tbtn:hover:not(:disabled){border-color:var(--brass);}
+  .pe-tbtn.on{background:var(--brass);border-color:var(--brass);color:#fff;}
+  .pe-tbtn:disabled{opacity:.35;cursor:default;}
+  .pe-props{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--ink-850);margin-bottom:12px;}
+  .pe-props .pf{display:flex;flex-direction:column;gap:4px;}
+  .pe-props label{font-size:11px;font-weight:600;color:var(--text-lo);text-transform:uppercase;letter-spacing:.04em;}
+  .pe-props input[type="text"],.pe-props textarea{background:var(--ink-900);border:1px solid var(--line);border-radius:8px;color:var(--text-hi);padding:7px 9px;font-size:13px;}
+  .pe-props input[type="color"]{width:40px;height:32px;border:1px solid var(--line);border-radius:8px;background:var(--ink-900);padding:2px;cursor:pointer;}
+  .pe-props input[type="range"]{width:110px;}
+  .pe-props input[type="number"]{width:70px;background:var(--ink-900);border:1px solid var(--line);border-radius:8px;color:var(--text-hi);padding:7px 9px;font-size:13px;}
+  .pe-stage{position:relative;margin:0 auto;background:#525659;border-radius:10px;padding:14px;overflow:auto;max-height:78vh;}
+  .pe-canvas-wrap{position:relative;margin:0 auto;box-shadow:0 4px 24px rgba(0,0,0,.45);background:#fff;line-height:0;}
+  .pe-canvas-wrap canvas{display:block;}
+  #peOverlay{position:absolute;left:0;top:0;touch-action:none;cursor:crosshair;}
+  .pe-textedit{position:absolute;z-index:5;border:1.5px dashed var(--brass);background:rgba(255,255,255,.92);color:#111;font-family:Helvetica,Arial,sans-serif;padding:2px 4px;resize:both;overflow:hidden;line-height:1.25;}
+  .pe-thumbs{display:flex;gap:10px;overflow-x:auto;padding:12px 2px 4px;}
+  .pe-thumb{flex:none;width:118px;border:1.5px solid var(--line);border-radius:10px;background:var(--ink-850);padding:6px;text-align:center;cursor:pointer;}
+  .pe-thumb.cur{border-color:var(--brass);}
+  .pe-thumb canvas{max-width:100%;height:auto;border-radius:4px;background:#fff;}
+  .pe-thumb .pg{font-size:11px;color:var(--text-lo);margin:5px 0;}
+  .pe-thumb .acts{display:flex;justify-content:center;gap:4px;}
+  .pe-thumb .acts button{width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:var(--ink-900);color:var(--text-hi);cursor:pointer;font-size:12px;line-height:1;padding:0;}
+  .pe-thumb .acts button:hover:not(:disabled){border-color:var(--brass);}
+  .pe-thumb .acts button:disabled{opacity:.3;cursor:default;}
+  .pe-form{border:1px solid var(--line);border-radius:var(--radius-md);background:var(--ink-850);padding:12px;margin-bottom:12px;}
+  .pe-form h3{margin:0 0 8px;font-size:14px;}
+  .pe-form .frow{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+  .pe-form label{font-size:12px;font-weight:600;color:var(--text-lo);}
+  .pe-form input[type="text"],.pe-form select,.pe-form textarea{background:var(--ink-900);border:1px solid var(--line);border-radius:8px;color:var(--text-hi);padding:8px 10px;font-size:13.5px;}
+  .pe-form .chk{flex-direction:row;align-items:center;gap:8px;}
+  .pe-sigpad{width:100%;max-width:360px;height:150px;background:#fff;border-radius:8px;border:1px solid var(--line);touch-action:none;cursor:crosshair;}
+  .pe-sigprev{font-family:"Segoe Script","Brush Script MT",cursive;font-size:34px;color:#12275e;background:#fff;border-radius:8px;padding:10px 16px;min-height:58px;}
+  .pe-pagenav{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-lo);}
+  @media (max-width:640px){ .pe-stage{padding:8px;} .pe-props input[type="range"]{width:90px;} }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Homepage</a>
+      <a href="../#all-tools">All Tools</a>
+      <a href="../pdf/" style="color:var(--text-hi)">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../business/">Business</a>
+      <a href="../career/">Career</a>
+      <a href="../about.html">About</a>
+      <a href="../help-center.html#contact">Help Center</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../privacy.html">Privacy Policy</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">PDF</a> / PDF Editor</div>
+    <h1>PDF Editor</h1>
+    <p class="lede">Edit PDF files online free — add text, images and a signature, fill in forms, reorder, rotate or delete pages, draw and highlight — then download your edited PDF. Everything happens in your browser; your file is never uploaded.</p>
+  </div>
+</section>
+
+<section class="tool-body" style="padding-top:28px;">
+  <div class="container" style="max-width:1060px;margin:0 auto;padding:0;">
+    <div class="panel">
+      <div class="field">
+        <label>Choose a PDF file</label>
+        <input type="file" id="peFile" accept="application/pdf,.pdf">
+        <div class="hint">One PDF at a time. Everything happens on your device — the file is never uploaded to a server.</div>
+      </div>
+      <div class="pe-drop" id="peDrop"><b>Drop a PDF here</b>or use the file picker above to start editing.</div>
+
+      <div id="peFormWrap" style="display:none;"></div>
+
+      <div id="peEditor" style="display:none;">
+        <div class="pe-toolbar" id="peToolbar">
+          <button type="button" class="pe-tbtn on" data-tool="select">Select / Move</button>
+          <button type="button" class="pe-tbtn" data-tool="text">Text</button>
+          <button type="button" class="pe-tbtn" data-tool="draw">Draw</button>
+          <button type="button" class="pe-tbtn" data-tool="hl">Highlight</button>
+          <button type="button" class="pe-tbtn" data-tool="rect">Rectangle</button>
+          <button type="button" class="pe-tbtn" data-tool="white">Whiteout</button>
+          <button type="button" class="pe-tbtn" id="peImgBtn">Add image</button>
+          <button type="button" class="pe-tbtn" id="peSigBtn">Signature</button>
+          <span style="flex:1"></span>
+          <button type="button" class="pe-tbtn" id="peUndo">Undo</button>
+          <button type="button" class="pe-tbtn" id="peRedo">Redo</button>
+        </div>
+        <input type="file" id="peImgFile" accept="image/png,image/jpeg" style="display:none;">
+        <div class="pe-props" id="peProps"></div>
+        <div id="peSigPanel" style="display:none;" class="pe-props">
+          <div class="pf">
+            <label>Draw your signature</label>
+            <canvas class="pe-sigpad" id="peSigPad" width="360" height="150"></canvas>
+          </div>
+          <div class="pf">
+            <label>…or type it</label>
+            <input type="text" id="peSigText" placeholder="Your name" size="18">
+            <div class="pe-sigprev" id="peSigPrev"></div>
+          </div>
+          <div class="pf">
+            <label>…or upload an image</label>
+            <input type="file" id="peSigFile" accept="image/png,image/jpeg">
+          </div>
+          <div class="pf">
+            <button type="button" class="btn" id="peSigAdd">Place signature on page</button>
+            <button type="button" class="btn ghost" id="peSigClear">Clear drawing</button>
+            <button type="button" class="btn ghost" id="peSigClose">Close</button>
+          </div>
+        </div>
+        <div class="pe-stage" id="peStage">
+          <div class="pe-canvas-wrap" id="peWrap">
+            <canvas id="pePage"></canvas>
+            <canvas id="peOverlay"></canvas>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;">
+          <div class="pe-pagenav">
+            <button type="button" class="pe-tbtn" id="pePrev">Prev</button>
+            <span id="pePageInfo">Page 1 of 1</span>
+            <button type="button" class="pe-tbtn" id="peNext">Next</button>
+          </div>
+          <div class="pe-pagenav">
+            <button type="button" class="pe-tbtn" id="peZoomOut">Zoom −</button>
+            <span id="peZoomInfo">100%</span>
+            <button type="button" class="pe-tbtn" id="peZoomIn">Zoom +</button>
+          </div>
+          <span style="flex:1"></span>
+          <span class="pe-pagenav" id="peSelInfo"></span>
+          <button type="button" class="pe-tbtn" id="peDelAnnot" style="display:none;">Delete selected</button>
+        </div>
+        <div class="pe-thumbs" id="peThumbs"></div>
+        <div class="hint">Page thumbnails: click a page to edit it. Use the small buttons on a thumbnail to move, rotate or delete that page.</div>
+      </div>
+
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn" id="peDownload" type="button" disabled>Download edited PDF</button>
+        <button class="btn ghost" id="peReset" type="button">Start over</button>
+        <a class="btn-download" id="peDlLink" style="display:none;">Download edited PDF</a>
+      </div>
+      <div class="field" style="margin-top:14px;"><div class="output empty" id="peStatus">Choose a PDF file to begin.</div></div>
+    </div>
+  </div>
+</section>
+
+<script src="../assets/pdf-lib.min.js"></script>
+<script>if (!window.PDFLib) { document.write('<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/script>'); }</script>
+<script>if (!window.PDFLib) { document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"><\/script>'); }</script>
+<script>
+/* PDF Editor — runs 100% in the browser (pdf-lib for writing, PDF.js for rendering). */
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var fileInput = $('peFile'), dropZone = $('peDrop'), editorEl = $('peEditor'),
+      formWrap = $('peFormWrap'), thumbsEl = $('peThumbs'), propsEl = $('peProps'),
+      pageCanvas = $('pePage'), overlay = $('peOverlay'), wrapEl = $('peWrap'),
+      stageEl = $('peStage'), statusEl = $('peStatus'), dlBtn = $('peDownload'),
+      dlLink = $('peDlLink'), pageInfo = $('pePageInfo'), zoomInfo = $('peZoomInfo'),
+      selInfo = $('peSelInfo'), delAnnotBtn = $('peDelAnnot');
+  var octx = overlay.getContext('2d');
+  var measureCtx = document.createElement('canvas').getContext('2d');
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  var PDFJS_URLS = [
+    { lib: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js', worker: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js' },
+    { lib: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', worker: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js' }
+  ];
+  var pdfjsReady = null;
+  function loadPdfJs() {
+    if (window.pdfjsLib) { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_URLS[0].worker; return Promise.resolve(window.pdfjsLib); }
+    if (pdfjsReady) return pdfjsReady;
+    pdfjsReady = new Promise(function (resolve, reject) {
+      var i = 0;
+      (function tryNext() {
+        if (i >= PDFJS_URLS.length) { reject(new Error('pdfjs failed')); return; }
+        var s = document.createElement('script');
+        s.src = PDFJS_URLS[i].lib;
+        s.onload = function () {
+          if (window.pdfjsLib) { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_URLS[i].worker; resolve(window.pdfjsLib); }
+          else { i++; tryNext(); }
+        };
+        s.onerror = function () { i++; tryNext(); };
+        document.head.appendChild(s);
+      })();
+    });
+    return pdfjsReady;
+  }
+
+  var uidC = 1;
+  var S = null; // editor state
+  function newState() {
+    return {
+      fileName: '', srcBytes: null, jsDoc: null,
+      pages: [],           // {id, srcIndex, rot} rot = extra clockwise degrees
+      annots: {},          // pageId -> [annot]
+      origRot: [],         // srcIndex -> original /Rotate angle
+      formFields: [],      // {name,type,value,options}
+      formPresent: false,
+      current: 0, tool: 'select', zoom: 1,
+      selected: null,      // {pageId, idx}
+      defaults: { textSize: 16, textColor: '#111827', drawColor: '#dc2626', drawWidth: 2.5, hlColor: '#fde047', rectColor: '#1d4ed8', rectWidth: 2, rectFill: false, whiteColor: '#ffffff' },
+      hist: [], hi: -1
+    };
+  }
+
+  function setStatus(msg, isEmpty) {
+    statusEl.textContent = msg;
+    statusEl.classList.toggle('empty', !!isEmpty);
+  }
+  function hexRgb(hex) {
+    var h = (hex || '#000000').replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var n = parseInt(h, 16);
+    return window.PDFLib.rgb(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
+  }
+  function curPage() { return S.pages[S.current]; }
+  function curAnnots() { var p = curPage(); return p ? (S.annots[p.id] || (S.annots[p.id] = [])) : []; }
+
+  /* ---------------- undo / redo ---------------- */
+  function snap() {
+    return JSON.stringify({ pages: S.pages, annots: S.annots, form: S.formFields.map(function (f) { return { name: f.name, value: f.value }; }) });
+  }
+  function commit() {
+    S.hist = S.hist.slice(0, S.hi + 1);
+    S.hist.push(snap());
+    if (S.hist.length > 40) S.hist.shift();
+    S.hi = S.hist.length - 1;
+    syncUndoBtns();
+  }
+  function restore(json) {
+    var d = JSON.parse(json);
+    S.pages = d.pages; S.annots = d.annots;
+    d.form.forEach(function (fv) {
+      var f = S.formFields.filter(function (x) { return x.name === fv.name; })[0];
+      if (f) f.value = fv.value;
+    });
+    if (S.current >= S.pages.length) S.current = Math.max(0, S.pages.length - 1);
+    S.selected = null;
+    buildFormPanel(); renderThumbs(); renderCurrent(); renderProps(); syncSelUi();
+  }
+  function syncUndoBtns() { $('peUndo').disabled = !S || S.hi <= 0; $('peRedo').disabled = !S || S.hi >= S.hist.length - 1; }
+  $('peUndo').addEventListener('click', function () { if (S && S.hi > 0) { S.hi--; restore(S.hist[S.hi]); syncUndoBtns(); } });
+  $('peRedo').addEventListener('click', function () { if (S && S.hi < S.hist.length - 1) { S.hi++; restore(S.hist[S.hi]); syncUndoBtns(); } });
+
+  /* ---------------- loading a file ---------------- */
+  function fail(msg) { setStatus(msg); }
+  async function loadFile(file) {
+    if (!file) return;
+    if (!(file.type === 'application/pdf' || /\.pdf$/i.test(file.name))) { fail('That file is not a PDF — choose a PDF file to edit.'); return; }
+    if (!window.PDFLib) { fail('The PDF engine could not load. Check your internet connection and refresh the page.'); return; }
+    setStatus('Opening "' + file.name + '"…');
+    var buf;
+    try { buf = await file.arrayBuffer(); } catch (e) { fail('Could not read "' + file.name + '". Try choosing it again.'); return; }
+    var libDoc;
+    try { libDoc = await window.PDFLib.PDFDocument.load(buf.slice(0), { ignoreEncryption: true }); }
+    catch (e) { fail('Could not open "' + file.name + '". It may be password-protected or corrupted — try another file.'); return; }
+    var pdfjs;
+    try { pdfjs = await loadPdfJs(); } catch (e) { fail('The PDF viewer engine could not load. Check your internet connection and refresh the page.'); return; }
+    var jsDoc;
+    try { jsDoc = await pdfjs.getDocument({ data: new Uint8Array(buf.slice(0)) }).promise; }
+    catch (e) { fail('Could not open "' + file.name + '". It may be password-protected or corrupted — try another file.'); return; }
+
+    S = newState();
+    S.fileName = file.name; S.srcBytes = buf; S.jsDoc = jsDoc;
+    var n = libDoc.getPageCount();
+    var libPages = libDoc.getPages();
+    for (var i = 0; i < n; i++) {
+      S.pages.push({ id: 'p' + (uidC++), srcIndex: i, rot: 0 });
+      S.origRot[i] = libPages[i].getRotation().angle;
+    }
+    S.annots = {}; S.pages.forEach(function (p) { S.annots[p.id] = []; });
+    readForm(libDoc);
+    editorEl.style.display = 'block';
+    dropZone.style.display = 'none';
+    dlBtn.disabled = false;
+    dlLink.style.display = 'none';
+    commit();
+    buildFormPanel(); renderProps(); renderThumbs(); renderCurrent();
+    setStatus('Loaded "' + file.name + '" — ' + n + ' page' + (n === 1 ? '' : 's') + '. Pick a tool above, then click or drag on the page to edit.' + (S.formPresent ? ' This PDF has form fields — fill them in the Form fields panel.' : ''));
+  }
+  fileInput.addEventListener('change', function () { if (fileInput.files[0]) loadFile(fileInput.files[0]); fileInput.value = ''; });
+  ['dragenter', 'dragover'].forEach(function (ev) { dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.add('drag'); }); });
+  ['dragleave', 'drop'].forEach(function (ev) { dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.remove('drag'); }); });
+  dropZone.addEventListener('drop', function (e) { var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) loadFile(f); });
+
+  function readForm(libDoc) {
+    S.formFields = []; S.formPresent = false;
+    var L = window.PDFLib, form;
+    try { form = libDoc.getForm(); } catch (e) { return; }
+    var fields;
+    try { fields = form.getFields(); } catch (e) { return; }
+    fields.forEach(function (f) {
+      var name = f.getName();
+      try {
+        if (f instanceof L.PDFTextField) S.formFields.push({ name: name, type: 'text', value: f.getText() || '' });
+        else if (f instanceof L.PDFCheckBox) S.formFields.push({ name: name, type: 'check', value: !!f.isChecked() });
+        else if (f instanceof L.PDFRadioGroup) S.formFields.push({ name: name, type: 'radio', value: f.getSelected() || '', options: f.getOptions() });
+        else if (f instanceof L.PDFDropdown) { var sel = f.getSelected(); S.formFields.push({ name: name, type: 'dropdown', value: sel && sel.length ? sel[0] : '', options: f.getOptions() }); }
+        else if (f instanceof L.PDFOptionList) { var sel2 = f.getSelected(); S.formFields.push({ name: name, type: 'dropdown', value: sel2 && sel2.length ? sel2[0] : '', options: f.getOptions() }); }
+      } catch (e) { /* skip unreadable field */ }
+    });
+    S.formPresent = S.formFields.length > 0;
+  }
+
+  function buildFormPanel() {
+    if (!S || !S.formPresent) { formWrap.style.display = 'none'; formWrap.innerHTML = ''; return; }
+    formWrap.style.display = 'block';
+    formWrap.innerHTML = '';
+    var box = document.createElement('div'); box.className = 'pe-form';
+    var h = document.createElement('h3'); h.textContent = 'Form fields in this PDF'; box.appendChild(h);
+    S.formFields.forEach(function (f) {
+      var row = document.createElement('div'); row.className = 'frow' + (f.type === 'check' ? ' chk' : '');
+      var lab = document.createElement('label'); lab.textContent = f.name;
+      var input;
+      if (f.type === 'check') {
+        input = document.createElement('input'); input.type = 'checkbox'; input.checked = !!f.value;
+        input.addEventListener('change', function () { f.value = input.checked; commit(); });
+        row.appendChild(input); row.appendChild(lab);
+      } else if (f.type === 'radio' || f.type === 'dropdown') {
+        input = document.createElement('select');
+        var blank = document.createElement('option'); blank.value = ''; blank.textContent = '—'; input.appendChild(blank);
+        (f.options || []).forEach(function (o) { var op = document.createElement('option'); op.value = o; op.textContent = o; input.appendChild(op); });
+        input.value = f.value || '';
+        input.addEventListener('change', function () { f.value = input.value; commit(); });
+        row.appendChild(lab); row.appendChild(input);
+      } else {
+        input = document.createElement('input'); input.type = 'text'; input.value = f.value || '';
+        input.addEventListener('change', function () { f.value = input.value; commit(); });
+        row.appendChild(lab); row.appendChild(input);
+      }
+      box.appendChild(row);
+    });
+    var note = document.createElement('div'); note.className = 'hint';
+    note.textContent = 'Your answers are written into the PDF when you download it.';
+    box.appendChild(note);
+    formWrap.appendChild(box);
+  }
+
+  /* ---------------- rendering ---------------- */
+  var renderToken = 0, curViewport = null, curJsPage = null;
+  async function renderCurrent() {
+    if (!S || !S.jsDoc) return;
+    var token = ++renderToken;
+    var d = curPage(); if (!d) return;
+    var jsPage = await S.jsDoc.getPage(d.srcIndex + 1);
+    if (token !== renderToken) return;
+    curJsPage = jsPage;
+    var rotation = (jsPage.rotate + d.rot) % 360;
+    var vp1 = jsPage.getViewport({ scale: 1, rotation: rotation });
+    var avail = Math.max(280, stageEl.clientWidth - 30);
+    var fit = Math.min(avail / vp1.width, 900 / vp1.width);
+    var scale = fit * S.zoom;
+    var vp = jsPage.getViewport({ scale: scale, rotation: rotation });
+    curViewport = vp;
+    pageCanvas.width = Math.floor(vp.width * DPR); pageCanvas.height = Math.floor(vp.height * DPR);
+    pageCanvas.style.width = vp.width + 'px'; pageCanvas.style.height = vp.height + 'px';
+    overlay.width = pageCanvas.width; overlay.height = pageCanvas.height;
+    overlay.style.width = vp.width + 'px'; overlay.style.height = vp.height + 'px';
+    wrapEl.style.width = vp.width + 'px'; wrapEl.style.height = vp.height + 'px';
+    var ctx = pageCanvas.getContext('2d');
+    await jsPage.render({ canvasContext: ctx, viewport: vp, transform: [DPR, 0, 0, DPR, 0, 0] }).promise;
+    if (token !== renderToken) return;
+    drawOverlay();
+    pageInfo.textContent = 'Page ' + (S.current + 1) + ' of ' + S.pages.length;
+    zoomInfo.textContent = Math.round(S.zoom * 100) + '%';
+    markCurThumb();
+  }
+
+  function annotBbox(a) {
+    if (a.t === 'text') {
+      var lines = (a.text || '').split('\n'), lh = a.size * 1.25, w = a.w || 40;
+      return { x: a.x, y: a.y - (lines.length - 1) * lh - a.size * 0.3, w: w, h: (lines.length - 1) * lh + a.size * 1.15 };
+    }
+    if (a.t === 'draw') {
+      var xs = a.pts.map(function (p) { return p[0]; }), ys = a.pts.map(function (p) { return p[1]; });
+      var m = a.width || 2;
+      return { x: Math.min.apply(null, xs) - m, y: Math.min.apply(null, ys) - m, w: Math.max.apply(null, xs) - Math.min.apply(null, xs) + 2 * m, h: Math.max.apply(null, ys) - Math.min.apply(null, ys) + 2 * m };
+    }
+    return { x: a.x, y: a.y, w: a.w, h: a.h };
+  }
+
+  var imgCache = {};
+  function getImg(dataUrl, cb) {
+    if (imgCache[dataUrl]) { if (imgCache[dataUrl].complete) cb(imgCache[dataUrl]); else imgCache[dataUrl].addEventListener('load', function () { cb(imgCache[dataUrl]); }); return; }
+    var im = new Image();
+    im.onload = function () { cb(im); };
+    im.src = dataUrl;
+    imgCache[dataUrl] = im;
+  }
+
+  function drawOverlay(temp) {
+    if (!curViewport) return;
+    var vp = curViewport;
+    octx.setTransform(1, 0, 0, 1, 0, 0);
+    octx.clearRect(0, 0, overlay.width, overlay.height);
+    var list = curAnnots().slice();
+    if (temp) list.push(temp);
+    /* pass 1 — shapes in PDF space via the viewport transform */
+    var tr = vp.transform;
+    octx.setTransform(DPR * tr[0], DPR * tr[1], DPR * tr[2], DPR * tr[3], DPR * tr[4], DPR * tr[5]);
+    list.forEach(function (a) {
+      if (a.t === 'white') { octx.fillStyle = a.color || '#ffffff'; octx.fillRect(a.x, a.y, a.w, a.h); }
+      else if (a.t === 'hl') { octx.globalAlpha = 0.35; octx.fillStyle = a.color; octx.fillRect(a.x, a.y, a.w, a.h); octx.globalAlpha = 1; }
+      else if (a.t === 'rect') {
+        if (a.fill) { octx.fillStyle = a.color; octx.fillRect(a.x, a.y, a.w, a.h); }
+        octx.strokeStyle = a.color; octx.lineWidth = a.width; octx.strokeRect(a.x, a.y, a.w, a.h);
+      } else if (a.t === 'draw') {
+        octx.strokeStyle = a.color; octx.lineWidth = a.width; octx.lineJoin = 'round'; octx.lineCap = 'round';
+        octx.beginPath();
+        a.pts.forEach(function (p, i) { if (i === 0) octx.moveTo(p[0], p[1]); else octx.lineTo(p[0], p[1]); });
+        octx.stroke();
+      } else if (a.t === 'img') {
+        getImg(a.dataUrl, function (im) { if (curViewport === vp) { octx.save(); octx.setTransform(DPR * tr[0], DPR * tr[1], DPR * tr[2], DPR * tr[3], DPR * tr[4], DPR * tr[5]); octx.drawImage(im, a.x, a.y + a.h, a.w, -a.h); octx.restore(); } });
+        var im0 = imgCache[a.dataUrl];
+        if (im0 && im0.complete) octx.drawImage(im0, a.x, a.y + a.h, a.w, -a.h);
+      }
+    });
+    /* pass 2 — text in viewport space */
+    octx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    list.forEach(function (a) {
+      if (a.t !== 'text') return;
+      var pt = vp.convertToViewportPoint(a.x, a.y);
+      octx.save();
+      octx.translate(pt[0], pt[1]);
+      octx.scale(vp.scale, vp.scale);
+      octx.rotate(vp.rotation * Math.PI / 180);
+      octx.font = a.size + 'px Helvetica, Arial, sans-serif';
+      octx.fillStyle = a.color;
+      octx.textBaseline = 'alphabetic';
+      (a.text || '').split('\n').forEach(function (line, i) { octx.fillText(line, 0, i * a.size * 1.25); });
+      octx.restore();
+    });
+    /* selection outline */
+    if (S.selected && S.selected.pageId === curPage().id) {
+      var a2 = curAnnots()[S.selected.idx];
+      if (a2) {
+        var bb = annotBbox(a2);
+        var c1 = vp.convertToViewportPoint(bb.x, bb.y + bb.h), c2 = vp.convertToViewportPoint(bb.x + bb.w, bb.y);
+        octx.strokeStyle = '#c8a24a'; octx.lineWidth = 1.5; octx.setLineDash([5, 4]);
+        octx.strokeRect(c1[0], c1[1], c2[0] - c1[0], c2[1] - c1[1]);
+        octx.setLineDash([]);
+      }
+    }
+  }
+
+  /* ---------------- thumbnails & page ops ---------------- */
+  async function renderThumbs() {
+    if (!S || !S.jsDoc) return;
+    thumbsEl.innerHTML = '';
+    for (var i = 0; i < S.pages.length; i++) {
+      (function (idx) {
+        var d = S.pages[idx];
+        var box = document.createElement('div');
+        box.className = 'pe-thumb' + (idx === S.current ? ' cur' : '');
+        box.setAttribute('data-idx', idx);
+        var cv = document.createElement('canvas'); cv.width = 106; cv.height = 140;
+        box.appendChild(cv);
+        var pg = document.createElement('div'); pg.className = 'pg'; pg.textContent = 'Page ' + (idx + 1); box.appendChild(pg);
+        var acts = document.createElement('div'); acts.className = 'acts';
+        function mkBtn(label, title, fn, dis) {
+          var b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.title = title; b.disabled = !!dis;
+          b.addEventListener('click', function (e) { e.stopPropagation(); fn(); });
+          return b;
+        }
+        acts.appendChild(mkBtn('\u2039', 'Move page left', function () { movePage(idx, -1); }, idx === 0));
+        acts.appendChild(mkBtn('\u203A', 'Move page right', function () { movePage(idx, 1); }, idx === S.pages.length - 1));
+        acts.appendChild(mkBtn('\u21BB', 'Rotate page 90\u00B0', function () { rotatePage(idx); }));
+        acts.appendChild(mkBtn('\u00D7', 'Delete page', function () { deletePage(idx); }, S.pages.length <= 1));
+        box.appendChild(acts);
+        box.addEventListener('click', function () { S.current = idx; S.selected = null; renderCurrent(); renderProps(); syncSelUi(); });
+        thumbsEl.appendChild(box);
+        S.jsDoc.getPage(d.srcIndex + 1).then(function (jsPage) {
+          var rotation = (jsPage.rotate + d.rot) % 360;
+          var vp1 = jsPage.getViewport({ scale: 1, rotation: rotation });
+          var sc = 106 / vp1.width;
+          var vp = jsPage.getViewport({ scale: sc, rotation: rotation });
+          cv.width = Math.floor(vp.width); cv.height = Math.floor(vp.height);
+          jsPage.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise.catch(function () {});
+        }).catch(function () {});
+      })(i);
+    }
+  }
+  function markCurThumb() {
+    var kids = thumbsEl.children;
+    for (var i = 0; i < kids.length; i++) kids[i].classList.toggle('cur', i === S.current);
+  }
+  function movePage(idx, dir) {
+    var j = idx + dir; if (j < 0 || j >= S.pages.length) return;
+    var t = S.pages[idx]; S.pages[idx] = S.pages[j]; S.pages[j] = t;
+    if (S.current === idx) S.current = j; else if (S.current === j) S.current = idx;
+    commit(); renderThumbs(); renderCurrent();
+  }
+  function rotatePage(idx) { S.pages[idx].rot = (S.pages[idx].rot + 90) % 360; commit(); renderThumbs(); if (idx === S.current) renderCurrent(); }
+  function deletePage(idx) {
+    if (S.pages.length <= 1) { setStatus('A PDF needs at least one page — the last page cannot be deleted.'); return; }
+    var removed = S.pages.splice(idx, 1)[0];
+    delete S.annots[removed.id];
+    if (S.current >= S.pages.length) S.current = S.pages.length - 1;
+    S.selected = null;
+    commit(); renderThumbs(); renderCurrent(); renderProps(); syncSelUi();
+    setStatus('Page deleted. ' + S.pages.length + ' page' + (S.pages.length === 1 ? '' : 's') + ' left.');
+  }
+  $('pePrev').addEventListener('click', function () { if (S && S.current > 0) { S.current--; S.selected = null; renderCurrent(); renderProps(); syncSelUi(); } });
+  $('peNext').addEventListener('click', function () { if (S && S.current < S.pages.length - 1) { S.current++; S.selected = null; renderCurrent(); renderProps(); syncSelUi(); } });
+  $('peZoomIn').addEventListener('click', function () { if (S) { S.zoom = Math.min(3, S.zoom * 1.25); renderCurrent(); } });
+  $('peZoomOut').addEventListener('click', function () { if (S) { S.zoom = Math.max(0.25, S.zoom / 1.25); renderCurrent(); } });
+
+  /* ---------------- toolbar & properties ---------------- */
+  var toolBtns = document.querySelectorAll('#peToolbar .pe-tbtn[data-tool]');
+  function setTool(t) {
+    if (!S) return;
+    S.tool = t;
+    toolBtns.forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tool') === t); });
+    overlay.style.cursor = t === 'select' ? 'default' : 'crosshair';
+    renderProps();
+  }
+  toolBtns.forEach(function (b) { b.addEventListener('click', function () { setTool(b.getAttribute('data-tool')); }); });
+
+  function selAnnot() {
+    if (!S || !S.selected || S.selected.pageId !== curPage().id) return null;
+    return curAnnots()[S.selected.idx] || null;
+  }
+  function syncSelUi() {
+    var a = selAnnot();
+    delAnnotBtn.style.display = a ? 'inline-flex' : 'none';
+    selInfo.textContent = a ? 'Selected: ' + ({ text: 'Text', img: 'Image / signature', draw: 'Drawing', hl: 'Highlight', rect: 'Rectangle', white: 'Whiteout' }[a.t] || a.t) + ' — drag to move' : '';
+  }
+  delAnnotBtn.addEventListener('click', function () {
+    var a = selAnnot(); if (!a) return;
+    curAnnots().splice(S.selected.idx, 1);
+    S.selected = null; commit(); drawOverlay(); renderProps(); syncSelUi();
+  });
+  document.addEventListener('keydown', function (e) {
+    if ((e.key === 'Delete' || e.key === 'Backspace') && selAnnot() && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); delAnnotBtn.click(); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); $('peUndo').click(); }
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); $('peRedo').click(); }
+  });
+
+  function pf(labelText, control) {
+    var d = document.createElement('div'); d.className = 'pf';
+    var l = document.createElement('label'); l.textContent = labelText; d.appendChild(l); d.appendChild(control);
+    return d;
+  }
+  function colorInput(val, onch) { var i = document.createElement('input'); i.type = 'color'; i.value = val; i.addEventListener('input', function () { onch(i.value, false); }); i.addEventListener('change', function () { onch(i.value, true); }); return i; }
+  function numInput(val, min, max, onch) { var i = document.createElement('input'); i.type = 'number'; i.value = val; i.min = min; i.max = max; i.addEventListener('change', function () { var v = Math.max(min, Math.min(max, parseFloat(i.value) || val)); onch(v); }); return i; }
+  function rangeInput(val, min, max, step, onch, oncommit) { var i = document.createElement('input'); i.type = 'range'; i.value = val; i.min = min; i.max = max; i.step = step; i.addEventListener('input', function () { onch(parseFloat(i.value)); }); i.addEventListener('change', function () { oncommit(); }); return i; }
+
+  function renderProps() {
+    if (!S) { propsEl.innerHTML = ''; return; }
+    propsEl.innerHTML = '';
+    var D = S.defaults, a = selAnnot();
+    function upd(fn) { return function (v, commitIt) { fn(v); drawOverlay(); if (commitIt) commit(); }; }
+    if (S.tool === 'text' || (a && a.t === 'text')) {
+      var target = a && a.t === 'text' ? a : null;
+      propsEl.appendChild(pf('Text size', numInput(target ? target.size : D.textSize, 6, 96, function (v) { if (target) { target.size = v; drawOverlay(); commit(); } else D.textSize = v; })));
+      propsEl.appendChild(pf('Text colour', colorInput(target ? target.color : D.textColor, upd(function (v) { if (target) target.color = v; else D.textColor = v; }))));
+      if (!target) { var h = document.createElement('div'); h.className = 'hint'; h.textContent = 'Click on the page where the text should go, type, then click away to place it.'; propsEl.appendChild(h); }
+    } else if (S.tool === 'draw' || (a && a.t === 'draw')) {
+      var t2 = a && a.t === 'draw' ? a : null;
+      propsEl.appendChild(pf('Pen colour', colorInput(t2 ? t2.color : D.drawColor, upd(function (v) { if (t2) t2.color = v; else D.drawColor = v; }))));
+      propsEl.appendChild(pf('Pen width', rangeInput(t2 ? t2.width : D.drawWidth, 1, 12, 0.5, function (v) { if (t2) t2.width = v; else D.drawWidth = v; drawOverlay(); }, function () { if (t2) commit(); })));
+    } else if (S.tool === 'hl' || (a && a.t === 'hl')) {
+      var t3 = a && a.t === 'hl' ? a : null;
+      propsEl.appendChild(pf('Highlight colour', colorInput(t3 ? t3.color : D.hlColor, upd(function (v) { if (t3) t3.color = v; else D.hlColor = v; }))));
+    } else if (S.tool === 'rect' || (a && a.t === 'rect')) {
+      var t4 = a && a.t === 'rect' ? a : null;
+      propsEl.appendChild(pf('Colour', colorInput(t4 ? t4.color : D.rectColor, upd(function (v) { if (t4) t4.color = v; else D.rectColor = v; }))));
+      propsEl.appendChild(pf('Border width', rangeInput(t4 ? t4.width : D.rectWidth, 1, 10, 0.5, function (v) { if (t4) t4.width = v; else D.rectWidth = v; drawOverlay(); }, function () { if (t4) commit(); })));
+      var chk = document.createElement('input'); chk.type = 'checkbox'; chk.checked = t4 ? !!t4.fill : D.rectFill;
+      chk.addEventListener('change', function () { if (t4) { t4.fill = chk.checked; commit(); } else D.rectFill = chk.checked; drawOverlay(); });
+      propsEl.appendChild(pf('Filled', chk));
+    } else if (S.tool === 'white' || (a && a.t === 'white')) {
+      var t5 = a && a.t === 'white' ? a : null;
+      propsEl.appendChild(pf('Cover colour', colorInput(t5 ? t5.color : D.whiteColor, upd(function (v) { if (t5) t5.color = v; else D.whiteColor = v; }))));
+      var h5 = document.createElement('div'); h5.className = 'hint'; h5.textContent = 'Drag over existing content to cover it, then add a Text item on top.'; propsEl.appendChild(h5);
+    } else if (a && a.t === 'img') {
+      propsEl.appendChild(pf('Width', rangeInput(a.w, 30, 600, 2, function (v) { var r = a.h / a.w; a.w = v; a.h = v * r; drawOverlay(); }, function () { commit(); })));
+    } else {
+      var hint = document.createElement('div'); hint.className = 'hint';
+      hint.textContent = 'Select mode: click anything you added to select it, drag to move it, double-click text to edit it. Switch tools above to add more.';
+      propsEl.appendChild(hint);
+    }
+  }
+
+  /* ---------------- pointer interactions ---------------- */
+  function toPdf(e) {
+    var r = overlay.getBoundingClientRect();
+    return curViewport.convertToPdfPoint(e.clientX - r.left, e.clientY - r.top);
+  }
+  function hitTest(pdfPt) {
+    var list = curAnnots();
+    for (var i = list.length - 1; i >= 0; i--) {
+      var bb = annotBbox(list[i]);
+      if (pdfPt[0] >= bb.x && pdfPt[0] <= bb.x + bb.w && pdfPt[1] >= bb.y && pdfPt[1] <= bb.y + bb.h) return i;
+    }
+    return -1;
+  }
+  var drag = null;
+  overlay.addEventListener('pointerdown', function (e) {
+    if (!S || !curViewport) return;
+    e.preventDefault();
+    overlay.setPointerCapture(e.pointerId);
+    var p = toPdf(e), tool = S.tool;
+    if (tool === 'select') {
+      var idx = hitTest(p);
+      if (idx >= 0) {
+        S.selected = { pageId: curPage().id, idx: idx };
+        var a = curAnnots()[idx];
+        drag = { mode: 'move', start: p, orig: JSON.parse(JSON.stringify(a)), moved: false };
+        renderProps();
+      } else { S.selected = null; drag = null; }
+      syncSelUi(); drawOverlay();
+      return;
+    }
+    if (tool === 'text') {
+      var hit = hitTest(p);
+      if (hit >= 0 && curAnnots()[hit].t === 'text') { openTextEditor(hit, null); return; }
+      openTextEditor(-1, p);
+      return;
+    }
+    if (tool === 'draw') { drag = { mode: 'draw', pts: [p] }; return; }
+    if (tool === 'hl' || tool === 'rect' || tool === 'white') { drag = { mode: 'box', tool: tool, start: p, cur: p }; return; }
+  });
+  overlay.addEventListener('pointermove', function (e) {
+    if (!drag || !curViewport) return;
+    var p = toPdf(e);
+    if (drag.mode === 'move') {
+      var dx = p[0] - drag.start[0], dy = p[1] - drag.start[1];
+      if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) drag.moved = true;
+      var a = curAnnots()[S.selected.idx], o = drag.orig;
+      if (a.t === 'draw') { a.pts = o.pts.map(function (q) { return [q[0] + dx, q[1] + dy]; }); }
+      else { a.x = o.x + dx; a.y = o.y + dy; }
+      drawOverlay();
+    } else if (drag.mode === 'draw') {
+      var last = drag.pts[drag.pts.length - 1];
+      if (Math.abs(p[0] - last[0]) > 0.8 || Math.abs(p[1] - last[1]) > 0.8) { drag.pts.push(p); drawOverlay({ t: 'draw', pts: drag.pts, color: S.defaults.drawColor, width: S.defaults.drawWidth }); }
+    } else if (drag.mode === 'box') {
+      drag.cur = p; drawOverlay(boxAnnot(drag.tool, drag.start, p));
+    }
+  });
+  overlay.addEventListener('pointerup', function (e) {
+    if (!drag) return;
+    var d = drag; drag = null;
+    if (d.mode === 'move') { if (d.moved) commit(); return; }
+    if (d.mode === 'draw') {
+      if (d.pts.length > 1) { curAnnots().push({ t: 'draw', pts: d.pts, color: S.defaults.drawColor, width: S.defaults.drawWidth }); commit(); }
+      drawOverlay(); return;
+    }
+    if (d.mode === 'box') {
+      var a = boxAnnot(d.tool, d.start, d.cur);
+      if (a.w > 3 && a.h > 3) {
+        if (d.tool === 'hl') curAnnots().push({ t: 'hl', x: a.x, y: a.y, w: a.w, h: a.h, color: S.defaults.hlColor });
+        else if (d.tool === 'rect') curAnnots().push({ t: 'rect', x: a.x, y: a.y, w: a.w, h: a.h, color: S.defaults.rectColor, width: S.defaults.rectWidth, fill: S.defaults.rectFill });
+        else curAnnots().push({ t: 'white', x: a.x, y: a.y, w: a.w, h: a.h, color: S.defaults.whiteColor });
+        commit();
+      }
+      drawOverlay();
+    }
+  });
+  overlay.addEventListener('dblclick', function (e) {
+    if (!S || S.tool !== 'select') return;
+    var idx = hitTest(toPdf(e));
+    if (idx >= 0 && curAnnots()[idx].t === 'text') openTextEditor(idx, null);
+  });
+  function boxAnnot(tool, p1, p2) {
+    var x = Math.min(p1[0], p2[0]), y = Math.min(p1[1], p2[1]), w = Math.abs(p2[0] - p1[0]), h = Math.abs(p2[1] - p1[1]);
+    if (tool === 'hl') return { t: 'hl', x: x, y: y, w: w, h: h, color: S.defaults.hlColor };
+    if (tool === 'rect') return { t: 'rect', x: x, y: y, w: w, h: h, color: S.defaults.rectColor, width: S.defaults.rectWidth, fill: S.defaults.rectFill };
+    return { t: 'white', x: x, y: y, w: w, h: h, color: S.defaults.whiteColor };
+  }
+
+  /* inline text editor */
+  var textEd = null;
+  function closeTextEditor(commitIt) {
+    if (!textEd) return;
+    var ed = textEd; textEd = null;
+    var val = ed.ta.value.replace(/\s+$/g, '');
+    ed.ta.remove();
+    if (commitIt && S) {
+      if (ed.idx >= 0) {
+        if (val) { var a = curAnnots()[ed.idx]; a.text = val; a.w = measureTextW(val, a.size); }
+        else curAnnots().splice(ed.idx, 1);
+        commit();
+      } else if (val) {
+        var size = S.defaults.textSize;
+        var na = { t: 'text', x: ed.pdf[0], y: ed.pdf[1] - size * 0.85, text: val, size: size, color: S.defaults.textColor, w: measureTextW(val, size) };
+        curAnnots().push(na);
+        S.selected = { pageId: curPage().id, idx: curAnnots().length - 1 };
+        commit();
+      }
+      drawOverlay(); renderProps(); syncSelUi();
+    }
+  }
+  function measureTextW(text, size) {
+    measureCtx.font = size + 'px Helvetica, Arial, sans-serif';
+    var w = 10;
+    text.split('\n').forEach(function (l) { w = Math.max(w, measureCtx.measureText(l).width); });
+    return w;
+  }
+  function openTextEditor(idx, clickPdf) {
+    closeTextEditor(true);
+    var a = idx >= 0 ? curAnnots()[idx] : null;
+    var size = a ? a.size : S.defaults.textSize;
+    var anchorPdf = a ? [a.x, a.y + size * 0.85] : clickPdf;
+    var vp = curViewport.convertToViewportPoint(anchorPdf[0], anchorPdf[1]);
+    var ta = document.createElement('textarea');
+    ta.className = 'pe-textedit';
+    ta.value = a ? a.text : '';
+    ta.rows = a ? Math.max(1, a.text.split('\n').length) : 1;
+    ta.style.left = vp[0] + 'px'; ta.style.top = vp[1] + 'px';
+    ta.style.fontSize = (size * curViewport.scale) + 'px';
+    ta.style.color = a ? a.color : S.defaults.textColor;
+    ta.style.minWidth = '120px'; ta.style.minHeight = (size * curViewport.scale * 1.4) + 'px';
+    ta.placeholder = 'Type here…';
+    wrapEl.appendChild(ta);
+    textEd = { ta: ta, idx: idx, pdf: anchorPdf };
+    ta.focus();
+    ta.addEventListener('blur', function () { closeTextEditor(true); });
+    ta.addEventListener('keydown', function (e) { if (e.key === 'Escape') { ta.value = a ? a.text : ''; closeTextEditor(true); } e.stopPropagation(); });
+    ta.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+  }
+
+  /* ---------------- images & signature ---------------- */
+  function placeImage(dataUrl) {
+    var im = new Image();
+    im.onload = function () {
+      if (!curJsPage) return;
+      var view = curJsPage.view, pw = view[2] - view[0], ph = view[3] - view[1];
+      var w = Math.min(190, pw * 0.5), h = w * (im.naturalHeight / im.naturalWidth);
+      var a = { t: 'img', x: view[0] + (pw - w) / 2, y: view[1] + (ph - h) / 2, w: w, h: h, dataUrl: dataUrl };
+      curAnnots().push(a);
+      S.selected = { pageId: curPage().id, idx: curAnnots().length - 1 };
+      setTool('select');
+      commit(); drawOverlay(); syncSelUi();
+      setStatus('Image placed on page ' + (S.current + 1) + ' — drag it into position, or resize it with the Width slider.');
+    };
+    im.src = dataUrl;
+  }
+  function readImageFile(file, cb) {
+    if (!file) return;
+    if (!/image\/(png|jpeg)/.test(file.type)) { setStatus('Only PNG or JPG images can be added.'); return; }
+    var r = new FileReader();
+    r.onload = function () { cb(r.result); };
+    r.readAsDataURL(file);
+  }
+  $('peImgBtn').addEventListener('click', function () { $('peImgFile').click(); });
+  $('peImgFile').addEventListener('change', function () { readImageFile($('peImgFile').files[0], placeImage); $('peImgFile').value = ''; });
+
+  var sigPad = $('peSigPad'), sigCtx = sigPad.getContext('2d'), sigDrawn = false, sigStroke = null;
+  sigCtx.lineWidth = 2.4; sigCtx.lineCap = 'round'; sigCtx.strokeStyle = '#12275e';
+  function sigPos(e) { var r = sigPad.getBoundingClientRect(); return [(e.clientX - r.left) * (sigPad.width / r.width), (e.clientY - r.top) * (sigPad.height / r.height)]; }
+  sigPad.addEventListener('pointerdown', function (e) { e.preventDefault(); sigPad.setPointerCapture(e.pointerId); sigStroke = sigPos(e); sigDrawn = true; });
+  sigPad.addEventListener('pointermove', function (e) { if (!sigStroke) return; var p = sigPos(e); sigCtx.beginPath(); sigCtx.moveTo(sigStroke[0], sigStroke[1]); sigCtx.lineTo(p[0], p[1]); sigCtx.stroke(); sigStroke = p; });
+  sigPad.addEventListener('pointerup', function () { sigStroke = null; });
+  $('peSigText').addEventListener('input', function () { $('peSigPrev').textContent = $('peSigText').value; });
+  $('peSigBtn').addEventListener('click', function () { $('peSigPanel').style.display = $('peSigPanel').style.display === 'none' ? 'flex' : 'none'; });
+  $('peSigClose').addEventListener('click', function () { $('peSigPanel').style.display = 'none'; });
+  $('peSigClear').addEventListener('click', function () { sigCtx.clearRect(0, 0, sigPad.width, sigPad.height); sigDrawn = false; });
+  $('peSigAdd').addEventListener('click', function () {
+    var upFile = $('peSigFile').files[0];
+    if (upFile) { readImageFile(upFile, function (du) { placeImage(du); $('peSigPanel').style.display = 'none'; }); return; }
+    if (sigDrawn) { placeImage(sigPad.toDataURL('image/png')); $('peSigPanel').style.display = 'none'; return; }
+    var txt = $('peSigText').value.trim();
+    if (txt) {
+      var c = document.createElement('canvas'); c.width = 720; c.height = 200;
+      var x = c.getContext('2d');
+      x.font = '110px "Segoe Script","Brush Script MT",cursive'; x.fillStyle = '#12275e';
+      x.fillText(txt, 20, 135);
+      placeImage(c.toDataURL('image/png'));
+      $('peSigPanel').style.display = 'none';
+      return;
+    }
+    setStatus('Draw your signature, type your name, or upload a signature image first.');
+  });
+
+  /* ---------------- saving ---------------- */
+  function applyFormValues(doc) {
+    var L = window.PDFLib, form;
+    try { form = doc.getForm(); } catch (e) { return; }
+    S.formFields.forEach(function (f) {
+      try {
+        if (f.type === 'text') form.getTextField(f.name).setText(f.value || '');
+        else if (f.type === 'check') { var cb = form.getCheckBox(f.name); if (f.value) cb.check(); else cb.uncheck(); }
+        else if (f.type === 'radio') { if (f.value) form.getRadioGroup(f.name).select(f.value); }
+        else if (f.type === 'dropdown') { if (f.value) form.getDropdown(f.name).select(f.value); }
+      } catch (e) { /* field may sit on a deleted page — skip */ }
+    });
+  }
+  function dataUrlBytes(du) {
+    var b64 = du.split(',')[1], bin = atob(b64), arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return arr;
+  }
+  async function drawAnnotsOn(outDoc, pageObjs) {
+    var L = window.PDFLib, helv = await outDoc.embedFont(L.StandardFonts.Helvetica);
+    var imgCacheLib = {};
+    for (var pi = 0; pi < S.pages.length; pi++) {
+      var page = pageObjs[pi], list = S.annots[S.pages[pi].id] || [];
+      for (var ai = 0; ai < list.length; ai++) {
+        var a = list[ai];
+        try {
+          if (a.t === 'white') page.drawRectangle({ x: a.x, y: a.y, width: a.w, height: a.h, color: hexRgb(a.color || '#ffffff') });
+          else if (a.t === 'hl') page.drawRectangle({ x: a.x, y: a.y, width: a.w, height: a.h, color: hexRgb(a.color), opacity: 0.35 });
+          else if (a.t === 'rect') {
+            var opts = { x: a.x, y: a.y, width: a.w, height: a.h, borderColor: hexRgb(a.color), borderWidth: a.width };
+            if (a.fill) opts.color = hexRgb(a.color);
+            page.drawRectangle(opts);
+          } else if (a.t === 'draw') {
+            for (var si = 1; si < a.pts.length; si++) page.drawLine({ start: { x: a.pts[si - 1][0], y: a.pts[si - 1][1] }, end: { x: a.pts[si][0], y: a.pts[si][1] }, thickness: a.width, color: hexRgb(a.color) });
+          } else if (a.t === 'text') {
+            var lines = (a.text || '').split('\n');
+            for (var li = 0; li < lines.length; li++) page.drawText(lines[li], { x: a.x, y: a.y - li * a.size * 1.25, size: a.size, font: helv, color: hexRgb(a.color) });
+          } else if (a.t === 'img') {
+            if (!imgCacheLib[a.dataUrl]) imgCacheLib[a.dataUrl] = a.dataUrl.indexOf('image/png') >= 0 ? await outDoc.embedPng(dataUrlBytes(a.dataUrl)) : await outDoc.embedJpg(dataUrlBytes(a.dataUrl));
+            page.drawImage(imgCacheLib[a.dataUrl], { x: a.x, y: a.y, width: a.w, height: a.h });
+          }
+        } catch (e) { console.error('Annotation failed:', e); }
+      }
+    }
+  }
+  var lastUrl = null;
+  dlBtn.addEventListener('click', async function () {
+    if (!S || !S.srcBytes) { setStatus('Choose a PDF file first.'); return; }
+    if (!window.PDFLib) { setStatus('The PDF engine could not load. Check your internet connection and refresh the page.'); return; }
+    dlLink.style.display = 'none';
+    setStatus('Preparing your edited PDF…');
+    try {
+      var L = window.PDFLib;
+      var srcDoc = await L.PDFDocument.load(S.srcBytes.slice(0), { ignoreEncryption: true });
+      if (S.formPresent) applyFormValues(srcDoc);
+      var order = S.pages.map(function (p) { return p.srcIndex; });
+      var reordered = order.some(function (v, i) { return i > 0 && v < order[i - 1]; });
+      var outDoc, pageObjs;
+      if (!reordered) {
+        var keep = {}; order.forEach(function (v) { keep[v] = true; });
+        for (var i = srcDoc.getPageCount() - 1; i >= 0; i--) if (!keep[i]) srcDoc.removePage(i);
+        outDoc = srcDoc; pageObjs = outDoc.getPages();
+      } else {
+        if (S.formPresent) { try { srcDoc.getForm().flatten(); } catch (e) {} }
+        outDoc = await L.PDFDocument.create();
+        var copied = await outDoc.copyPages(srcDoc, order);
+        copied.forEach(function (pg) { outDoc.addPage(pg); });
+        pageObjs = outDoc.getPages();
+      }
+      S.pages.forEach(function (d, i) {
+        var total = ((S.origRot[d.srcIndex] + d.rot) % 360 + 360) % 360;
+        pageObjs[i].setRotation(L.degrees(total));
+      });
+      await drawAnnotsOn(outDoc, pageObjs);
+      var bytes = await outDoc.save();
+      var blob = new Blob([bytes], { type: 'application/pdf' });
+      if (lastUrl) URL.revokeObjectURL(lastUrl);
+      lastUrl = URL.createObjectURL(blob);
+      dlLink.href = lastUrl;
+      dlLink.download = S.fileName.replace(/\.pdf$/i, '') + '-edited.pdf';
+      dlLink.style.display = 'inline-block';
+      setStatus('Done — your edited PDF is ready. Click "Download edited PDF".');
+    } catch (err) {
+      console.error('PDF save failed:', err);
+      setStatus('Sorry, saving failed. Try a smaller file, or remove added images and try again.');
+    }
+  });
+
+  $('peReset').addEventListener('click', function () { location.reload(); });
+  syncUndoBtns();
+})();
+</script>
+
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use PDF Editor</h2>
+    <ol class="how-steps">
+      <li>Choose a PDF file, or drop it onto the page — it opens right here in your browser.</li>
+      <li>Pick a tool above the page: click to add text, drag to draw, highlight or cover content, add an image or a signature. If the PDF has form fields, fill them in the Form fields panel.</li>
+      <li>Use the page thumbnails to reorder, rotate or delete pages — then click "Download edited PDF".</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is PDF Editor free to use?</summary>
+        <p>Yes. PDF Editor is completely free, with no sign-up, no daily limit, and no watermark on the PDF you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my PDF uploaded to a server?</summary>
+        <p>No. PDF Editor runs entirely in your browser — your file is opened, edited and saved on your own device and is never uploaded anywhere.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I change text that is already in the PDF?</summary>
+        <p>You cannot rewrite a PDF's built-in text directly, but you can cover it: place a Whiteout block over the old text, then type the new text on top with the Text tool. In the downloaded file it looks like a normal edit.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I fill in a PDF form?</summary>
+        <p>Yes. If your PDF has fillable form fields, they appear in a Form fields panel above the editor. Type your answers there and they are saved into the downloaded file.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Will my pages keep their quality?</summary>
+        <p>Yes. Your original pages are copied into the new file exactly as they are — nothing is re-compressed or rasterised. Your edits are drawn on top as a new layer. One exception: if you reorder the pages of a PDF that has form fields, the fields are flattened into the page — your filled-in answers stay visible, but the fields are no longer editable.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in PDF</h3>
+    <div class="related-list">
+      <a href="merge-pdf.html">Merge PDF</a>
+      <a href="split-pdf.html">Split PDF</a>
+      <a href="rotate-pdf.html">Rotate PDF</a>
+      <a href="image-to-pdf.html">Image to PDF</a>
+      <a href="text-to-pdf.html">Text to PDF</a>
+      <a href="../pdf/">All PDF tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="brand-row">
+        <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+        <div class="name">Ride Bangla Tools</div>
+      </div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../business/">Business</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla Limited. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js?v=4"></script>
+<script src="../assets/ads-sitewide.js?v=3"></script>
+
+<script src="../assets/ai.js?v=7"></script>
+<div class="btn-row" style="margin:12px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">AI Tips</button></div>
+
+<script>
+(function() {
+  var btn = document.getElementById('aiTipsBtn');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips',
+        function() { return 'Tool: pdf editor. Give usage tips.'; },
+        function(r) { alert(r); });
+    });
+  }
+})();
+</script>
+</body>
+</html>
