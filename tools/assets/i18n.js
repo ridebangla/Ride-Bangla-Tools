@@ -1,6 +1,7 @@
 /* ==========================================================================
    Ride Bangla Tools — multi-language engine
-   Auto-detects visitor language (browser setting) and translates the UI.
+   Default language is English; translates the UI only when the visitor
+   explicitly picks a language in the selector (choice kept in localStorage).
    Supported: en, bn, zh, es, fr, de, it, pt, pl, ja, ko, hi, ar (RTL), ru, tr, id.
    - Elements with [data-i18n="key"] get innerHTML from the dictionary.
    - Elements with [data-i18n-ph="key"] get placeholder from the dictionary.
@@ -35,15 +36,14 @@
   };
 
   function detect() {
+    // Default is ALWAYS English. A non-English language is used only when
+    // the visitor previously chose it explicitly in the language selector
+    // (that choice is stored in localStorage by rbSetLang). The browser's
+    // own language setting must never switch the UI on its own.
     try {
       var saved = localStorage.getItem('rb-lang');
       if (saved && SUPPORTED.indexOf(saved) !== -1) return saved;
     } catch (e) {}
-    var n = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-    var prefixes = ['bn','zh','es','fr','de','it','pt','pl','ja','ko','hi','ar','ru','tr','id'];
-    for (var i = 0; i < prefixes.length; i++) {
-      if (n.indexOf(prefixes[i]) === 0) return prefixes[i];
-    }
     return DEFAULT;
   }
 
