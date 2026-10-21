@@ -1,7 +1,8 @@
 /* ==========================================================================
-   Ride Bangla Tools — QR Design Studio v2 (DOM-free pixel renderer)
-   Generates 8 QR designs. No DOM required: render() returns raw pixels,
-   so the same code runs in the browser AND in Node for automated tests.
+   Ride Bangla Tools — QR Design Studio v3 (DOM-free pixel renderer)
+   Generates 8 classic designs + motif designs. No DOM required: render()
+   returns raw pixels, so the same code runs in the browser AND in Node
+   for automated tests.
    Requires global QRCode.create (embedded qrcode lib on the tool page).
 
    v2: framed designs render on a TRANSPARENT poster (alpha) — decorative
@@ -11,6 +12,14 @@
    middle/center). CENTER-OF-QR uses error-correction level H, a white
    safe backdrop, and a capped logo size so the code still scans.
    Decorative art stays OUTSIDE the QR quiet zone — every design decodes.
+
+   v3: MOTIF designs — the whole QR is sampled from a motif painting
+   (tiger face, lion face, bird, robot, …): the motif is painted once at
+   module resolution with 3x3 supersampling, then each module is drawn
+   from the sampled colour/coverage with luminance pushed to safe dark /
+   light levels. Motif designs ALWAYS use error-correction level H and
+   standard full-size finders. Every shipped motif passed an automated
+   jsQR decode gate (see decode-results.md).
    ========================================================================== */
 (function (root) {
   'use strict';
@@ -23,7 +32,23 @@
     { id: 'kite', name: 'Kite', desc: 'Colorful kite with a bow tail', style: 'round', fg: '#B45309', bg: '#FFF8E7', framed: true, art: 'kite', accent: '#DC2626' },
     { id: 'horse', name: 'Horse', desc: 'Golden horseshoe frame', style: 'square', fg: '#4A2F18', bg: '#F7F1E8', framed: true, art: 'horse', accent: '#B8860B' },
     { id: 'tiger', name: 'Tiger', desc: 'Tiger-face frame, bold stripes', style: 'square', fg: '#141414', bg: '#FFF4E5', framed: true, art: 'tiger', accent: '#F5820B' },
-    { id: 'ocean', name: 'Ocean', desc: 'Rolling waves frame', style: 'round', fg: '#075985', bg: '#E8F7FF', framed: true, art: 'ocean', accent: '#0284C7' }
+    { id: 'ocean', name: 'Ocean', desc: 'Rolling waves frame', style: 'round', fg: '#075985', bg: '#E8F7FF', framed: true, art: 'ocean', accent: '#0284C7' },
+    { id: 'motif-tiger', name: 'Tiger QR', desc: 'The whole code in a tiger design', mode: 'motif', motif: 'tiger', style: 'round', fg: '#5F2700', bg: '#FFF6E9', framed: false },
+    { id: 'motif-lion', name: 'Lion QR', desc: 'The whole code in a lion design', mode: 'motif', motif: 'lion', style: 'round', fg: '#5A3000', bg: '#FFF8EC', framed: false },
+    { id: 'motif-cat', name: 'Cat QR', desc: 'The whole code in a cat design', mode: 'motif', motif: 'cat', style: 'round', fg: '#263238', bg: '#FFFFFF', framed: false },
+    { id: 'motif-panda', name: 'Panda QR', desc: 'The whole code in a panda design', mode: 'motif', motif: 'panda', style: 'round', fg: '#1A1A1A', bg: '#FFFFFF', framed: false },
+    { id: 'motif-owl', name: 'Owl QR', desc: 'The whole code in an owl design', mode: 'motif', motif: 'owl', style: 'round', fg: '#33200D', bg: '#FBF3E2', framed: false },
+    { id: 'motif-fox', name: 'Fox QR', desc: 'The whole code in a fox design', mode: 'motif', motif: 'fox', style: 'round', fg: '#6E2A00', bg: '#FFF5EA', framed: false },
+    { id: 'motif-horse', name: 'Horse QR', desc: 'The whole code in a horse design', mode: 'motif', motif: 'horse', style: 'round', fg: '#3A2410', bg: '#FAF3E7', framed: false },
+    { id: 'motif-bird', name: 'Bird QR', desc: 'The whole code in a bird design', mode: 'motif', motif: 'bird', style: 'round', fg: '#0B3D5C', bg: '#F2FAFF', framed: false },
+    { id: 'motif-koi', name: 'Koi QR', desc: 'The whole code in a koi design', mode: 'motif', motif: 'koi', style: 'round', fg: '#7A1F0B', bg: '#FFF7EE', framed: false },
+    { id: 'motif-butterfly', name: 'Butterfly QR', desc: 'The whole code in a butterfly design', mode: 'motif', motif: 'butterfly', style: 'round', fg: '#3B1155', bg: '#FBF2FF', framed: false },
+    { id: 'motif-robot', name: 'Robot QR', desc: 'The whole code in a robot design', mode: 'motif', motif: 'robot', style: 'round', fg: '#0F2A3D', bg: '#F0FAFB', framed: false },
+    { id: 'motif-triangle', name: 'Triangle QR', desc: 'The whole code in a triangle design', mode: 'motif', motif: 'triangle', style: 'round', fg: '#4A2A00', bg: '#FFFAEC', framed: false },
+    { id: 'motif-heart', name: 'Heart QR', desc: 'The whole code in a heart design', mode: 'motif', motif: 'heart', style: 'round', fg: '#6E0F26', bg: '#FFF2F5', framed: false },
+    { id: 'motif-star', name: 'Star QR', desc: 'The whole code in a star design', mode: 'motif', motif: 'star', style: 'round', fg: '#5A4300', bg: '#FFFBEB', framed: false },
+    { id: 'motif-leaf', name: 'Leaf QR', desc: 'The whole code in a leaf design', mode: 'motif', motif: 'leaf', style: 'round', fg: '#0B3D1E', bg: '#F2FBF3', framed: false },
+    { id: 'motif-flower', name: 'Flower QR', desc: 'The whole code in a flower design', mode: 'motif', motif: 'flower', style: 'round', fg: '#5C1140', bg: '#FFF2F8', framed: false }
   ];
 
   function hexRGB(hex) {
@@ -390,50 +415,97 @@
     });
   }
 
+  /* artTiger — REDRAWN in v3 (owner: the old strip tiger was "really bad").
+     Symmetric round face built in layers: halo → layered ears (outer, rim,
+     inner-ear blush) → deep rim circle → gradient face → tapered forehead
+     and cheek stripes (polygons that narrow to a point, not blunt bars) →
+     cream muzzle with whisker dots → layered amber eyes with double
+     highlights → nose with sheen → mouth → long whiskers. Same bounds and
+     signature as before; nothing outside the strip is touched. */
   function artTiger(px, x0, y0, x1, y1) {
     var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
-    var orange = hexRGB('#F5820B'), orangeD = hexRGB('#C25E04'), dark = hexRGB('#141414'),
-        cream = hexRGB('#FFF7EA'), white = hexRGB('#FFFFFF');
+    var orange = hexRGB('#F5820B'), orangeD = hexRGB('#C25E04'), orangeL = hexRGB('#FFB25E'),
+        dark = hexRGB('#1C1005'), cream = hexRGB('#FFF7EA'), white = hexRGB('#FFFFFF'),
+        blush = hexRGB('#F6C39A'), noseC = hexRGB('#8A3320'), amber = hexRGB('#D97706');
+    function stripe(sx, sy, ex, ey, w0, w1, col) { // tapered stripe: wide base -> point
+      var dx = ex - sx, dy = ey - sy, len = Math.sqrt(dx * dx + dy * dy) || 1;
+      var nx = -dy / len, ny = dx / len;
+      fillPolygon(px, [
+        [sx + nx * w0 / 2, sy + ny * w0 / 2],
+        [sx - nx * w0 / 2, sy - ny * w0 / 2],
+        [ex - nx * w1 / 2, ey - ny * w1 / 2],
+        [ex + nx * w1 / 2, ey + ny * w1 / 2]
+      ], col);
+      fillCircle(px, sx, sy, w0 / 2, col);
+    }
     // soft halo
-    fillCircleA(px, cx, cy, 200, orange, 0.16);
-    // ears
-    fillPolygon(px, [[cx - 104, cy - 52], [cx - 128, cy - 128], [cx - 52, cy - 92]], orangeD);
-    fillPolygon(px, [[cx + 104, cy - 52], [cx + 128, cy - 128], [cx + 52, cy - 92]], orangeD);
-    fillPolygon(px, [[cx - 100, cy - 62], [cx - 114, cy - 108], [cx - 66, cy - 86]], dark);
-    fillPolygon(px, [[cx + 100, cy - 62], [cx + 114, cy - 108], [cx + 66, cy - 86]], dark);
-    // face: layered gradient (light top -> orange -> deep edge)
-    fillCircle(px, cx, cy, 118, orangeD);
-    fillCircle(px, cx, cy - 8, 110, orange);
-    fillEllipseV(px, cx, cy - 18, 92, 88, lerpRGB(orange, white, 0.28), orange);
-    // forehead stripes
-    thickLine(px, cx - 44, cy - 108, cx - 30, cy - 66, 13, dark);
-    thickLine(px, cx, cy - 114, cx, cy - 70, 13, dark);
-    thickLine(px, cx + 44, cy - 108, cx + 30, cy - 66, 13, dark);
-    // cheek stripes
-    thickLine(px, cx - 118, cy - 20, cx - 78, cy - 8, 12, dark);
-    thickLine(px, cx + 118, cy - 20, cx + 78, cy - 8, 12, dark);
-    thickLine(px, cx - 112, cy + 34, cx - 76, cy + 40, 12, dark);
-    thickLine(px, cx + 112, cy + 34, cx + 76, cy + 40, 12, dark);
-    // whisker dots + whiskers
-    [[-1, 0], [1, 0]].forEach(function (s) {
-      for (var wI = 0; wI < 3; wI++) {
-        var wy = cy + 40 + wI * 14, wx = cx + s[0] * 66;
-        thickLineA(px, wx, wy, wx + s[0] * 66, wy - 8 + wI * 6, 3, white, 0.85);
-      }
+    fillCircleA(px, cx, cy, 205, orange, 0.16);
+    fillCircleA(px, cx, cy, 160, orange, 0.12);
+    // ears: outer disc, deep rim, inner-ear blush (layered, both sides)
+    [-1, 1].forEach(function (s) {
+      fillCircle(px, cx + s * 88, cy - 88, 42, orangeD);
+      fillCircle(px, cx + s * 88, cy - 88, 34, orange);
+      fillCircle(px, cx + s * 86, cy - 86, 20, blush);
+      fillCircle(px, cx + s * 85, cy - 85, 11, cream);
     });
-    // eyes (layered)
-    fillCircle(px, cx - 46, cy - 22, 21, cream);
-    fillCircle(px, cx + 46, cy - 22, 21, cream);
-    fillCircle(px, cx - 46, cy - 22, 10, dark);
-    fillCircle(px, cx + 46, cy - 22, 10, dark);
-    fillCircle(px, cx - 43, cy - 25, 3.4, white);
-    fillCircle(px, cx + 49, cy - 25, 3.4, white);
-    // muzzle + nose + mouth
-    fillEllipse(px, cx, cy + 52, 58, 37, cream);
-    fillPolygon(px, [[cx - 17, cy + 33], [cx + 17, cy + 33], [cx, cy + 53]], dark);
-    thickLine(px, cx, cy + 53, cx, cy + 68, 7, dark);
-    thickLine(px, cx, cy + 68, cx - 20, cy + 78, 6, dark);
-    thickLine(px, cx, cy + 68, cx + 20, cy + 78, 6, dark);
+    // face: deep rim + main disc + warm vertical sheen
+    fillCircle(px, cx, cy, 120, orangeD);
+    fillCircle(px, cx, cy - 6, 112, orange);
+    fillEllipseV(px, cx, cy - 22, 94, 86, lerpRGB(orange, white, 0.30), orange);
+    // cheek fluff tufts (cream-tipped triangles at the jaw line)
+    [-1, 1].forEach(function (s) {
+      fillPolygon(px, [[cx + s * 108, cy + 34], [cx + s * 132, cy + 58], [cx + s * 100, cy + 62]], orangeL);
+      fillPolygon(px, [[cx + s * 100, cy + 62], [cx + s * 124, cy + 84], [cx + s * 88, cy + 80]], orangeL);
+    });
+    // forehead stripes: three tapered marks, centre longest
+    stripe(cx, cy - 116, cx, cy - 74, 15, 3, dark);
+    stripe(cx - 40, cy - 106, cx - 28, cy - 70, 13, 3, dark);
+    stripe(cx + 40, cy - 106, cx + 28, cy - 70, 13, 3, dark);
+    stripe(cx - 74, cy - 90, cx - 58, cy - 60, 11, 2, dark);
+    stripe(cx + 74, cy - 90, cx + 58, cy - 60, 11, 2, dark);
+    // cheek stripes: three tapered marks per side, fanning down
+    [-1, 1].forEach(function (s) {
+      stripe(cx + s * 116, cy - 34, cx + s * 80, cy - 22, 13, 3, dark);
+      stripe(cx + s * 118, cy + 4, cx + s * 82, cy + 8, 13, 3, dark);
+      stripe(cx + s * 110, cy + 42, cx + s * 78, cy + 40, 12, 3, dark);
+    });
+    // chin stripe
+    stripe(cx, cy + 118, cx, cy + 96, 11, 3, dark);
+    // muzzle: two cream lobes + chin, drawn before nose/mouth
+    fillEllipse(px, cx - 27, cy + 52, 34, 26, cream);
+    fillEllipse(px, cx + 27, cy + 52, 34, 26, cream);
+    fillEllipse(px, cx, cy + 76, 30, 16, cream);
+    // whisker dots on the muzzle
+    [-1, 1].forEach(function (s) {
+      [[38, 44], [50, 54], [36, 62]].forEach(function (p) {
+        fillCircle(px, cx + s * p[0], cy + p[1], 2.6, orangeD);
+      });
+    });
+    // whiskers: three long fine lines per side, slight fan
+    [-1, 1].forEach(function (s) {
+      thickLineA(px, cx + s * 44, cy + 44, cx + s * 128, cy + 30, 3, white, 0.9);
+      thickLineA(px, cx + s * 46, cy + 56, cx + s * 132, cy + 56, 3, white, 0.9);
+      thickLineA(px, cx + s * 44, cy + 68, cx + s * 126, cy + 84, 3, white, 0.85);
+    });
+    // eyes: cream almond -> amber iris -> dark pupil -> double highlight
+    [-1, 1].forEach(function (s) {
+      var ex = cx + s * 46, ey = cy - 24;
+      fillEllipse(px, ex, ey, 23, 19, cream);
+      fillCircle(px, ex, ey, 13.5, amber);
+      fillCircle(px, ex, ey, 8, dark);
+      fillCircle(px, ex - 3.5, ey - 4, 3.6, white);
+      fillCircle(px, ex + 4, ey + 4.5, 1.8, white);
+      // upper lid line for definition
+      arcStroke(px, ex, ey - 2, 21, Math.PI * 1.12, Math.PI * 1.88, 4.5, dark);
+    });
+    // nose: rounded triangle with sheen, philtrum + mouth curves
+    fillPolygon(px, [[cx - 18, cy + 34], [cx + 18, cy + 34], [cx + 8, cy + 52], [cx - 8, cy + 52]], noseC);
+    fillCircle(px, cx - 18, cy + 36, 5, noseC);
+    fillCircle(px, cx + 18, cy + 36, 5, noseC);
+    fillCircleA(px, cx - 6, cy + 40, 5, white, 0.5);
+    thickLine(px, cx, cy + 53, cx, cy + 66, 6, dark);
+    arcStroke(px, cx - 10, cy + 62, 11, Math.PI * 0.15, Math.PI * 0.85, 5.5, dark);
+    arcStroke(px, cx + 10, cy + 62, 11, Math.PI * 0.15, Math.PI * 0.85, 5.5, dark);
   }
 
   function artOcean(px, x0, y0, x1, y1) {
@@ -584,6 +656,542 @@
              label: label };
   }
 
+  /* ================= MOTIF LIBRARY (v3) =================
+     Painters paintMotif(px, cx, cy, R, P): P is a resolved palette
+     {ink, mid, soft, light, bg} of RGB arrays. Painters use ONLY palette
+     colours (plus pure white for tiny eye highlights), so painting with
+     an all-white palette on transparency yields the silhouette (alpha =
+     coverage) — the shaped renderer below only needs the real-palette
+     painting: per module it reads coverage (mean alpha) and colour
+     (mean RGB over covered samples) from a 3x3-supersampled buffer. */
+
+  var WHITE = [255, 255, 255];
+
+  function fillEllipseA(px, cx, cy, rx, ry, rgb, a) { // alpha ellipse (motif section helper)
+    var x0 = Math.max(0, Math.floor(cx - rx)), y0 = Math.max(0, Math.floor(cy - ry));
+    var x1 = Math.min(px.w - 1, Math.ceil(cx + rx)), y1 = Math.min(px.h - 1, Math.ceil(cy + ry));
+    for (var y = y0; y <= y1; y++)
+      for (var x = x0; x <= x1; x++) {
+        var dx = (x - cx) / rx, dy = (y - cy) / ry;
+        if (dx * dx + dy * dy <= 1) blendPx(px, x, y, rgb, a);
+      }
+  }
+
+  function motifEye(px, x, y, r, P) {
+    fillCircle(px, x, y, r, P.light);
+    fillCircle(px, x, y, r * 0.62, P.ink);
+    fillCircle(px, x - r * 0.22, y - r * 0.24, r * 0.20, WHITE);
+    fillCircle(px, x + r * 0.26, y + r * 0.28, r * 0.11, WHITE);
+  }
+  function motifStripe(px, sx, sy, ex, ey, w0, w1, col) {
+    var dx = ex - sx, dy = ey - sy, len = Math.sqrt(dx * dx + dy * dy) || 1;
+    var nx = -dy / len, ny = dx / len;
+    fillPolygon(px, [
+      [sx + nx * w0 / 2, sy + ny * w0 / 2], [sx - nx * w0 / 2, sy - ny * w0 / 2],
+      [ex - nx * w1 / 2, ey - ny * w1 / 2], [ex + nx * w1 / 2, ey + ny * w1 / 2]
+    ], col);
+    fillCircle(px, sx, sy, w0 / 2, col);
+  }
+
+  function paintTiger(px, cx, cy, R, P) {
+    [-1, 1].forEach(function (s) {
+      fillCircle(px, cx + s * R * 0.72, cy - R * 0.72, R * 0.34, P.ink);
+      fillCircle(px, cx + s * R * 0.72, cy - R * 0.72, R * 0.26, P.mid);
+      fillCircle(px, cx + s * R * 0.70, cy - R * 0.70, R * 0.14, P.light);
+    });
+    fillCircle(px, cx, cy, R * 0.98, P.mid);
+    fillEllipseV(px, cx, cy - R * 0.14, R * 0.78, R * 0.72, lerpRGB(P.mid, WHITE, 0.22), P.mid);
+    motifStripe(px, cx, cy - R * 0.96, cx, cy - R * 0.60, R * 0.13, R * 0.03, P.ink);
+    motifStripe(px, cx - R * 0.34, cy - R * 0.88, cx - R * 0.24, cy - R * 0.56, R * 0.11, R * 0.03, P.ink);
+    motifStripe(px, cx + R * 0.34, cy - R * 0.88, cx + R * 0.24, cy - R * 0.56, R * 0.11, R * 0.03, P.ink);
+    [-1, 1].forEach(function (s) {
+      motifStripe(px, cx + s * R * 0.97, cy - R * 0.28, cx + s * R * 0.66, cy - R * 0.18, R * 0.11, R * 0.03, P.ink);
+      motifStripe(px, cx + s * R * 0.99, cy + R * 0.06, cx + s * R * 0.68, cy + R * 0.08, R * 0.11, R * 0.03, P.ink);
+      motifStripe(px, cx + s * R * 0.92, cy + R * 0.38, cx + s * R * 0.64, cy + R * 0.34, R * 0.10, R * 0.03, P.ink);
+    });
+    fillEllipse(px, cx - R * 0.23, cy + R * 0.44, R * 0.29, R * 0.22, P.light);
+    fillEllipse(px, cx + R * 0.23, cy + R * 0.44, R * 0.29, R * 0.22, P.light);
+    fillEllipse(px, cx, cy + R * 0.64, R * 0.26, R * 0.14, P.light);
+    motifEye(px, cx - R * 0.38, cy - R * 0.18, R * 0.17, P);
+    motifEye(px, cx + R * 0.38, cy - R * 0.18, R * 0.17, P);
+    fillPolygon(px, [[cx - R * 0.15, cy + R * 0.28], [cx + R * 0.15, cy + R * 0.28], [cx, cy + R * 0.44]], P.ink);
+    thickLine(px, cx, cy + R * 0.44, cx, cy + R * 0.56, R * 0.05, P.ink);
+    arcStroke(px, cx - R * 0.09, cy + R * 0.52, R * 0.10, Math.PI * 0.15, Math.PI * 0.85, R * 0.045, P.ink);
+    arcStroke(px, cx + R * 0.09, cy + R * 0.52, R * 0.10, Math.PI * 0.15, Math.PI * 0.85, R * 0.045, P.ink);
+    [-1, 1].forEach(function (s) {
+      thickLineA(px, cx + s * R * 0.40, cy + R * 0.38, cx + s * R * 1.02, cy + R * 0.26, R * 0.028, WHITE, 0.9);
+      thickLineA(px, cx + s * R * 0.42, cy + R * 0.50, cx + s * R * 1.04, cy + R * 0.50, R * 0.028, WHITE, 0.9);
+      thickLineA(px, cx + s * R * 0.40, cy + R * 0.62, cx + s * R * 1.0, cy + R * 0.74, R * 0.028, WHITE, 0.85);
+    });
+  }
+
+  function paintLion(px, cx, cy, R, P) {
+    for (var i = 0; i < 16; i++) { // mane: alternating sun-ray discs
+      var a = i / 16 * Math.PI * 2;
+      fillCircle(px, cx + Math.cos(a) * R * 0.80, cy + Math.sin(a) * R * 0.80, R * 0.30, i % 2 ? P.soft : P.mid);
+    }
+    fillCircle(px, cx, cy, R * 0.86, P.mid);
+    [-1, 1].forEach(function (s) {
+      fillCircle(px, cx + s * R * 0.52, cy - R * 0.58, R * 0.20, P.mid);
+      fillCircle(px, cx + s * R * 0.52, cy - R * 0.58, R * 0.11, P.light);
+    });
+    fillCircle(px, cx, cy, R * 0.68, P.soft);
+    fillEllipseV(px, cx, cy - R * 0.08, R * 0.56, R * 0.52, lerpRGB(P.soft, WHITE, 0.25), P.soft);
+    fillEllipse(px, cx - R * 0.20, cy + R * 0.34, R * 0.26, R * 0.20, P.light);
+    fillEllipse(px, cx + R * 0.20, cy + R * 0.34, R * 0.26, R * 0.20, P.light);
+    motifEye(px, cx - R * 0.30, cy - R * 0.16, R * 0.135, P);
+    motifEye(px, cx + R * 0.30, cy - R * 0.16, R * 0.135, P);
+    fillPolygon(px, [[cx - R * 0.13, cy + R * 0.20], [cx + R * 0.13, cy + R * 0.20], [cx, cy + R * 0.34]], P.ink);
+    thickLine(px, cx, cy + R * 0.34, cx, cy + R * 0.44, R * 0.045, P.ink);
+    arcStroke(px, cx - R * 0.08, cy + R * 0.41, R * 0.09, Math.PI * 0.15, Math.PI * 0.85, R * 0.04, P.ink);
+    arcStroke(px, cx + R * 0.08, cy + R * 0.41, R * 0.09, Math.PI * 0.15, Math.PI * 0.85, R * 0.04, P.ink);
+    [-1, 1].forEach(function (s) { // brow tufts
+      thickLine(px, cx + s * R * 0.20, cy - R * 0.36, cx + s * R * 0.40, cy - R * 0.40, R * 0.05, P.ink);
+    });
+  }
+
+  function paintCat(px, cx, cy, R, P) {
+    [-1, 1].forEach(function (s) {
+      fillPolygon(px, [[cx + s * R * 0.86, cy - R * 0.30], [cx + s * R * 0.92, cy - R * 0.98], [cx + s * R * 0.34, cy - R * 0.72]], P.mid);
+      fillPolygon(px, [[cx + s * R * 0.74, cy - R * 0.38], [cx + s * R * 0.78, cy - R * 0.80], [cx + s * R * 0.44, cy - R * 0.62]], P.light);
+    });
+    fillCircle(px, cx, cy + R * 0.06, R * 0.88, P.soft);
+    fillEllipseV(px, cx, cy - R * 0.02, R * 0.72, R * 0.70, lerpRGB(P.soft, WHITE, 0.30), P.soft);
+    motifStripe(px, cx, cy - R * 0.80, cx, cy - R * 0.56, R * 0.09, R * 0.02, P.ink);
+    motifStripe(px, cx - R * 0.26, cy - R * 0.74, cx - R * 0.20, cy - R * 0.52, R * 0.08, R * 0.02, P.ink);
+    motifStripe(px, cx + R * 0.26, cy - R * 0.74, cx + R * 0.20, cy - R * 0.52, R * 0.08, R * 0.02, P.ink);
+    fillEllipse(px, cx, cy + R * 0.44, R * 0.40, R * 0.26, P.light);
+    motifEye(px, cx - R * 0.34, cy - R * 0.10, R * 0.15, P);
+    motifEye(px, cx + R * 0.34, cy - R * 0.10, R * 0.15, P);
+    fillPolygon(px, [[cx - R * 0.09, cy + R * 0.28], [cx + R * 0.09, cy + R * 0.28], [cx, cy + R * 0.40]], P.mid);
+    thickLine(px, cx, cy + R * 0.40, cx, cy + R * 0.48, R * 0.04, P.ink);
+    arcStroke(px, cx - R * 0.07, cy + R * 0.45, R * 0.08, Math.PI * 0.15, Math.PI * 0.85, R * 0.035, P.ink);
+    arcStroke(px, cx + R * 0.07, cy + R * 0.45, R * 0.08, Math.PI * 0.15, Math.PI * 0.85, R * 0.035, P.ink);
+    [-1, 1].forEach(function (s) {
+      thickLineA(px, cx + s * R * 0.44, cy + R * 0.30, cx + s * R * 1.04, cy + R * 0.20, R * 0.024, P.ink, 0.85);
+      thickLineA(px, cx + s * R * 0.46, cy + R * 0.42, cx + s * R * 1.06, cy + R * 0.44, R * 0.024, P.ink, 0.85);
+      thickLineA(px, cx + s * R * 0.44, cy + R * 0.54, cx + s * R * 1.02, cy + R * 0.68, R * 0.024, P.ink, 0.8);
+    });
+  }
+
+  function paintPanda(px, cx, cy, R, P) {
+    [-1, 1].forEach(function (s) {
+      fillCircle(px, cx + s * R * 0.68, cy - R * 0.68, R * 0.30, P.ink);
+      fillCircle(px, cx + s * R * 0.68, cy - R * 0.68, R * 0.17, P.mid);
+    });
+    fillCircle(px, cx, cy, R * 0.94, P.light);
+    fillEllipseV(px, cx, cy - R * 0.10, R * 0.80, R * 0.76, WHITE, P.light);
+    [-1, 1].forEach(function (s) { // ink eye patches, tilted ovals approximated by stacked circles
+      fillCircle(px, cx + s * R * 0.34, cy - R * 0.22, R * 0.21, P.ink);
+      fillCircle(px, cx + s * R * 0.28, cy - R * 0.12, R * 0.19, P.ink);
+      fillCircle(px, cx + s * R * 0.32, cy - R * 0.18, R * 0.085, WHITE);
+      fillCircle(px, cx + s * R * 0.32, cy - R * 0.18, R * 0.048, P.ink);
+      fillCircle(px, cx + s * R * 0.295, cy - R * 0.205, R * 0.018, WHITE);
+    });
+    fillEllipse(px, cx, cy + R * 0.30, R * 0.13, R * 0.09, P.ink);
+    thickLine(px, cx, cy + R * 0.39, cx, cy + R * 0.47, R * 0.04, P.ink);
+    arcStroke(px, cx - R * 0.08, cy + R * 0.43, R * 0.09, Math.PI * 0.15, Math.PI * 0.85, R * 0.04, P.ink);
+    arcStroke(px, cx + R * 0.08, cy + R * 0.43, R * 0.09, Math.PI * 0.15, Math.PI * 0.85, R * 0.04, P.ink);
+    fillEllipse(px, cx, cy + R * 0.62, R * 0.34, R * 0.16, P.light);
+  }
+
+  function paintOwl(px, cx, cy, R, P) {
+    [-1, 1].forEach(function (s) { // ear tufts
+      fillPolygon(px, [[cx + s * R * 0.62, cy - R * 0.52], [cx + s * R * 0.86, cy - R * 0.98], [cx + s * R * 0.30, cy - R * 0.78]], P.mid);
+    });
+    fillEllipse(px, cx, cy + R * 0.08, R * 0.86, R * 0.94, P.mid);
+    [-1, 1].forEach(function (s) { // wings
+      fillEllipse(px, cx + s * R * 0.72, cy + R * 0.22, R * 0.24, R * 0.52, P.ink);
+    });
+    fillCircle(px, cx - R * 0.34, cy - R * 0.28, R * 0.42, P.light);
+    fillCircle(px, cx + R * 0.34, cy - R * 0.28, R * 0.42, P.light);
+    fillEllipse(px, cx, cy + R * 0.48, R * 0.44, R * 0.38, P.soft);
+    [-2, 0, 2].forEach(function (k) { // belly chevrons
+      arcStroke(px, cx + k * R * 0.14, cy + R * 0.42, R * 0.10, Math.PI * 0.15, Math.PI * 0.85, R * 0.035, P.ink);
+      arcStroke(px, cx + k * R * 0.14, cy + R * 0.62, R * 0.10, Math.PI * 0.15, Math.PI * 0.85, R * 0.035, P.ink);
+    });
+    motifEye(px, cx - R * 0.34, cy - R * 0.28, R * 0.24, P);
+    motifEye(px, cx + R * 0.34, cy - R * 0.28, R * 0.24, P);
+    fillPolygon(px, [[cx - R * 0.10, cy - R * 0.02], [cx + R * 0.10, cy - R * 0.02], [cx, cy + R * 0.14]], P.soft);
+    [-1, 1].forEach(function (s) { // feet
+      thickLine(px, cx + s * R * 0.20, cy + R * 1.0, cx + s * R * 0.20, cy + R * 0.90, R * 0.05, P.soft);
+    });
+  }
+
+  function paintFox(px, cx, cy, R, P) {
+    [-1, 1].forEach(function (s) {
+      fillPolygon(px, [[cx + s * R * 0.80, cy - R * 0.34], [cx + s * R * 0.88, cy - R * 1.02], [cx + s * R * 0.28, cy - R * 0.70]], P.mid);
+      fillPolygon(px, [[cx + s * R * 0.80, cy - R * 0.34], [cx + s * R * 0.88, cy - R * 1.02], [cx + s * R * 0.62, cy - R * 0.62]], P.ink);
+      fillPolygon(px, [[cx + s * R * 0.68, cy - R * 0.42], [cx + s * R * 0.72, cy - R * 0.82], [cx + s * R * 0.42, cy - R * 0.60]], P.light);
+    });
+    // pointed face: wide top narrowing to the chin
+    fillPolygon(px, [[cx - R * 0.88, cy - R * 0.52], [cx + R * 0.88, cy - R * 0.52], [cx + R * 0.52, cy + R * 0.42], [cx, cy + R * 0.98], [cx - R * 0.52, cy + R * 0.42]], P.mid);
+    fillEllipseV(px, cx, cy - R * 0.30, R * 0.62, R * 0.34, lerpRGB(P.mid, WHITE, 0.25), P.mid);
+    // cream cheeks sweeping to the chin
+    fillPolygon(px, [[cx - R * 0.52, cy + R * 0.42], [cx, cy + R * 0.98], [cx, cy + R * 0.10], [cx - R * 0.30, cy + R * 0.16]], P.light);
+    fillPolygon(px, [[cx + R * 0.52, cy + R * 0.42], [cx, cy + R * 0.98], [cx, cy + R * 0.10], [cx + R * 0.30, cy + R * 0.16]], P.light);
+    motifEye(px, cx - R * 0.34, cy - R * 0.14, R * 0.14, P);
+    motifEye(px, cx + R * 0.34, cy - R * 0.14, R * 0.14, P);
+    [-1, 1].forEach(function (s) {
+      thickLine(px, cx + s * R * 0.22, cy - R * 0.34, cx + s * R * 0.46, cy - R * 0.38, R * 0.05, P.ink);
+    });
+    fillEllipse(px, cx, cy + R * 0.52, R * 0.15, R * 0.11, P.ink);
+    fillCircleA(px, cx - R * 0.05, cy + R * 0.48, R * 0.045, WHITE, 0.6);
+  }
+
+  /* Horse: HEAD IN PROFILE facing left — a profile reads instantly at
+     small sizes (long face, flared nostril, ear, swept mane), while a
+     front-on horse head collapses into a generic oval. */
+  function paintHorse(px, cx, cy, R, P) {
+    // mane mass behind the head (drawn first, head overlaps it)
+    fillPolygon(px, [[cx + R * 0.30, cy - R * 0.92], [cx + R * 0.98, cy - R * 0.30], [cx + R * 0.86, cy + R * 0.98], [cx + R * 0.42, cy + R * 0.62], [cx + R * 0.52, cy - R * 0.20]], P.ink);
+    // ear
+    fillPolygon(px, [[cx - R * 0.30, cy - R * 0.74], [cx - R * 0.14, cy - R * 1.10], [cx + R * 0.06, cy - R * 0.76]], P.mid);
+    fillPolygon(px, [[cx - R * 0.22, cy - R * 0.76], [cx - R * 0.13, cy - R * 0.98], [cx - R * 0.02, cy - R * 0.76]], P.light);
+    // head profile
+    fillPolygon(px, [
+      [cx - R * 0.34, cy - R * 0.84], [cx + R * 0.30, cy - R * 0.80], [cx + R * 0.44, cy - R * 0.28],
+      [cx + R * 0.60, cy + R * 0.44], [cx + R * 0.40, cy + R * 0.66], [cx - R * 0.30, cy + R * 0.72],
+      [cx - R * 0.78, cy + R * 0.60], [cx - R * 0.90, cy + R * 0.30], [cx - R * 0.66, cy - R * 0.28]
+    ], P.mid);
+    fillEllipseV(px, cx - R * 0.30, cy - R * 0.30, R * 0.30, R * 0.42, lerpRGB(P.mid, WHITE, 0.22), P.mid);
+    // muzzle band + jaw shading
+    fillPolygon(px, [[cx - R * 0.90, cy + R * 0.30], [cx - R * 0.52, cy + R * 0.40], [cx - R * 0.30, cy + R * 0.72], [cx - R * 0.78, cy + R * 0.60]], P.soft);
+    // forelock tuft
+    fillPolygon(px, [[cx - R * 0.34, cy - R * 0.84], [cx + R * 0.10, cy - R * 0.86], [cx - R * 0.06, cy - R * 0.52], [cx - R * 0.38, cy - R * 0.56]], P.ink);
+    // mane strands over the neck edge
+    [0, 1, 2].forEach(function (i) {
+      thickLine(px, cx + R * (0.44 - i * 0.02), cy - R * (0.55 - i * 0.38), cx + R * (0.66 - i * 0.04), cy - R * (0.30 - i * 0.38), R * 0.07, P.ink);
+    });
+    motifEye(px, cx - R * 0.28, cy - R * 0.30, R * 0.115, P);
+    fillCircle(px, cx - R * 0.66, cy + R * 0.42, R * 0.075, P.ink); // nostril
+    fillCircleA(px, cx - R * 0.69, cy + R * 0.39, R * 0.03, WHITE, 0.6);
+    arcStroke(px, cx - R * 0.52, cy + R * 0.60, R * 0.16, Math.PI * 0.1, Math.PI * 0.7, R * 0.04, P.ink); // mouth
+  }
+
+  function paintBird(px, cx, cy, R, P) {
+    // tail feathers
+    fillPolygon(px, [[cx - R * 0.10, cy + R * 0.55], [cx - R * 0.52, cy + R * 1.02], [cx - R * 0.16, cy + R * 1.04], [cx + R * 0.08, cy + R * 0.62]], P.ink);
+    fillPolygon(px, [[cx + R * 0.12, cy + R * 0.55], [cx - R * 0.10, cy + R * 1.04], [cx + R * 0.24, cy + R * 1.02], [cx + R * 0.28, cy + R * 0.58]], P.mid);
+    // body + belly
+    fillEllipse(px, cx, cy + R * 0.22, R * 0.62, R * 0.74, P.mid);
+    fillEllipse(px, cx - R * 0.05, cy + R * 0.38, R * 0.42, R * 0.52, P.light);
+    // wing
+    fillEllipse(px, cx + R * 0.34, cy + R * 0.18, R * 0.26, R * 0.48, P.ink);
+    fillEllipse(px, cx + R * 0.30, cy + R * 0.10, R * 0.17, R * 0.34, P.mid);
+    // head + crest
+    fillCircle(px, cx - R * 0.06, cy - R * 0.52, R * 0.46, P.mid);
+    thickLine(px, cx - R * 0.16, cy - R * 0.92, cx - R * 0.30, cy - R * 1.10, R * 0.06, P.ink);
+    thickLine(px, cx + R * 0.02, cy - R * 0.94, cx + R * 0.02, cy - R * 1.14, R * 0.06, P.ink);
+    fillCircle(px, cx - R * 0.28, cy - R * 0.44, R * 0.13, P.soft); // cheek
+    motifEye(px, cx - R * 0.16, cy - R * 0.56, R * 0.125, P);
+    fillPolygon(px, [[cx - R * 0.48, cy - R * 0.46], [cx - R * 0.86, cy - R * 0.34], [cx - R * 0.46, cy - R * 0.24]], P.soft); // beak
+    // perch branch + leaves
+    thickLine(px, cx - R * 0.95, cy + R * 0.92, cx + R * 0.95, cy + R * 0.80, R * 0.07, P.ink);
+    fillEllipse(px, cx + R * 0.78, cy + R * 0.66, R * 0.16, R * 0.09, P.soft);
+    fillEllipse(px, cx - R * 0.80, cy + R * 0.74, R * 0.15, R * 0.08, P.soft);
+  }
+
+  function paintKoi(px, cx, cy, R, P) {
+    arcStroke(px, cx - R * 0.30, cy - R * 0.72, R * 0.34, Math.PI * 0.05, Math.PI * 0.95, R * 0.035, P.soft);
+    arcStroke(px, cx + R * 0.42, cy + R * 0.74, R * 0.30, Math.PI * 1.05, Math.PI * 1.95, R * 0.035, P.soft);
+    // tail (flowing, right side)
+    fillPolygon(px, [[cx + R * 0.55, cy - R * 0.10], [cx + R * 1.02, cy - R * 0.52], [cx + R * 0.94, cy], [cx + R * 1.02, cy + R * 0.52], [cx + R * 0.55, cy + R * 0.10]], P.mid);
+    fillPolygon(px, [[cx + R * 0.58, cy - R * 0.05], [cx + R * 0.92, cy - R * 0.34], [cx + R * 0.86, cy], [cx + R * 0.92, cy + R * 0.34], [cx + R * 0.58, cy + R * 0.05]], P.soft);
+    // pectoral fins
+    fillPolygon(px, [[cx - R * 0.05, cy + R * 0.28], [cx - R * 0.30, cy + R * 0.66], [cx + R * 0.22, cy + R * 0.40]], P.mid);
+    fillPolygon(px, [[cx + R * 0.30, cy - R * 0.30], [cx + R * 0.16, cy - R * 0.68], [cx + R * 0.52, cy - R * 0.38]], P.mid);
+    // body
+    fillEllipse(px, cx, cy, R * 0.82, R * 0.46, P.soft);
+    fillEllipseV(px, cx, cy - R * 0.06, R * 0.74, R * 0.38, lerpRGB(P.soft, WHITE, 0.30), P.soft);
+    // colour patches (classic koi markings)
+    fillCircle(px, cx - R * 0.34, cy - R * 0.10, R * 0.24, P.mid);
+    fillEllipse(px, cx + R * 0.16, cy + R * 0.10, R * 0.30, R * 0.22, P.mid);
+    fillCircle(px, cx + R * 0.48, cy - R * 0.16, R * 0.15, P.mid);
+    fillCircle(px, cx - R * 0.02, cy - R * 0.24, R * 0.12, P.ink);
+    // head shading + eye + whiskers
+    fillEllipse(px, cx - R * 0.62, cy, R * 0.22, R * 0.34, P.light);
+    motifEye(px, cx - R * 0.52, cy - R * 0.16, R * 0.095, P);
+    thickLineA(px, cx - R * 0.82, cy + R * 0.10, cx - R * 1.04, cy + R * 0.26, R * 0.03, P.ink, 0.9);
+    thickLineA(px, cx - R * 0.82, cy - R * 0.10, cx - R * 1.04, cy - R * 0.26, R * 0.03, P.ink, 0.9);
+  }
+
+  function paintButterfly(px, cx, cy, R, P) {
+    [-1, 1].forEach(function (s) {
+      fillEllipse(px, cx + s * R * 0.52, cy - R * 0.34, R * 0.52, R * 0.40, P.mid);
+      fillEllipse(px, cx + s * R * 0.46, cy + R * 0.38, R * 0.42, R * 0.34, P.soft);
+      fillEllipse(px, cx + s * R * 0.50, cy - R * 0.32, R * 0.34, R * 0.25, P.soft);
+      fillCircle(px, cx + s * R * 0.56, cy - R * 0.34, R * 0.13, P.light);
+      fillCircle(px, cx + s * R * 0.48, cy + R * 0.38, R * 0.09, P.ink);
+      fillCircle(px, cx + s * R * 0.72, cy + R * 0.52, R * 0.06, P.light);
+    });
+    fillEllipse(px, cx, cy + R * 0.05, R * 0.13, R * 0.72, P.ink); // body
+    fillCircle(px, cx, cy - R * 0.72, R * 0.16, P.ink); // head
+    [-1, 1].forEach(function (s) { // antennae
+      arcStroke(px, cx + s * R * 0.06, cy - R * 0.80, R * 0.34, s < 0 ? Math.PI * 1.25 : Math.PI * 1.35, s < 0 ? Math.PI * 1.75 : Math.PI * 1.65, R * 0.035, P.ink);
+      fillCircle(px, cx + s * R * 0.38, cy - R * 1.02, R * 0.055, P.ink);
+    });
+    motifEye(px, cx - R * 0.06, cy - R * 0.74, R * 0.05, P);
+    motifEye(px, cx + R * 0.06, cy - R * 0.74, R * 0.05, P);
+  }
+
+  function paintRobot(px, cx, cy, R, P) {
+    // antenna + ears
+    thickLine(px, cx, cy - R * 0.62, cx, cy - R * 0.92, R * 0.07, P.ink);
+    fillCircle(px, cx, cy - R * 0.98, R * 0.11, P.soft);
+    fillCircle(px, cx, cy - R * 0.98, R * 0.05, P.light);
+    fillRect(px, cx - R * 1.0, cy - R * 0.28, R * 0.16, R * 0.52, P.ink);
+    fillRect(px, cx + R * 0.84, cy - R * 0.28, R * 0.16, R * 0.52, P.ink);
+    // head shell + face screen
+    roundRect(px, cx - R * 0.86, cy - R * 0.64, R * 1.72, R * 1.30, R * 0.30, P.mid);
+    roundRect(px, cx - R * 0.68, cy - R * 0.46, R * 1.36, R * 0.94, R * 0.22, P.ink);
+    // eyes: glowing soft discs
+    fillCircle(px, cx - R * 0.33, cy - R * 0.12, R * 0.155, P.soft);
+    fillCircle(px, cx + R * 0.33, cy - R * 0.12, R * 0.155, P.soft);
+    fillCircle(px, cx - R * 0.36, cy - R * 0.17, R * 0.05, WHITE);
+    fillCircle(px, cx + R * 0.30, cy - R * 0.17, R * 0.05, WHITE);
+    // mouth: equaliser bars
+    [-2, -1, 0, 1, 2].forEach(function (i) {
+      var hh = [0.10, 0.17, 0.22, 0.17, 0.10][i + 2];
+      fillRect(px, cx + i * R * 0.17 - R * 0.045, cy + R * 0.26 - R * hh / 2, R * 0.09, R * hh, P.soft);
+    });
+    // neck + shoulders + chest core
+    fillRect(px, cx - R * 0.16, cy + R * 0.66, R * 0.32, R * 0.14, P.ink);
+    fillPolygon(px, [[cx - R * 0.62, cy + R * 1.02], [cx + R * 0.62, cy + R * 1.02], [cx + R * 0.40, cy + R * 0.78], [cx - R * 0.40, cy + R * 0.78]], P.mid);
+    fillCircle(px, cx, cy + R * 0.90, R * 0.10, P.soft);
+    fillCircle(px, cx, cy + R * 0.90, R * 0.05, P.light);
+    // cheek bolts
+    fillCircle(px, cx - R * 0.62, cy + R * 0.34, R * 0.05, P.soft);
+    fillCircle(px, cx + R * 0.62, cy + R * 0.34, R * 0.05, P.soft);
+  }
+
+  function paintTriangle(px, cx, cy, R, P) {
+    fillEllipseA(px, cx, cy + R * 0.92, R * 0.78, R * 0.13, P.soft, 0.55);
+    var top = [cx, cy - R * 1.02], bl = [cx - R * 0.94, cy + R * 0.82], br = [cx + R * 0.94, cy + R * 0.82];
+    fillPolygon(px, [top, br, bl], P.ink);
+    var t2 = [cx, cy - R * 0.80], b2l = [cx - R * 0.72, cy + R * 0.66], b2r = [cx + R * 0.72, cy + R * 0.66];
+    fillPolygon(px, [t2, b2r, b2l], P.mid);
+    // prism facets: light left, soft right, bright core
+    fillPolygon(px, [t2, [cx, cy + R * 0.66], b2l], lerpRGB(P.mid, WHITE, 0.30));
+    fillPolygon(px, [t2, b2r, [cx, cy + R * 0.66]], P.soft);
+    fillPolygon(px, [[cx, cy - R * 0.44], [cx + R * 0.26, cy + R * 0.30], [cx - R * 0.26, cy + R * 0.30]], P.light);
+    thickLine(px, top[0], top[1], cx, cy + R * 0.66, R * 0.035, P.ink);
+    // sparkles
+    [[cx - R * 0.92, cy - R * 0.72, 0.10], [cx + R * 0.94, cy - R * 0.44, 0.08], [cx + R * 0.80, cy + R * 0.94, 0.07]].forEach(function (sp) {
+      fillPolygon(px, [[sp[0], sp[1] - R * sp[2]], [sp[0] + R * sp[2] * 0.32, sp[1]], [sp[0], sp[1] + R * sp[2]], [sp[0] - R * sp[2] * 0.32, sp[1]]], P.mid);
+    });
+  }
+
+  function paintHeart(px, cx, cy, R, P) {
+    fillCircle(px, cx - R * 0.44, cy - R * 0.34, R * 0.50, P.mid);
+    fillCircle(px, cx + R * 0.44, cy - R * 0.34, R * 0.50, P.mid);
+    fillPolygon(px, [[cx - R * 0.90, cy - R * 0.10], [cx + R * 0.90, cy - R * 0.10], [cx, cy + R * 1.0]], P.mid);
+    fillEllipseV(px, cx, cy - R * 0.10, R * 0.72, R * 0.55, lerpRGB(P.mid, WHITE, 0.20), P.mid);
+    // inner heart, offset up-left for depth
+    fillCircle(px, cx - R * 0.30 - R * 0.08, cy - R * 0.30, R * 0.30, P.soft);
+    fillCircle(px, cx + R * 0.30 - R * 0.08, cy - R * 0.30, R * 0.30, P.soft);
+    fillPolygon(px, [[cx - R * 0.60, cy - R * 0.14], [cx + R * 0.44, cy - R * 0.14], [cx - R * 0.08, cy + R * 0.56]], P.soft);
+    fillEllipseA(px, cx - R * 0.48, cy - R * 0.44, R * 0.20, R * 0.12, WHITE, 0.65); // gloss
+    fillCircle(px, cx + R * 0.66, cy + R * 0.30, R * 0.07, P.light);
+    fillCircle(px, cx - R * 0.78, cy + R * 0.42, R * 0.05, P.light);
+  }
+
+  function starPoints(cx, cy, rO, rI, rot) {
+    var pts = [];
+    for (var i = 0; i < 10; i++) {
+      var r = i % 2 ? rI : rO, a = rot + i * Math.PI / 5;
+      pts.push([cx + r * Math.sin(a), cy - r * Math.cos(a)]);
+    }
+    return pts;
+  }
+  function paintStar(px, cx, cy, R, P) {
+    fillPolygon(px, starPoints(cx, cy, R * 1.04, R * 0.44, 0), P.ink);
+    fillPolygon(px, starPoints(cx, cy, R * 0.92, R * 0.39, 0), P.mid);
+    fillPolygon(px, starPoints(cx, cy - R * 0.04, R * 0.52, R * 0.22, 0), P.soft);
+    fillCircle(px, cx, cy - R * 0.04, R * 0.17, P.light);
+    fillCircleA(px, cx - R * 0.05, cy - R * 0.09, R * 0.06, WHITE, 0.8);
+    [[cx - R * 0.88, cy - R * 0.80, 0.09], [cx + R * 0.90, cy - R * 0.55, 0.07], [cx + R * 0.78, cy + R * 0.82, 0.08]].forEach(function (sp) {
+      fillPolygon(px, [[sp[0], sp[1] - R * sp[2]], [sp[0] + R * sp[2] * 0.32, sp[1]], [sp[0], sp[1] + R * sp[2]], [sp[0] - R * sp[2] * 0.32, sp[1]]], P.mid);
+    });
+  }
+
+  function paintLeaf(px, cx, cy, R, P) {
+    // leaf outline from a width profile (pointed at both ends, diagonal)
+    var ptsTop = [], ptsBot = [], N = 24, i, t, wdt, pxX, pxY;
+    var ax = -0.85, ay = 0.85, bx = 0.85, by = -0.85; // tip-to-tip axis (unit-ish)
+    var dx = bx - ax, dy = by - ay, len = Math.sqrt(dx * dx + dy * dy);
+    var ux = dx / len, uy = dy / len, nx = -uy, ny = ux;
+    for (i = 0; i <= N; i++) {
+      t = i / N; wdt = Math.pow(Math.sin(Math.PI * t), 0.65) * 0.52;
+      pxX = cx + (ax + dx * t) * R; pxY = cy + (ay + dy * t) * R;
+      ptsTop.push([pxX + nx * wdt * R, pxY + ny * wdt * R]);
+    }
+    for (i = N; i >= 0; i--) {
+      t = i / N; wdt = Math.pow(Math.sin(Math.PI * t), 0.65) * 0.52;
+      pxX = cx + (ax + dx * t) * R; pxY = cy + (ay + dy * t) * R;
+      ptsBot.push([pxX - nx * wdt * R, pxY - ny * wdt * R]);
+    }
+    fillPolygon(px, ptsTop.concat(ptsBot), P.mid);
+    // lighter upper half sheen
+    fillPolygon(px, ptsTop.concat([[cx, cy]]), lerpRGB(P.mid, WHITE, 0.18));
+    // stem + centre vein + side veins in ink
+    thickLine(px, cx + (ax - ux * 0.16) * R, cy + (ay - uy * 0.16) * R, cx + ax * R, cy + ay * R, R * 0.07, P.ink);
+    thickLine(px, cx + ax * R, cy + ay * R, cx + bx * R, cy + by * R, R * 0.045, P.ink);
+    [0.3, 0.48, 0.66].forEach(function (tt) {
+      var vx = cx + (ax + dx * tt) * R, vy = cy + (ay + dy * tt) * R;
+      var w2 = Math.pow(Math.sin(Math.PI * tt), 0.65) * 0.40;
+      thickLine(px, vx, vy, vx + (nx * w2 + ux * 0.16) * R, vy + (ny * w2 + uy * 0.16) * R, R * 0.028, P.ink);
+      thickLine(px, vx, vy, vx + (-nx * w2 + ux * 0.16) * R, vy + (-ny * w2 + uy * 0.16) * R, R * 0.028, P.ink);
+    });
+    fillCircle(px, cx + R * 0.62, cy + R * 0.72, R * 0.09, P.soft); // dew drop
+    fillCircleA(px, cx + R * 0.59, cy + R * 0.69, R * 0.035, WHITE, 0.8);
+  }
+
+  function paintFlower(px, cx, cy, R, P) {
+    var i, a;
+    for (i = 0; i < 8; i++) { // outer petals, alternating shades
+      a = i / 8 * Math.PI * 2;
+      fillCircle(px, cx + Math.cos(a) * R * 0.58, cy + Math.sin(a) * R * 0.58, R * 0.40, i % 2 ? P.soft : P.mid);
+    }
+    for (i = 0; i < 8; i++) { // inner petal highlights
+      a = (i + 0.5) / 8 * Math.PI * 2;
+      fillCircle(px, cx + Math.cos(a) * R * 0.44, cy + Math.sin(a) * R * 0.44, R * 0.24, P.soft);
+    }
+    fillCircle(px, cx, cy, R * 0.34, P.light);
+    fillCircle(px, cx, cy, R * 0.26, lerpRGB(P.light, P.soft, 0.35));
+    [[0, 0], [-0.13, -0.08], [0.13, -0.08], [-0.08, 0.11], [0.09, 0.12], [0, -0.16]].forEach(function (p) {
+      fillCircle(px, cx + p[0] * R, cy + p[1] * R, R * 0.045, P.ink);
+    });
+    fillCircleA(px, cx - R * 0.62, cy - R * 0.62, R * 0.07, WHITE, 0.7);
+  }
+
+  var MOTIFS = [
+    { id: 'tiger', name: 'Tiger', paint: paintTiger, pal: { ink: '#5F2700', mid: '#E8760A', soft: '#F5A83D', light: '#FBD9A0', bg: '#FFF6E9' } },
+    { id: 'lion', name: 'Lion', paint: paintLion, pal: { ink: '#5A3000', mid: '#B96A12', soft: '#E8A33D', light: '#F7D9A0', bg: '#FFF8EC' } },
+    { id: 'cat', name: 'Cat', paint: paintCat, pal: { ink: '#263238', mid: '#607D8B', soft: '#B0BEC5', light: '#ECEFF1', bg: '#FFFFFF' } },
+    { id: 'panda', name: 'Panda', paint: paintPanda, pal: { ink: '#1A1A1A', mid: '#4A4A4A', soft: '#9E9E9E', light: '#E8E8E8', bg: '#FFFFFF' } },
+    { id: 'owl', name: 'Owl', paint: paintOwl, pal: { ink: '#33200D', mid: '#7A4A1F', soft: '#C08A4A', light: '#EBD3AC', bg: '#FBF3E2' } },
+    { id: 'fox', name: 'Fox', paint: paintFox, pal: { ink: '#6E2A00', mid: '#E05E10', soft: '#F08A3C', light: '#FBD3AC', bg: '#FFF5EA' } },
+    { id: 'horse', name: 'Horse', paint: paintHorse, pal: { ink: '#3A2410', mid: '#8A5A2B', soft: '#C79A63', light: '#EBD9BC', bg: '#FAF3E7' } },
+    { id: 'bird', name: 'Bird', paint: paintBird, pal: { ink: '#0B3D5C', mid: '#1D8AC0', soft: '#6FC3E8', light: '#CDEEFB', bg: '#F2FAFF' } },
+    { id: 'koi', name: 'Koi', paint: paintKoi, pal: { ink: '#7A1F0B', mid: '#E4571D', soft: '#F58A4C', light: '#FBD0B4', bg: '#FFF7EE' } },
+    { id: 'butterfly', name: 'Butterfly', paint: paintButterfly, pal: { ink: '#3B1155', mid: '#8B3FBF', soft: '#C77FD6', light: '#EBCBF5', bg: '#FBF2FF' } },
+    { id: 'robot', name: 'Robot', paint: paintRobot, pal: { ink: '#0F2A3D', mid: '#1F7A8C', soft: '#5FC4CE', light: '#CDEFF2', bg: '#F0FAFB' } },
+    { id: 'triangle', name: 'Triangle', paint: paintTriangle, pal: { ink: '#4A2A00', mid: '#D9940D', soft: '#F2B84B', light: '#FBE3AC', bg: '#FFFAEC' } },
+    { id: 'heart', name: 'Heart', paint: paintHeart, pal: { ink: '#6E0F26', mid: '#D61F45', soft: '#F06A85', light: '#FBD3DC', bg: '#FFF2F5' } },
+    { id: 'star', name: 'Star', paint: paintStar, pal: { ink: '#5A4300', mid: '#D9A404', soft: '#F2C94C', light: '#FBE9AC', bg: '#FFFBEB' } },
+    { id: 'leaf', name: 'Leaf', paint: paintLeaf, pal: { ink: '#0B3D1E', mid: '#1E7A3C', soft: '#57B06B', light: '#CDEBD2', bg: '#F2FBF3' } },
+    { id: 'flower', name: 'Flower', paint: paintFlower, pal: { ink: '#5C1140', mid: '#C22B7E', soft: '#F07BB0', light: '#FBD3E6', bg: '#FFF2F8' } }
+  ];
+  function getMotif(id) {
+    for (var i = 0; i < MOTIFS.length; i++) if (MOTIFS[i].id === id) return MOTIFS[i];
+    return MOTIFS[0];
+  }
+  function resolvePal(pal) {
+    return { ink: hexRGB(pal.ink), mid: hexRGB(pal.mid), soft: hexRGB(pal.soft), light: hexRGB(pal.light), bg: hexRGB(pal.bg) };
+  }
+
+  /* ---------------- shaped (motif) renderer ----------------
+     Geometry mirrors renderPlain: square canvas (n+8)*m, quiet zone 4m,
+     logo bands + label band. The motif is painted ONCE into an offscreen
+     buffer at module resolution with 3x3 supersampling; each module cell
+     then samples coverage + mean colour. Colour safety: dark cells are
+     pushed to luminance <= 0.30, ghost dots to >= 0.82. Finders are
+     ALWAYS the standard full drawFinder in ink on bg. */
+  function lum(rgb) { return (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255; }
+  function pushDark(rgb) {
+    var c = rgb, t = 0;
+    while (lum(c) > 0.30 && t < 1) { t += 0.1; c = lerpRGB(rgb, [0, 0, 0], t); }
+    return c;
+  }
+  function pushLight(rgb) {
+    var c = rgb, t = 0;
+    while (lum(c) < 0.82 && t < 1) { t += 0.1; c = lerpRGB(rgb, [255, 255, 255], t); }
+    return c;
+  }
+
+  function renderMotif(text, d, qr, logos, labelText, opts) {
+    opts = opts || {};
+    var motif = getMotif(d.motif);
+    var P = resolvePal(motif.pal);
+    var ink = P.ink, bgc = P.bg;
+    var n = qr.modules.size, data = qr.modules.data;
+    var m = Math.max(4, Math.min(14, Math.floor((opts.maxSize || 900) / (n + 8))));
+    var W = (n + 8) * m;
+    var tops = byPos(logos, 'top'), bots = byPos(logos, 'bottom');
+    var sides = byPos(logos, 'side'), mids = byPos(logos, 'middle');
+    var bandT = tops.length ? Math.round(W * 0.20) : 0;
+    var bandB = bots.length ? Math.round(W * 0.20) : 0;
+    var bandL = mids.length ? Math.round(W * 0.20) : 0;
+    var bandR = sides.length ? Math.round(W * 0.20) : 0;
+    var labelBand = labelText ? 132 : 0;
+    var CW = W + bandL + bandR, CH = W + bandT + bandB + labelBand;
+    var px = newBuf(CW, CH, bgc);
+    var ox = bandL + 4 * m, oy = bandT + 4 * m;
+    /* NOTE: a 'silhouette' variant (micro-dots outside the motif shape)
+       was built and decode-gated in v3 development; it failed materially
+       (30/64 as-rendered, several motifs 0/12) and was REMOVED before
+       shipping — only the 'picture' halftone below ships. opts.motifMode
+       is accepted for compatibility and ignored. */
+
+    // paint the motif once, 3x3 supersampled at module resolution
+    var SS = 3, S = n * SS;
+    var mp = newBufT(S, S);
+    motif.paint(mp, S / 2, S / 2, S * 0.52, P);
+    // per-cell coverage + mean colour
+    var cov = new Float32Array(n * n), colR = new Float32Array(n * n),
+        colG = new Float32Array(n * n), colB = new Float32Array(n * n);
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) {
+        var aSum = 0, rS = 0, gS = 0, bS = 0, cnt = 0;
+        for (var sy = 0; sy < SS; sy++) {
+          for (var sx = 0; sx < SS; sx++) {
+            var idx = ((r * SS + sy) * S + (c * SS + sx)) * 4;
+            var a = mp.buf[idx + 3] / 255;
+            aSum += a;
+            if (a > 0) { rS += mp.buf[idx] * a; gS += mp.buf[idx + 1] * a; bS += mp.buf[idx + 2] * a; cnt += a; }
+          }
+        }
+        var k = r * n + c;
+        cov[k] = aSum / (SS * SS);
+        if (cnt > 0) { colR[k] = rS / cnt; colG[k] = gS / cnt; colB[k] = bS / cnt; }
+      }
+    }
+
+    for (var rr = 0; rr < n; rr++) {
+      for (var cc = 0; cc < n; cc++) {
+        if (isFinderZone(rr, cc, n)) continue;
+        var kk = rr * n + cc, dark = !!data[kk];
+        var cv = cov[kk], col = [colR[kk], colG[kk], colB[kk]];
+        var cxp = ox + cc * m + m / 2, cyp = oy + rr * m + m / 2;
+        if (dark) {
+          var dc = pushDark(cv >= 0.15 ? col : ink);
+          var rad = m * (0.34 + 0.30 * (1 - lum(dc)));
+          fillCircle(px, cxp, cyp, rad, dc);
+        } else {
+          if (cv >= 0.4 && lum(col) < 0.55) fillCircle(px, cxp, cyp, m * 0.30, pushLight(col));
+        }
+      }
+    }
+    // finders: always standard, full-size, ink on bg
+    drawFinder(px, 0, 0, m, ox, oy, 'round', ink, bgc, null);
+    drawFinder(px, 0, n - 7, m, ox, oy, 'round', ink, bgc, null);
+    drawFinder(px, n - 7, 0, m, ox, oy, 'round', ink, bgc, null);
+
+    tops.forEach(function (L) { drawLogoCentered(px, L, CW / 2, bandT / 2, W * 0.5, bandT - 16); });
+    bots.forEach(function (L) { drawLogoCentered(px, L, CW / 2, bandT + W + bandB / 2, W * 0.5, bandB - 16); });
+    mids.forEach(function (L) { drawLogoCentered(px, L, bandL / 2, bandT + W / 2, bandL - 16, W * 0.4); });
+    sides.forEach(function (L) { drawLogoCentered(px, L, bandL + W + bandR / 2, bandT + W / 2, bandR - 16, W * 0.4); });
+    byPos(logos, 'center').forEach(function (L) { drawCenterLogo(px, L, ox, oy, n * m); });
+    var label = labelText ? {
+      text: labelText, x: CW / 2, y: bandT + W + bandB + 72,
+      maxW: CW - 80, fontPx: 54, color: '#' + ink.map(function (v) { return ('0' + v.toString(16)).slice(-2); }).join('')
+    } : null;
+    return { w: CW, h: CH, data: px.buf, design: d.id, modules: n,
+             qr: { x: ox, y: oy, size: n * m, module: m },
+             label: label };
+  }
+
   function render(text, designId, opts) {
     opts = opts || {};
     if (typeof text !== 'string' || !text.trim()) throw new Error('Enter some text or a link first.');
@@ -593,15 +1201,17 @@
     var d = getDesign(designId);
     var logos = normLogos(opts);
     var hasCenter = logos.some(function (L) { return L.position === 'center'; });
-    var ec = hasCenter ? 'H' : (opts.ecLevel || 'M');
+    var ec = (hasCenter || d.mode === 'motif') ? 'H' : (opts.ecLevel || 'M');
     var qr = QR.create(text.trim(), { errorCorrectionLevel: ec });
     var labelText = (opts.labelText || '').trim().slice(0, 60) || null;
-    var r = d.framed
-      ? renderFramed(text, d, qr, logos, labelText)
-      : renderPlain(text, d, qr, logos, labelText, opts.maxSize);
+    var r = d.mode === 'motif'
+      ? renderMotif(text, d, qr, logos, labelText, opts)
+      : (d.framed
+        ? renderFramed(text, d, qr, logos, labelText)
+        : renderPlain(text, d, qr, logos, labelText, opts.maxSize));
     r.ecLevel = ec;
     return r;
   }
 
-  root.QRDesigns = { DESIGNS: DESIGNS, render: render, getDesign: getDesign, version: 2 };
+  root.QRDesigns = { DESIGNS: DESIGNS, MOTIFS: MOTIFS, render: render, getDesign: getDesign, getMotif: getMotif, version: 3 };
 })(typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : this));
