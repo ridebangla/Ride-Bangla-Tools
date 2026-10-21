@@ -1,19 +1,21 @@
-/* Ride Bangla Tools — AI helper (Ride Bangla AI backend, first-party API)
-   Contract: docs/FIRST_PARTY_AI_API.md (AI agent repo).
-   Endpoint: POST https://ai.ridebangla.bd/api/public/ai/generate
-   Auth: the site's PUBLIC siteKey in the JSON body (same key the chat widget
-   uses — it identifies the site, grants no admin powers, and is MEANT to be
-   public). Provider keys (GROQ/GEMINI/OPENAI) live ONLY in the backend's
-   Vercel env / Firestore — they NEVER touch this file.
+/* Ride Bangla Tools — AI helper (first-party API)
+   Endpoint: POST /api/ai — this site's OWN serverless proxy
+   (tools/api/ai.js, same origin). The proxy holds the provider keys
+   (GROQ_API_KEY, GEMINI_API_KEY) in the ride-bangla-tools Vercel
+   project env and runs the chain Groq -> Gemini. Provider keys NEVER
+   touch this file or the browser.
+   Auth: the site's PUBLIC siteKey in the JSON body (same key the chat
+   widget uses — it identifies the site, grants no admin powers, and
+   is MEANT to be public). The proxy checks it before spending quota.
 
-   The browser NEVER calls Groq/Gemini/OpenAI directly. Every AI surface
-   (Help Center assistant, AI Tips buttons) goes through RB_AI below.
+   Every AI surface on this site (AI Tips buttons etc.) goes through
+   RB_AI below; the browser never calls Groq/Gemini directly.
 */
 (function () {
   'use strict';
 
   // ======== SINGLE CONFIGURATION POINT ========
-  var AI_BACKEND_URL = 'https://ai.ridebangla.bd/api/public/ai/generate';
+  var AI_BACKEND_URL = '/api/ai';
   var AI_SITE_KEY = 'rbsite-00f37b79c72f4e678febbd82d43bb46c'; // public site key (docs example)
   // ============================================
 
@@ -47,11 +49,11 @@
   function systemFor(task) {
     if (task === 'help-chat') {
       return 'You are the Ride Bangla assistant on the Ride Bangla Tools help center ' +
-        '(tools.ridebangla.bd — 54 free client-side tools, no signup). Answer helpfully and briefly ' +
+        '(tools.ridebangla.bd — 66 free client-side tools, no signup). Answer helpfully and briefly ' +
         'about the tools, the company (Ride Bangla Limited, ridebangla.bd), and how to use the site. ' +
         'If asked about something unrelated, answer briefly and steer back to the tools.';
     }
-    return 'You are a helpful assistant on Ride Bangla Tools (tools.ridebangla.bd), a site of 54 free ' +
+    return 'You are a helpful assistant on Ride Bangla Tools (tools.ridebangla.bd), a site of 66 free ' +
       'client-side utilities. Give concise, practical answers.';
   }
 
@@ -111,6 +113,14 @@
     }
     try { d = await r.json(); } catch (e) {
       return { ok: false, error: 'bad-response' };
+    }
+    // Diagnostics: keep the real failure class visible in the console
+    // (status + backend error/reason) instead of flattening everything
+    // into the one friendly visitor message below.
+    if (!r.ok || (d && d.ok !== true)) {
+      try {
+        console.warn('[rb-ai] request failed', r.status, (d && d.error) || '', (d && d.reason) || '');
+      } catch (e) {}
     }
 
     if (r.status === 401) return { ok: false, error: 'bad-site-key' };

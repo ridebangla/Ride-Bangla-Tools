@@ -128,7 +128,7 @@ var quality = document.getElementById('quality');
 var qualityVal = document.getElementById('qualityVal');
 var convertBtn = document.getElementById('convertBtn');
 var clearBtn = document.getElementById('clearBtn');
-var status = document.getElementById('heicStatus');
+var statusEl = document.getElementById('heicStatus');
 var results = document.getElementById('heicResults');
 var lastUrls = [];
 
@@ -140,11 +140,11 @@ fileIn.addEventListener('change', function (e) {
   heicFiles = Array.prototype.slice.call(e.target.files || []);
   results.innerHTML = '';
   if (heicFiles.length) {
-    status.textContent = heicFiles.length + ' file(s) selected — click "Convert to JPG".';
-    status.classList.remove('empty');
+    statusEl.textContent = heicFiles.length + ' file(s) selected — click "Convert to JPG".';
+    statusEl.classList.remove('empty');
   } else {
-    status.textContent = 'Choose one or more HEIC photos to begin.';
-    status.classList.add('empty');
+    statusEl.textContent = 'Choose one or more HEIC photos to begin.';
+    statusEl.classList.add('empty');
   }
 });
 
@@ -154,8 +154,8 @@ clearBtn.addEventListener('click', function () {
   results.innerHTML = '';
   lastUrls.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) {} });
   lastUrls = [];
-  status.textContent = 'Choose one or more HEIC photos to begin.';
-  status.classList.add('empty');
+  statusEl.textContent = 'Choose one or more HEIC photos to begin.';
+  statusEl.classList.add('empty');
 });
 
 async function ensureHeic2any() {
@@ -168,11 +168,11 @@ async function ensureHeic2any() {
 
 convertBtn.addEventListener('click', async function () {
   if (!heicFiles.length) { alert('Choose at least one HEIC file first.'); return; }
-  status.classList.remove('empty');
-  status.textContent = 'Loading converter engine…';
+  statusEl.classList.remove('empty');
+  statusEl.textContent = 'Loading converter engine…';
   var ready = await ensureHeic2any();
   if (!ready) {
-    status.textContent = 'The converter engine could not load. Check your internet connection and try again.';
+    statusEl.textContent = 'The converter engine could not load. Check your internet connection and try again.';
     return;
   }
   var q = (parseInt(quality.value, 10) || 92) / 100;
@@ -182,7 +182,7 @@ convertBtn.addEventListener('click', async function () {
   var done = 0, failed = 0;
   for (var i = 0; i < heicFiles.length; i++) {
     var file = heicFiles[i];
-    status.textContent = 'Converting ' + (i + 1) + ' of ' + heicFiles.length + '…';
+    statusEl.textContent = 'Converting ' + (i + 1) + ' of ' + heicFiles.length + '…';
     try {
       var out = await window.heic2any({ blob: file, toType: 'image/jpeg', quality: q });
       var blobs = Array.isArray(out) ? out : [out];
@@ -220,7 +220,7 @@ convertBtn.addEventListener('click', async function () {
       results.appendChild(eb);
     }
   }
-  status.textContent = failed
+  statusEl.textContent = failed
     ? 'Done: ' + done + ' converted, ' + failed + ' failed.'
     : 'Done — ' + done + ' photo(s) converted to JPG. Click a download button to save.';
 });
@@ -326,7 +326,7 @@ convertBtn.addEventListener('click', async function () {
 <script src="../assets/main.js?v=4"></script>
 <script src="../assets/ads-sitewide.js?v=3"></script>
 
-<script src="../assets/ai.js?v=6"></script>
+<script src="../assets/ai.js?v=7"></script>
 <div class="btn-row" style="margin:12px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">AI Tips</button></div>
 
 <script>

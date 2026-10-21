@@ -20,7 +20,7 @@
 
 const MAX_URL_LEN = 8000;
 
-// ---- Trusted client IP (same rule as tools/api/gemini.js) ----
+// ---- Trusted client IP (same rule as tools/api/ai.js) ----
 function getClientIp(req) {
   const vercelFwd = req.headers['x-vercel-forwarded-for'];
   if (typeof vercelFwd === 'string' && vercelFwd.length > 0) {

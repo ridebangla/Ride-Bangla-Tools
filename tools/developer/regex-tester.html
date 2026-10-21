@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regex Tester Free Online — Test Regular Expressions | Ride Bangla Tools</title>
+<meta name="description" content="Test regular expressions online free — enter a pattern and flags, and see every match in your text with a match count.">
+<meta name="keywords" content="regex tester, regular expression tester, test regex online, regex checker">
+<link rel="canonical" href="https://tools.ridebangla.bd/developer/regex-tester.html">
+<meta property="og:title" content="Regex Tester Free Online — Test Regular Expressions | Ride Bangla Tools">
+<meta property="og:description" content="Test regular expressions online free — enter a pattern and flags, and see every match in your text with a match count.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.ridebangla.bd/developer/regex-tester.html">
+<meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Regex Tester Free Online — Test Regular Expressions | Ride Bangla Tools">
+<meta name="twitter:description" content="Test regular expressions online free — enter a pattern and flags, and see every match in your text with a match count.">
+<meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/icon-192.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="manifest" href="../assets/manifest.webmanifest">
+<meta name="theme-color" content="#0B3D24">
+<link rel="stylesheet" href="../assets/style.css?v=4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://tools.ridebangla.bd/developer/"}, {"@type": "ListItem", "position": 3, "name": "Regex Tester", "item": "https://tools.ridebangla.bd/developer/regex-tester.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Regex Tester", "description": "Test a regular expression against a text and list every match.", "url": "https://tools.ridebangla.bd/developer/regex-tester.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Regex Tester free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Regex Tester is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Regex Tester runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Is it safe to paste sensitive code or data here?", "acceptedAnswer": {"@type": "Answer", "text": "Since processing happens locally in your browser and nothing is sent anywhere, it's as safe as any other action on your own device \u2014 but as a habit, avoid pasting real passwords or production secrets into any web tool."}}]}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="../">
+      <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+      <span class="name">Ride Bangla Tools<small>A RIDE BANGLA PRODUCT</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../">Homepage</a>
+      <a href="../#all-tools">All Tools</a>
+      <a href="../pdf/">PDF</a>
+      <a href="../image/">Image</a>
+      <a href="../calculator/">Calculator</a>
+      <a href="../converter/">Converter</a>
+      <a href="../text/">Text</a>
+      <a href="../seo/">SEO</a>
+      <a href="../developer/" style="color:var(--text-hi)">Developer</a>
+      <a href="../qr/">QR Code</a>
+      <a href="../date-time/">Date & Time</a>
+      <a href="../finance/">Finance</a>
+      <a href="../business/">Business</a>
+      <a href="../career/">Career</a>
+      <a href="../about.html">About</a>
+      <a href="../help-center.html#contact">Help Center</a>
+      <a href="../terms.html">Terms &amp; Conditions</a>
+      <a href="../privacy.html">Privacy Policy</a>
+</nav>
+    <button type="button" class="nav-toggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<section class="tool-header">
+  <div class="container">
+    <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / Regex Tester</div>
+    <h1>Regex Tester</h1>
+    <p class="lede">Test a regular expression against your text and see every match.</p>
+  </div>
+</section>
+<section class="tool-body split">
+  <div class="panel">
+    <div class="field"><label>Pattern</label><input type="text" id="rePattern" placeholder="e.g. [0-9]+"></div>
+    <div class="field"><label>Flags</label><input type="text" id="reFlags" value="g"></div>
+    <div class="field"><label>Test text</label><textarea id="reText" style="min-height:160px;"></textarea></div>
+    <div class="btn-row"><button type="button" class="btn" id="reBtn">Find matches</button></div>
+  </div>
+  <div class="panel">
+    <div class="field"><label>Matches</label><div class="output empty" id="reOut">Matches will appear here.</div></div>
+  </div>
+</section>
+<script>
+(function () {
+  document.getElementById('reBtn').addEventListener('click', function () {
+    var out = document.getElementById('reOut');
+    var pattern = document.getElementById('rePattern').value;
+    var flags = document.getElementById('reFlags').value.trim() || 'g';
+    var text = document.getElementById('reText').value;
+    var re;
+    try {
+      re = new RegExp(pattern, flags);
+    } catch (e) {
+      out.textContent = 'Invalid regular expression: ' + e.message;
+      out.classList.remove('empty');
+      return;
+    }
+    var matches = [];
+    if (re.global) {
+      var m, guard = 0;
+      while ((m = re.exec(text)) !== null && guard++ < 1000) {
+        matches.push({ value: m[0], index: m.index });
+        if (m[0] === '') re.lastIndex++;
+      }
+    } else {
+      var single = re.exec(text);
+      if (single) matches.push({ value: single[0], index: single.index });
+    }
+    if (!matches.length) {
+      out.textContent = 'No matches found.';
+      out.classList.remove('empty');
+      return;
+    }
+    var lines = [matches.length + ' match' + (matches.length === 1 ? '' : 'es') + ':'];
+    matches.forEach(function (mm, i) {
+      lines.push((i + 1) + '. "' + mm.value + '" at index ' + mm.index);
+    });
+    out.textContent = lines.join('\n');
+    out.classList.remove('empty');
+  });
+})();
+</script>
+<section class="tool-faq">
+  <div class="container">
+    <h2>How to use Regex Tester</h2>
+    <ol class="how-steps">
+      <li>Type a regular expression pattern and any flags (for example g, i).</li>
+      <li>Paste the text to test against.</li>
+      <li>Click "Find matches" to see the count and every match.</li>
+    </ol>
+    <h2>Frequently asked questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Regex Tester free to use?</summary>
+        <p>Yes. Regex Tester is completely free, with no sign-up, no daily limit, and no watermark on what you download.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my data uploaded to a server?</summary>
+        <p>No. Regex Tester runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is it safe to paste sensitive code or data here?</summary>
+        <p>Since processing happens locally in your browser and nothing is sent anywhere, it's as safe as any other action on your own device — but as a habit, avoid pasting real passwords or production secrets into any web tool.</p>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-mrec">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:300px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'3af3b096858b6ddad85b6ce19ef608a2', 'format':'iframe', 'height':250, 'width':300, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/3af3b096858b6ddad85b6ce19ef608a2/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<section class="related">
+  <div class="container">
+    <h3>More in Developer</h3>
+    <div class="related-list">
+      <a href="color-converter.html">Color Converter</a>
+      <a href="password-generator.html">Password Generator</a>
+      <a href="../developer/">All Developer tools</a>
+    </div>
+  </div>
+</section>
+<section class="ad-slot ad-slot-leaderboard">
+  <div class="container ad-wrap">
+    <span class="ad-label">Advertisement</span>
+    <div style="width:728px;max-width:100%;margin:0 auto;">
+      <script type="text/javascript">
+        atOptions = { 'key':'077c395753b19b317d623c1736683a20', 'format':'iframe', 'height':90, 'width':728, 'params':{} };
+      </script>
+      <script src="https://www.highrevenueformat.com/077c395753b19b317d623c1736683a20/invoke.js"></script>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <div class="brand-row">
+        <img src="../assets/tools-logo-mark.png" alt="Ride Bangla Tools logo">
+        <div class="name">Ride Bangla Tools</div>
+      </div>
+      <p>A free, no-login toolbox for everyday PDF, image, text and developer tasks — built and maintained by Ride Bangla.</p>
+    </div>
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="../pdf/">PDF</a></li>
+        <li><a href="../image/">Image</a></li>
+        <li><a href="../calculator/">Calculator</a></li>
+        <li><a href="../converter/">Converter</a></li>
+        <li><a href="../text/">Text</a></li>
+        <li><a href="../seo/">SEO</a></li>
+        <li><a href="../developer/">Developer</a></li>
+        <li><a href="../qr/">QR Code</a></li>
+        <li><a href="../date-time/">Date & Time</a></li>
+        <li><a href="../finance/">Finance</a></li>
+        <li><a href="../business/">Business</a></li>
+        <li><a href="../career/">Career</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ride Bangla</h4>
+      <ul>
+        <li><a href="https://www.ridebangla.bd" target="_blank" rel="noopener">Main website</a></li>
+        <li><a href="https://www.ridebangla.bd/about" target="_blank" rel="noopener">About Ride Bangla</a></li>
+        <li><a href="https://www.ridebangla.bd/contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; <span id="rb-year"></span> Ride Bangla Limited. All tools run in your browser — files are never uploaded to a server.</span>
+    <span>Dhaka, Bangladesh</span>
+  </div>
+</footer>
+<script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
+<script src="../assets/main.js?v=4"></script>
+<script src="../assets/ads-sitewide.js?v=3"></script>
+
+
+<script src="../assets/ai.js?v=7"></script>
+
+
+</body>
+</html>
