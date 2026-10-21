@@ -238,7 +238,7 @@ $('dlResult').addEventListener('click',()=>{
 document.getElementById("aiTags").addEventListener("click", function() {
   var btn = this;
   var ta = document.querySelector("textarea");
-  RB_AI.aiButton(btn, "meta-tags", function() { return "Write SEO meta tags for the following page content. Reply in EXACTLY this format — two lines and nothing else:\nTitle: <a page title, at most 60 characters>\nDescription: <a meta description, at most 160 characters>\n\nPage content:\n" + (ta ? ta.value : ""); }, function(result) {
+  RB_AI.aiButton(btn, "meta-tags", function() { return "Write an SEO title and meta description for a page about the following content. Start the reply with Title: on the first line and Description: on the second line.\n\n" + (ta ? ta.value : ""); }, function(result) {
     var m = result.match(/Title:\s*(.+)/i), d = result.match(/Description:\s*([\s\S]+)/i);
     var titleEl = document.getElementById("metaTitle") || document.querySelector('input[name="title"]');
     var descEl = document.getElementById("metaDesc") || document.querySelector('textarea[name="description"]');
