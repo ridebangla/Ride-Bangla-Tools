@@ -282,7 +282,7 @@ document.getElementById('buildPdf').addEventListener('click', async () => {
   var btn = document.getElementById('aiBtn20');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: image to pdf. Give usage tips.'; }, function(r) { alert(r); });
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: image to pdf. Give usage tips.'; });
     });
   }
 })();
