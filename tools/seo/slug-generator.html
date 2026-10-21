@@ -227,14 +227,14 @@ $('dlResult').addEventListener('click',()=>{
 });
 })();
 </script>
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 
 <script>
 (function() {
   var btn = document.getElementById('aiBtn11');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.querySelector('textarea, input'); return t?t.value:''; }, function(r) { alert('Suggestion:\n\n' + r); });
+      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.querySelector('textarea, input'); return 'Generate a URL slug for the following title — lowercase letters, numbers and hyphens only, short and clear. Return ONLY the slug: ' + (t?t.value:''); });
     });
   }
 })();

@@ -125,6 +125,7 @@
     </div>
   </div>
 </section>
+<div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
 <section class="tool-faq">
   <div class="container">
     <h2>How to use Quotation Generator</h2>
@@ -354,6 +355,17 @@ function todayISO() { return new Date().toISOString().slice(0, 10); }
   }
 })();
 
+</script>
+<script src="../assets/ai.js?v=8"></script>
+<script>
+(function() {
+  var btn = document.getElementById('aiTipsBtn');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: Quotation Generator. Give usage tips.'; });
+    });
+  }
+})();
 </script>
 </body>
 </html>

@@ -91,6 +91,7 @@
     <div class="tot-line"><span>Characters changed</span><b id="statChars">0</b></div>
   </div>
 </section>
+<div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
 <section class="tool-faq">
   <div class="container">
     <h2>How to use Text Diff Checker</h2>
@@ -249,6 +250,17 @@
   });
 })();
 
+</script>
+<script src="../assets/ai.js?v=8"></script>
+<script>
+(function() {
+  var btn = document.getElementById('aiTipsBtn');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: Text Diff Checker. Give usage tips.'; });
+    });
+  }
+})();
 </script>
 </body>
 </html>

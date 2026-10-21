@@ -120,6 +120,7 @@
   });
 })();
 </script>
+<div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
 <section class="tool-faq">
   <div class="container">
     <h2>How to use Regex Tester</h2>
@@ -222,8 +223,18 @@
 <script src="../assets/ads-sitewide.js?v=3"></script>
 
 
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 
 
+<script>
+(function() {
+  var btn = document.getElementById('aiTipsBtn');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: Regex Tester. Give usage tips.'; });
+    });
+  }
+})();
+</script>
 </body>
 </html>

@@ -109,6 +109,7 @@ document.getElementById('dl').addEventListener('click',()=>{
 inEl.value='# Welcome\n\nType **Markdown** on the left and see *HTML* on the right.\n\n- Lists work\n- So do [links](https://ridebangla.bd)\n\n`inline code` too.';
 render();
 </script>
+<div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
 <section class="tool-faq">
   <div class="container">
     <h2>How to use Markdown to HTML</h2>
@@ -209,5 +210,16 @@ render();
 <script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
 <script src="../assets/main.js?v=4"></script>
 <script src="../assets/ads-sitewide.js?v=3"></script>
+<script src="../assets/ai.js?v=8"></script>
+<script>
+(function() {
+  var btn = document.getElementById('aiTipsBtn');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: Markdown to HTML Converter. Give usage tips.'; });
+    });
+  }
+})();
+</script>
 </body>
 </html>

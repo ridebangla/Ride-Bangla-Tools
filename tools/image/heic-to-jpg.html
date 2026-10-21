@@ -326,7 +326,7 @@ convertBtn.addEventListener('click', async function () {
 <script src="../assets/main.js?v=4"></script>
 <script src="../assets/ads-sitewide.js?v=3"></script>
 
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 <div class="btn-row" style="margin:12px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">AI Tips</button></div>
 
 <script>
@@ -335,8 +335,7 @@ convertBtn.addEventListener('click', async function () {
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
       RB_AI.aiButton(btn, 'ai-tips',
-        function() { return 'Tool: heic to jpg. Give usage tips.'; },
-        function(r) { alert(r); });
+        function() { return 'Tool: heic to jpg. Give usage tips.'; });
     });
   }
 })();

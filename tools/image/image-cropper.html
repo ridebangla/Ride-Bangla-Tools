@@ -147,6 +147,7 @@ document.getElementById('crop').addEventListener('click',()=>{
   const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='cropped.png';a.click();
 });
 </script>
+<div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
 <section class="tool-faq">
   <div class="container">
     <h2>How to use Image Cropper</h2>
@@ -247,5 +248,16 @@ document.getElementById('crop').addEventListener('click',()=>{
 <script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
 <script src="../assets/main.js?v=4"></script>
 <script src="../assets/ads-sitewide.js?v=3"></script>
+<script src="../assets/ai.js?v=8"></script>
+<script>
+(function() {
+  var btn = document.getElementById('aiTipsBtn');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: Image Cropper. Give usage tips.'; });
+    });
+  }
+})();
+</script>
 </body>
 </html>

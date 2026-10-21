@@ -110,6 +110,7 @@ stdEl.addEventListener('input',()=>{
   document.getElementById('chart').innerHTML=rows.map(r=>'<div><strong>'+String(r[0]).padStart(2,'0')+':00</strong> &nbsp;→&nbsp; '+r[1]+'</div>').join('');
 })();
 </script>
+<div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
 <section class="tool-faq">
   <div class="container">
     <h2>How to use Military Time Converter</h2>
@@ -210,5 +211,16 @@ stdEl.addEventListener('input',()=>{
 <script>document.getElementById('rb-year').textContent = new Date().getFullYear();</script>
 <script src="../assets/main.js?v=4"></script>
 <script src="../assets/ads-sitewide.js?v=3"></script>
+<script src="../assets/ai.js?v=8"></script>
+<script>
+(function() {
+  var btn = document.getElementById('aiTipsBtn');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: Military Time Converter. Give usage tips.'; });
+    });
+  }
+})();
+</script>
 </body>
 </html>

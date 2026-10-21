@@ -237,14 +237,14 @@ $('dlResult').addEventListener('click',()=>{
 });
 })();
 </script>
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 
 <script>
 (function() {
   var btn = document.getElementById('aiBtn13');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'generate-content', function() { return 'Website placeholder content'; }, function(r) { var o=document.getElementById('loremOut'); if(o) o.textContent=r; else alert(r); });
+      RB_AI.aiButton(btn, 'generate-content', function() { return 'Website placeholder content'; }, function(r) { var o=document.getElementById('loremOut'); if(o) o.textContent=r; else if (window.RB_AI && RB_AI.showText) { RB_AI.showText(r); } });
     });
   }
 })();

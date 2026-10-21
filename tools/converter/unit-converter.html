@@ -264,14 +264,14 @@ $('dlResult').addEventListener('click',()=>{
 });
 })();
 </script>
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 
 <script>
 (function() {
   var btn = document.getElementById('aiBtn14');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: unit converter. Give usage tips.'; }, function(r) { alert(r); });
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: unit converter. Give usage tips.'; });
     });
   }
 })();

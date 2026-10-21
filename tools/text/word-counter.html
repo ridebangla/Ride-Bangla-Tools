@@ -229,12 +229,12 @@ $('dlResult').addEventListener('click',()=>{
 });
 })();
 </script>
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 <script>
 document.getElementById("aiImprove").addEventListener("click", function() {
   var btn = this;
   var ta = document.querySelector("textarea");
-  RB_AI.aiButton(btn, "improve-text", function() { return ta.value; }, function(result) { ta.value = result; ta.dispatchEvent(new Event("input")); });
+  RB_AI.aiButton(btn, "improve-text", function() { return 'Improve the following text — fix grammar, clarity and flow, keep the meaning and the language. Return ONLY the improved text, no explanations or commentary: ' + ta.value; }, function(result) { ta.value = result; ta.dispatchEvent(new Event("input")); });
 });
 </script>
 </body>

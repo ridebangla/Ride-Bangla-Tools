@@ -234,14 +234,14 @@ $('dlResult').addEventListener('click',()=>{
 });
 })();
 </script>
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 
 <script>
 (function() {
   var btn = document.getElementById('aiBtn0');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'health-tips', function() { return 'BMI: ' + (document.getElementById('bmiOut')||{innerText:''}).innerText + ', Height: ' + (document.getElementById('h')||{value:''}).value + 'cm, Weight: ' + (document.getElementById('w')||{value:''}).value + 'kg'; }, function(r) { alert(r); });
+      RB_AI.aiButton(btn, 'health-tips', function() { return 'BMI: ' + (document.getElementById('bmiOut')||{innerText:''}).innerText + ', Height: ' + (document.getElementById('h')||{value:''}).value + 'cm, Weight: ' + (document.getElementById('w')||{value:''}).value + 'kg'; });
     });
   }
 })();

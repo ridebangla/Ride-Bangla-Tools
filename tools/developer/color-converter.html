@@ -297,14 +297,14 @@ $('dlResult').addEventListener('click',()=>{
 });
 })();
 </script>
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 
 <script>
 (function() {
   var btn = document.getElementById('aiBtn3');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'suggest-palette', function() { var h=document.getElementById('hex'); return 'Base color: ' + (h?h.value:'#3498db'); }, function(r) { alert('Suggested palette:\n\n' + r); });
+      RB_AI.aiButton(btn, 'suggest-palette', function() { var h=document.getElementById('hex'); return 'Base color: ' + (h?h.value:'#3498db'); });
     });
   }
 })();

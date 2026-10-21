@@ -86,6 +86,7 @@
     <p style="font-size:12.5px;color:var(--muted,#6b7280)">Formula: (target pay &divide; (1 &minus; tax)) + expenses, divided by billable hours per year. Rounded up so you never undercharge.</p>
   </div>
 </section>
+<div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
 <section class="tool-faq">
   <div class="container">
     <h2>How to use Freelance Rate Calculator</h2>
@@ -229,6 +230,17 @@
   calc();
 })();
 
+</script>
+<script src="../assets/ai.js?v=8"></script>
+<script>
+(function() {
+  var btn = document.getElementById('aiTipsBtn');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: Freelance Rate Calculator. Give usage tips.'; });
+    });
+  }
+})();
 </script>
 </body>
 </html>

@@ -1193,14 +1193,14 @@ document.getElementById('letter-download').addEventListener('click', async () =>
   }
 });
 </script>
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 <script>
 document.getElementById('aiSummary').addEventListener('click', function() {
   var btn = this;
   var details = 'Name: ' + (document.getElementById('cv-name').value||'') +
     '\nTitle: ' + (document.getElementById('cv-title').value||'') +
     '\nSkills: ' + (document.getElementById('cv-skills').value||'');
-  RB_AI.aiButton(btn, 'cv-summary', function() { return details; }, function(result) {
+  RB_AI.aiButton(btn, 'cv-summary', function() { return 'Write a professional CV summary of 3-4 sentences in the first person, PLAIN TEXT only (no markdown, no bullet points), from these details: ' + details; }, function(result) {
     document.getElementById('cv-summary').value = result;
   });
 });

@@ -113,6 +113,7 @@ document.getElementById('vcDl').addEventListener('click', function () {
   document.body.appendChild(a); a.click(); a.remove();
 });
 </script>
+<div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
 <section class="tool-faq">
   <div class="container">
     <h2>How to use vCard QR Generator</h2>
@@ -213,8 +214,18 @@ document.getElementById('vcDl').addEventListener('click', function () {
 <script src="../assets/main.js?v=4"></script>
 <script src="../assets/ads-sitewide.js?v=3"></script>
 
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 
 
+<script>
+(function() {
+  var btn = document.getElementById('aiTipsBtn');
+  if (btn && window.RB_AI) {
+    btn.addEventListener('click', function() {
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: vCard QR Code Generator. Give usage tips.'; });
+    });
+  }
+})();
+</script>
 </body>
 </html>

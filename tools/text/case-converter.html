@@ -274,14 +274,14 @@ convert();
 <script src="../assets/main.js?v=4"></script>
 <script src="../assets/ads-sitewide.js?v=3"></script>
 
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 
 <script>
 (function() {
   var btn = document.getElementById('aiBtn12');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.querySelector('textarea'); return t?t.value:''; }, function(r) { var t=document.querySelector('textarea'); if(t){ t.value=r; t.dispatchEvent(new Event('input')); } });
+      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.querySelector('textarea'); return 'Improve the following text — fix grammar, clarity and flow, keep the meaning and the language. Return ONLY the improved text, no explanations or commentary: ' + (t?t.value:''); }, function(r) { var t=document.querySelector('textarea'); if(t){ t.value=r; t.dispatchEvent(new Event('input')); } });
     });
   }
 })();

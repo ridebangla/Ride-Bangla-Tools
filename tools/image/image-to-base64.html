@@ -320,14 +320,14 @@ document.getElementById('txtBtn').addEventListener('click', () => {
 <script src="../assets/main.js?v=4"></script>
 <script src="../assets/ads-sitewide.js?v=3"></script>
 
-<script src="../assets/ai.js?v=7"></script>
+<script src="../assets/ai.js?v=8"></script>
 
 <script>
 (function() {
   var btn = document.getElementById('aiBtn19');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: image to base64. Give usage tips.'; }, function(r) { alert(r); });
+      RB_AI.aiButton(btn, 'ai-tips', function() { return 'Tool: image to base64. Give usage tips.'; });
     });
   }
 })();
