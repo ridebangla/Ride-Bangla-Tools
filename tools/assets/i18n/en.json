@@ -41,7 +41,7 @@
     "eyebrow": "A RIDE BANGLA PRODUCT",
     "tag": "Ride. Food. Delivery. Courier.",
     "tagSub": "Official tools platform of Ride Bangla Limited",
-    "text": "These free tools are built and maintained by the team behind Ride Bangla — Bangladesh's super-app for ride-sharing, food delivery, courier and digital services. Explore our main platform, or meet the IT team that designs and develops it all.",
+    "text": "These free tools are built and maintained by the team behind Ride Bangla — Bangladesh's super-app for ride-sharing, food delivery, courier and digital services. Explore <a href=\"https://ridebangla.bd\" target=\"_blank\" rel=\"noopener\" style=\"color:#F3D27A;text-decoration:underline;\">our main platform</a>, or meet <a href=\"https://it.ridebangla.bd\" target=\"_blank\" rel=\"noopener\" style=\"color:#F3D27A;text-decoration:underline;\">the IT team</a> that designs and develops it all.",
     "title": "Powered by <span class=\"gold\">Ride Bangla Limited</span>"
   },
   "common": {
