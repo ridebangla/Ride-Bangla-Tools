@@ -37,8 +37,12 @@
 //  - Input caps mirror the platform route: 20,000 chars per message /
 //    prompt, max 50 messages, maxTokens capped at 4,000.
 
-const GROQ_MODEL = 'llama-3.3-70b-versatile';
-const GEMINI_MODEL = 'gemini-2.0-flash';
+const GROQ_MODELS = [
+  'openai/gpt-oss-120b',
+  'meta-llama/llama-4-scout-17b-16e-instruct',
+  'llama-3.1-8b-instant',
+];
+const GEMINI_MODEL = 'gemini-3.8-flash';
 const PROVIDER_TIMEOUT_MS = 30000;
 const MAX_INPUT_CHARS = 20000;
 const MAX_MESSAGES = 50;
@@ -115,35 +119,48 @@ function isOriginAllowed(origin) {
 // backend's reason format.
 
 async function callGroq(apiKey, messages, maxTokens, temperature) {
-  let res;
-  try {
-    res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages,
-        max_tokens: maxTokens,
-        temperature,
-      }),
-      signal: AbortSignal.timeout(PROVIDER_TIMEOUT_MS),
-    });
-  } catch (e) {
-    throw new Error(`groq: request failed (${e && e.message ? e.message : String(e)})`);
+  // Groq retires model ids over time (llama-3.3-70b-versatile returned
+  // 404 model_not_found live on 2026-10-21). Try the current catalogue
+  // in order, falling to the next model ONLY on a model-not-found 404;
+  // any other failure (auth, quota, timeout) is reported immediately.
+  let lastErr = null;
+  for (const model of GROQ_MODELS) {
+    let res;
+    try {
+      res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          max_tokens: maxTokens,
+          temperature,
+        }),
+        signal: AbortSignal.timeout(PROVIDER_TIMEOUT_MS),
+      });
+    } catch (e) {
+      throw new Error(`groq: request failed (${e && e.message ? e.message : String(e)})`);
+    }
+    if (!res.ok) {
+      const snippet = (await res.text().catch(() => '')).slice(0, 300);
+      const err = new Error(`groq: HTTP ${res.status} ${snippet}`);
+      if (res.status === 404 && /model_not_found|does not exist/i.test(snippet)) {
+        lastErr = err;
+        continue;
+      }
+      throw err;
+    }
+    const data = await res.json().catch(() => null);
+    const text = (data && data.choices && data.choices[0] && data.choices[0].message
+      ? String(data.choices[0].message.content || '')
+      : '').trim();
+    if (!text) throw new Error('groq: empty response');
+    return { provider: 'groq', model, text };
   }
-  if (!res.ok) {
-    const snippet = (await res.text().catch(() => '')).slice(0, 300);
-    throw new Error(`groq: HTTP ${res.status} ${snippet}`);
-  }
-  const data = await res.json().catch(() => null);
-  const text = (data && data.choices && data.choices[0] && data.choices[0].message
-    ? String(data.choices[0].message.content || '')
-    : '').trim();
-  if (!text) throw new Error('groq: empty response');
-  return { provider: 'groq', model: GROQ_MODEL, text };
+  throw lastErr || new Error('groq: no model available');
 }
 
 function toGeminiPayload(messages, maxTokens, temperature) {
