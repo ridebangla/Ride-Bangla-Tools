@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="tools/assets/brand-logo-main.png" alt="Ride Bangla Limited" width="420">
+  <img src="tools/assets/tools-logo-mark.png" alt="Ride Bangla Tools logo" width="180">
 </p>
 
 <h1 align="center">Ride Bangla Tools</h1>
