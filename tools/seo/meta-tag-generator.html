@@ -237,13 +237,14 @@ $('dlResult').addEventListener('click',()=>{
 <script>
 document.getElementById("aiTags").addEventListener("click", function() {
   var btn = this;
-  var ta = document.querySelector("textarea");
+  var ta = document.getElementById("desc");
   RB_AI.aiButton(btn, "meta-tags", function() { return "Write an SEO title and meta description for a page about the following content. Start the reply with Title: on the first line and Description: on the second line.\n\n" + (ta ? ta.value : ""); }, function(result) {
     var m = result.match(/Title:\s*(.+)/i), d = result.match(/Description:\s*([\s\S]+)/i);
-    var titleEl = document.getElementById("metaTitle") || document.querySelector('input[name="title"]');
-    var descEl = document.getElementById("metaDesc") || document.querySelector('textarea[name="description"]');
+    var titleEl = document.getElementById("title");
+    var descEl = document.getElementById("desc");
     if (m && titleEl) titleEl.value = m[1].trim();
     if (d && descEl) descEl.value = d[1].trim();
+    if (typeof upd === "function") upd();
   });
 });
 </script>

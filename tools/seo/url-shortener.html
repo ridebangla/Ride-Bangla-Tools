@@ -116,7 +116,11 @@ async function tryShorten(url) {
     body: JSON.stringify({ url })
   });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || 'Service unavailable');
+  if (!res.ok) {
+    const e = new Error(data.error || 'Service unavailable');
+    e.fromServer = true;
+    throw e;
+  }
   if (!data.short || !data.short.startsWith('http')) throw new Error('Unexpected response');
   return data.short;
 }
@@ -157,7 +161,9 @@ async function doShorten() {
     emptyMsg.style.display = 'none';
     statusEl.textContent = 'Done! Your short link is ready.';
   } catch (err) {
-    statusEl.textContent = 'Could not shorten right now. Check your connection and try again in a moment.';
+    statusEl.textContent = (err && err.fromServer && err.message)
+      ? err.message
+      : 'Could not shorten right now. Check your connection and try again in a moment.';
   } finally {
     shortenBtn.disabled = false;
     shortenBtn.textContent = 'Shorten URL';

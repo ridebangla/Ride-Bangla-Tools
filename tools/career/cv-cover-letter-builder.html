@@ -381,6 +381,7 @@
 <script>if (!window.PDFLib) { document.write('<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/script>'); }</script>
 <script>if (!window.PDFLib) { document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"><\/script>'); }</script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="./csc-lite.js"></script>
 <script>
 /* ---------------------------------------------------------------
    Tabs
@@ -446,13 +447,25 @@ I would welcome the chance to discuss how I can support ${company}'s goals. Than
 /* ---------------------------------------------------------------
    International location data
 --------------------------------------------------------------- */
+/* Location data ships WITH this tool (csc-lite.js + bd-geo.json in this
+   folder): countries and states load from the same origin as the page, so
+   the selects are usable immediately and never depend on a third-party CDN
+   being fast or reachable. The full country-state-city module is still
+   loaded lazily, but only for optional city typing suggestions — if it
+   fails, every selection still works and the city field can be typed. */
 const countryStateCityUrl = 'https://cdn.jsdelivr.net/npm/country-state-city@3.2.1/+esm';
 let CSC = null;
 let bdGeo = null;
 
-async function loadLocationData() {
-  if (!CSC) CSC = await import(countryStateCityUrl);
-  const countries = CSC.Country.getAllCountries().sort((a,b) => a.name.localeCompare(b.name));
+function flagEmoji(isoCode) {
+  if (!isoCode || isoCode.length !== 2) return '';
+  return String.fromCodePoint(...[...isoCode.toUpperCase()].map(ch => 127397 + ch.charCodeAt(0)));
+}
+
+function loadLocationData() {
+  const lite = window.CSC_LITE;
+  if (!lite || !lite.countries) throw new Error('Local country data could not be loaded.');
+  const countries = [...lite.countries].sort((a, b) => a.name.localeCompare(b.name));
   ['cv-citizenship-country','cv-second-country','cv-residence-country'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -460,18 +473,31 @@ async function loadLocationData() {
       const opt = document.createElement('option');
       opt.value = c.isoCode;
       opt.dataset.name = c.name;
-      opt.textContent = (c.flag ? c.flag + ' ' : '') + c.name;
+      const flag = flagEmoji(c.isoCode);
+      opt.textContent = (flag ? flag + ' ' : '') + c.name;
       el.appendChild(opt);
     });
   });
 }
 
+async function loadCSC() {
+  if (!CSC) CSC = await import(countryStateCityUrl);
+  return CSC;
+}
+
 async function loadBangladeshGeo() {
   if (bdGeo) return bdGeo;
-  const r = await fetch('https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json', { cache: 'force-cache' });
-  if (!r.ok) throw new Error('Bangladesh location data could not be loaded.');
-  bdGeo = await r.json();
-  return bdGeo;
+  try {
+    const local = await fetch('./bd-geo.json', { cache: 'force-cache' });
+    if (!local.ok) throw new Error('Local Bangladesh location data could not be loaded.');
+    bdGeo = await local.json();
+    return bdGeo;
+  } catch (e) {
+    const r = await fetch('https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json', { cache: 'force-cache' });
+    if (!r.ok) throw new Error('Bangladesh location data could not be loaded.');
+    bdGeo = await r.json();
+    return bdGeo;
+  }
 }
 
 function setOptions(select, items, placeholder, getValue, getLabel) {
@@ -552,7 +578,7 @@ async function updateLocationForCountry(countryCode) {
   districtLabel.textContent = 'District / County (optional)';
   localityLabel.textContent = 'City / Town';
   try {
-    const states = CSC.State.getStatesOfCountry(countryCode) || [];
+    const states = (window.CSC_LITE && window.CSC_LITE.statesByCountry[countryCode]) || [];
     setOptions(region, states, states.length ? 'Select state / province' : 'Not in list', x => x.isoCode, x => x.name);
     if (!states.length) showManualRegion(true);
   } catch (e) {
@@ -593,7 +619,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const division = data.find(x => x.name === e.target.value);
         setSuggestions('dl-district', ((division && division.districts) || []).map(x => ({ value: x.name, label: x.bn_name || '' })));
       } else {
-        const cities = CSC.City.getCitiesOfState(country, e.target.value) || [];
+        const csc = await loadCSC();
+        const cities = csc.City.getCitiesOfState(country, e.target.value) || [];
         setSuggestions('dl-locality', cities.map(c => ({ value: c.name })));
       }
     } catch (err) { console.warn('Suggestions unavailable', err); }
