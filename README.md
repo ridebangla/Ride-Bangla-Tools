@@ -62,7 +62,7 @@ _Last full audit: **Re-Audit #2, 22 October 2026** — every tool exercised end-
 
 ### Open / remaining
 
-- **Deployment queue:** the three Re-Audit #2 commits (PDF Editor v4, QR v4, SEO/factual) are on `main` and read-back verified; Vercel deployment was cap-queued at audit time — live re-verification follows deployment.
+- **Deployment queue:** the four Re-Audit #2 commits (PDF Editor v4, QR v4, SEO/factual, and this README) are on `main` and read-back verified; Vercel deployment was cap-queued at audit time — live re-verification follows deployment.
 - **Physical phone QR scanning:** machine-decode matrix is complete, but scanning the picture QRs with a real phone camera is **UNVERIFIED** — the owner scans with his own phone.
 - **Bengali coverage:** 30 of 67 tool pages translate their headline/UI to বাংলা; the remaining 37 are English-only for now (chrome/navigation translates on all pages).
 - **Genuine HEIC conversion:** verified for file handling and error paths; a conversion of a real .heic file is to be confirmed on the live site.

@@ -104,6 +104,11 @@ const BLOCKED_HOSTS = [
   'buff.ly',
 ];
 
+// Wildcard-DNS services: any subdomain of these resolves to an IP embedded
+// in the hostname itself — the laundering vector behind the encoded-IP
+// checks in isBlockedHost.
+const WILDCARD_DNS_HOSTS = ['nip.io', 'sslip.io', 'xip.io'];
+
 function isPrivateIPv4(host) {
   const m = host.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
   if (!m) return false;
@@ -116,6 +121,62 @@ function isPrivateIPv4(host) {
   if (a === 100 && b >= 64 && b <= 127) return true; // CGNAT 100.64.0.0/10
   if (a === 0 || a >= 224) return true;
   return false;
+}
+
+// Parse one IPv4 number part the way WHATWG / inet_aton do: decimal, octal
+// (leading 0) or hex (0x prefix). Returns null when the part is not a valid
+// number in its radix.
+function parseIPv4Part(part) {
+  if (part === '') return null;
+  let radix = 10;
+  let digits = part;
+  if (/^0[xX]/.test(part)) {
+    radix = 16;
+    digits = part.slice(2);
+    if (digits === '') return 0;
+  } else if (part.length > 1 && part[0] === '0') {
+    radix = 8;
+    digits = part.slice(1);
+  }
+  const valid = radix === 16 ? /^[0-9a-fA-F]+$/ : radix === 8 ? /^[0-7]+$/ : /^[0-9]+$/;
+  if (!valid.test(digits)) return null;
+  const value = parseInt(digits, radix);
+  return Number.isSafeInteger(value) ? value : null;
+}
+
+// Decode a 1–4 part IPv4 in any per-part encoding (decimal/octal/hex),
+// including the partial forms where the last part absorbs the remaining
+// bytes ('127.1' = 127.0.0.1, '2130706433' = 127.0.0.1). Returns the
+// dotted-quad string, or null when the input is not such an encoding.
+function parseIPv4Encoded(str) {
+  const parts = str.split('.');
+  if (parts.length > 4) return null;
+  const nums = parts.map(parseIPv4Part);
+  if (nums.some((n) => n === null)) return null;
+  for (let i = 0; i < nums.length - 1; i++) {
+    if (nums[i] > 255) return null;
+  }
+  const last = nums[nums.length - 1];
+  if (last >= 256 ** (5 - nums.length)) return null;
+  const bytes = nums.slice(0, -1);
+  let rest = last;
+  const tail = new Array(5 - nums.length);
+  for (let i = tail.length - 1; i >= 0; i--) {
+    tail[i] = rest % 256;
+    rest = Math.floor(rest / 256);
+  }
+  return [...bytes, ...tail].join('.');
+}
+
+// A single hostname label that carries a whole IPv4 as one decimal or hex
+// number (2130706433, 0x7f000001). Only judged as an encoding when the
+// decoded top octet is non-zero — small plain numbers ('2024', '90210')
+// are ordinary hostname labels, not addresses.
+function isEncodedIPLabel(label) {
+  if (!/^0[xX][0-9a-fA-F]+$/.test(label) && !/^[0-9]+$/.test(label)) return false;
+  const decoded = parseIPv4Encoded(label);
+  if (!decoded || decoded.startsWith('0.')) return false;
+  return isPrivateIPv4(decoded);
 }
 
 function isBlockedHost(hostname) {
@@ -151,6 +212,27 @@ function isBlockedHost(hostname) {
   }
   const dashed = host.match(/^(\d+)-(\d+)-(\d+)-(\d+)[.-]/);
   if (dashed && isPrivateIPv4(`${dashed[1]}.${dashed[2]}.${dashed[3]}.${dashed[4]}`)) return true;
+  // Round-3 (checker F1): an IPv4 can also hide in encoded form — a whole
+  // address as ONE decimal/hex label (2130706433.nip.io, 0x7f000001.nip.io),
+  // or in octal/hex label runs (0177.0.0.1.nip.io) — which the dotted and
+  // dashed checks above cannot see. Judge any such form by the address it
+  // decodes to. Full 4-label runs are judged anywhere in the host (the
+  // dotted rule above only looked at the leading labels); partial runs
+  // ('127.1' = 127.0.0.1) are only address-shaped on wildcard-DNS hosts,
+  // whose entire purpose is IP embedding, so those are judged there.
+  for (const label of labels) {
+    if (isEncodedIPLabel(label)) return true;
+  }
+  const onWildcardDns = WILDCARD_DNS_HOSTS.some(
+    (suffix) => host === suffix || host.endsWith('.' + suffix)
+  );
+  for (let start = 0; start + 1 < labels.length; start++) {
+    for (let len = 2; len <= 4 && start + len <= labels.length; len++) {
+      if (len < 4 && !onWildcardDns) continue;
+      const decoded = parseIPv4Encoded(labels.slice(start, start + len).join('.'));
+      if (decoded && isPrivateIPv4(decoded)) return true;
+    }
+  }
   const envList = (process.env.SHORTEN_BLOCKED_HOSTS || '')
     .split(',')
     .map((h) => h.trim().toLowerCase())
