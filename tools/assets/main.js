@@ -269,3 +269,33 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(function () {});
   });
 }
+
+/* ==========================================================================
+   Ride Bangla AI Agent — canonical help widget (injected on every page)
+   Owner rule (help-center unification 2026-10-21; Doctrine-1 surface
+   completion 2026-10-22, audit item B8): the company's own AI Agent is
+   the only help system on every Tools page. This is the canonical
+   embed — same script, same Ride Bangla business site key as the Main
+   website. Pages that already carry the embed as a static tag (the
+   Help Center page, which also has the inline #rbai-chat-inline mount)
+   are detected at DOMContentLoaded — by then the whole document is
+   parsed — and skipped, so the widget never mounts twice.
+   ========================================================================== */
+(function () {
+  function injectAgentWidget() {
+    if (window.__rbaiChatEmbedInjected) return;
+    if (document.querySelector('script[src*="ride-bangla-chat.js"]')) return;
+    window.__rbaiChatEmbedInjected = true;
+    var s = document.createElement('script');
+    s.src = 'https://ai.ridebangla.bd/widget/ride-bangla-chat.js';
+    s.setAttribute('data-server', 'https://ai.ridebangla.bd');
+    s.setAttribute('data-site-key', 'rbsite-00f37b79c72f4e678febbd82d43bb46c');
+    s.async = true;
+    document.body.appendChild(s);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectAgentWidget);
+  } else {
+    injectAgentWidget();
+  }
+})();
