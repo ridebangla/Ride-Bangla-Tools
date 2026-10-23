@@ -1033,6 +1033,17 @@ textarea:focus,input:focus,select:focus{border-color:var(--tools-vibrant);}
 .rb-review-input{width:100%;box-sizing:border-box;border:1px solid #D8DEDA;border-radius:10px;padding:11px 13px;font:inherit;font-size:14.5px;margin-bottom:12px;background:#FCFDFC;color:#14202b;}
 .rb-review-textarea{resize:vertical;min-height:96px;}
 .rb-review-status{color:#0C532E;font-size:14px;margin-top:12px;min-height:20px;}
+.rb-reviews-dist{flex-basis:100%;}
+.rb-dist{max-width:320px;display:flex;flex-direction:column;gap:4px;margin-top:2px;}
+.rb-dist-row{display:flex;align-items:center;gap:8px;font-size:12px;color:#5B6B5E;font-weight:600;}
+.rb-dist-label{width:26px;flex:none;color:#14202b;}
+.rb-dist-bar{flex:1;height:8px;border-radius:999px;background:#E3EAE5;overflow:hidden;display:block;}
+.rb-dist-fill{display:block;height:100%;border-radius:999px;background:#E3A008;}
+.rb-dist-num{width:74px;flex:none;}
+.rb-review-more{background:none;border:0;padding:2px 0 0;cursor:pointer;color:#0C6B34;font-size:12.5px;font-weight:700;}
+.rb-review-more:hover{text-decoration:underline;}
+.rb-review-note{color:#5B6B5E;font-size:13.5px;margin-top:14px;}
+.rb-review-fail .rb-btn{margin-top:10px;}
 @media (max-width:640px){.reviews-band{padding:46px 0 40px;}}
 
 /* ---- Readability pass (owner order 2026-10-20): every control's text bold,

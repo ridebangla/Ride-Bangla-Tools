@@ -292,18 +292,27 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid URL' });
   }
 
-  // Primary: TinyURL
+  // RECHECK3 FIX (prepared, not yet pushed): provider order swapped.
+  // Live evidence 2026-10-23: links created via TinyURL's free
+  // api-create.php now route through a tinyurl.com/preview/deprecated/*
+  // interstitial and, in a real browser, sometimes stall there instead
+  // of landing on the target (1 of 2 browser follow runs stalled >45s;
+  // the raw 302->301 chain does eventually resolve). is.gd links answer
+  // with a single direct 301 to the target (verified by curl + browser).
+  // is.gd is therefore primary; TinyURL stays as the fallback so a
+  // provider outage still degrades to a working short link.
+  // Primary: is.gd
   try {
-    const r = await fetch('https://tinyurl.com/api-create.php?url=' + encodeURIComponent(url), { signal: AbortSignal.timeout(10000) });
+    const r = await fetch('https://is.gd/create.php?format=simple&url=' + encodeURIComponent(url), { signal: AbortSignal.timeout(10000) });
     if (r.ok) {
       const short = (await r.text()).trim();
       if (short.startsWith('http')) return res.status(200).json({ short });
     }
   } catch (e) { /* fall through to backup */ }
 
-  // Backup: is.gd
+  // Backup: TinyURL
   try {
-    const r2 = await fetch('https://is.gd/create.php?format=simple&url=' + encodeURIComponent(url), { signal: AbortSignal.timeout(10000) });
+    const r2 = await fetch('https://tinyurl.com/api-create.php?url=' + encodeURIComponent(url), { signal: AbortSignal.timeout(10000) });
     if (r2.ok) {
       const short2 = (await r2.text()).trim();
       if (short2.startsWith('http')) return res.status(200).json({ short: short2 });

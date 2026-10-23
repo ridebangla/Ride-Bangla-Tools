@@ -99,10 +99,70 @@ document.getElementById('makePdf').addEventListener('click', async () => {
   const size = parseInt(document.getElementById('fontSize').value, 10);
   const { PDFDocument } = PDFLib;
   const pdfDoc = await PDFDocument.create();
-  // Unicode-safe rendering: draw text on canvas (browser handles Bengali/Arabic/etc.
-  // shaping natively), then embed each page as an image in the PDF.
   const pageW = 595.28, pageH = 841.89, margin = 50;
   const maxWidth = pageW - margin * 2;
+
+  // RECHECK3 FIX (prepared, not yet pushed): the old code rasterised EVERY
+  // document to a PNG, so the PDF had no text layer at all (nothing
+  // selectable/searchable — verified live 2026-10-23: no /Font, no Tj,
+  // pdftotext extracts nothing). pdf-lib's StandardFonts speak WinAnsi
+  // only, so: when every character is WinAnsi-encodable, draw REAL vector
+  // text; otherwise fall through to the original canvas path, which the
+  // browser shapes correctly for Bengali/Arabic/CJK (the reason the
+  // raster path existed — do not remove it).
+  const WINANSI_EXTRA = { '\u2018': '\u0027', '\u2019': '\u0027', '\u201C': '\u0022', '\u201D': '\u0022', '\u2013': '-', '\u2014': '-', '\u2026': '...', '\u00A0': ' ' };
+  function toWinAnsi(s) {
+    let out = '';
+    for (const ch of s) {
+      const cp = ch.codePointAt(0);
+      if (cp === 9 || cp === 10 || cp === 13 || (cp >= 32 && cp <= 126) || (cp >= 160 && cp <= 255)) out += ch;
+      else if (Object.prototype.hasOwnProperty.call(WINANSI_EXTRA, ch)) out += WINANSI_EXTRA[ch];
+      else return null;
+    }
+    return out;
+  }
+  const ansiText = toWinAnsi(text);
+  if (ansiText !== null) {
+    const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+    const lineHeightV = size * 1.5;
+    function wrapAnsi(line) {
+      if (!line) return [''];
+      const words = line.split(' ');
+      const out = []; let cur = '';
+      words.forEach(w => {
+        const test = cur ? cur + ' ' + w : w;
+        if (font.widthOfTextAtSize(test, size) > maxWidth && cur) { out.push(cur); cur = w; }
+        else cur = test;
+      });
+      out.push(cur);
+      return out;
+    }
+    let vLines = [];
+    ansiText.split('\n').forEach(l => { vLines = vLines.concat(wrapAnsi(l)); });
+    const perPage = Math.max(1, Math.floor((pageH - margin * 2) / lineHeightV));
+    for (let p = 0; p < vLines.length; p += perPage) {
+      const page = pdfDoc.addPage([pageW, pageH]);
+      let y = pageH - margin - size;
+      vLines.slice(p, p + perPage).forEach(line => {
+        page.drawText(line, { x: margin, y: y, size: size, font: font, color: PDFLib.rgb(0.10, 0.10, 0.10) });
+        y -= lineHeightV;
+      });
+    }
+    const vBytes = await pdfDoc.save();
+    const vBlob = new Blob([vBytes], { type: 'application/pdf' });
+    const va = document.createElement('a');
+    va.href = URL.createObjectURL(vBlob);
+    va.download = (document.getElementById('docTitle').value || 'document') + '.pdf';
+    document.body.appendChild(va); va.click(); va.remove();
+    setTimeout(() => URL.revokeObjectURL(va.href), 5000);
+    status.textContent = 'PDF downloaded — ' + vLines.length + ' line(s).';
+    status.classList.remove('empty');
+    return;
+  }
+
+  // Unicode-safe rendering for non-WinAnsi text: draw text on canvas
+  // (browser handles Bengali/Arabic/etc. shaping natively), then embed
+  // each page as an image in the PDF.
   const scale = 2;
   const lineHeight = size * 1.5;
   const fontStack = size + 'px "Hind Siliguri","Noto Sans Bengali","Noto Sans Arabic","Noto Sans Devanagari",sans-serif';

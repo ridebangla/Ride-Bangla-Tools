@@ -135,10 +135,20 @@ document.getElementById('compressBtn').addEventListener('click', () => {
         preview.src = url; preview.style.display = 'block';
         document.getElementById('newKb').textContent = (blob.size/1024).toFixed(1);
         const savedPct = (100 * (1 - blob.size / origFile.size)).toFixed(0);
-        document.getElementById('saved').textContent = savedPct + '%';
         const dl = document.getElementById('dlLink');
         dl.href = url; dl.download = 'compressed.jpg'; dl.style.display = 'inline-block';
-        dl.textContent = 'Download compressed image';
+        // RECHECK3 FIX (prepared, not yet pushed): when the JPEG re-encode
+        // comes out LARGER than the original (common for small, already
+        // well-compressed PNGs — verified live 2026-10-23: 2.7 KB in,
+        // 8.5 KB out, stat showed a meaningless "-210%"), say so honestly
+        // instead of presenting a bigger file as a "reduction".
+        if (blob.size >= origFile.size) {
+          document.getElementById('saved').textContent = 'Larger';
+          dl.textContent = 'Download re-encoded image (larger than original)';
+        } else {
+          document.getElementById('saved').textContent = savedPct + '%';
+          dl.textContent = 'Download compressed image';
+        }
       }, 'image/jpeg', quality.value / 100);
     };
     img.src = e.target.result;

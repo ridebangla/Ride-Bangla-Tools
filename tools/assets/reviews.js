@@ -1,16 +1,35 @@
 /* ==========================================================================
    Ride Bangla Tools — public Reviews section (assets/reviews.js)
-   Displays community reviews and lets visitors write one after a quick
-   Google sign-in (Firebase Auth). Data lives on the AI backend's public
-   reviews API (site=tools); no API keys are ever exposed client-side.
+   CANONICAL SYSTEM (Reviews-System round, 2026-10-23): aligned with the
+   MAIN website (src/lib/reviews.ts + ReviewsSection.tsx) — data lives in
+   Firestore collection `website_reviews`; the public feed is the APPROVED
+   pool (status == "approved", newest first, limit 24) read directly via
+   the Firebase compat SDK; a review is written after Google sign-in with
+   doc id == uid, status "pending" (admin-moderated -> approved) and
+   source "google", exactly the shape the deployed rules allow.
+   PREVIOUSLY this file read a different pool (`site_reviews`, served by
+   https://ai.ridebangla.bd/api/public/reviews?site=tools) — a separate,
+   server-mediated pool. That API returned HTTP 500 with
+   {"ok":false,"error":"Could not load reviews right now."} throughout the
+   2026-10-23 morning while project Firestore answered direct REST reads
+   with 429 RESOURCE_EXHAUSTED (quota), and the old loader's catch block
+   rendered that failure as a fake "0.0 / 0 reviews" summary. This loader
+   therefore: retries transient failures with backoff, caches the last
+   good result in localStorage, and NEVER renders a failed load as zero
+   reviews (failure, cached and empty are three distinct honest states).
+   No API keys are hard-coded: the public Firebase web config is fetched
+   at runtime from the established config endpoint, as before.
    ========================================================================== */
 (function () {
   'use strict';
 
   var SITE_KEY = 'rbsite-00f37b79c72f4e678febbd82d43bb46c'; // public site key
-  var REVIEWS_API = 'https://ai.ridebangla.bd/api/public/reviews';
   var FB_CONFIG_API = 'https://ai.ridebangla.bd/api/public/firebase-config';
   var FB_SDK_VER = '10.12.5';
+  var COLLECTION = 'website_reviews';
+  var MAX_REVIEWS = 24;
+  var CACHE_KEY = 'rb-tools-reviews-cache-v2';
+  var TRUNCATE = 80; // Main ReviewsSection compact-card truncation
 
   var root = document.getElementById('rb-reviews');
   if (!root) return;
@@ -47,21 +66,17 @@
   }
 
   function friendlyError(err) {
-    // Accept an Error object (preferred — carries the Firebase error.code)
-    // or a plain string (server error text from the reviews API).
     var msg = '';
     var code = '';
     if (err && typeof err === 'object') {
       code = err.code || '';
       msg = err.message || '';
-      // Diagnostics: the real failure class stays visible in the console
-      // instead of being flattened into one generic banner.
       try { console.error('[rb-reviews]', code || '(no code)', msg); } catch (e) {}
     } else if (typeof err === 'string') {
       msg = err;
     }
     var hay = (code + ' ' + msg);
-    if (/rate|limit|429/i.test(hay)) return 'You have already shared a review recently. Please try again tomorrow.';
+    if (/rate|limit|429|resource-exhausted/i.test(hay)) return 'Reviews are busy right now — please try again later.';
     if (code === 'auth/unauthorized-domain' || /unauthorized-domain/i.test(hay)) return 'Sign-in is not enabled for this website address yet — please tell us via the Help Center and we will fix it.';
     if (code === 'auth/operation-not-allowed' || /operation-not-allowed/i.test(hay)) return 'Google sign-in is not switched on yet — please tell us via the Help Center and we will fix it.';
     if (code === 'auth/popup-blocked' || /popup-blocked/i.test(hay)) return 'Your browser blocked the sign-in window — allow popups for this site, or try again and we will use a full-page sign-in.';
@@ -72,27 +87,65 @@
     return 'Sorry — that did not work. Please try again in a moment.';
   }
 
-  /* ------------------------- render review list ------------------------- */
+  /* ------------------------------ summary ------------------------------ */
   var avgEl = root.querySelector('[data-rb="avg"]');
   var countEl = root.querySelector('[data-rb="count"]');
+  var distEl = root.querySelector('[data-rb="dist"]');
   var listEl = root.querySelector('[data-rb="list"]');
   var formZone = root.querySelector('[data-rb="form-zone"]');
   var statusEl = root.querySelector('[data-rb="status"]');
 
   function setStatus(msg) { if (statusEl) statusEl.textContent = msg || ''; }
 
-  function renderSummary(average, count) {
-    if (!avgEl || !countEl) return;
-    avgEl.innerHTML = starsRow(Number(average) || 0) +
-      '<strong>' + (Number(average) || 0).toFixed(1) + '</strong>';
-    countEl.textContent = count === 1 ? '1 review' : (count || 0) + ' reviews';
+  // Summary math matches Main's useReviews(): average + count computed
+  // from the fetched approved pool itself; plus the owner-required
+  // per-star distribution (count + % of the same pool, never invented).
+  function computeStats(reviews) {
+    var count = reviews.length;
+    var sum = 0;
+    var perStar = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    reviews.forEach(function (r) {
+      var rating = Math.min(5, Math.max(1, Math.round(Number(r.rating) || 0)));
+      if (rating >= 1) { sum += rating; perStar[rating]++; }
+    });
+    return { average: count ? sum / count : 0, count: count, perStar: perStar };
   }
 
-  /* ------------------ review cards + sliding carousel ------------------
-     Mirrors the main website's reviews carousel: cards in ONE horizontal
-     line, one-card-at-a-time smooth slide, auto-advance with wrap-around,
-     pause on hover/touch, arrows + dots when there is more than one page.
-     Visible cards: 1 on phones, 2 on tablets, 4 on desktop. */
+  function renderSummary(stats) {
+    if (avgEl) {
+      avgEl.innerHTML = starsRow(stats.average) + '<strong>' + stats.average.toFixed(1) + '</strong>';
+    }
+    if (countEl) countEl.textContent = stats.count === 1 ? '1 review' : stats.count + ' reviews';
+    if (distEl) {
+      distEl.innerHTML = '';
+      if (stats.count > 0) {
+        var box = el('div', 'rb-dist');
+        [5, 4, 3, 2, 1].forEach(function (star) {
+          var n = stats.perStar[star] || 0;
+          var pct = stats.count ? Math.round((n / stats.count) * 100) : 0;
+          var row = el('div', 'rb-dist-row');
+          row.appendChild(el('span', 'rb-dist-label', star + '★'));
+          var bar = el('span', 'rb-dist-bar');
+          var fill = el('span', 'rb-dist-fill');
+          fill.style.width = pct + '%';
+          bar.appendChild(fill);
+          row.appendChild(bar);
+          row.appendChild(el('span', 'rb-dist-num', pct + '% (' + n + ')'));
+          box.appendChild(row);
+        });
+        distEl.appendChild(box);
+      }
+    }
+  }
+
+  function renderUnavailableSummary() {
+    // A failed load is NOT "0.0 / 0 reviews" — that was the old bug.
+    if (avgEl) avgEl.innerHTML = starsRow(0) + '<strong>–</strong>';
+    if (countEl) countEl.textContent = 'Reviews unavailable';
+    if (distEl) distEl.innerHTML = '';
+  }
+
+  /* --------------------------- review cards ---------------------------- */
   var GOOGLE_G = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.2H12v4.3h6.5c-.1 1.1-.8 2.7-2.4 3.8l3.7 2.9c2.3-2.1 3.7-5.2 3.7-9z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.7-2.9c-1 .7-2.4 1.2-4.2 1.2-3.2 0-5.9-2.1-6.8-5l-3.9 3C3.3 21.3 7.4 24 12 24z"/><path fill="#FBBC05" d="M5.2 14.4c-.2-.7-.4-1.5-.4-2.4s.1-1.7.4-2.4l-3.9-3C.5 9.3 0 10.6 0 12s.5 2.7 1.3 3.9l3.9-3z"/><path fill="#EA4335" d="M12 4.7c1.8 0 3 .8 3.7 1.4l3.3-3.2C17.9 1.1 15.2 0 12 0 7.4 0 3.3 2.7 1.3 6.6l3.9 3c.9-2.9 3.6-4.9 6.8-4.9z"/></svg>';
 
   function initialsFor(name) {
@@ -107,7 +160,6 @@
       var img = el('img', 'rb-review-avatar');
       img.src = url;
       img.alt = String(r.name || 'Reviewer');
-      // Google profile photos refuse to load when a referrer is sent.
       img.setAttribute('referrerpolicy', 'no-referrer');
       img.loading = 'lazy';
       img.addEventListener('error', function () {
@@ -129,11 +181,26 @@
     idCol.appendChild(s);
     head.appendChild(idCol);
     card.appendChild(head);
-    card.appendChild(el('p', 'rb-review-text', String(r.text || '').slice(0, 1000)));
+    // Compact cards (Main pattern): long text truncates at 80 chars with
+    // a See more / See less toggle instead of stretching the card.
+    var full = String(r.text || '').slice(0, 600);
+    var textEl = el('p', 'rb-review-text', full.length > TRUNCATE ? full.slice(0, TRUNCATE).trim() + '…' : full);
+    card.appendChild(textEl);
+    if (full.length > TRUNCATE) {
+      var more = el('button', 'rb-review-more', 'See more');
+      more.type = 'button';
+      var expanded = false;
+      more.addEventListener('click', function () {
+        expanded = !expanded;
+        textEl.textContent = expanded ? full : full.slice(0, TRUNCATE).trim() + '…';
+        more.textContent = expanded ? 'See less' : 'See more';
+      });
+      card.appendChild(more);
+    }
     var meta = el('div', 'rb-review-meta');
-    // The verified badge renders ONLY when the stored review record
-    // itself proves Google authentication (verifiedGoogle from the API).
-    if (r.verifiedGoogle === true) {
+    // Verified chip ONLY when the stored record proves Google sign-in
+    // (Main renders it when source == "google").
+    if (r.source === 'google') {
       var pill = el('span', 'rb-review-verified');
       pill.innerHTML = GOOGLE_G;
       pill.appendChild(document.createTextNode('Verified Google account'));
@@ -145,6 +212,7 @@
     return card;
   }
 
+  /* --------------------- slider (Main pattern, 4s) -------------------- */
   var carousel = { timer: null, index: 0, count: 0, paused: false, track: null, slides: [] };
 
   function visibleCount() {
@@ -154,9 +222,7 @@
     return 4;
   }
 
-  function maxIndex() {
-    return Math.max(0, carousel.count - visibleCount());
-  }
+  function maxIndex() { return Math.max(0, carousel.count - visibleCount()); }
 
   function layoutCarousel() {
     if (!carousel.track) return;
@@ -176,9 +242,7 @@
     layoutCarousel();
   }
 
-  function stopCarousel() {
-    if (carousel.timer) { clearInterval(carousel.timer); carousel.timer = null; }
-  }
+  function stopCarousel() { if (carousel.timer) { clearInterval(carousel.timer); carousel.timer = null; } }
 
   function startCarousel() {
     stopCarousel();
@@ -186,7 +250,7 @@
     carousel.timer = setInterval(function () {
       if (carousel.paused) return;
       goToSlide(carousel.index + 1);
-    }, 4000);
+    }, 4000); // Main ReviewsSection: auto-advance every 4 seconds
   }
 
   function renderList(reviews) {
@@ -195,8 +259,7 @@
     carousel.track = null; carousel.slides = []; carousel.index = 0; carousel.count = 0;
     listEl.innerHTML = '';
     if (!reviews || !reviews.length) {
-      var empty = el('p', 'rb-review-empty', 'No reviews yet — be the first to share your experience.');
-      listEl.appendChild(empty);
+      listEl.appendChild(el('p', 'rb-review-empty', 'No reviews yet — be the first to share your experience.'));
       return;
     }
     carousel.count = reviews.length;
@@ -253,25 +316,8 @@
 
   window.addEventListener('resize', function () { layoutCarousel(); });
 
-  async function loadReviews() {
-    try {
-      var res = await fetch(REVIEWS_API + '?site=tools&siteKey=' + encodeURIComponent(SITE_KEY), { method: 'GET' });
-      if (!res.ok) throw new Error('http-' + res.status);
-      var d = await res.json();
-      if (!d || d.ok !== true) throw new Error('bad-response');
-      renderSummary(d.average, d.count);
-      renderList(d.reviews);
-      setStatus(''); // data loaded — no stale action error may linger
-      return d;
-    } catch (e) {
-      renderSummary(0, 0);
-      if (listEl) listEl.appendChild(el('p', 'rb-review-empty', 'Reviews are temporarily unavailable — please check back later.'));
-      return null;
-    }
-  }
-
-  /* ------------------------- Firebase + Google sign-in ------------------ */
-  var firebaseApp = null, firebaseAuth = null, sdkLoading = null;
+  /* ------------------- Firebase bootstrap (config API) ------------------ */
+  var firebaseApp = null, firebaseAuth = null, firestoreDb = null, sdkLoading = null;
 
   function loadScript(src) {
     return new Promise(function (resolve, reject) {
@@ -283,54 +329,171 @@
     });
   }
 
-  async function ensureAuth() {
-    if (firebaseAuth) return firebaseAuth;
-    if (sdkLoading) return sdkLoading;
-    sdkLoading = (async function () {
-      if (!window.firebase) {
-        await loadScript('https://www.gstatic.com/firebasejs/' + FB_SDK_VER + '/firebase-app-compat.js');
-        await loadScript('https://www.gstatic.com/firebasejs/' + FB_SDK_VER + '/firebase-auth-compat.js');
-      }
-      var cfgRes = await fetch(FB_CONFIG_API + '?siteKey=' + encodeURIComponent(SITE_KEY));
-      if (!cfgRes.ok) throw new Error('config');
-      var cfg = await cfgRes.json();
-      if (!cfg || !cfg.apiKey) throw new Error('config');
-      if (!firebaseApp) {
-        firebaseApp = firebase.initializeApp(cfg);
-        firebaseAuth = firebase.auth();
-      }
-      return firebaseAuth;
-    })();
-    try { return await sdkLoading; } finally { sdkLoading = null; }
+  async function ensureFirebase(needAuth) {
+    if (firebaseApp && (!needAuth || firebaseAuth)) {
+      return { app: firebaseApp, auth: firebaseAuth, db: firestoreDb };
+    }
+    if (sdkLoading) await sdkLoading;
+    else {
+      sdkLoading = (async function () {
+        if (!window.firebase) {
+          await loadScript('https://www.gstatic.com/firebasejs/' + FB_SDK_VER + '/firebase-app-compat.js');
+        }
+        if (!firebase.firestore) await loadScript('https://www.gstatic.com/firebasejs/' + FB_SDK_VER + '/firebase-firestore-compat.js');
+        if (needAuth && !firebase.auth) await loadScript('https://www.gstatic.com/firebasejs/' + FB_SDK_VER + '/firebase-auth-compat.js');
+        if (!firebaseApp) {
+          var cfgRes = await fetch(FB_CONFIG_API + '?siteKey=' + encodeURIComponent(SITE_KEY));
+          if (!cfgRes.ok) throw new Error('config');
+          var cfg = await cfgRes.json();
+          if (!cfg || !cfg.apiKey) throw new Error('config');
+          firebaseApp = firebase.initializeApp(cfg);
+          firestoreDb = firebase.firestore();
+        }
+        if (needAuth && !firebaseAuth) {
+          firebaseAuth = firebase.auth();
+          // Session persistence (owner order 2026-10-23: a signed-in user must
+          // not be asked to sign in again on every visit): keep the reviewer
+          // signed in across reloads, new tabs and browser restarts. LOCAL is
+          // the compat SDK's default, but set it explicitly so the behaviour
+          // never silently depends on an SDK default changing.
+          try { await firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); } catch (e) {}
+        }
+      })();
+      try { await sdkLoading; } finally { sdkLoading = null; }
+    }
+    if (needAuth && !firebaseAuth) {
+      if (!firebase.auth) await loadScript('https://www.gstatic.com/firebasejs/' + FB_SDK_VER + '/firebase-auth-compat.js');
+      firebaseAuth = firebase.auth();
+      try { await firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); } catch (e) {}
+    }
+    return { app: firebaseApp, auth: firebaseAuth, db: firestoreDb };
   }
 
+  function withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise(function (_, reject) { setTimeout(function () { reject(new Error('timeout')); }, ms); })
+    ]);
+  }
+
+  function normalizeDoc(doc) {
+    var d = doc.data() || {};
+    var created = null;
+    try { if (d.created_at && typeof d.created_at.toDate === 'function') created = d.created_at.toDate().toISOString(); } catch (e) {}
+    return {
+      name: typeof d.name === 'string' ? d.name.trim() : '',
+      photoURL: (typeof d.photo_url === 'string' && /^https:\/\//i.test(d.photo_url)) ? d.photo_url : '',
+      rating: (typeof d.rating === 'number') ? Math.min(5, Math.max(1, Math.round(d.rating))) : 0,
+      text: typeof d.comment === 'string' ? d.comment.trim() : '',
+      source: typeof d.source === 'string' ? d.source : null,
+      createdAt: created
+    };
+  }
+
+  async function fetchApprovedReviews() {
+    var fb = await ensureFirebase(false);
+    var col = fb.db.collection(COLLECTION);
+    try {
+      var snap = await withTimeout(
+        col.where('status', '==', 'approved').orderBy('created_at', 'desc').limit(MAX_REVIEWS).get(), 12000);
+      return snap.docs.map(normalizeDoc).filter(function (r) { return r.name && r.text; });
+    } catch (primaryErr) {
+      // Main's fallback: keep working if the composite index is missing —
+      // unordered approved query, sorted + sliced client-side.
+      try { console.error('[rb-reviews] primary query failed, trying fallback', primaryErr && primaryErr.code, primaryErr && primaryErr.message); } catch (e) {}
+      var snap2 = await withTimeout(col.where('status', '==', 'approved').get(), 12000);
+      var all = snap2.docs.map(normalizeDoc).filter(function (r) { return r.name && r.text; });
+      all.sort(function (a, b) { return String(b.createdAt || '').localeCompare(String(a.createdAt || '')); });
+      return all.slice(0, MAX_REVIEWS);
+    }
+  }
+
+  /* ------------------------- cache (last good) ------------------------- */
+  function saveCache(reviews, stats) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), reviews: reviews, stats: stats })); } catch (e) {}
+  }
+  function readCache() {
+    try {
+      var raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      var d = JSON.parse(raw);
+      if (!d || !Array.isArray(d.reviews)) return null;
+      return d;
+    } catch (e) { return null; }
+  }
+
+  function renderFailure() {
+    var cached = readCache();
+    if (cached && cached.reviews.length) {
+      renderSummary(cached.stats || computeStats(cached.reviews));
+      renderList(cached.reviews);
+      if (listEl) {
+        var note = el('p', 'rb-review-note', 'Showing the last loaded reviews — we could not refresh them just now.');
+        listEl.appendChild(note);
+      }
+      return;
+    }
+    renderUnavailableSummary();
+    if (listEl) {
+      listEl.innerHTML = '';
+      var box = el('div', 'rb-review-fail');
+      box.appendChild(el('p', 'rb-review-empty', 'Reviews are temporarily unavailable — please check back later.'));
+      var retry = el('button', 'rb-btn rb-btn-gold', 'Try again');
+      retry.type = 'button';
+      retry.addEventListener('click', function () { loadReviews(); });
+      box.appendChild(retry);
+      listEl.appendChild(box);
+    }
+  }
+
+  async function loadReviews() {
+    var delays = [0, 900, 2200]; // 3 attempts, backoff on transient failure
+    var lastErr = null;
+    for (var attempt = 0; attempt < delays.length; attempt++) {
+      if (delays[attempt]) await new Promise(function (r) { setTimeout(r, delays[attempt]); });
+      try {
+        var reviews = await fetchApprovedReviews();
+        var stats = computeStats(reviews);
+        renderSummary(stats);
+        renderList(reviews);
+        saveCache(reviews, stats);
+        setStatus('');
+        return reviews;
+      } catch (e) {
+        lastErr = e;
+        try { console.error('[rb-reviews] load attempt ' + (attempt + 1) + ' failed', e && e.code, e && e.message); } catch (e2) {}
+      }
+    }
+    try { console.error('[rb-reviews] all load attempts failed', lastErr && lastErr.message); } catch (e) {}
+    renderFailure();
+    return null;
+  }
+
+  /* ------------------------- Google sign-in ---------------------------- */
   function isMobileBrowser() {
     try {
       var ua = navigator.userAgent || '';
       if (/Android|iPhone|iPad|iPod|Mobile/i.test(ua)) return true;
-      // iPadOS 13+ reports a desktop UA; touch points give it away.
       if (navigator.maxTouchPoints > 1 && /Macintosh/.test(ua)) return true;
     } catch (e) {}
     return false;
   }
 
   async function googleSignIn() {
-    var auth = await ensureAuth();
+    var fb = await ensureFirebase(true);
+    var auth = fb.auth;
     var provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
     try {
       var cred = await auth.signInWithPopup(provider);
-      return { user: cred.user, token: await cred.user.getIdToken() };
+      return cred.user;
     } catch (e) {
       var code = (e && e.code) || '';
-      // Popup flows strand mobile users (Android Chrome / in-app webviews
-      // block or orphan popups). Fall back to a full-page redirect; the
-      // result is picked up by handleRedirectResult() on return.
       if (code === 'auth/popup-blocked' || code === 'auth/cancelled-popup-request' ||
           code === 'auth/popup-closed-by-user' || isMobileBrowser()) {
         try { sessionStorage.setItem('rb-review-redirect', '1'); } catch (e2) {}
         await auth.signInWithRedirect(provider);
-        return null; // page is navigating away
+        return null;
       }
       throw e;
     }
@@ -342,23 +505,53 @@
     if (!flagged) return;
     try { sessionStorage.removeItem('rb-review-redirect'); } catch (e) {}
     try {
-      var auth = await ensureAuth();
-      var cred = await auth.getRedirectResult();
+      var fb = await ensureFirebase(true);
+      var cred = await fb.auth.getRedirectResult();
       if (cred && cred.user) {
-        state.token = await cred.user.getIdToken();
+        state.user = cred.user;
         state.name = (cred.user.displayName || '').slice(0, 40);
         setStatus('Signed in — write your review below.');
         renderForm();
       }
     } catch (e) {
-      // A genuine post-redirect failure is an actual user-action failure:
-      // surfacing one honest, specific message here is correct.
       setStatus(friendlyError(e));
     }
   }
 
+  /* ------------------- session restore (persistence) -------------------
+     A popup/redirect sign-in puts the signed-in user only in the in-memory
+     `state` below, so without this restore a signed-in reviewer was asked
+     to sign in again on EVERY reload, new tab and browser restart, even
+     though Firebase Auth itself keeps the user in LOCAL persistence.
+     Restore that persisted user once on load and hand it to the write form. */
+  var sessionReady = null;
+  function restoreSession() {
+    if (sessionReady) return sessionReady;
+    sessionReady = (async function () {
+      try {
+        var fb = await ensureFirebase(true);
+        var auth = fb.auth;
+        return await new Promise(function (resolve) {
+          var done = false;
+          var unsub = auth.onAuthStateChanged(function (user) {
+            if (done) return; done = true;
+            if (unsub) unsub();
+            if (user) {
+              state.user = user;
+              state.name = (user.displayName || '').slice(0, 40);
+            }
+            resolve(!!user);
+          });
+          // Never let the Write button wait forever on a stuck listener.
+          setTimeout(function () { if (!done) { done = true; resolve(!!state.user); } }, 8000);
+        });
+      } catch (e) { return false; }
+    })();
+    return sessionReady;
+  }
+
   /* ------------------------------- write UI ----------------------------- */
-  var state = { token: null, name: '' };
+  var state = { user: null, name: '' };
 
   function renderSignIn() {
     formZone.innerHTML = '';
@@ -368,10 +561,10 @@
     btn.type = 'button';
     btn.addEventListener('click', function () {
       btn.disabled = true; setStatus('');
-      googleSignIn().then(function (r) {
-        if (!r) return; // redirect sign-in in progress — page is leaving
-        state.token = r.token;
-        state.name = (r.user.displayName || '').slice(0, 40);
+      googleSignIn().then(function (user) {
+        if (!user) return; // redirect sign-in in progress
+        state.user = user;
+        state.name = (user.displayName || '').slice(0, 40);
         renderForm();
       }).catch(function (e) {
         btn.disabled = false;
@@ -380,6 +573,37 @@
     });
     box.appendChild(btn);
     formZone.appendChild(box);
+  }
+
+  // Write path = Main's submitReview(): doc id == uid in website_reviews,
+  // the exact field set the deployed rules validate (status "pending",
+  // source "google", name/photo bound to the Google account).
+  async function submitReview(user, rating, comment) {
+    var fb = await ensureFirebase(true);
+    var db = fb.db;
+    var name = (user.displayName || '').trim();
+    var text = comment.trim();
+    if (!name) throw new Error('Your Google account name is required to publish a review.');
+    if (rating < 1 || rating > 5) throw new Error('Please choose a star rating between 1 and 5.');
+    if (text.length < 2) throw new Error('Please write a short comment about your experience.');
+    if (text.length > 600) throw new Error('Please keep your review under 600 characters.');
+    var ref = db.collection(COLLECTION).doc(user.uid);
+    var existing = await ref.get();
+    if (existing.exists && existing.data().status === 'approved') {
+      throw new Error('Your review is already published and can no longer be edited.');
+    }
+    var payload = {
+      uid: user.uid,
+      name: name.slice(0, 100),
+      photo_url: user.photoURL || null,
+      rating: Math.round(rating),
+      comment: text,
+      status: 'pending',
+      source: 'google',
+      created_at: existing.exists ? existing.data().created_at : firebase.firestore.FieldValue.serverTimestamp(),
+      updated_at: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    await ref.set(payload);
   }
 
   function renderForm() {
@@ -406,15 +630,12 @@
     nameInput.placeholder = 'Your name';
     nameInput.maxLength = 40;
     nameInput.value = state.name;
-    // The reviewer name is the VERIFIED Google account name from the ID
-    // token — never a free-text field. An editable name would let anyone
-    // post reviews impersonating other people (e.g. the Ride Bangla team).
     nameInput.readOnly = true;
     nameInput.title = 'Reviews are posted under your Google account name.';
     box.appendChild(nameInput);
     var textArea = el('textarea', 'rb-review-input rb-review-textarea');
     textArea.placeholder = 'What do you like about Ride Bangla Tools?';
-    textArea.maxLength = 1000;
+    textArea.maxLength = 600;
     textArea.rows = 4;
     box.appendChild(textArea);
     var submit = el('button', 'rb-btn rb-btn-gold', 'Post review');
@@ -423,29 +644,15 @@
       var text = textArea.value.trim();
       if (!text) { setStatus('Please write a few words first.'); return; }
       submit.disabled = true; setStatus('');
-      fetch(REVIEWS_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          siteKey: SITE_KEY, site: 'tools',
-          idToken: state.token, rating: rating,
-          name: state.name,
-          text: text
-        })
-      }).then(function (res) {
-        return res.json().then(function (d) { return { status: res.status, body: d }; });
-      }).then(function (r) {
-        if (r.status === 200 && r.body && r.body.ok === true) {
-          setStatus('Thank you — your review is live.');
-          loadReviews();
-          setTimeout(function () { formZone.innerHTML = ''; }, 3000);
-        } else {
-          submit.disabled = false;
-          setStatus(friendlyError((r.body && (r.body.message || r.body.error)) || ('http-' + r.status)));
-        }
-      }).catch(function () {
+      submitReview(state.user, rating, text).then(function () {
+        // Canonical moderation: a new review is "pending" until approved,
+        // so it does NOT appear instantly — say exactly that.
+        setStatus('Thank you — your review has been received and will appear here after a quick check.');
+        setTimeout(function () { formZone.innerHTML = ''; }, 3000);
+      }).catch(function (e) {
         submit.disabled = false;
-        setStatus('Could not reach our servers — check your connection and try again.');
+        var isLib = e && typeof e === 'object' && 'code' in e;
+        setStatus(isLib ? friendlyError(e) : (e && e.message) || friendlyError(e));
       });
     });
     box.appendChild(submit);
@@ -454,12 +661,19 @@
 
   var writeBtn = root.querySelector('[data-rb="write"]');
   if (writeBtn) {
-    writeBtn.addEventListener('click', function () {
-      renderSignIn();
+    writeBtn.addEventListener('click', async function () {
+      // If a persisted session exists, go straight to the review form —
+      // a signed-in reviewer is never asked to sign in again. Awaiting the
+      // one-time restore first also closes the race where a fast click
+      // landed before onAuthStateChanged had delivered the saved user.
+      if (!state.user) { try { await restoreSession(); } catch (e) {} }
+      if (state.user) renderForm();
+      else renderSignIn();
       formZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   }
 
   loadReviews();
   handleRedirectResult();
+  restoreSession();
 })();
