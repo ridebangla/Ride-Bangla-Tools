@@ -96,18 +96,14 @@ function fmt(d,tz){
 function convert(){
   const v=document.getElementById('dt').value;
   if(!v){document.getElementById('out').textContent='Please pick a date and time first.';return;}
-  const d=new Date(v);
-  if(isNaN(d)){document.getElementById('out').textContent='Invalid date.';return;}
+  const m=v.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/);
+  if(!m){document.getElementById('out').textContent='Invalid date.';return;}
   const fz=fromEl.value,tz=toEl.value;
-  // interpret the wall time as being in the FROM zone: find UTC instant whose from-zone wall time equals input
-  const wall=d.getTime();
-  let guess=wall;
-  for(let i=0;i<4;i++){
-    const asFrom=new Date(new Date(guess).toLocaleString('en-US',{timeZone:fz})).getTime();
-    const asLocal=new Date(new Date(guess).toLocaleString('en-US')).getTime();
-    guess+=wall-(asFrom+(wall-asLocal)*0)+ (asLocal-asFrom);
-  }
-  // simpler robust approach: binary search the offset
+  // Interpret the entered value as a wall-clock time in the FROM zone: build
+  // it as wall-clock milliseconds via Date.UTC from its components. Never use
+  // new Date(v) here — that parses the value in the BROWSER's zone, and
+  // zonedToUtc() would then shift the result by the browser/from-zone offset.
+  const wall=Date.UTC(+m[1],+m[2]-1,+m[3],+m[4],+m[5],+(m[6]||0));
   function zonedToUtc(wallMs,zone){
     // find utc such that formatting utc in zone gives wallMs (as local wall clock)
     let utc=wallMs;
