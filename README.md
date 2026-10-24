@@ -2,7 +2,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="tools/assets/tools-logo-text-light.png">
-  <img src="tools/assets/tools-logo-text.png" alt="Ride Bangla Tools" width="560">
+  <img src="tools/assets/tools-logo-text.png" alt="Ride Bangla Tools" width="440">
 </picture>
 
 # Ride Bangla Tools
@@ -137,19 +137,6 @@ tools/
 │   └── shorten.js        Vercel function — URL-shortener proxy
 └── assets/               Shared CSS/JS, the Tools logo set, i18n packs, PWA icons
 ```
-
----
-
-## Screenshots
-
-|  |  |
-|---|---|
-| <img src="docs/screenshots/home-desktop.png" alt="Homepage — desktop" width="420"> | <img src="docs/screenshots/home-phone.png" alt="Homepage — phone" width="200"> |
-| **Homepage — desktop (1280px)** | **Homepage — phone (390px)** |
-| <img src="docs/screenshots/tool-qr-generator.png" alt="QR Code Generator" width="420"> | <img src="docs/screenshots/tool-cv-builder.png" alt="CV and Cover Letter Builder" width="420"> |
-| **QR Code Generator** | **CV & Cover Letter Builder** |
-| <img src="docs/screenshots/tool-pdf-editor.png" alt="PDF Editor" width="420"> | <img src="docs/screenshots/tools-grid-desktop.png" alt="All Tools grid" width="420"> |
-| **PDF Editor** | **All Tools grid** |
 
 ---
 
