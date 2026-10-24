@@ -12,6 +12,10 @@
 [![Live Website](https://img.shields.io/badge/Live_Website-tools.ridebangla.bd-0B3D2E?style=for-the-badge&logo=googlechrome&logoColor=white)](https://tools.ridebangla.bd)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](LICENSE)
 
+<img src="docs/demo/qr-code-generator-demo.gif" alt="Live demo — recorded from tools.ridebangla.bd, 24 October 2026" width="400">
+
+Live demo — the QR Code Generator in action: a link is typed, the **Bird QR** designer style is picked, **Generate QR code** is clicked, and the finished code — the QR pattern itself forms the bird design — fills the final frames, ready to download as a PNG.
+
 <img src="docs/screenshots/home-desktop.png" alt="Ride Bangla Tools homepage on desktop — the site header carries the Tools toolbox logo, above the hero and the Popular Tools section" width="880">
 
 </div>
