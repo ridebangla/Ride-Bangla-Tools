@@ -87,6 +87,7 @@
 (function () {
   document.getElementById('rdBtn').addEventListener('click', function () {
     var raw = document.getElementById('rdIn').value;
+    if (raw === '') { document.getElementById('rdOut').value = ''; document.getElementById('rdStats').textContent = 'Paste some text first.'; return; }
     var ignoreCase = document.getElementById('rdCase').checked;
     var trimSpace = document.getElementById('rdTrim').checked;
     var lines = raw.split(/\r?\n/);

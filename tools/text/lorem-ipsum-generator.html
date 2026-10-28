@@ -253,7 +253,7 @@ $('dlResult').addEventListener('click',()=>{
   var btn = document.getElementById('aiBtn13');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'generate-content', function() { return 'Website placeholder content'; }, function(r) { var o=document.getElementById('loremOut'); if(o) o.textContent=r; else if (window.RB_AI && RB_AI.showText) { RB_AI.showText(r); } });
+      RB_AI.aiButton(btn, 'generate-content', function() { return 'Website placeholder content'; }, function(r) { var o=document.getElementById('out'); if(o) { o.textContent=r; o.classList.remove('empty'); var c=document.getElementById('copyLorem'); if(c) c.disabled=false; } else if (window.RB_AI && RB_AI.showText) { RB_AI.showText(r); } });
     });
   }
 })();

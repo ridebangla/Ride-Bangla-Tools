@@ -29,7 +29,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Text Tools", "item": "https://tools.ridebangla.bd/text/"}, {"@type": "ListItem", "position": 3, "name": "Case Converter", "item": "https://tools.ridebangla.bd/text/case-converter.html"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Case Converter", "description": "Convert text between UPPERCASE, lowercase, Title Case, Sentence case, alternating case, inverse case, snake_case, kebab-case and camelCase instantly in your browser.", "url": "https://tools.ridebangla.bd/text/case-converter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Case Converter free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Case Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Case Converter runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Which letter cases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg cAsE and iNVERSE cAsE \u2014 six conversions, applied instantly as you type."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Case Converter free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Case Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Case Converter runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Which letter cases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg cAsE, iNVERSE cAsE, snake_case, kebab-case and camelCase \u2014 nine conversions, applied instantly as you type."}}]}</script>
 </head>
 <body>
 <header class="site-header">
@@ -110,7 +110,7 @@ const ccCase = document.getElementById('ccCase');
 let currentCase = 'upper';
 const caseNames = { upper: 'UPPERCASE', lower: 'lowercase', title: 'Title Case', sentence: 'Sentence case', alternate: 'aLtErNaTiNg cAsE', inverse: 'iNVERSE cAsE', snake: 'snake_case', kebab: 'kebab-case', camel: 'camelCase' };
 function toWords(s) {
-  return s.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').trim().split(/\s+/).filter(Boolean);
+  return s.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').trim().split(/\s+/).map(function (w) { return w.replace(/^[^\p{L}\p{M}\p{N}]+|[^\p{L}\p{M}\p{N}]+$/gu, ''); }).filter(Boolean);
 }
 function toSnake(s) { return toWords(s).map(function (w) { return w.toLowerCase(); }).join('_'); }
 function toKebab(s) { return toWords(s).map(function (w) { return w.toLowerCase(); }).join('-'); }
@@ -177,7 +177,7 @@ document.getElementById('ccClear').addEventListener('click', function () {
   ccIn.value = ''; convert(); ccIn.focus();
 });
 document.getElementById('ccDl').addEventListener('click', function () {
-  if (!ccOut.value) return;
+  if (!ccOut.value) { alert('Convert some text first.'); return; }
   const blob = new Blob([ccOut.value], { type: 'text/plain;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -194,7 +194,7 @@ convert();
     <h2>How to use Case Converter</h2>
     <ol class="how-steps">
       <li>Type or paste your text into the input box above.</li>
-      <li>Click a case button — UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg or iNVERSE — the output updates live as you type.</li>
+      <li>Click a case button — UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg, iNVERSE, snake_case, kebab-case or camelCase — the output updates live as you type.</li>
       <li>Copy the result, download it as a .txt file, or clear to start over.</li>
     </ol>
     <h2>Frequently asked questions</h2>
@@ -209,7 +209,7 @@ convert();
       </details>
       <details class="faq-item">
         <summary>Which letter cases are supported?</summary>
-        <p>UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg cAsE and iNVERSE cAsE — six conversions, applied instantly as you type.</p>
+        <p>UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg cAsE, iNVERSE cAsE, snake_case, kebab-case and camelCase — nine conversions, applied instantly as you type.</p>
       </details>
     </div>
   </div>

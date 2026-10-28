@@ -93,9 +93,20 @@ function calc() {
   const r = parseFloat(document.getElementById('r').value);
   const t = parseFloat(document.getElementById('t').value);
   if (isNaN(p) || isNaN(r) || isNaN(t) || p <= 0 || t <= 0 || r < 0) { document.getElementById('si').textContent = '–'; document.getElementById('total').textContent = '–'; return; }
-  const si = (p*r*t)/100;
-  document.getElementById('si').textContent = sym + si.toLocaleString(undefined,{maximumFractionDigits:0});
-  document.getElementById('total').textContent = sym + (p+si).toLocaleString(undefined,{maximumFractionDigits:0});
+  const siRaw = (p*r*t)/100;
+  if (!isFinite(siRaw)) { document.getElementById('si').textContent = '–'; document.getElementById('total').textContent = '–'; return; }
+  // Money is shown to 2 decimals. Round to cents first and derive the
+  // total from the rounded figures, so displayed principal + displayed
+  // interest always equals the displayed total (previously whole-unit
+  // rounding made them disagree, e.g. principal 100.50 at 10% for 1 year
+  // showed interest 10 and total 111 instead of 10.05 and 110.55).
+  const r2 = v => Math.round((v + 1e-9) * 100) / 100;
+  const pC = r2(p);
+  const si = r2(pC*r*t/100);
+  const total = r2(pC + si);
+  const fmt = v => v.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('si').textContent = sym + fmt(si);
+  document.getElementById('total').textContent = sym + fmt(total);
 }
 ['p','r','t','siCur'].forEach(id => document.getElementById(id).addEventListener('input', calc));
 document.getElementById('siCur').addEventListener('change', calc);
@@ -231,7 +242,7 @@ $('dlResult').addEventListener('click',()=>{
   var btn = document.getElementById('aiBtn8');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'explain', function() { return 'Simple interest: ' + document.body.innerText.slice(0, 400); });
+      RB_AI.aiButton(btn, 'explain', function() { return 'Tool: Simple Interest Calculator. Give usage tips.'; });
     });
   }
 })();

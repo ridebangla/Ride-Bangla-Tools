@@ -97,6 +97,7 @@
     } catch (e) {
       out.textContent = 'Invalid regular expression: ' + e.message;
       out.classList.remove('empty');
+      window.__reText = '';
       return;
     }
     var matches = [];

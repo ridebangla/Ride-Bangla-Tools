@@ -160,6 +160,92 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
 <script src="../assets/qr-designs.js?v=5"></script>
 <script src="../assets/qr-studio.js?v=1"></script>
 <script>
+/* QRStudio fallback shim (audit fix 2026-10-28): the page references
+   ../assets/qr-studio.js, which is absent from the pushed Tools tree, so
+   without this shim every QRStudio.* call throws and Generate/Download
+   do nothing. If the real qr-studio.js is ever restored it loads first
+   and this shim stays inert (it only defines QRStudio when missing).
+   It renders through the site's own QRDesigns engine (assets/qr-designs.js)
+   — same 3 styles, same centre-logo EC-H rule — and draws text brand
+   badges (brand name on a solid badge), not official brand artwork. */
+(function () {
+  'use strict';
+  if (typeof window === 'undefined' || window.QRStudio) return;
+  var POSITIONS = [
+    { id: 'center', label: 'Center', hint: 'Centre of the QR' },
+    { id: 'top', label: 'Top', hint: 'Above the QR' },
+    { id: 'bottom', label: 'Bottom', hint: 'Below the QR' },
+    { id: 'side', label: 'Side', hint: 'Right of the QR' },
+    { id: 'middle', label: 'Middle', hint: 'Left of the QR' }
+  ];
+  var BRANDS = {
+    bkash: { name: 'bKash', bg: '#E2136E' },
+    nagad: { name: 'Nagad', bg: '#F6921E' },
+    rocket: { name: 'Rocket', bg: '#8C3494' },
+    bank: { name: 'Bank', bg: '#0B3D2E' }
+  };
+  function posLabel(pos) {
+    for (var i = 0; i < POSITIONS.length; i++) if (POSITIONS[i].id === pos) return POSITIONS[i].label;
+    return 'Center';
+  }
+  function makeBrandBadge(bid) {
+    var b = BRANDS[bid] || BRANDS.bank;
+    var c = document.createElement('canvas'); c.width = 256; c.height = 256;
+    var x = c.getContext('2d');
+    x.fillStyle = b.bg; x.fillRect(0, 0, 256, 256);
+    x.fillStyle = '#FFFFFF'; x.font = '700 44px Arial, sans-serif';
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillText(b.name, 128, 128, 220);
+    var id = x.getImageData(0, 0, 256, 256);
+    return { data: id.data, w: 256, h: 256 };
+  }
+  function fileToLogo(file) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        var s = Math.min(1, 512 / Math.max(img.width, img.height));
+        var c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.width * s));
+        c.height = Math.max(1, Math.round(img.height * s));
+        var x = c.getContext('2d');
+        x.drawImage(img, 0, 0, c.width, c.height);
+        var id = x.getImageData(0, 0, c.width, c.height);
+        resolve({ data: id.data, w: c.width, h: c.height });
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('Could not read that image.')); };
+      img.src = url;
+    });
+  }
+  function renderToCanvas(canvas, text, designId, opts) {
+    opts = opts || {};
+    var r = QRDesigns.render(text, designId, { logos: opts.logos, labelText: opts.labelText });
+    canvas.width = r.w; canvas.height = r.h;
+    var ctx = canvas.getContext('2d');
+    var img = ctx.createImageData(r.w, r.h);
+    img.data.set(r.data);
+    ctx.putImageData(img, 0, 0);
+    if (r.label) {
+      ctx.font = '600 ' + r.label.fontPx + 'px Arial, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = r.label.color;
+      ctx.fillText(r.label.text, r.label.x, r.label.y, r.label.maxW);
+    }
+    return canvas;
+  }
+  function downloadPNG(canvas, filename) {
+    var a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  window.QRStudio = { POSITIONS: POSITIONS, BRANDS: BRANDS, posLabel: posLabel,
+    makeBrandBadge: makeBrandBadge, fileToLogo: fileToLogo,
+    renderToCanvas: renderToCanvas, downloadPNG: downloadPNG };
+})();
+</script>
+<script>
 (function () {
   'use strict';
   var statusEl = document.getElementById('qrStatus');
@@ -190,8 +276,9 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
       b.style.borderColor = b.dataset.method === m ? 'var(--primary,#2563eb)' : '';
       b.style.color = b.dataset.method === m ? 'var(--primary,#2563eb)' : '';
     });
-    // pre-apply brand badge to Logo 1
-    if (M.brand) applyBrand(0, M.brand); else clearSlot(0);
+    // pre-apply brand badge to Logo 1 only if the user has not already
+    // placed a logo/badge there (switching method must not discard it).
+    if (M.brand && !slots[0].img) applyBrand(0, M.brand);
     generate();
   }
   document.querySelectorAll('#methodRow .qr-preset').forEach(function (b) {
@@ -303,6 +390,8 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
   function generate() {
     var amtRaw = document.getElementById('payAmt').value.trim();
     if (amtRaw && !/^\d+(\.\d{1,2})?$/.test(amtRaw)) {
+      holder.innerHTML = '';
+      currentCanvas = null;
       statusEl.textContent = 'Amount must be a number, e.g. 500.';
       updateCaption();
       return;

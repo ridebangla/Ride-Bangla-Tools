@@ -79,6 +79,7 @@
       <div class="field"><label>Hexadecimal</label><input type="text" id="hex"></div>
     </div>
     <div class="hint">Type in any one field — the others update automatically.</div>
+    <div id="baseErr" role="alert" style="font-size:13px;margin-top:8px"></div>
 <div class="btn-row" style="margin-top:12px;"><button class="btn-download" id="dlResult" type="button">Download result</button>
 <button type="button" class="btn ghost" id="aiBtn2">Explain with AI</button></div>
   </div>
@@ -87,14 +88,34 @@
 const fields = { bin:2, oct:8, dec:10, hex:16 };
 // Strict per-base validation: parseInt silently stops at the first invalid
 // character (e.g. "102" as binary -> 2), so verify the whole input first.
-const basePatterns = { bin:/^-?[01]+$/, oct:/^-?[0-7]+$/, dec:/^-?\d+$/, hex:/^-?(0x)?[0-9a-fA-F]+$/ };
+// BigInt (not Number) is used so large values stay exact: Number loses
+// precision past 2^53 (e.g. 64 ones in binary, or 9007199254740993 decimal).
+// Note: BigInt("-0xFF") throws, so the sign and any 0x prefix are stripped
+// and the sign is re-applied after parsing the magnitude.
+const basePatterns = { bin:/^[+-]?[01]+$/, oct:/^[+-]?[0-7]+$/, dec:/^[+-]?\d+$/, hex:/^[+-]?(0x)?[0-9a-fA-F]+$/ };
+const baseDigits = { bin:'0 and 1', oct:'0 to 7', dec:'0 to 9', hex:'0 to 9 and A to F' };
+const baseNames = { bin:'binary', oct:'octal', dec:'decimal', hex:'hexadecimal' };
+function parseBaseInt(raw, base) {
+  let s = raw;
+  let neg = false;
+  if (s.charAt(0) === '-') { neg = true; s = s.slice(1); }
+  else if (s.charAt(0) === '+') { s = s.slice(1); }
+  if (base === 16 && s.slice(0, 2).toLowerCase() === '0x') s = s.slice(2);
+  const prefix = base === 2 ? '0b' : base === 8 ? '0o' : base === 16 ? '0x' : '';
+  let n = BigInt(prefix + s);
+  if (neg) n = -n;
+  return n;
+}
 function updateFrom(id) {
   const base = fields[id];
   const raw = document.getElementById(id).value.trim();
-  const n = (raw !== '' && basePatterns[id].test(raw)) ? parseInt(raw, base) : NaN;
+  const errEl = document.getElementById('baseErr');
+  const valid = raw !== '' && basePatterns[id].test(raw);
+  if (errEl) errEl.textContent = valid || raw === '' ? '' : 'Invalid ' + baseNames[id] + ' number: use only ' + baseDigits[id] + ' (whole numbers only).';
+  const n = valid ? parseBaseInt(raw, base) : null;
   Object.keys(fields).forEach(k => {
     if (k === id) return;
-    document.getElementById(k).value = isNaN(n) ? '' : n.toString(fields[k]).toUpperCase();
+    document.getElementById(k).value = n === null ? '' : n.toString(fields[k]).toUpperCase();
   });
 }
 Object.keys(fields).forEach(id => {
@@ -232,7 +253,7 @@ $('dlResult').addEventListener('click',()=>{
   var btn = document.getElementById('aiBtn2');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'explain', function() { return 'Number base conversion: ' + document.body.innerText.slice(0, 300); });
+      RB_AI.aiButton(btn, 'explain', function() { return 'Explain this number base conversion. Do not change any figures: Binary ' + document.getElementById('bin').value + ', Octal ' + document.getElementById('oct').value + ', Decimal ' + document.getElementById('dec').value + ', Hexadecimal ' + document.getElementById('hex').value + '.'; });
     });
   }
 })();

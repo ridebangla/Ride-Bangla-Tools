@@ -99,6 +99,11 @@ function convert(){
   if(!v){document.getElementById('out').textContent='Please pick a date and time first.';return;}
   const m=v.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/);
   if(!m){document.getElementById('out').textContent='Invalid date.';return;}
+  /* Validate ranges instead of letting Date.UTC roll over silently: Feb 30
+     used to convert as Mar 2, hour 25 as next-day 01:00, minute 99 likewise. */
+  const mo=+m[2], dy=+m[3], hr=+m[4], mi=+m[5], se=+(m[6]||0);
+  const lastDay=new Date(Date.UTC(+m[1], mo, 0)).getUTCDate();
+  if(mo<1||mo>12||dy<1||dy>lastDay||hr>23||mi>59||se>59){document.getElementById('out').textContent='Invalid date or time.';return;}
   const fz=fromEl.value,tz=toEl.value;
   // Interpret the entered value as a wall-clock time in the FROM zone: build
   // it as wall-clock milliseconds via Date.UTC from its components. Never use

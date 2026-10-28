@@ -88,12 +88,14 @@ function inline(s){
 s=s.replace(/`([^`]+)`/g,'<code>$1</code>');s=s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,function(m,a,u){return '<img alt="'+a+'" src="'+safeUrl(u)+'">';});
 s=s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,function(m,a,u){return '<a href="'+safeUrl(u)+'">'+a+'</a>';});s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
 s=s.replace(/(^|\W)\*([^*]+)\*/g,'$1<em>$2</em>');
-s=s.replace(/(^|\W)_([^_\n]+)_/g,'$1<em>$2</em>');return s;}function md(src){const lines=src.split('\n'),out=[];let i=0,list=null;function closeList(){if(list){out.push(list==='ul'?'</ul>':'</ol>');list=null;}}while(i<lines.length){const ln=lines[i];if(/^```/.test(ln)){let code=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){code.push(lines[i]);i++;}i++;out.push('<pre><code>'+esc(code.join('\n'))+'</code></pre>');continue;}const h=ln.match(/^(#{1,6})\s+(.*)/);if(h){closeList();out.push('<h'+h[1].length+'>'+inline(h[2])+'</h'+h[1].length+'>');i++;continue;}if(/^\s*---\s*$/.test(ln)){closeList();out.push('<hr>');i++;continue;}if(/^\s*>/.test(ln)){closeList();out.push('<blockquote>'+inline(ln.replace(/^\s*>\s?/,''))+'</blockquote>');i++;continue;}if(/^<table>/.test(ln)){closeList();out.push(ln);i++;continue;}const ul=ln.match(/^\s*[-*+]\s+(.*)/),ol=ln.match(/^\s*\d+\.\s+(.*)/);if(ul||ol){const want=ul?'ul':'ol';if(list!==want){closeList();out.push('<'+want+'>');list=want;}out.push('<li>'+inline(ul?ul[1]:ol[1])+'</li>');i++;continue;}closeList();if(/^\s*$/.test(ln)){i++;continue;}let para=[ln];i++;while(i<lines.length&&!/^\s*$/.test(lines[i])&&!/^(#{1,6}\s|```|\s*[-*+]\s|\s*\d+\.\s|\s*>|\s*---\s*$)/.test(lines[i])){para.push(lines[i]);i++;}out.push('<p>'+para.map(inline).join('<br>')+'</p>');
+s=s.replace(/(^|\W)_([^_\n]+)_/g,'$1<em>$2</em>');return s;}function md(src){const lines=src.split('\n'),out=[];let i=0,list=null;function closeList(){if(list){out.push(list==='ul'?'</ul>':'</ol>');list=null;}}while(i<lines.length){const ln=lines[i];if(/^```/.test(ln)){let code=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){code.push(lines[i]);i++;}i++;out.push('<pre><code>'+esc(code.join('\n'))+'</code></pre>');continue;}const h=ln.match(/^(#{1,6})\s+(.*)/);if(h){closeList();out.push('<h'+h[1].length+'>'+inline(h[2])+'</h'+h[1].length+'>');i++;continue;}if(/^\s*---\s*$/.test(ln)){closeList();out.push('<hr>');i++;continue;}if(/^\s*>/.test(ln)){closeList();out.push('<blockquote>'+inline(ln.replace(/^\s*>\s?/,''))+'</blockquote>');i++;continue;}var tm=ln.match(/^\u0000TABLE(\d+)\u0000$/);if(tm){closeList();out.push(mdTableHtml[+tm[1]]||'');i++;continue;}const ul=ln.match(/^\s*[-*+]\s+(.*)/),ol=ln.match(/^\s*\d+\.\s+(.*)/);if(ul||ol){const want=ul?'ul':'ol';if(list!==want){closeList();out.push('<'+want+'>');list=want;}out.push('<li>'+inline(ul?ul[1]:ol[1])+'</li>');i++;continue;}closeList();if(/^\s*$/.test(ln)){i++;continue;}let para=[ln];i++;while(i<lines.length&&!/^\s*$/.test(lines[i])&&!/^(#{1,6}\s|```|\s*[-*+]\s|\s*\d+\.\s|\s*>|\s*---\s*$|\u0000TABLE\d+\u0000$)/.test(lines[i])){para.push(lines[i]);i++;}out.push('<p>'+para.map(inline).join('<br>')+'</p>');
   }
   closeList();
   return out.join('\n');
 }
+var mdTableHtml = [];
 function mdTables(src) {
+  mdTableHtml = [];
   var lines = src.split('\n'), out = [], i = 0;
   function isSep(ln) { return ln.indexOf('|') !== -1 && /^\s*\|?[\s:|-]+\|?\s*$/.test(ln) && ln.indexOf('-') !== -1; }
   function splitRow(ln) {
@@ -112,7 +114,8 @@ function mdTables(src) {
       body.forEach(function (row) {
         h += '<tr>' + head.map(function (_, j) { return '<td>' + inline(row[j] || '') + '</td>'; }).join('') + '</tr>';
       });
-      out.push(h + '</tbody></table>');
+      mdTableHtml.push(h + '</tbody></table>');
+      out.push('\u0000TABLE' + (mdTableHtml.length - 1) + '\u0000');
     } else { out.push(lines[i]); i++; }
   }
   return out.join('\n');

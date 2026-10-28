@@ -82,7 +82,7 @@
   </div>
 </section>
 <script>
-function csvDelim(){const v=document.getElementById('delim').value;return v==='\t' ? '\t' : v;}
+function csvDelim(){const v=document.getElementById('delim').value;return (v==='\\t'||v==='\t') ? '\t' : v;}
 function parseCSV(text){
   const delim=csvDelim();
   const rows=[];let row=[],field='',q=false;
@@ -91,11 +91,12 @@ function parseCSV(text){
     if(q){
       if(c==='"'){if(text[i+1]==='"'){field+='"';i++;}else q=false;}
       else field+=c;
-    }else if(c==='"'){q=true;}
+    }else if(c==='"' && field===''){q=true;}
     else if(c===delim){row.push(field);field='';}
     else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(field);field='';if(row.length>1||row[0]!=='')rows.push(row);row=[];}
     else field+=c;
   }
+  if(q) throw new Error('Unterminated quoted field \u2014 check for a missing closing quote.');
   row.push(field);if(row.length>1||row[0]!=='')rows.push(row);
   return rows;
 }
@@ -111,8 +112,9 @@ function jsonToCsv(t){
   const arr=JSON.parse(t);if(!Array.isArray(arr)||!arr.length)throw new Error('Input must be a JSON array of objects.');
   if(arr.some(o=>!o||typeof o!=='object'||Array.isArray(o)))throw new Error('JSON → CSV needs an array of objects, e.g. [{"name":"Alice"}].');
   const head=[...new Set(arr.flatMap(o=>Object.keys(o)))];
-  const esc=v=>{v=v==null?'':String(v);return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
-  return [head.map(esc).join(','),...arr.map(o=>head.map(h=>esc(o[h])).join(','))].join('\n');
+  const d=csvDelim();
+  const esc=v=>{v=v==null?'':String(v);return (v.indexOf(d)!==-1||/[",\n\r]/.test(v))?'"'+v.replace(/"/g,'""')+'"':v;};
+  return [head.map(esc).join(d),...arr.map(o=>head.map(h=>esc(o[h])).join(d))].join('\n');
 }
 let lastName='converted.txt';
 function run(fn,name){const t=document.getElementById('in').value;try{document.getElementById('out').textContent=fn(t);lastName=name;}catch(e){document.getElementById('out').textContent='Error: '+e.message;}}

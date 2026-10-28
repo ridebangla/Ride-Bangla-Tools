@@ -96,6 +96,10 @@ milEl.addEventListener('input',()=>{
     const h=parseInt(v.slice(0,v.length-2),10),m=parseInt(v.slice(-2),10);
     if(h<24&&m<60){const s=toStd(h,m);stdEl.value=s;outEl.textContent=v+' → '+s;return;}
   }
+  /* Clear the other field on any non-converting input: otherwise a previous
+     conversion (e.g. 2:30 PM) stays on screen beside the error message and
+     looks like the result for the invalid value just typed (e.g. 2560). */
+  stdEl.value='';
   outEl.textContent=v?'Enter 3–4 digits, e.g. 930 or 1430.':'—';
 });
 stdEl.addEventListener('input',()=>{
@@ -104,6 +108,9 @@ stdEl.addEventListener('input',()=>{
     let h=parseInt(mt[1],10);const m=parseInt(mt[2]||'0',10);
     if(h>=1&&h<=12&&m<60){const s=toMil(h,mt[3],m);milEl.value=s.replace(':','');outEl.textContent=stdEl.value.trim()+' → '+s;return;}
   }
+  /* Same stale-result rule as above: never leave a previous 24-hour value
+     displayed as if it were the conversion of an invalid 12-hour entry. */
+  milEl.value='';
   outEl.textContent=stdEl.value.trim()?'Use a format like 2:30 PM or 11 AM.':'—';
 });
 (function(){

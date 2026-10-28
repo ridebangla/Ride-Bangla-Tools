@@ -90,9 +90,13 @@
     var num = Number(v);
     if (v === '' || !isFinite(num)) { out.textContent = 'Enter a number of seconds first.'; out.classList.remove('empty'); return; }
     // 13-digit millisecond timestamps are common (e.g. from Date.now()); treat large values as ms, not seconds.
-    var sec = Math.abs(num) >= 100000000000 ? num / 1000 : num;
+    var asMs = Math.abs(num) >= 100000000000;
+    var sec = asMs ? num / 1000 : num;
     var d = new Date(sec * 1000);
-    out.textContent = 'UTC: ' + d.toUTCString() + '\nLocal: ' + d.toLocaleString() + '\nISO: ' + d.toISOString();
+    /* toISOString() throws RangeError on an out-of-range date, so a huge
+       timestamp used to crash this handler with no result at all. */
+    if (isNaN(d.getTime())) { out.textContent = 'That timestamp is out of the supported date range.'; out.classList.remove('empty'); return; }
+    out.textContent = (asMs ? 'Interpreted as milliseconds.\n' : '') + 'UTC: ' + d.toUTCString() + '\nLocal: ' + d.toLocaleString() + '\nISO: ' + d.toISOString();
     out.classList.remove('empty');
   });
   document.getElementById('tsBtn2').addEventListener('click', function () {
@@ -100,6 +104,7 @@
     var v = document.getElementById('tsDate').value;
     if (!v) { out.textContent = 'Pick a date and time first.'; out.classList.remove('empty'); return; }
     var d = new Date(v);
+    if (isNaN(d.getTime())) { out.textContent = 'That date and time is not valid.'; out.classList.remove('empty'); return; }
     out.textContent = 'Unix timestamp: ' + Math.floor(d.getTime() / 1000) + ' seconds (' + d.getTime() + ' milliseconds)\nThat is ' + d.toUTCString() + ' in UTC.';
     out.classList.remove('empty');
   });

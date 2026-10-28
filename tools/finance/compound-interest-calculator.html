@@ -124,9 +124,15 @@ function calc() {
   }
   if (!isFinite(bal)) { ciReset(); return; }
   var totalContrib = p + pmt * months;
-  document.getElementById('ci-fv').textContent = '$' + ciFmt(bal);
-  document.getElementById('ci-contrib').textContent = '$' + ciFmt(totalContrib);
-  document.getElementById('ci-interest').textContent = '$' + ciFmt(bal - totalContrib);
+  // Round each displayed money figure to cents first, then derive interest
+  // from the rounded figures, so displayed interest + displayed contributions
+  // always equals the displayed future value (no 1-cent rounding drift).
+  var r2 = function (v) { return Math.round((v + 1e-9) * 100) / 100; };
+  var fvC = r2(bal);
+  var contribC = r2(totalContrib);
+  document.getElementById('ci-fv').textContent = '$' + ciFmt(fvC);
+  document.getElementById('ci-contrib').textContent = '$' + ciFmt(contribC);
+  document.getElementById('ci-interest').textContent = '$' + ciFmt(r2(fvC - contribC));
   document.getElementById('ci-initial').textContent = '$' + ciFmt(p);
 }
 ['ci-p','ci-pmt','ci-r','ci-t','ci-n'].forEach(function (id) {
@@ -255,7 +261,7 @@ function rbDL(name,lines){
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
 }
 $('dlResult').addEventListener('click',()=>{
-  rbDL('compound-interest.txt',['Initial investment: $'+V('ci-p'),'Monthly contribution: $'+V('ci-pmt'),'Annual rate: '+V('ci-r')+'%','Years: '+V('ci-t'),'Future value: '+T('ci-fv'),'Total contributions: '+T('ci-contrib'),'Interest earned: '+T('ci-interest')]);
+  rbDL('compound-interest.txt',['Initial investment: $'+V('ci-p'),'Monthly contribution: $'+V('ci-pmt'),'Annual rate: '+V('ci-r')+'%','Years: '+V('ci-t'),'Compounding: '+V('ci-n')+' times per year','Future value: '+T('ci-fv'),'Total contributions: '+T('ci-contrib'),'Interest earned: '+T('ci-interest')]);
 });
 })();
 </script>
@@ -266,7 +272,7 @@ $('dlResult').addEventListener('click',()=>{
   var btn = document.getElementById('aiBtn5');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'finance-tips', function() { return 'Compound interest: ' + document.body.innerText.slice(0, 400); });
+      RB_AI.aiButton(btn, 'finance-tips', function() { return 'Tool: Compound Interest Calculator. Give usage tips.'; });
     });
   }
 })();

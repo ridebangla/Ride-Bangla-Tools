@@ -144,6 +144,7 @@ document.getElementById('clearImgs').addEventListener('click', () => {
 
 document.getElementById('buildPdf').addEventListener('click', async () => {
   if (!files.length) { status.textContent = 'Choose at least one image first.'; return; }
+  if (!window.PDFLib) { status.textContent = 'The PDF engine could not load. Check your internet connection and refresh the page.'; status.classList.remove('empty'); return; }
   status.classList.remove('empty');
   status.textContent = 'Building PDF…';
   const { PDFDocument } = PDFLib;
@@ -179,11 +180,17 @@ document.getElementById('buildPdf').addEventListener('click', async () => {
     let data;
     try { data = await fileToEmbeddable(file); }
     catch (e) { status.textContent = 'Could not read "' + file.name + '". Try a JPG or PNG image.'; return; }
-    const img = data.png ? await pdfDoc.embedPng(data.bytes) : await pdfDoc.embedJpg(data.bytes);
-    const page = pdfDoc.addPage([img.width, img.height]);
-    page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+    // Embed errors used to throw uncaught, leaving the status stuck on
+    // "Building PDF…" with no output and no message.
+    try {
+      const img = data.png ? await pdfDoc.embedPng(data.bytes) : await pdfDoc.embedJpg(data.bytes);
+      const page = pdfDoc.addPage([img.width, img.height]);
+      page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+    } catch (e) { status.textContent = 'Could not add "' + file.name + '" to the PDF. Try a JPG or PNG image.'; return; }
   }
-  const bytes = await pdfDoc.save();
+  let bytes;
+  try { bytes = await pdfDoc.save(); }
+  catch (e) { status.textContent = 'Could not finish the PDF. Try fewer or smaller images.'; return; }
   const blob = new Blob([bytes], { type: 'application/pdf' });
   if (lastPdfUrl) URL.revokeObjectURL(lastPdfUrl);
   lastPdfUrl = URL.createObjectURL(blob);

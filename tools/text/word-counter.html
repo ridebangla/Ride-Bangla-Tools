@@ -100,7 +100,7 @@ function update() {
   document.getElementById('words').textContent = words;
   document.getElementById('chars').textContent = Array.from(v).length;
   document.getElementById('charsNoSpace').textContent = Array.from(v.replace(/\s/g,'')).length;
-  document.getElementById('sentences').textContent = (v.match(/[.!?]+/g) || []).length;
+  document.getElementById('sentences').textContent = (v.match(/[.!?।॥]+/g) || []).length;
   document.getElementById('paragraphs').textContent = v.trim() ? v.trim().split(/\n\s*\n/).length : 0;
   document.getElementById('readTime').textContent = (words === 0 ? 0 : Math.max(1, Math.round(words/200))) + ' min';
 }

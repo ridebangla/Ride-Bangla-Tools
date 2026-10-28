@@ -84,16 +84,17 @@
 const inEl=document.getElementById('in'),outEl=document.getElementById('out');
 function b64encodeUnicode(s){
   const bytes=new TextEncoder().encode(s);let bin='';
-  bytes.forEach(b=>bin+=String.fromCharCode(b));
+  for(let i=0;i<bytes.length;i+=0x8000){bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));}
   return btoa(bin);
 }
 function b64decodeUnicode(s){
   const bin=atob(s.replace(/\s+/g,''));const bytes=new Uint8Array(bin.length);
   for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
-  return new TextDecoder().decode(bytes);
+  return new TextDecoder('utf-8',{fatal:true}).decode(bytes);
 }
-document.getElementById('enc').addEventListener('click',()=>{outEl.textContent=b64encodeUnicode(inEl.value);});
+document.getElementById('enc').addEventListener('click',()=>{if(!inEl.value){alert('Enter some text first.');return;}outEl.textContent=b64encodeUnicode(inEl.value);});
 document.getElementById('dec').addEventListener('click',()=>{
+  if(!inEl.value){alert('Enter some text first.');return;}
   try{outEl.textContent=b64decodeUnicode(inEl.value);}
   catch(e){outEl.textContent='Could not decode: the input is not valid Base64.';}
 });
@@ -102,7 +103,7 @@ document.getElementById('swap').addEventListener('click',()=>{if(outEl.textConte
 document.getElementById('dl').addEventListener('click',()=>{
   const t=outEl.textContent;
   if(!t||t.startsWith('Could not')){alert('Encode or decode something first.');return;}
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/plain;charset=utf-8'}));a.download='base64.txt';document.body.appendChild(a);a.click();a.remove();
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/plain;charset=utf-8'}));a.download='base64.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
 });
 </script>
 <div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>

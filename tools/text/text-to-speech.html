@@ -101,10 +101,10 @@ document.getElementById('rate').addEventListener('input',e=>document.getElementB
 document.getElementById('pitch').addEventListener('input',e=>document.getElementById('pitchVal').textContent=e.target.value);
 textEl.addEventListener('input',()=>{
   const w=textEl.value.trim().split(/\s+/).filter(Boolean).length;
-  document.getElementById('stats').textContent=w+' words · ~'+Math.max(1,Math.round(w/150))+' min at normal speed';
+  document.getElementById('stats').textContent=w===0?'—':w+' words · ~'+Math.max(1,Math.round(w/150))+' min at normal speed';
 });
 function splitChunks(t) {
-  var parts = t.match(/[^.!?\n]+[.!?\n]+|[^.!?\n]+$/g) || [t];
+  var parts = t.match(/[^.!?\n।॥]+[.!?\n।॥]+|[^.!?\n।॥]+$/g) || [t];
   var chunks = [];
   parts.forEach(function (part) {
     part = part.trim();
@@ -129,7 +129,7 @@ function speakNext(token) {
   u.rate = parseFloat(document.getElementById('rate').value);
   u.pitch = parseFloat(document.getElementById('pitch').value);
   u.onend = function () { queueIndex++; if (!paused) speakNext(token); };
-  u.onerror = function (e) { document.getElementById('status').textContent = 'Speech error: ' + (e.error || 'unknown'); };
+  u.onerror = function (e) { if (token !== speakToken) return; document.getElementById('status').textContent = 'Speech error: ' + (e.error || 'unknown'); };
   synth.speak(u);
 }
 document.getElementById('speak').addEventListener('click',()=>{

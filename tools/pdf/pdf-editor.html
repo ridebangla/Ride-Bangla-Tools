@@ -765,7 +765,11 @@
     var buf;
     try { buf = await file.arrayBuffer(); } catch (e) { fail('Could not read "' + file.name + '". Try choosing it again.'); return; }
     var libDoc;
-    try { libDoc = await window.PDFLib.PDFDocument.load(buf.slice(0), { ignoreEncryption: true }); }
+    // No ignoreEncryption: pdf-lib cannot decrypt, and loading an
+    // encrypted file that way copies still-encrypted streams into the
+    // downloaded file (verified corrupt). Encrypted files must fail
+    // here, with the password message below, instead.
+    try { libDoc = await window.PDFLib.PDFDocument.load(buf.slice(0)); }
     catch (e) { fail('Could not open "' + file.name + '". It may be password-protected or corrupted — try another file.'); return; }
     var pdfjs;
     try { pdfjs = await loadPdfJs(); } catch (e) { fail('The PDF viewer engine could not load. Check your internet connection and refresh the page.'); return; }
@@ -779,6 +783,7 @@
     if (textEd) { textEd.box.remove(); textEd = null; }
     S.fileName = file.name; S.srcBytes = buf; S.jsDoc = jsDoc;
     var n = libDoc.getPageCount();
+    if (!n) { fail('That PDF has no pages to edit.'); return; }
     var libPages = libDoc.getPages();
     for (var i = 0; i < n; i++) {
       S.pages.push({ id: 'p' + (uidC++), srcIndex: i, rot: 0 });
@@ -2045,8 +2050,16 @@
   }
 
   /* edit ORIGINAL text (a run), or an existing txedit annotation */
+  /* v4 audit: on a sideways page (effective rotation 90/270, from the
+     page's own /Rotate or a user page rotation) the on-screen text runs
+     vertically, but the edit textarea is always horizontal — so the box
+     cannot land on the tapped text (it becomes a horizontal strip over
+     other lines, the v3 failure shape). Refuse in place, exactly like
+     rotated runs, instead of opening a misplaced box. */
+  function pageSideways() { return !!(curViewport && (curViewport.rotation % 180 !== 0)); }
   function openTxEditor(run, txAnnot) {
     if (!run && !txAnnot) return;
+    if (pageSideways()) { setStatus('That text is rotated, so it can\'t be edited in place yet. Use Whiteout to cover it, then the Text tool to write over it.'); drawOverlay(); return; }
     var size = txAnnot ? txAnnot.size : run.size;
     var family = txAnnot ? (txAnnot.family || 'helvetica') : run.font.family;
     var bold = /Bold/.test(txAnnot ? txAnnot.font : (run ? run.font.key : ''));
@@ -2056,6 +2069,7 @@
     var rect0 = txAnnot ? C.annotBbox(txAnnot) : run.rect;
     ensureEditScale(size, [rect0.x + rect0.w / 2, rect0.y + rect0.h / 2]).then(function () {
       if (my !== edSeq || !S || !curViewport) return; /* superseded by a newer tap or a tool switch */
+      if (pageSideways()) { setStatus('That text is rotated, so it can\'t be edited in place yet. Use Whiteout to cover it, then the Text tool to write over it.'); drawOverlay(); return; }
       var cols = txAnnot ? { text: C.hexToRgb(txAnnot.color), bg: C.hexToRgb(txAnnot.bg || '#ffffff') } : samplePageColors(run.rect);
       var geom = C.editorGeom(txAnnot ? C.annotBbox(txAnnot) : run.rect, curViewport);
       var ed = editorShell(geom, size, C.rgbToHex(cols.text), family, bold, ital, txAnnot ? txAnnot.text : run.text, C.rgbToHex(cols.bg));
@@ -2106,6 +2120,10 @@
   /* add / edit ADDED text (v1 behaviour, restyled) */
   function openTextEditor(idx, clickPdf) {
     var a = idx >= 0 ? curAnnots()[idx] : null;
+    // Same sideways-page rule as openTxEditor, but only when editing an
+    // EXISTING added-text box (placing new text at a tap point stays
+    // allowed — its box marks the tap point rather than existing text).
+    if (a && pageSideways()) { setStatus('That text is rotated, so it can\'t be edited in place yet. Use Whiteout to cover it, then the Text tool to write over it.'); drawOverlay(); return; }
     var size = a ? a.size : S.defaults.textSize;
     var family = a ? (a.family || 'helvetica') : S.defaults.textFamily;
     var bold = a ? /Bold/.test(a.font || '') : S.defaults.textBold;
@@ -2115,6 +2133,7 @@
     var anchorA = a ? C.annotBbox(a) : null;
     ensureEditScale(size, anchorA ? [anchorA.x + anchorA.w / 2, anchorA.y + anchorA.h / 2] : clickPdf).then(function () {
       if (my !== edSeq || !S || !curViewport) return;
+      if (a && pageSideways()) { setStatus('That text is rotated, so it can\'t be edited in place yet. Use Whiteout to cover it, then the Text tool to write over it.'); drawOverlay(); return; }
       var rect = a ? C.annotBbox(a) : { x: clickPdf[0], y: clickPdf[1] - size * 0.35, w: Math.max(140, size * 8), h: size * 1.35 };
       var geom = C.editorGeom(rect, curViewport);
       var ed = editorShell(geom, size, a ? a.color : S.defaults.textColor, family, bold, ital, a ? a.text : '', null);
@@ -2285,7 +2304,7 @@
     setStatus('Preparing your edited PDF…');
     try {
       var L = window.PDFLib;
-      var srcDoc = await L.PDFDocument.load(S.srcBytes.slice(0), { ignoreEncryption: true });
+      var srcDoc = await L.PDFDocument.load(S.srcBytes.slice(0));
       if (S.formPresent) applyFormValues(srcDoc);
       var order = S.pages.map(function (p) { return p.srcIndex; });
       var reordered = order.some(function (v, i) { return i > 0 && v < order[i - 1]; });

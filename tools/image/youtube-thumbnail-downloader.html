@@ -196,7 +196,7 @@
 (function () {
   function vidId(u) {
     u = (u || '').trim();
-    var m = u.match(/(?:youtube\.com\/(?:watch\?.*v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    var m = u.match(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?.*v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
     return m ? m[1] : null;
   }
   document.getElementById('go').addEventListener('click', function () {
@@ -236,6 +236,7 @@
           var res = await fetch(url, { mode: 'cors' });
           if (!res.ok) throw new Error('fetch failed');
           var blob = await res.blob();
+          if (blob.type && blob.type.indexOf('image/') !== 0) throw new Error('not an image');
           var burl = URL.createObjectURL(blob);
           var a = document.createElement('a');
           a.href = burl; a.download = 'thumbnail-' + s.f;

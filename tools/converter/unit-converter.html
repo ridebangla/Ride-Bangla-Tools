@@ -153,16 +153,31 @@ function fillUnits() {
 function toCelsius(v, u) { return u==='celsius'?v : u==='fahrenheit'?(v-32)*5/9 : v-273.15; }
 function fromCelsius(v, u) { return u==='celsius'?v : u==='fahrenheit'?(v*9/5)+32 : v+273.15; }
 
+// Non-temperature results keep the previous grouped display, except that a
+// non-zero result smaller than 0.000001 previously rounded to "0" via
+// maximumFractionDigits:6 (e.g. 1 bit in terabytes, 1e-10 km) — a silent
+// wrong result. Such values are shown in exponential form instead.
+function fmtResult(x) {
+  if (!isFinite(x)) return String(x);
+  if (x === 0) return '0';
+  if (Math.abs(x) < 0.000001) return x.toExponential(6);
+  return x.toLocaleString(undefined,{maximumFractionDigits:6});
+}
+
 function convert() {
   const c = catSel.value;
   const v = parseFloat(val.value);
   if (isNaN(v)) { res.textContent = '–'; return; }
   if (c === 'temp') {
     const celsius = toCelsius(v, fromSel.value);
+    // Below absolute zero (-273.15 C) no such temperature exists; the old
+    // code silently returned a negative Kelvin value (e.g. -300 C -> -26.85 K).
+    // The 1e-9 tolerance only absorbs floating-point noise at the boundary.
+    if (celsius < -273.15 - 0.000000001) { res.textContent = 'Below absolute zero — no such temperature exists.'; return; }
     res.textContent = fromCelsius(celsius, toSel.value).toFixed(2);
   } else {
     const base = v * units[c][fromSel.value];
-    res.textContent = (base / units[c][toSel.value]).toLocaleString(undefined,{maximumFractionDigits:6});
+    res.textContent = fmtResult(base / units[c][toSel.value]);
   }
 }
 catSel.addEventListener('change', fillUnits);

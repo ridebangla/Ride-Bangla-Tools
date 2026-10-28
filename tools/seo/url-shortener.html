@@ -125,7 +125,9 @@ async function tryShorten(url) {
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const e = new Error(data.error || 'Service unavailable');
+    // Prefer the server's human-readable message: the raw error code
+    // alone ("RATE_LIMITED") was shown to users on rate limiting.
+    const e = new Error(data.message || data.error || 'Service unavailable');
     e.fromServer = true;
     throw e;
   }

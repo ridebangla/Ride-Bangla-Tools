@@ -75,6 +75,7 @@
     <div class="field"><label>Date of birth</label><input type="date" id="dob" value="1998-01-01"></div>
     <div class="field"><label>As of</label><input type="date" id="asOf"></div>
     <div class="btn-row"><button type="button" class="btn" id="calc">Calculate age</button></div>
+    <div id="ageMsg" style="font-size:13px;opacity:.75;margin-top:8px" role="status"></div>
   </div>
   <div class="panel">
     <div class="stat-grid">
@@ -91,13 +92,30 @@
 <script>
 document.getElementById('asOf').valueAsDate = new Date();
 function calc() {
-  const parseLocal = v => { const p = String(v).split('-').map(Number); return new Date(p[0], p[1]-1, p[2]); };
+  /* Strict parse: reject empty values and impossible dates (e.g. Feb 30),
+     which the Date constructor would otherwise silently roll over to March. */
+  const parseLocal = v => {
+    const parts = String(v || '').split('-');
+    if (parts.length !== 3) return null;
+    const y = Number(parts[0]), m = Number(parts[1]), d = Number(parts[2]);
+    if (!Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return null;
+    if (m < 1 || m > 12 || d < 1) return null;
+    if (d > new Date(y, m, 0).getDate()) return null;
+    const dt = new Date(y, m - 1, d);
+    if (dt.getFullYear() !== y || dt.getMonth() !== m - 1 || dt.getDate() !== d) return null;
+    return dt;
+  };
+  const msg = document.getElementById('ageMsg');
   const dob = parseLocal(document.getElementById('dob').value);
   const asOf = parseLocal(document.getElementById('asOf').value);
-  if (isNaN(dob) || isNaN(asOf) || dob > asOf) {
+  if (!dob || !asOf || dob > asOf) {
     ['years','months','days','totalDays'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = '–'; });
+    /* A future birth date previously blanked the result with no explanation;
+       it must never look like a negative or zero age. */
+    if (msg) msg.textContent = (!dob || !asOf) ? 'Enter a valid date of birth and an "As of" date.' : 'Date of birth must not be after the "As of" date.';
     return;
   }
+  if (msg) msg.textContent = '';
   let y = asOf.getFullYear() - dob.getFullYear();
   let m = asOf.getMonth() - dob.getMonth();
   let d = asOf.getDate() - dob.getDate();
@@ -106,7 +124,9 @@ function calc() {
   document.getElementById('years').textContent = y;
   document.getElementById('months').textContent = m;
   document.getElementById('days').textContent = d;
-  document.getElementById('totalDays').textContent = Math.floor((asOf - dob) / 86400000).toLocaleString();
+  /* Total days via UTC midnights: local midnights differ by 23/25 hours across
+     a daylight-saving change, so (asOf - dob) / 86400000 floors one day short. */
+  document.getElementById('totalDays').textContent = Math.round((Date.UTC(asOf.getFullYear(), asOf.getMonth(), asOf.getDate()) - Date.UTC(dob.getFullYear(), dob.getMonth(), dob.getDate())) / 86400000).toLocaleString();
 }
 document.getElementById('calc').addEventListener('click', calc);
 document.getElementById('dob').addEventListener('change', calc);

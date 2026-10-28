@@ -176,6 +176,7 @@ convertBtn.addEventListener('click', async function () {
   var ready = await ensureHeic2any();
   if (!ready) {
     statusEl.textContent = 'The converter engine could not load. Check your internet connection and try again.';
+    convertBtn.disabled = false; // FIX: the button stayed dead until reload
     return;
   }
   var q = (parseInt(quality.value, 10) || 92) / 100;
@@ -183,9 +184,10 @@ convertBtn.addEventListener('click', async function () {
   lastUrls.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) {} });
   lastUrls = [];
   var done = 0, failed = 0;
-  for (var i = 0; i < heicFiles.length; i++) {
-    var file = heicFiles[i];
-    statusEl.textContent = 'Converting ' + (i + 1) + ' of ' + heicFiles.length + '…';
+  var files = heicFiles.slice(); // FIX: snapshot — Clear mid-run no longer silently drops the rest
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    statusEl.textContent = 'Converting ' + (i + 1) + ' of ' + files.length + '…';
     try {
       var out = await window.heic2any({ blob: file, toType: 'image/jpeg', quality: q });
       var blobs = Array.isArray(out) ? out : [out];

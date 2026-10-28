@@ -74,8 +74,8 @@
   <div class="panel">
     <div class="field"><label>Page title</label><input type="text" id="title" value="My Page Title"><span class="hint" id="titleCount"></span></div>
     <div class="field"><label>Meta description</label><textarea id="desc" style="min-height:90px;">A short, clear description of this page for search engines.</textarea><span class="hint" id="descCount"></span></div>
-    <div class="field"><label>Page URL</label><input type="text" id="url" value="https://example.com/page"></div>
-    <div class="field"><label>Image URL (for social sharing)</label><input type="text" id="img" value="https://example.com/og-image.jpg"></div>
+    <div class="field"><label>Page URL</label><input type="text" id="url" value="https://example.com/page"><span class="hint" id="urlHint"></span></div>
+    <div class="field"><label>Image URL (for social sharing)</label><input type="text" id="img" value="https://example.com/og-image.jpg"><span class="hint" id="imgHint"></span></div>
   </div>
   <div class="panel">
     <div class="field"><label>Generated tags</label><div class="output" id="out"></div></div>
@@ -85,27 +85,46 @@
 <script>
 const escAttr = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const oneLine = s => String(s).replace(/\s+/g, ' ').trim();
+// A canonical / Open Graph / image URL is only useful as http(s). Anything
+// else (a bare word, a javascript: string, a relative path) used to be
+// emitted verbatim into the tag block as if it were valid, so the pasted
+// tags were silently wrong. Invalid values are now left out and flagged.
+function isHttpUrl(s) {
+  try { const u = new URL(s); return (u.protocol === 'http:' || u.protocol === 'https:') && !!u.hostname; }
+  catch (e) { return false; }
+}
 function upd() {
   const tRaw = oneLine(document.getElementById('title').value);
   const dRaw = oneLine(document.getElementById('desc').value);
   const t = escAttr(tRaw);
   const d = escAttr(dRaw);
-  const u = escAttr(oneLine(document.getElementById('url').value));
-  const img = escAttr(oneLine(document.getElementById('img').value));
-  document.getElementById('titleCount').textContent = tRaw.length + ' characters (about 60 recommended)';
-  document.getElementById('descCount').textContent = dRaw.length + ' characters (about 160 recommended)';
+  const uRaw = oneLine(document.getElementById('url').value);
+  const imgRaw = oneLine(document.getElementById('img').value);
+  const u = escAttr(uRaw);
+  const img = escAttr(imgRaw);
+  const uOk = !uRaw || isHttpUrl(uRaw);
+  const imgOk = !imgRaw || isHttpUrl(imgRaw);
+  document.getElementById('urlHint').textContent = uOk ? '' : 'Not a valid http(s) URL — this tag is left out until it is valid.';
+  document.getElementById('imgHint').textContent = imgOk ? '' : 'Not a valid http(s) URL — this tag is left out until it is valid.';
+  document.getElementById('titleCount').textContent = tRaw.length > 60
+    ? tRaw.length + ' characters — over the ~60 recommended; search engines may truncate it'
+    : tRaw.length + ' characters (about 60 recommended)';
+  document.getElementById('descCount').textContent = dRaw.length > 160
+    ? dRaw.length + ' characters — over the ~160 recommended; search engines may truncate it'
+    : dRaw.length + ' characters (about 160 recommended)';
   const lines = [`<title>${t}</title>`];
   if (dRaw) lines.push(`<meta name="description" content="${d}">`);
-  if (u) lines.push(`<link rel="canonical" href="${u}">`);
+  if (uRaw && uOk) lines.push(`<link rel="canonical" href="${u}">`);
   lines.push('', `<meta property="og:title" content="${t}">`);
   if (dRaw) lines.push(`<meta property="og:description" content="${d}">`);
-  if (u) lines.push(`<meta property="og:url" content="${u}">`);
-  if (img) lines.push(`<meta property="og:image" content="${img}">`);
+  if (uRaw && uOk) lines.push(`<meta property="og:url" content="${u}">`);
+  if (imgRaw && imgOk) lines.push(`<meta property="og:image" content="${img}">`);
   lines.push(`<meta property="og:type" content="website">`, '');
-  lines.push(`<meta name="twitter:card" content="summary_large_image">`);
+  // summary_large_image only makes sense when an image is actually emitted.
+  lines.push(`<meta name="twitter:card" content="${(imgRaw && imgOk) ? 'summary_large_image' : 'summary'}">`);
   lines.push(`<meta name="twitter:title" content="${t}">`);
   if (dRaw) lines.push(`<meta name="twitter:description" content="${d}">`);
-  if (img) lines.push(`<meta name="twitter:image" content="${img}">`);
+  if (imgRaw && imgOk) lines.push(`<meta name="twitter:image" content="${img}">`);
   document.getElementById('out').textContent = lines.join('\n');
 }
 ['title','desc','url','img'].forEach(id => document.getElementById(id).addEventListener('input', upd));
@@ -233,6 +252,7 @@ function rbDL(name,lines){
 $('dlResult').addEventListener('click',()=>{
   const o=T('out');
   if(!o||/will appear here/i.test(o)){alert('Please generate the meta tags first.');return;}
+  if(!V('title') && !V('desc') && !V('url') && !V('img')){alert('Please enter a title or description first.');return;}
   rbDL('meta-tags.txt',['Generated meta tags:','',''+o]);
 });
 })();
@@ -242,7 +262,7 @@ $('dlResult').addEventListener('click',()=>{
 document.getElementById("aiTags").addEventListener("click", function() {
   var btn = this;
   var ta = document.getElementById("desc");
-  RB_AI.aiButton(btn, "meta-tags", function() { return "Write an SEO title and meta description for a page about the following content. Start the reply with Title: on the first line and Description: on the second line.\n\n" + (ta ? ta.value : ""); }, function(result) {
+  RB_AI.aiButton(btn, "meta-tags", function() { return "Write an SEO title and meta description for a page about the following content. Keep any numbers, prices, dates and names exactly as given; do not invent figures. Start the reply with Title: on the first line and Description: on the second line.\n\n" + (ta ? ta.value : ""); }, function(result) {
     var m = result.match(/Title:\s*(.+)/i), d = result.match(/Description:\s*([\s\S]+)/i);
     var titleEl = document.getElementById("title");
     var descEl = document.getElementById("desc");

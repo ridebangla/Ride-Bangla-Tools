@@ -109,27 +109,49 @@ function calc() {
   const insY = parseFloat($('ins').value) || 0;
   // down-payment percent display
   $('downPct').textContent = (price > 0) ? (100 * down / price).toFixed(1) + '% of home price' : '–';
-  if (!price || price <= 0 || down >= price || !years) {
+  // Reject negative inputs: previously a negative down payment inflated the
+  // loan above the home price, and a negative rate produced a negative
+  // "total interest". Non-finite prices are also rejected.
+  if (!price || price <= 0 || !isFinite(price) || down < 0 || down >= price ||
+      annualR < 0 || taxY < 0 || insY < 0 || !years) {
     ['mTotal','mPI','mTax','mIns','loanAmt','totalInt','totalCost'].forEach(id => $(id).textContent = '–');
     return;
   }
   const P = price - down;
   const n = Math.round(years * 12);
   const r = annualR / 12 / 100;
-  const pi = r === 0 ? P / n : (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const piRaw = r === 0 ? P / n : (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
   const taxM = taxY / 12;
   const insM = insY / 12;
-  const total = pi + taxM + insM;
-  const totalInt = pi * n - P;
+  const totalRaw = piRaw + taxM + insM;
+  if (!isFinite(piRaw) || !isFinite(totalRaw)) {
+    ['mTotal','mPI','mTax','mIns','loanAmt','totalInt','totalCost'].forEach(id => $(id).textContent = '–');
+    return;
+  }
+  // All money figures to 2 decimals, rounded to cents first and derived
+  // from those rounded figures, so the displayed parts always sum to the
+  // displayed monthly total and total cost.
+  const r2 = v => Math.round((v + 1e-9) * 100) / 100;
+  const pi = r2(piRaw);
+  const taxC = r2(taxM);
+  const insC = r2(insM);
+  const total = r2(pi + taxC + insC);
+  const PC = r2(P);
+  // Interest can never be negative at a non-negative rate; the max() only
+  // absorbs the rounding dip when a 0% monthly payment rounds down
+  // (e.g. 240000 over 180 months: 1333.33 x 180 = 239999.40, not -0.60 interest).
+  const totalInt = Math.max(0, r2(pi * n - PC));
+  const totalCost = r2(total * n);
   $('mTotal').textContent = usd(total, 2);
   $('mPI').textContent = usd(pi, 2);
-  $('mTax').textContent = usd(taxM, 2);
-  $('mIns').textContent = usd(insM, 2);
-  $('loanAmt').textContent = usd(P);
-  $('totalInt').textContent = usd(totalInt);
-  $('totalCost').textContent = usd(total * n);
+  $('mTax').textContent = usd(taxC, 2);
+  $('mIns').textContent = usd(insC, 2);
+  $('loanAmt').textContent = usd(PC, 2);
+  $('totalInt').textContent = usd(totalInt, 2);
+  $('totalCost').textContent = usd(totalCost, 2);
 }
 ['price','down','rate','term','tax','ins'].forEach(id => $(id).addEventListener('input', calc));
+$('term').addEventListener('change', calc);
 calc();
 </script>
 <section class="tool-faq">
@@ -252,7 +274,7 @@ function rbDL(name,lines){
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
 }
 $('dlResult').addEventListener('click',()=>{
-  rbDL('mortgage.txt',['Home price: $'+V('price'),'Down payment: $'+V('down')+' ('+((parseFloat(V('price'))>0)?(100*parseFloat(V('down'))/parseFloat(V('price'))).toFixed(1):'0')+'%)','Rate: '+V('rate')+'%','Term: '+V('term')+' years','Monthly total: '+T('mTotal'),'Principal & interest: '+T('mPI'),'Tax: '+T('mTax'),'Insurance: '+T('mIns'),'Loan amount: '+T('loanAmt'),'Total interest: '+T('totalInt'),'Total cost: '+T('totalCost')]);
+  rbDL('mortgage.txt',['Home price: $'+V('price'),'Down payment: $'+V('down')+' ('+((parseFloat(V('price'))>0)?(100*(parseFloat(V('down'))||0)/parseFloat(V('price'))).toFixed(1):'0')+'%)','Rate: '+V('rate')+'%','Term: '+V('term')+' years','Monthly total: '+T('mTotal'),'Principal & interest: '+T('mPI'),'Tax: '+T('mTax'),'Insurance: '+T('mIns'),'Loan amount: '+T('loanAmt'),'Total interest: '+T('totalInt'),'Total cost: '+T('totalCost')]);
 });
 })();
 </script>
@@ -263,7 +285,7 @@ $('dlResult').addEventListener('click',()=>{
   var btn = document.getElementById('aiBtn7');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'finance-tips', function() { return 'Mortgage: ' + document.body.innerText.slice(0, 400); });
+      RB_AI.aiButton(btn, 'finance-tips', function() { return 'Tool: Mortgage Calculator. Give usage tips.'; });
     });
   }
 })();

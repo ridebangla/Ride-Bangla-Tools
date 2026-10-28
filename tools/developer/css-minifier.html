@@ -204,7 +204,12 @@
     css = css.replace(/\/\*![\s\S]*?\*\//g, function (m) { return '\u0000' + (window.__keep = (window.__keep || []), window.__keep.push(m) - 1) + '\u0000'; });
     css = css.replace(/\/\*[\s\S]*?\*\//g, '');
     // 2. collapse whitespace around symbols
-    css = css.replace(/\s*([{}:;,>+~()])\s*/g, '$1');
+    // Keep any space BEFORE ':' (a descendant selector such as 'div :hover'
+    // must not become 'div:hover'); only strip space after ':'.
+    css = css.replace(/\s*([{};,>+~()])\s*/g, '$1');
+    css = css.replace(/:\s*/g, ':');
+    // '@media ... and (' needs its space: 'and(' is not a valid media query.
+    css = css.replace(/\b(and|or|not)\(/gi, '$1 (');
     css = css.replace(/;}/g, '}');
     css = css.replace(/\s+/g, ' ');
     // 3. zero units
@@ -215,12 +220,23 @@
     return css;
   }
   function minify(css) {
-    // Never rewrite inside quoted strings: content:"a : b" must survive intact.
-    var parts = css.split(/(("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'))/g);
-    for (var i = 0; i < parts.length; i++) {
-      if (i % 4 !== 2) parts[i] = minifyPart(parts[i]);
+    // Single-pass tokeniser: quoted strings and comments are consumed as
+    // whole tokens, so a quote inside a comment (or vice versa) cannot
+    // corrupt the split, and strings are never minified or duplicated.
+    // Only the code runs between tokens go through minifyPart.
+    // (The old split() version duplicated every quoted string: the split
+    // inserted both capture groups, and the i%4 test minified the string
+    // itself while skipping some code runs.)
+    var re = /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\/\*![\s\S]*?\*\/|\/\*[\s\S]*?\*\/)/g;
+    var out = '', last = 0, m;
+    while ((m = re.exec(css)) !== null) {
+      out += minifyPart(css.slice(last, m.index));
+      var tok = m[0];
+      out += (tok.slice(0, 2) === '/*' && tok.charAt(2) !== '!') ? '' : tok;
+      last = m.index + tok.length;
     }
-    return parts.join('').trim();
+    out += minifyPart(css.slice(last));
+    return out.trim();
   }
   function fmt(n) {
     if (n < 1024) return n + ' B';

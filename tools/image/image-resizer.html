@@ -207,9 +207,12 @@ document.getElementById('resizeBtn').addEventListener('click', () => {
         document.getElementById('newKb').textContent = (blob.size / 1024).toFixed(1);
         const dl = document.getElementById('dlLink');
         dl.href = url;
-        dl.download = 'resized.' + (outType === 'image/png' ? 'png' : outType === 'image/webp' ? 'webp' : 'jpg');
+        // FIX: derive the extension from the bytes actually produced, so an
+        // unencodable WebP request never yields PNG bytes named .webp.
+        const actualType = blob.type || outType;
+        dl.download = 'resized.' + (actualType === 'image/png' ? 'png' : actualType === 'image/webp' ? 'webp' : 'jpg');
         dl.style.display = 'inline-block';
-        dl.textContent = 'Download resized image';
+        dl.textContent = 'Download resized image' + (origFile.type === 'image/gif' ? ' (still image only — animation is not preserved)' : '');
       }, outType, outType === 'image/png' ? undefined : 0.92);
     };
     img.src = e.target.result;

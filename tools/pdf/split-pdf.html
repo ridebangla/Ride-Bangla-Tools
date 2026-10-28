@@ -147,9 +147,13 @@ function saveBlob(blob, name) {
     pdfDoc = null;
     if (!file) { info.textContent = 'No file chosen yet.'; pagesBox.innerHTML = ''; return; }
     pdfName = file.name.replace(/\.pdf$/i, '');
+    if (!window.PDFLib) { info.textContent = 'The PDF engine could not load. Check your internet connection and refresh the page.'; pagesBox.innerHTML = ''; return; }
     try {
       var buf = await file.arrayBuffer();
-      pdfDoc = await PDFLib.PDFDocument.load(buf, { ignoreEncryption: true });
+      // No ignoreEncryption: pdf-lib cannot decrypt, and loading an
+      // encrypted file that way copies still-encrypted streams into the
+      // output (verified corrupt). Encrypted files must fail here instead.
+      pdfDoc = await PDFLib.PDFDocument.load(buf);
       var n = pdfDoc.getPageCount();
       info.textContent = file.name + ' — ' + n + ' page' + (n === 1 ? '' : 's') + '.';
       document.getElementById('spTo').value = n;
@@ -158,7 +162,7 @@ function saveBlob(blob, name) {
       renderPageButtons(n);
       status.classList.remove('empty');
     } catch (err) {
-      info.textContent = 'Could not read that file as a PDF.';
+      info.textContent = 'Could not read that file as a PDF. It may be password-protected or corrupted.';
       pagesBox.innerHTML = '';
     }
   });
@@ -168,14 +172,18 @@ function saveBlob(blob, name) {
     var from = Math.max(1, parseInt(document.getElementById('spFrom').value, 10) || 1);
     var to = Math.min(total, parseInt(document.getElementById('spTo').value, 10) || total);
     if (from > to) { alert('The "from" page must be before the "to" page.'); return; }
-    var out = await PDFLib.PDFDocument.create();
-    var idx = [];
-    for (var i = from - 1; i <= to - 1; i++) idx.push(i);
-    var pages = await out.copyPages(pdfDoc, idx);
-    pages.forEach(function (pg) { out.addPage(pg); });
-    var bytes = await out.save();
-    saveBlob(new Blob([bytes], { type: 'application/pdf' }), pdfName + '-pages-' + from + '-' + to + '.pdf');
-    status.textContent = 'Done — pages ' + from + ' to ' + to + ' extracted (' + idx.length + ' page' + (idx.length === 1 ? '' : 's') + ').';
+    try {
+      var out = await PDFLib.PDFDocument.create();
+      var idx = [];
+      for (var i = from - 1; i <= to - 1; i++) idx.push(i);
+      var pages = await out.copyPages(pdfDoc, idx);
+      pages.forEach(function (pg) { out.addPage(pg); });
+      var bytes = await out.save();
+      saveBlob(new Blob([bytes], { type: 'application/pdf' }), pdfName + '-pages-' + from + '-' + to + '.pdf');
+      status.textContent = 'Done — pages ' + from + ' to ' + to + ' extracted (' + idx.length + ' page' + (idx.length === 1 ? '' : 's') + ').';
+    } catch (err) {
+      status.textContent = 'Could not extract those pages. The file may be corrupted — try another file.';
+    }
   });
 })();
 </script>

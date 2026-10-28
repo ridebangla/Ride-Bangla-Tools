@@ -98,13 +98,13 @@
 </style>
     <div class="field"><label>Your business name</label><input id="fromName" placeholder="e.g. Nisha Design Studio"></div>
     <div class="field"><label>Your address (line breaks ok)</label><textarea id="fromAddr" rows="2" placeholder="Street, city, country&#10;Phone / email"></textarea></div>
-    <div class="field"><label>Company logo</label><input id="logoFile" type="file" accept="image/png,image/jpeg"><div style="font-size:12.5px;margin-top:6px"><label style="font-size:12.5px"><input type="checkbox" id="logoHeader" style="width:auto;display:inline;margin-right:4px" checked>Header</label><label style="font-size:12.5px;margin-left:12px"><input type="checkbox" id="logoWatermark" style="width:auto;display:inline;margin-right:4px">Watermark</label><button type="button" class="btn ghost" id="logoRemove" style="padding:6px 10px;margin-left:12px;display:none">Remove logo</button></div><div id="logoStatus" style="font-size:12.5px;color:#666;margin-top:4px"></div><div id="savedNote" style="font-size:12.5px;color:#666;margin-top:4px;display:none"></div></div>
+    <div class="field"><label>Company logo</label><input id="logoFile" type="file" accept="image/*"><div style="font-size:12.5px;margin-top:6px"><label style="font-size:12.5px"><input type="checkbox" id="logoHeader" style="width:auto;display:inline;margin-right:4px" checked>Header</label><label style="font-size:12.5px;margin-left:12px"><input type="checkbox" id="logoWatermark" style="width:auto;display:inline;margin-right:4px">Watermark</label><button type="button" class="btn ghost" id="logoRemove" style="padding:6px 10px;margin-left:12px;display:none">Remove logo</button></div><div id="logoStatus" style="font-size:12.5px;color:#666;margin-top:4px"></div><div id="savedNote" style="font-size:12.5px;color:#666;margin-top:4px;display:none"></div></div>
     <div class="field"><label>Client name</label><input id="toName" placeholder="e.g. ABC Company Ltd"></div>
     <div class="field"><label>Client address</label><textarea id="toAddr" rows="2" placeholder="Street, city, country"></textarea></div>
     <div class="field" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
       <div><label>Quote #</label><input id="docNo"></div>
       <div><label>Date</label><input id="invDate" type="date"></div>
-      <div><label>Valid until</label><input id="dueDate" type="date"></div>
+      <div><label>Valid until (optional)</label><input id="dueDate" type="date"></div>
     </div>
     <div class="field" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
       <div><label>Currency</label><select id="currency"><option value="$">USD — $</option><option value="€">EUR — €</option><option value="£">GBP — £</option><option value="₹">INR — ₹</option><option value="৳">BDT — ৳</option><option value="₨">PKR — ₨</option><option value="¥">JPY — ¥</option></select></div>
@@ -280,10 +280,16 @@ function calcTotals(items, taxRate, discPct) {
   items = items.map(function (it) { return { desc: it.desc, qty: Math.max(0, it.qty), rate: Math.max(0, it.rate) }; });
   taxRate = Math.max(0, taxRate);
   discPct = Math.min(100, Math.max(0, discPct));
-  var sub = items.reduce(function (s, it) { return s + it.qty * it.rate; }, 0);
-  var disc = sub * discPct / 100;
-  var tax = (sub - disc) * taxRate / 100;
-  return { sub: sub, disc: disc, tax: tax, total: sub - disc + tax };
+  /* MERGE (coordinator): round-first, mirroring the fixed bizpdf.js —
+     line amounts cent-rounded first, subtotal = their sum, then
+     discount/tax/total each cent-rounded. Previously the preview summed
+     raw values while the PDF summed rounded lines, so edge cases
+     (e.g. 3 × 0.335) showed different totals in preview vs PDF. */
+  var r2 = function (n) { return Math.round((+n || 0) * 100) / 100; };
+  var sub = r2(items.reduce(function (s, it) { return s + r2(it.qty * it.rate); }, 0));
+  var disc = r2(sub * discPct / 100);
+  var tax = r2((sub - disc) * taxRate / 100);
+  return { sub: sub, disc: disc, tax: tax, total: r2(sub - disc + tax) };
 }
 function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
 function todayISO() { return new Date().toISOString().slice(0, 10); }
@@ -325,24 +331,44 @@ function todayISO() { return new Date().toISOString().slice(0, 10); }
     var f = this.files && this.files[0];
     var st = document.getElementById('logoStatus');
     if (!f) return;
-    if (f.type !== 'image/png' && f.type !== 'image/jpeg' && !/\.(png|jpe?g)$/i.test(f.name || '')) {
-      if (st) st.textContent = 'PNG or JPG only';
-      this.value = '';
-      return;
-    }
+    /* Logo: accept ANY image the browser can decode (PNG, JPG, WebP, GIF,
+       AVIF, phone formats under odd MIME types) and convert it to a real
+       PNG on a canvas, downscaled to at most 1000px on the long side —
+       same conversion the invoice generator uses. The old code only
+       accepted PNG/JPEG data URLs, so other phone-gallery formats were
+       rejected before the preview, and a WebP-bytes file that did reach
+       the preview was then silently dropped from the PDF (pdf-lib cannot
+       embed WebP). Conversion fixes both: preview and PDF always get a
+       valid PNG, and an undecodable file gets a clear message. */
     var rd = new FileReader();
     rd.onload = function () {
-      if (logoValid(rd.result)) {
-        logoData = rd.result;
-        if (st) st.textContent = (f.size > 512 * 1024) ? 'Logo kept for this session only' : '';
-        logoControlsSync(); logoSave(); recalc();
-      } else { if (st) st.textContent = 'PNG or JPG only'; }
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+          if (!w || !h) throw new Error('bad size');
+          var scale = Math.min(1, 1000 / Math.max(w, h));
+          var cw = Math.max(1, Math.round(w * scale)), ch = Math.max(1, Math.round(h * scale));
+          var cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+          cv.getContext('2d').drawImage(img, 0, 0, cw, ch);
+          logoData = cv.toDataURL('image/png');
+          if (st) st.textContent = (f.size > 512 * 1024) ? 'Logo kept for this session only' : '';
+          logoControlsSync(); logoSave(); recalc();
+        } catch (e) { if (st) st.textContent = 'Could not use that image'; }
+      };
+      img.onerror = function () { if (st) st.textContent = 'Could not read that image \u2014 please choose a photo image'; };
+      img.src = rd.result;
     };
     rd.onerror = function () { if (st) st.textContent = 'Could not read that file'; };
     rd.readAsDataURL(f);
   });
   document.getElementById('logoHeader').addEventListener('change', function () { logoHeaderOn = this.checked; logoSave(); recalc(); });
   document.getElementById('logoWatermark').addEventListener('change', function () { logoWatermarkOn = this.checked; logoSave(); recalc(); });
+  /* Unchecking "remember" must actually forget: drop the stored profile
+     and logo so nothing is filled in on the next visit. */
+  document.getElementById('remember').addEventListener('change', function () {
+    if (!this.checked) { try { localStorage.removeItem('rb_biz_profile'); localStorage.removeItem('rb_biz_logo'); } catch (e) {} }
+  });
   document.getElementById('logoRemove').addEventListener('click', function () {
     logoData = null;
     document.getElementById('logoFile').value = '';
@@ -365,13 +391,16 @@ function todayISO() { return new Date().toISOString().slice(0, 10); }
     document.getElementById('tTax').textContent = money(t.tax, sym);
     document.getElementById('tTotal').textContent = money(t.total, sym);
     var rows = items.map(function (it) {
-      return '<tr><td>' + esc(it.desc || '—') + '</td><td>' + it.qty + '</td><td>' + money(it.rate, sym) + '</td><td style="text-align:right">' + money(it.qty * it.rate, sym) + '</td></tr>';
+      /* Clamp here exactly as calcTotals does, so a negative qty/rate can
+         never show a negative line amount while the totals exclude it. */
+      var cq = Math.max(0, it.qty), cr = Math.max(0, it.rate);
+      return '<tr><td>' + esc(it.desc || '—') + '</td><td>' + cq + '</td><td>' + money(cr, sym) + '</td><td style="text-align:right">' + money(cq * cr, sym) + '</td></tr>';
     }).join('');
     var wmHtml = (logoData && logoWatermarkOn) ? '<img class="rb-logo-watermark" src="' + esc(logoData) + '" alt="" aria-hidden="true">' : '';
     var headHtml, midHtml;
     if (logoData && logoHeaderOn) {
       var idHtml = '<div style="display:flex;gap:12px;align-items:flex-start"><img class="rb-logo-header" src="' + esc(logoData) + '" alt=""><div><b style="font-size:15px">' + esc(val('fromName') || 'Your business') + '</b><br><span class="meta">' + esc(val('fromAddr')).replace(/\n/g, '<br>') + '</span></div></div>';
-      var titleHtml = '<div style="text-align:right"><h2>QUOTATION</h2><div class="meta">' + esc(val('docNo')) + '<br>' + esc(val('invDate')) + '<br>Valid until ' + esc(val('dueDate')) + '</div></div>';
+      var titleHtml = '<div style="text-align:right"><h2>QUOTATION</h2><div class="meta">' + esc(val('docNo')) + '<br>' + esc(val('invDate')) + (val('dueDate') ? '<br>Valid until ' + esc(val('dueDate')) : '') + '</div></div>';
       headHtml = '<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">' + idHtml + titleHtml + '</div>';
       midHtml = '<div style="margin-top:10px"><b>Quote for</b><br>' + esc(val('toName') || 'Client') + '<br><span class="meta">' + esc(val('toAddr')).replace(/\n/g, '<br>') + '</span></div>';
     } else {
@@ -379,7 +408,7 @@ function todayISO() { return new Date().toISOString().slice(0, 10); }
       midHtml = '<div style="display:flex;justify-content:space-between;margin-top:10px;gap:12px">' +
         '<div><b>From</b><br>' + esc(val('fromName') || 'Your business') + '<br><span class="meta">' + esc(val('fromAddr')).replace(/\n/g, '<br>') + '</span></div>' +
         '<div><b>Quote for</b><br>' + esc(val('toName') || 'Client') + '<br><span class="meta">' + esc(val('toAddr')).replace(/\n/g, '<br>') + '</span></div>' +
-        '<div style="text-align:right"><b>Valid until</b><br>' + esc(val('dueDate')) + '</div></div>';
+        (val('dueDate') ? '<div style="text-align:right"><b>Valid until</b><br>' + esc(val('dueDate')) + '</div>' : '') + '</div>';
     }
     if (wmHtml) headHtml = wmHtml + '<div class="rb-logo-body">' + headHtml;
     var footHtml = (val('notes') ? '<div class="meta" style="margin-top:10px">' + esc(val('notes')).replace(/\n/g, '<br>') + '</div>' : '');
@@ -406,13 +435,17 @@ function todayISO() { return new Date().toISOString().slice(0, 10); }
         fromName: val('fromName'), fromAddr: val('fromAddr'),
         toName: val('toName'), toAddr: val('toAddr'),
         docNo: val('docNo'), dateLabel: 'Quote date', date: val('invDate'),
-        dueLabel: 'Valid until', due: val('dueDate'),
+        dueLabel: (val('dueDate') ? 'Valid until' : null), due: val('dueDate'),
         items: items.map(function (it) { return { desc: it.desc, qty: Math.max(0, it.qty), rate: Math.max(0, it.rate) }; }), taxRate: Math.max(0, parseFloat(document.getElementById('taxRate').value) || 0),
         discountPct: Math.min(100, Math.max(0, parseFloat(document.getElementById('discPct').value) || 0)),
-        notes: val('notes') || 'This quotation is valid until the date shown above.', currency: sym,
+        notes: val('notes') || (val('dueDate') ? 'This quotation is valid until the date shown above.' : ''), currency: sym,
         logoData: logoData, logoHeader: logoHeaderOn, logoWatermark: logoWatermarkOn
       });
       downloadBytes(r.bytes, (val('docNo') || 'quotation') + '.pdf', 'application/pdf');
+      /* MERGE (coordinator): surface the fixed bizpdf.js warnings —
+         without this, a failed logo embed would again vanish
+         silently from the user's point of view. */
+      if (r.warnings && r.warnings.length) alert(r.warnings.join('\n'));
     } catch (e) { alert('Could not build the PDF: ' + e.message); }
     btn.disabled = false; btn.textContent = 'Download quotation PDF';
   });

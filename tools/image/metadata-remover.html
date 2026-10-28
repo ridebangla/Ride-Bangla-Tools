@@ -280,6 +280,8 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
     var reader = new FileReader();
     reader.onload = function (e) {
       img.onload = function () {
+        try {
+        if (!img.naturalWidth || !img.naturalHeight) throw new Error('empty image');
         var canvas = document.createElement('canvas');
         canvas.width = img.naturalWidth;
         canvas.height = img.naturalHeight;
@@ -319,6 +321,10 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
             foundBox.hidden = false;
           })();
         }, mime, quality);
+        } catch (err) {
+          bar.style.display = 'none';
+          status.textContent = 'Could not process this file — it may be too large for this device. Try a smaller photo.';
+        }
       };
       img.onerror = function () {
         bar.style.display = 'none';

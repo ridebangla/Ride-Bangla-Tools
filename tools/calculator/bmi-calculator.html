@@ -114,6 +114,13 @@ function calcBmi() {
     return;
   }
   const bmi = w / (h*h);
+  if (!isFinite(bmi)) {
+    document.getElementById('bmiOut').textContent = '–';
+    const eld = document.getElementById('bmiCat');
+    eld.textContent = '–';
+    eld.style.color = '';
+    return;
+  }
   document.getElementById('bmiOut').textContent = bmi.toFixed(1);
   let cat, color;
   if (bmi < 18.5) { cat = 'Underweight'; color = 'var(--brass)'; }

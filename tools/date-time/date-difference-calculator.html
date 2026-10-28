@@ -93,13 +93,26 @@ const start = document.getElementById('start');
 const end = document.getElementById('end');
 const today = new Date();
 start.valueAsDate = today;
-end.valueAsDate = new Date(today.getFullYear(), today.getMonth()+1, today.getDate());
+/* Default end = same day next month, clamped to that month's last day:
+   Jan 31 + 1 month used to roll over to Mar 3 instead of Feb 28. */
+var nextMonthLastDay = new Date(today.getFullYear(), today.getMonth() + 2, 0).getDate();
+end.valueAsDate = new Date(today.getFullYear(), today.getMonth() + 1, Math.min(today.getDate(), nextMonthLastDay));
 
+function parseDateStrict(v) {
+  /* Reject impossible dates (e.g. Feb 30), which new Date('2026-02-30')
+     silently rolls over to March instead of returning an invalid date. */
+  const parts = String(v || '').split('-');
+  if (parts.length !== 3) return null;
+  const y = Number(parts[0]), m = Number(parts[1]), d = Number(parts[2]);
+  if (!Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return null;
+  if (m < 1 || m > 12 || d < 1 || d > new Date(Date.UTC(y, m, 0)).getUTCDate()) return null;
+  return new Date(Date.UTC(y, m - 1, d));
+}
 function calc() {
-  const s = new Date(start.value);
-  const e = new Date(end.value);
+  const s = parseDateStrict(start.value);
+  const e = parseDateStrict(end.value);
   const note = document.getElementById('ddNote');
-  if (isNaN(s) || isNaN(e)) { ['days','weeks','months'].forEach(function (id) { document.getElementById(id).textContent = '–'; }); if (note) note.textContent = ''; return; }
+  if (!s || !e) { ['days','weeks','months'].forEach(function (id) { document.getElementById(id).textContent = '–'; }); if (note) note.textContent = 'Pick two valid dates.'; return; }
   /* A reversed range never shows a confusing negative: the note explains
      the order and every figure is the absolute duration. Inclusive mode
      counts both the start and the end day, so it adds exactly one day. */
@@ -239,6 +252,7 @@ function rbDL(name,lines){
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
 }
 $('dlResult').addEventListener('click',()=>{
+  if(T('days')==='–'){alert('Please pick two valid dates first.');return;}
   rbDL('date-difference.txt',['Start date: '+V('start'),'End date: '+V('end'),'Total days: '+T('days'),'Weeks: '+T('weeks'),'Approx. months: '+T('months')]);
 });
 })();

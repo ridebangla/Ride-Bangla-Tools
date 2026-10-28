@@ -97,6 +97,8 @@ document.getElementById('makePdf').addEventListener('click', async () => {
   const text = document.getElementById('txt').value;
   const status = document.getElementById('pdfStatus');
   if (!text.trim()) { status.textContent = 'Type some text first.'; status.classList.remove('empty'); return; }
+  if (!window.PDFLib) { status.textContent = 'The PDF engine could not load. Check your internet connection and refresh the page.'; status.classList.remove('empty'); return; }
+  try {
   const size = parseInt(document.getElementById('fontSize').value, 10);
   const { PDFDocument } = PDFLib;
   const pdfDoc = await PDFDocument.create();
@@ -183,8 +185,6 @@ document.getElementById('makePdf').addEventListener('click', async () => {
   const fontStack = size + 'px "Hind Siliguri","Noto Sans Bengali","Noto Sans Arabic","Noto Sans Devanagari",sans-serif';
   const meas = document.createElement('canvas').getContext('2d');
   meas.font = fontStack;
-  const isRtl = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(text);
-
   function wrapLine(line) {
     // CJK text has no spaces: fall back to character-based wrapping
     const isCjk = /[\u3040-\u30FF\u3400-\u4DBF\u4E00-\u9FFF\uAC00-\uD7AF]/.test(line);
@@ -230,10 +230,17 @@ document.getElementById('makePdf').addEventListener('click', async () => {
     ctx.scale(scale, scale);
     ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, pageW, pageH);
     ctx.fillStyle = '#1a1a1a'; ctx.font = fontStack; ctx.textBaseline = 'top';
-    if (isRtl) { ctx.direction = 'rtl'; ctx.textAlign = 'right'; }
     let y = margin;
-    const tx = isRtl ? pageW - margin : margin;
-    pageLines.forEach(line => { ctx.fillText(line, tx, y); y += lineHeight; });
+    // Direction is per line, not per document: the old whole-document
+    // flag right-aligned EVERY line (including Latin lines) whenever any
+    // Arabic text appeared anywhere in the document.
+    pageLines.forEach(line => {
+      const lineRtl = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(line);
+      ctx.direction = lineRtl ? 'rtl' : 'ltr';
+      ctx.textAlign = lineRtl ? 'right' : 'left';
+      ctx.fillText(line, lineRtl ? pageW - margin : margin, y);
+      y += lineHeight;
+    });
     const pngImage = await pdfDoc.embedPng(canvas.toDataURL('image/png'));
     const page = pdfDoc.addPage([pageW, pageH]);
     page.drawImage(pngImage, { x: 0, y: 0, width: pageW, height: pageH });
@@ -248,6 +255,10 @@ document.getElementById('makePdf').addEventListener('click', async () => {
   setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   status.textContent = 'PDF downloaded — ' + lines.length + ' line(s).';
   status.classList.remove('empty');
+  } catch (err) {
+    status.textContent = 'Sorry, the PDF could not be created. Try shorter text, or refresh the page and try again.';
+    status.classList.remove('empty');
+  }
 });
 </script>
 <section class="tool-faq">
@@ -358,7 +369,7 @@ document.getElementById('makePdf').addEventListener('click', async () => {
   var btn = document.getElementById('aiBtn10');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.getElementById('txt'); return 'Improve the following text — fix grammar, clarity and flow, keep the meaning and the language. Return ONLY the improved text, no explanations or commentary: ' + (t?t.value:''); }, function(r) { document.getElementById('txt').value = r; });
+      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.getElementById('txt'); return 'Improve the following text — fix grammar, clarity and flow, keep the meaning and the language. Do not change numbers, names, dates or figures. Return ONLY the improved text, no explanations or commentary: ' + (t?t.value:''); }, function(r) { document.getElementById('txt').value = r; });
     });
   }
 })();

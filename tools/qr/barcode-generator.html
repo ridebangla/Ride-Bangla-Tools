@@ -234,9 +234,9 @@
   }
   function gen() {
     var txt = document.getElementById('txt').value;
+    if (!txt) { document.getElementById('bcWrap').innerHTML = '<p style="color:var(--muted,#6b7280)">Type something to encode.</p>'; return; }
     var symErr = symError();
     if (symErr) { document.getElementById('bcWrap').innerHTML = '<p style="color:#B91C1C">' + symErr + '</p>'; return; }
-    if (!txt) { document.getElementById('bcWrap').innerHTML = '<p style="color:var(--muted,#6b7280)">Type something to encode.</p>'; return; }
     if (!document.getElementById('bcSvg')) { document.getElementById('bcWrap').innerHTML = '<svg id="bcSvg"></svg>'; }
     var bhEl = document.getElementById('bh');
     var bhVal = parseInt(bhEl.value, 10);
@@ -252,7 +252,9 @@
         background: '#ffffff', lineColor: '#000000', margin: 12
       });
     } catch (e) {
-      document.getElementById('bcWrap').innerHTML = '<p style="color:#B91C1C">Could not encode that text in the selected symbology.</p>';
+      var msg = 'Could not encode that text in the selected symbology.';
+      if (document.getElementById('sym').value === 'CODE128' && /[^\x00-\x7F]/.test(txt)) msg = 'Code 128 supports ASCII text only — remove non-ASCII characters (for example Bengali letters or emoji) or use the QR Code Generator instead.';
+      document.getElementById('bcWrap').innerHTML = '<p style="color:#B91C1C">' + msg + '</p>';
     }
   }
   document.getElementById('gen').addEventListener('click', gen);

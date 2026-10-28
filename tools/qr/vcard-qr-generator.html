@@ -94,7 +94,14 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
 </script>
 <script>
 function vcEsc(s) { return String(s).replace(/([\\;,])/g, '\\$1').replace(/\n/g, ' '); }
+function clearVcCanvas() {
+  var cv = document.getElementById('vcCanvas');
+  if (cv) { var cx = cv.getContext('2d'); cx.clearRect(0, 0, cv.width, cv.height); }
+}
 document.getElementById('vcGen').addEventListener('click', function () {
+  window.__vcGenerated = false;
+  window.__vcPayload = null;
+  clearVcCanvas();
   var name = document.getElementById('vcName').value.trim();
   var phone = document.getElementById('vcPhone').value.trim();
   var email = document.getElementById('vcEmail').value.trim();
@@ -118,7 +125,7 @@ document.getElementById('vcGen').addEventListener('click', function () {
   var payload = lines.join('\n');
   window.__vcPayload = payload;
   QRCode.toCanvas(document.getElementById('vcCanvas'), payload, { width: 280, color: { dark: '#12151C', light: '#FFFFFF' } }, function (err) {
-    if (err) { alert('Could not generate the QR code: ' + err.message); return; }
+    if (err) { alert('Could not generate the QR code: ' + err.message); window.__vcGenerated = false; window.__vcPayload = null; clearVcCanvas(); return; }
     window.__vcGenerated = true;
   });
 });

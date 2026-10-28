@@ -236,6 +236,7 @@ function rbDL(name,lines){
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
 }
 $('dlResult').addEventListener('click',()=>{
+  if(T('res1')==='–'&&T('res2')==='–'&&T('res3')==='–'){alert('Please enter numbers to calculate first.');return;}
   rbDL('percentage-result.txt',['What is '+V('x1')+'% of '+V('y1')+'?','Result: '+T('res1'),'','What % is '+V('x2')+' of '+V('y2')+'?','Result: '+T('res2'),'','Percentage change from '+V('x3')+' to '+V('y3')+'?','Result: '+T('res3')]);
 });
 })();
@@ -247,7 +248,7 @@ $('dlResult').addEventListener('click',()=>{
   var btn = document.getElementById('aiBtn1');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'explain', function() { return document.body.innerText.slice(0, 500); });
+      RB_AI.aiButton(btn, 'explain', function() { var g=function(id){var e=document.getElementById(id);return e?(('value' in e)?e.value:e.innerText):'';}; return 'What is ' + g('x1') + '% of ' + g('y1') + '? Result: ' + g('res1') + '. ' + g('x2') + ' is what % of ' + g('y2') + '? Result: ' + g('res2') + '. Percentage change from ' + g('x3') + ' to ' + g('y3') + '? Result: ' + g('res3') + '.'; });
     });
   }
 })();

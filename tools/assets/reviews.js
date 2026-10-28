@@ -710,6 +710,13 @@
     if (existing.exists && existing.data().status === 'approved') {
       throw new Error('Your review is already published and can no longer be edited.');
     }
+    // SAME-WAY 2026-10-28 (owner: perfect, no problems): mirror Main/Studio/IT
+    // exactly — an edit must never move a review to another site (the final
+    // rules reject a sourceSite change too, but the visitor gets this clear
+    // message instead of a raw permission error).
+    if (existing.exists && typeof existing.data().sourceSite === 'string' && existing.data().sourceSite !== 'tools') {
+      throw new Error('Your review was submitted on another Ride Bangla site and can\'t be moved here.');
+    }
     var payload = {
       uid: user.uid,
       name: name.slice(0, 100),
@@ -721,6 +728,16 @@
       created_at: existing.exists ? existing.data().created_at : firebase.firestore.FieldValue.serverTimestamp(),
       updated_at: firebase.firestore.FieldValue.serverTimestamp()
     };
+    // sourceSite, set at CREATE and immutable after (spec §B2/§B7, same as
+    // Main/Studio/IT): a brand-new review gets 'tools'; an edit preserves
+    // the stored value verbatim; a legacy doc without sourceSite NEVER
+    // gains one through this client path (Admin-SDK backfill only, §B8).
+    // DEPLOY ORDER: this file goes live together with the final rules
+    // deploy — the final rules REQUIRE sourceSite, while the currently
+    // deployed rules do NOT admit it yet. Pushing this alone first would
+    // make Tools submissions fail until the rules land.
+    if (!existing.exists) payload.sourceSite = 'tools';
+    else if (typeof existing.data().sourceSite === 'string') payload.sourceSite = existing.data().sourceSite;
     await ref.set(payload);
   }
 

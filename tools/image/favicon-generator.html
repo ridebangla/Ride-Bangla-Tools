@@ -93,7 +93,7 @@
   }
   function canvasToPngBytes(c) {
     return new Promise(function (res) {
-      c.toBlob(function (b) { b.arrayBuffer().then(res); }, 'image/png');
+      c.toBlob(function (b) { if (!b) { res(null); return; } b.arrayBuffer().then(res); }, 'image/png');
     });
   }
   function icoFromPngs(list) {
@@ -111,6 +111,7 @@
     return new Blob(parts, { type: 'image/x-icon' });
   }
   function addDlLink(out, blob, name, label, first) {
+    if (!blob) return;
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob); a.download = name; a.className = 'btn-download';
     a.textContent = label; a.style.margin = '0 8px 8px 0';
@@ -140,6 +141,7 @@
       }
       SIZES.forEach(function (size) {
         drawAt(img, size).toBlob(function (blob) {
+          if (!blob) return;
           var a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
           a.download = 'icon-' + size + '.png';
@@ -155,7 +157,8 @@
       Promise.all([16, 32, 48].map(function (s) {
         return canvasToPngBytes(drawAt(img, s)).then(function (b) { return { size: s, bytes: b }; });
       })).then(function (list) {
-        addDlLink(out, icoFromPngs(list), 'favicon.ico', 'favicon.ico (16, 32 & 48)', true);
+        list = list.filter(function (item) { return !!item; });
+        if (list.length) addDlLink(out, icoFromPngs(list), 'favicon.ico', 'favicon.ico (16, 32 & 48)', true);
       });
       drawAt(img, 180).toBlob(function (blob) { addDlLink(out, blob, 'apple-touch-icon.png', 'apple-touch-icon.png (180×180)'); }, 'image/png');
       drawAt(img, 192).toBlob(function (blob) { addDlLink(out, blob, 'android-chrome-192x192.png', 'android-chrome-192x192.png'); }, 'image/png');

@@ -208,17 +208,28 @@
 
 (function () {
   function money(n, sym) {
-    return sym + (Math.round(n * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return sym + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
+  // Cent rounding with a tiny epsilon so binary float artefacts (e.g. a
+  // tip of 1.005 stored as 1.0049999…) round the way the decimal figure
+  // reads, instead of a cent low as plain Math.round(n * 100) / 100 did.
+  function r2(v) { return Math.round((v + 1e-9) * 100) / 100; }
   function calc() {
     var sym = document.getElementById('cur').value;
-    var bill = Math.max(0, parseFloat(document.getElementById('bill').value) || 0);
-    var tipP = Math.max(0, parseFloat(document.getElementById('tip').value) || 0);
-    var ppl = Math.max(1, parseInt(document.getElementById('ppl').value, 10) || 1);
-    var tip = bill * tipP / 100, total = bill + tip;
+    var rawBill = parseFloat(document.getElementById('bill').value);
+    var rawTip = parseFloat(document.getElementById('tip').value);
+    var rawPpl = parseInt(document.getElementById('ppl').value, 10);
+    var bill = isFinite(rawBill) ? Math.max(0, rawBill) : 0;
+    var tipP = isFinite(rawTip) ? Math.max(0, rawTip) : 0;
+    var ppl = Math.max(1, (isFinite(rawPpl) ? rawPpl : 1) || 1);
+    // Round to cents first and derive the total from the rounded tip, so
+    // displayed bill + displayed tip always equals the displayed total.
+    var billC = r2(bill);
+    var tip = r2(billC * tipP / 100);
+    var total = r2(billC + tip);
     document.getElementById('rTip').textContent = money(tip, sym);
     document.getElementById('rTotal').textContent = money(total, sym);
-    document.getElementById('rEach').textContent = money(total / ppl, sym);
+    document.getElementById('rEach').textContent = money(r2(total / ppl), sym);
   }
   document.querySelectorAll('#tipBtns .tip').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -229,6 +240,7 @@
   ['cur','bill','tip','ppl'].forEach(function (id) {
     document.getElementById(id).addEventListener('input', calc);
   });
+  document.getElementById('cur').addEventListener('change', calc);
   calc();
 })();
 

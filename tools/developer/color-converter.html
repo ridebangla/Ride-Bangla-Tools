@@ -130,14 +130,20 @@ function hslToRgb(h,s,l){
   return [Math.round(f(h+1/3)*255), Math.round(f(h)*255), Math.round(f(h-1/3)*255)];
 }
 function parseRgb(str){
-  const m = String(str).match(/(\d{1,3})\D+(\d{1,3})\D+(\d{1,3})/);
+  const s = String(str).trim();
+  const m = s.match(/^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i)
+    || s.match(/^(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})$/)
+    || s.match(/^(\d{1,3})\s+(\d{1,3})\s+(\d{1,3})$/);
   if(!m) return null;
   const v = m.slice(1,4).map(Number);
   if(v.some(x => x>255)) return null;
   return v;
 }
 function parseHsl(str){
-  const m = String(str).match(/(\d{1,3})\D+(\d{1,3})\D+(\d{1,3})/);
+  const s = String(str).trim();
+  const m = s.match(/^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%?\s*,\s*(\d{1,3})%?\s*\)$/i)
+    || s.match(/^(\d{1,3})\s*,\s*(\d{1,3})%?\s*,\s*(\d{1,3})%?$/)
+    || s.match(/^(\d{1,3})\s+(\d{1,3})%?\s+(\d{1,3})%?$/);
   if(!m) return null;
   const v = m.slice(1,4).map(Number);
   if(v[0]>360 || v[1]>100 || v[2]>100) return null;

@@ -100,8 +100,8 @@ function generate(showAlert) {
   const ssidRaw = document.getElementById('ssid').value;
   const pwRaw = document.getElementById('pw').value;
   const sec = document.getElementById('sec').value;
-  if (!ssidRaw.trim()) { if (showAlert) alert('Enter the network name (SSID) first.'); return; }
-  if (sec !== 'nopass' && !pwRaw) { if (showAlert) alert('Enter the Wi-Fi password, or choose None (open network).'); return; }
+  if (!ssidRaw.trim()) { if (showAlert) alert('Enter the network name (SSID) first.'); document.getElementById('qrHolder').innerHTML = ''; window.__wifiPayload = null; return; }
+  if (sec !== 'nopass' && !pwRaw) { if (showAlert) alert('Enter the Wi-Fi password, or choose None (open network).'); document.getElementById('qrHolder').innerHTML = ''; window.__wifiPayload = null; return; }
   const ssid = esc(ssidRaw);
   const pw = esc(pwRaw);
   const hidden = document.getElementById('hidden').checked;
@@ -111,7 +111,9 @@ function generate(showAlert) {
   holder.innerHTML = '';
   const canvas = document.createElement('canvas');
   holder.appendChild(canvas);
-  QRCode.toCanvas(canvas, payload, { width: 280, color: { dark: '#12151C', light: '#FFFFFF' } });
+  QRCode.toCanvas(canvas, payload, { width: 280, color: { dark: '#12151C', light: '#FFFFFF' } }, function (err) {
+    if (err) { holder.innerHTML = '<p style="color:#B91C1C">Could not generate QR code: ' + err.message + '</p>'; window.__wifiPayload = null; }
+  });
 }
 document.getElementById('gen').addEventListener('click', function () { generate(true); });
 document.getElementById('showPw').addEventListener('change', function () {

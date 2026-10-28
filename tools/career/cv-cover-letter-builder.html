@@ -791,7 +791,7 @@ document.getElementById('cv-download').addEventListener('click', async () => {
   function rawVal(id) { const e = document.getElementById(id); return e ? e.value.trim() : ''; }
   function cvHasUnicode() {
     let all = '';
-    const form = document.getElementById('cv-form') || document;
+    const form = document.getElementById('tab-cv') || document;
     form.querySelectorAll('input, textarea, select').forEach(e => { all += (e.value || '') + ' '; });
     return /[^\x00-\xFF]/.test(all);
   }
@@ -814,11 +814,11 @@ document.getElementById('cv-download').addEventListener('click', async () => {
         dates: (item.querySelector('.edu-dates')||{value:''}).value.trim(),
         details: (item.querySelector('.edu-note')||{value:''}).value.trim(),
       })).filter(e => e.degree || e.school);
-      const ACCENT_HEX = { navy:'#1C385E', charcoal:'#2B3038', teal:'#0D6673', green:'' + accentHex + '', maroon:'#731C29' };
+      const ACCENT_HEX = { navy:'#1C385E', charcoal:'#2B3038', teal:'#0D6673', green:'#0E7A3B', maroon:'#731C29' };
       const accentHex = ACCENT_HEX[document.getElementById('cv-accent').value] || ACCENT_HEX.navy;
       const psU = document.getElementById('cv-pagesize').value;
       const div = document.createElement('div');
-      div.style.cssText = 'width:' + (psU === 'letter' ? 816 : 794) + 'px;padding:48px;font-family:"Hind Siliguri","Noto Sans",sans-serif;color:#1a1a1a;background:#fff;position:absolute;left:-9999px;top:0;';
+      div.style.cssText = 'width:' + (psU === 'letter' ? 816 : 794) + 'px;padding:48px;font-family:"Hind Siliguri","Noto Sans",sans-serif;color:#1a1a1a;background:#fff;overflow-wrap:anywhere;word-break:break-word;position:absolute;left:-9999px;top:0;';
       const photoShapeU = document.getElementById('cv-photo-shape').value;
       let html = '<div style="border-bottom:3px solid ' + accentHex + ';padding-bottom:16px;margin-bottom:20px;overflow:hidden;">'
         + (photoData ? '<img src="' + photoData + '" style="float:right;width:110px;height:110px;object-fit:cover;border-radius:' + (photoShapeU === 'circle' ? '50%' : '0') + ';margin:0 0 12px 16px;" alt="">' : '')
@@ -847,7 +847,7 @@ document.getElementById('cv-download').addEventListener('click', async () => {
         html += '</div>';
       }
       const skills = rawVal('cv-skills');
-      if (skills) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">SKILLS</div><div style="font-size:13px;">' + escH(skills) + '</div></div>';
+      if (skills.split(',').map(s => s.trim()).filter(Boolean).length) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">SKILLS</div><div style="font-size:13px;">' + escH(skills) + '</div></div>';
       const certs = rawVal('cv-certs');
       if (certs) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">CERTIFICATIONS</div><div style="font-size:13px;">' + escH(certs).replace(/\n/g,'<br>') + '</div></div>';
       const langs = rawVal('cv-languages');
@@ -899,6 +899,7 @@ document.getElementById('cv-download').addEventListener('click', async () => {
       status.classList.remove('empty');
       div.remove();
     } catch (e) {
+      div.remove();
       status.textContent = 'Could not render Unicode CV: ' + e.message;
       status.classList.remove('empty');
     }
@@ -1037,8 +1038,9 @@ document.getElementById('cv-download').addEventListener('click', async () => {
 
     let nameSize = 26;
     while (nameSize > 16 && bold.widthOfTextAtSize(name, nameSize) > textW) nameSize -= 1;
+    const nameLines = wrapLine(bold, nameSize, textW, name);
     y -= nameSize * 0.85;
-    page.drawText(name, { x: margin, y, size: nameSize, font: bold, color: accent });
+    nameLines.forEach((t, i) => { if (i > 0) y -= nameSize * 1.05; page.drawText(t, { x: margin, y, size: nameSize, font: bold, color: accent }); });
     y -= 8;
     if (title) {
       y -= 12;
@@ -1081,7 +1083,7 @@ document.getElementById('cv-download').addEventListener('click', async () => {
       heading('Professional Experience');
       experiences.forEach((e, i) => {
         entryRow(e.role || e.company, e.dates);
-        if (e.role && e.company) { need(14); page.drawText(e.company, { x: margin, y, size: 10, font: italic, color: accent }); y -= 14; }
+        if (e.role && e.company) { const cLines = wrapLine(italic, 10, contentW, e.company); need(14 * cLines.length); cLines.forEach(t => { page.drawText(t, { x: margin, y, size: 10, font: italic, color: accent }); y -= 14; }); }
         if (e.desc) drawWrapped(e.desc, regular, 9.8, ink, 13.4, { bullets: true });
         if (i < experiences.length - 1) y -= 7;
       });
@@ -1091,15 +1093,16 @@ document.getElementById('cv-download').addEventListener('click', async () => {
       heading('Education');
       education.forEach((e, i) => {
         entryRow(e.degree || e.school, e.dates);
-        if (e.degree && e.school) { need(14); page.drawText(e.school, { x: margin, y, size: 10, font: italic, color: accent }); y -= 14; }
+        if (e.degree && e.school) { const sLines = wrapLine(italic, 10, contentW, e.school); need(14 * sLines.length); sLines.forEach(t => { page.drawText(t, { x: margin, y, size: 10, font: italic, color: accent }); y -= 14; }); }
         if (e.note) drawWrapped(e.note, regular, 9.6, grey, 13);
         if (i < education.length - 1) y -= 6;
       });
     }
 
-    if (skills) {
+    const skillList = skills.split(',').map(x => x.trim()).filter(Boolean);
+    if (skillList.length) {
       heading('Skills');
-      drawWrapped(skills.split(',').map(x => x.trim()).filter(Boolean).join('   \u2022   '), regular, 9.8, ink, 14);
+      drawWrapped(skillList.join('   \u2022   '), regular, 9.8, ink, 14);
     }
 
     if (certs) {
@@ -1138,7 +1141,8 @@ document.getElementById('cv-download').addEventListener('click', async () => {
     const pages = pdfDoc.getPages();
     if (pages.length > 1) {
       pages.forEach((p, i) => {
-        const t = name + '  |  Page ' + (i + 1) + ' of ' + pages.length;
+        let t = name + '  |  Page ' + (i + 1) + ' of ' + pages.length;
+        if (regular.widthOfTextAtSize(t, 8) > pageW - 32) t = 'Page ' + (i + 1) + ' of ' + pages.length;
         const w = regular.widthOfTextAtSize(t, 8);
         p.drawText(t, { x: (pageW - w) / 2, y: 28, size: 8, font: regular, color: grey });
       });
@@ -1202,8 +1206,9 @@ document.getElementById('letter-download').addEventListener('click', async () =>
     // letterhead
     let nameSize = 22;
     while (nameSize > 14 && bold.widthOfTextAtSize(name, nameSize) > contentW) nameSize -= 1;
+    const ltNameLines = wrapLine(bold, nameSize, contentW, name);
     y -= nameSize * 0.8;
-    page.drawText(name, { x: margin, y, size: nameSize, font: bold, color: accent });
+    ltNameLines.forEach((t, i) => { if (i > 0) y -= nameSize * 1.05; page.drawText(t, { x: margin, y, size: nameSize, font: bold, color: accent }); });
     y -= 16;
     const contact = [phone, email, location].filter(Boolean).join('   |   ');
     if (contact) wrapLine(regular, 9.6, contentW, contact).forEach(t => { line(t, regular, 9.6, grey, 13); });
@@ -1211,13 +1216,13 @@ document.getElementById('letter-download').addEventListener('click', async () =>
     page.drawLine({ start: { x: margin, y }, end: { x: pageW - margin, y }, thickness: 2, color: accent });
     y -= 30;
 
-    if (date) line(date, regular, 10.5, ink, 28);
-    if (hm) line(hm, bold, 10.5, ink, 14);
-    if (company) line(company, regular, 10.5, ink, 14);
+    if (date) wrapLine(regular, 10.5, contentW, date).forEach((t, i, a) => line(t, regular, 10.5, ink, i < a.length - 1 ? 14 : 28));
+    if (hm) wrapLine(bold, 10.5, contentW, hm).forEach(t => line(t, bold, 10.5, ink, 14));
+    if (company) wrapLine(regular, 10.5, contentW, company).forEach(t => line(t, regular, 10.5, ink, 14));
     y -= 14;
 
     const greeting = hm ? 'Dear ' + hm.replace(/^(Mr\.|Ms\.|Mrs\.|Dr\.)\s*/i, '$1 ') + ',' : 'Dear Hiring Manager,';
-    line(greeting, regular, 10.5, ink, 22);
+    wrapLine(regular, 10.5, contentW, greeting).forEach((t, i, a) => line(t, regular, 10.5, ink, i < a.length - 1 ? 15.5 : 22));
 
     const subject = position && company ? 'Application for ' + position + ' at ' + company : (position ? 'Application for ' + position : '');
     if (subject) wrapLine(bold, 10.5, contentW, subject).forEach(t => { line(t, bold, 10.5, ink, 15); });
@@ -1232,7 +1237,7 @@ document.getElementById('letter-download').addEventListener('click', async () =>
     y -= 18;
     need(70);
     line('Sincerely,', regular, 10.5, ink, 34);
-    line(name, bold, 11, ink, 16);
+    wrapLine(bold, 11, contentW, name).forEach(t => line(t, bold, 11, ink, 16));
     if (email || phone) line([phone, email].filter(Boolean).join('  |  '), regular, 9.6, grey, 13);
     y -= 10;
     line('Enclosure: Curriculum Vitae', regular, 9.2, grey, 12);
@@ -1253,7 +1258,7 @@ document.getElementById('letter-download').addEventListener('click', async () =>
 <script>
 document.getElementById('aiRefineCv').addEventListener('click', function() {
   var btn = this;
-  if (!window.RB_AI) return;
+  if (!window.RB_AI) { var st0 = document.getElementById('cv-status'); if (st0) { st0.textContent = 'AI could not load. Check your internet connection and try again.'; st0.classList.remove('empty'); } return; }
   var parts = [];
   var nm = document.getElementById('cv-name').value || '';
   var ti = document.getElementById('cv-title').value || '';
@@ -1270,6 +1275,8 @@ document.getElementById('aiRefineCv').addEventListener('click', function() {
 });
 document.getElementById('aiSummary').addEventListener('click', function() {
   var btn = this;
+  if (!window.RB_AI) { var st1 = document.getElementById('cv-status'); if (st1) { st1.textContent = 'AI could not load. Check your internet connection and try again.'; st1.classList.remove('empty'); } return; }
+  if (!document.getElementById('cv-name').value.trim() && !document.getElementById('cv-title').value.trim() && !document.getElementById('cv-skills').value.trim()) { var st2 = document.getElementById('cv-status'); if (st2) { st2.textContent = 'Add your name, target role or skills first, then generate a summary.'; st2.classList.remove('empty'); } return; }
   var details = 'Name: ' + (document.getElementById('cv-name').value||'') +
     '\nTitle: ' + (document.getElementById('cv-title').value||'') +
     '\nSkills: ' + (document.getElementById('cv-skills').value||'');

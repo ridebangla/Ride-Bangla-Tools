@@ -92,9 +92,14 @@ qEl.addEventListener('input',()=>document.getElementById('qVal').textContent=qEl
 fmtEl.addEventListener('change',()=>document.getElementById('qWrap').style.display=fmtEl.value==='image/png'?'none':'');
 document.getElementById('qWrap').style.display=(fmtEl.value==='image/png')?'none':'';
 fileEl.addEventListener('change',()=>{
-  const f=fileEl.files[0];if(!f)return;srcName=f.name.replace(/\.[^.]+$/,'')||'image';
+  const f=fileEl.files[0];if(!f)return;
+  if(f.type&&!f.type.startsWith('image/')){srcImg=null;alert('Please choose an image file.');return;}
+  srcName=f.name.replace(/\.[^.]+$/,'')||'image';
   const rd=new FileReader();
-  rd.onload=()=>{const img=new Image();img.onload=()=>{srcImg=img;
+  rd.onerror=()=>{srcImg=null;alert('Could not read this file. Try a JPG or PNG image.');};
+  rd.onload=()=>{const img=new Image();
+  img.onerror=()=>{srcImg=null;document.getElementById('info').textContent='Could not read this image. Try a JPG or PNG image.';};
+  img.onload=()=>{if(!img.naturalWidth||!img.naturalHeight){srcImg=null;document.getElementById('info').textContent='Could not read this image. Try a JPG or PNG image.';return;}srcImg=img;
     document.getElementById('prevWrap').innerHTML='';
     const pv=img.cloneNode();pv.style.maxWidth='100%';pv.style.maxHeight='260px';pv.style.borderRadius='8px';
     document.getElementById('prevWrap').appendChild(pv);
@@ -104,18 +109,26 @@ fileEl.addEventListener('change',()=>{
 });
 document.getElementById('convert').addEventListener('click',()=>{
   if(!srcImg){alert('Please choose an image first.');return;}
-  const c=document.createElement('canvas');c.width=srcImg.naturalWidth;c.height=srcImg.naturalHeight;
-  const ctx=c.getContext('2d');
-  if(fmtEl.value==='image/jpeg'){ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);}
-  ctx.drawImage(srcImg,0,0);
+  let c;
+  try{
+    c=document.createElement('canvas');c.width=srcImg.naturalWidth;c.height=srcImg.naturalHeight;
+    const ctx=c.getContext('2d');
+    if(fmtEl.value==='image/jpeg'){ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);}
+    ctx.drawImage(srcImg,0,0);
+  }catch(err){alert('This image is too large for this device to convert. Try a smaller image.');return;}
   const q=fmtEl.value==='image/png'?1.0:qEl.value/100;
   c.toBlob(b=>{
     if(!b){alert('Conversion failed in this browser.');return;}
     if(dlURL)URL.revokeObjectURL(dlURL);dlURL=URL.createObjectURL(b);
-    const ext=fmtEl.value==='image/png'?'png':fmtEl.value==='image/jpeg'?'jpg':'webp';
+    // FIX: canvas.toBlob falls back to PNG bytes when the requested type is
+    // not encodable here, so derive the extension from the bytes actually
+    // produced — never a WebP-named file holding PNG bytes.
+    const actualType=b.type||fmtEl.value;
+    const ext=actualType==='image/png'?'png':actualType==='image/jpeg'?'jpg':actualType==='image/webp'?'webp':'png';
+    const fmtNote=actualType!==fmtEl.value?' (saved as '+ext.toUpperCase()+' — this browser cannot encode the chosen format)':'';
     const dl=document.getElementById('dl');dl.disabled=false;
     dl.onclick=()=>{const a=document.createElement('a');a.href=dlURL;a.download=srcName+'.'+ext;a.click();};
-    document.getElementById('info').textContent='Done: '+c.width+' × '+c.height+' px, '+(b.size/1024).toFixed(1)+' KB ('+ext.toUpperCase()+')';
+    document.getElementById('info').textContent='Done: '+c.width+' × '+c.height+' px, '+(b.size/1024).toFixed(1)+' KB ('+ext.toUpperCase()+')'+fmtNote;
     document.getElementById('prevWrap').innerHTML='';
     const pv2=new Image();pv2.src=dlURL;pv2.style.maxWidth='100%';pv2.style.maxHeight='260px';pv2.style.borderRadius='8px';
     document.getElementById('prevWrap').appendChild(pv2);

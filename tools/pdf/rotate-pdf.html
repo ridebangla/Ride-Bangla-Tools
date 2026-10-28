@@ -129,23 +129,28 @@ function saveBlob(blob, name) {
     pageCount = 0;
     if (pdfFile) {
       pdfName = pdfFile.name.replace(/\.pdf$/i, '');
-      try {
+      if (!window.PDFLib) {
+        status.textContent = 'The PDF engine could not load. Check your internet connection and refresh the page.';
+      } else try {
         var buf0 = await pdfFile.arrayBuffer();
-        var doc0 = await PDFLib.PDFDocument.load(buf0, { ignoreEncryption: true });
+        var doc0 = await PDFLib.PDFDocument.load(buf0);
         pageCount = doc0.getPageCount();
         document.getElementById('roTo').value = pageCount;
         status.textContent = pdfFile.name + ' — ' + pageCount + ' page' + (pageCount === 1 ? '' : 's') + '. Click "Rotate pages".';
       } catch (err) {
-        status.textContent = pdfFile.name + ' selected, but it could not be read as a PDF.';
+        status.textContent = pdfFile.name + ' selected, but it could not be read as a PDF. It may be password-protected or corrupted.';
       }
       status.classList.remove('empty');
     }
   });
   document.getElementById('roBtn').addEventListener('click', async function () {
     if (!pdfFile) { alert('Choose a PDF file first.'); return; }
+    if (!window.PDFLib) { status.textContent = 'The PDF engine could not load. Check your internet connection and refresh the page.'; return; }
     var deg = parseInt(document.getElementById('roDeg').value, 10) || 90;
-    // FIX: old code rotated every page with no choice, and rejected
-    // password-protected PDFs that pdf-lib can otherwise open read-only.
+    // FIX: old code rotated every page with no choice. Password-protected
+    // PDFs are rejected, not opened: pdf-lib cannot decrypt them, and
+    // loading with ignoreEncryption saved still-encrypted content into
+    // the output (verified corrupt) instead of a readable rotated file.
     var scope = document.getElementById('roScope').value;
     var from = 1, to = pageCount || 0;
     if (scope === 'range') {
@@ -155,8 +160,9 @@ function saveBlob(blob, name) {
     }
     try {
       var buf = await pdfFile.arrayBuffer();
-      var doc = await PDFLib.PDFDocument.load(buf, { ignoreEncryption: true });
+      var doc = await PDFLib.PDFDocument.load(buf);
       var pages = doc.getPages();
+      if (!pages.length) { status.textContent = 'That PDF has no pages to rotate.'; return; }
       if (scope === 'range') {
         for (var i = from - 1; i <= to - 1 && i < pages.length; i++) {
           var cur = (pages[i].getRotation && pages[i].getRotation().angle) || 0;
@@ -174,7 +180,7 @@ function saveBlob(blob, name) {
         ? 'Done — pages ' + from + ' to ' + to + ' rotated ' + deg + ' degrees.'
         : 'Done — all pages rotated ' + deg + ' degrees.';
     } catch (err) {
-      status.textContent = 'Could not read that file as a PDF.';
+      status.textContent = 'Could not read that file as a PDF. It may be password-protected or corrupted.';
     }
   });
 })();

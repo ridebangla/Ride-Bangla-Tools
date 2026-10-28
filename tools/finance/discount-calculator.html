@@ -86,13 +86,21 @@
 <script>
 (function () {
   function money(n, sym) { return sym + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function r2(v) { return Math.round((v + 1e-9) * 100) / 100; }
   function calc() {
     var sym = document.getElementById('dcCur').value;
-    var price = Math.max(0, parseFloat(document.getElementById('dcPrice').value) || 0);
-    var pct = Math.max(0, Math.min(100, parseFloat(document.getElementById('dcPct').value) || 0));
-    var save = price * pct / 100;
+    var rawPrice = parseFloat(document.getElementById('dcPrice').value);
+    var rawPct = parseFloat(document.getElementById('dcPct').value);
+    var price = isFinite(rawPrice) ? Math.max(0, rawPrice) : 0;
+    var pct = isFinite(rawPct) ? Math.max(0, Math.min(100, rawPct)) : 0;
+    // Round to cents first and derive the final price from the rounded
+    // saving, so displayed saving + displayed final price always equals
+    // the (cent-rounded) original price.
+    var priceC = r2(price);
+    var save = r2(priceC * pct / 100);
+    var final = r2(priceC - save);
     document.getElementById('dcSave').textContent = money(save, sym);
-    document.getElementById('dcFinal').textContent = money(price - save, sym);
+    document.getElementById('dcFinal').textContent = money(final, sym);
   }
   ['dcCur', 'dcPrice', 'dcPct'].forEach(function (id) {
     document.getElementById(id).addEventListener('input', calc);

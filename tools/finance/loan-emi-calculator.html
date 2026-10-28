@@ -95,11 +95,24 @@ function calc() {
   const n = parseFloat(document.getElementById('n').value);
   if (isNaN(p) || isNaN(n) || isNaN(annualR) || p <= 0 || n <= 0 || annualR < 0) { ['emi','totalPay','totalInt'].forEach(function (id) { document.getElementById(id).textContent = '–'; }); return; }
   const r = annualR / 12 / 100;
-  const emi = r === 0 ? p / n : (p * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
-  const total = emi * n;
-  document.getElementById('emi').textContent = sym + emi.toLocaleString(undefined,{maximumFractionDigits:0});
-  document.getElementById('totalPay').textContent = sym + total.toLocaleString(undefined,{maximumFractionDigits:0});
-  document.getElementById('totalInt').textContent = sym + (total-p).toLocaleString(undefined,{maximumFractionDigits:0});
+  const emiRaw = r === 0 ? p / n : (p * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+  if (!isFinite(emiRaw)) { ['emi','totalPay','totalInt'].forEach(function (id) { document.getElementById(id).textContent = '–'; }); return; }
+  // Money is shown to 2 decimals. Round the EMI to cents first and derive
+  // the totals from that rounded EMI, so displayed EMI x months always
+  // equals the displayed total payable (previously whole-unit rounding
+  // made them disagree, e.g. default case: 23,537 x 24 = 564,888 vs a
+  // displayed total of 564,882).
+  const r2 = v => Math.round((v + 1e-9) * 100) / 100;
+  const emi = r2(emiRaw);
+  const total = r2(emi * n);
+  // Interest can never be negative at a non-negative rate; the max() only
+  // absorbs the sub-$2 rounding dip when a 0% EMI rounds down per month
+  // (e.g. 100000 over 3 months: 33333.33 x 3 = 99999.99, not -0.01 interest).
+  const totalInt = Math.max(0, r2(total - r2(p)));
+  const fmt = v => v.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('emi').textContent = sym + fmt(emi);
+  document.getElementById('totalPay').textContent = sym + fmt(total);
+  document.getElementById('totalInt').textContent = sym + fmt(totalInt);
 }
 ['p','r','n','emiCur'].forEach(id => document.getElementById(id).addEventListener('input', calc));
 document.getElementById('emiCur').addEventListener('change', calc);
@@ -235,7 +248,7 @@ $('dlResult').addEventListener('click',()=>{
   var btn = document.getElementById('aiBtn6');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'finance-tips', function() { return 'Loan EMI: ' + document.body.innerText.slice(0, 400); });
+      RB_AI.aiButton(btn, 'finance-tips', function() { return 'Tool: Loan EMI Calculator. Give usage tips.'; });
     });
   }
 })();

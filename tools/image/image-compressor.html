@@ -121,7 +121,8 @@ document.getElementById('imgIn').addEventListener('change', (e) => {
 let lastCompUrl = null;
 document.getElementById('compressBtn').addEventListener('click', () => {
   if (!origFile) { alert('Choose an image first.'); return; }
-  const maxW = parseInt(document.getElementById('maxW').value, 10) || 1600;
+  let maxW = parseInt(document.getElementById('maxW').value, 10);
+  if (!(maxW > 0)) maxW = 1600; // FIX: a zero/negative width wrapped the canvas size and failed silently
   const img = new Image();
   const reader = new FileReader();
   reader.onerror = () => alert('Could not read this file. Try a JPG or PNG image.');
@@ -151,7 +152,11 @@ document.getElementById('compressBtn').addEventListener('click', () => {
         document.getElementById('newKb').textContent = (blob.size/1024).toFixed(1);
         const savedPct = (100 * (1 - blob.size / origFile.size)).toFixed(0);
         const dl = document.getElementById('dlLink');
-        dl.href = url; dl.download = 'compressed.' + (outType === 'image/png' ? 'png' : outType === 'image/webp' ? 'webp' : 'jpg'); dl.style.display = 'inline-block';
+        // FIX: derive the extension from the bytes actually produced, so an
+        // unencodable WebP request never yields PNG bytes named .webp.
+        const actualType = blob.type || outType;
+        const ext = actualType === 'image/png' ? 'png' : actualType === 'image/webp' ? 'webp' : 'jpg';
+        dl.href = url; dl.download = 'compressed.' + ext; dl.style.display = 'inline-block';
         // RECHECK3 FIX (live): when the JPEG re-encode
         // comes out LARGER than the original (common for small, already
         // well-compressed PNGs — verified live 2026-10-23: 2.7 KB in,
@@ -164,6 +169,8 @@ document.getElementById('compressBtn').addEventListener('click', () => {
           document.getElementById('saved').textContent = savedPct + '%';
           dl.textContent = 'Download compressed image';
         }
+        if (actualType !== outType) dl.textContent += ' (saved as ' + ext.toUpperCase() + ')';
+        if (origFile.type === 'image/gif') dl.textContent += ' — still image only, animation is not preserved';
       }, outType, outType === 'image/png' ? undefined : quality.value / 100);
     };
     img.src = e.target.result;

@@ -125,7 +125,9 @@
   }
   function readInputs() {
     var m = Math.max(0, parseInt(document.getElementById('cdMin').value, 10) || 0);
-    var s = Math.max(0, Math.min(59, parseInt(document.getElementById('cdSec').value, 10) || 0));
+    /* Seconds are normalised, not silently clamped: typing 90 seconds used to
+       become 59 seconds with no warning; now it becomes 1:30 as the user meant. */
+    var s = Math.max(0, parseInt(document.getElementById('cdSec').value, 10) || 0);
     return m * 60 + s;
   }
   function render() { disp.textContent = fmt(remaining); }
@@ -152,6 +154,9 @@
     render();
   });
   document.getElementById('cdPause').addEventListener('click', function () {
+    /* Pause only applies while running: pressing it before Start, or after
+       "Done", used to overwrite the true status with "Paused at …". */
+    if (!timer) return;
     stop();
     status.textContent = 'Paused at ' + fmt(remaining) + '.';
     status.classList.remove('empty');

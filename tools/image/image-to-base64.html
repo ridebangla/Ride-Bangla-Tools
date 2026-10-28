@@ -159,6 +159,13 @@ async function convert(){
     // formats re-encode (and may resize) by design, so their output is not
     // the original file's Base64.
     if (fmtEl.value === 'original') {
+      if (currentFile.type && !currentFile.type.startsWith('image/')) {
+        out.textContent = 'Error: choose an image file.';
+        out.classList.add('empty');
+        busy = false;
+        if (again) { again = false; convert(); }
+        return;
+      }
       const data = await new Promise((resolve, reject) => {
         const r = new FileReader();
         r.onload = () => resolve(r.result);
@@ -194,8 +201,10 @@ async function convert(){
     if (fmt === 'image/jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); } // JPEG has no transparency
     ctx.drawImage(im, 0, 0, w, h);
     let data = c.toDataURL(fmt, parseInt(qEl.value, 10) / 100);
+    var webpFallback = false;
     if (fmt === 'image/webp' && data.indexOf('data:image/webp') !== 0) {
       data = c.toDataURL('image/jpeg', parseInt(qEl.value, 10) / 100); // browser without WebP support
+      webpFallback = true;
     }
     currentB64 = data;
     out.textContent = data;
@@ -207,7 +216,9 @@ async function convert(){
     document.getElementById('b64Kb').textContent = kb.toFixed(1);
     document.getElementById('dimTxt').textContent = w + '×' + h;
     stats.style.display = 'grid';
-    note.textContent = kb > 100
+    note.textContent = webpFallback
+      ? 'WebP is not supported in this browser — this code is JPEG instead.'
+      : kb > 100
       ? 'This code is long. Pick a smaller size or lower quality to shorten it.'
       : 'Tap "Copy" — no need to scroll through the code.';
   } catch (err) {

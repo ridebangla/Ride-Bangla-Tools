@@ -207,10 +207,12 @@
   }
   function calc() {
     var sym = document.getElementById('cur').value;
-    var target = parseFloat(document.getElementById('target').value) || 0;
+    // Clamp: negative pay/expenses and >80h/week typos must never produce
+    // a negative rate or an absurdly low rate from one mistyped digit.
+    var target = Math.max(0, parseFloat(document.getElementById('target').value) || 0);
     var tax = Math.min(90, Math.max(0, parseFloat(document.getElementById('tax').value) || 0)) / 100;
-    var exp = parseFloat(document.getElementById('exp').value) || 0;
-    var hrs = Math.max(1, parseFloat(document.getElementById('hrs').value) || 1);
+    var exp = Math.max(0, parseFloat(document.getElementById('exp').value) || 0);
+    var hrs = Math.min(80, Math.max(1, parseFloat(document.getElementById('hrs').value) || 1));
     var off = Math.min(40, Math.max(0, parseFloat(document.getElementById('off').value) || 0));
     var billableHrs = hrs * (52 - off);
     var revenueNeeded = target / (1 - tax) + exp;

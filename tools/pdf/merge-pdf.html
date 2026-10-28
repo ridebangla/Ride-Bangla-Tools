@@ -238,20 +238,27 @@ mergeBtn.addEventListener('click', async function () {
   try {
     var PDFDocument = window.PDFLib.PDFDocument;
     var out = await PDFDocument.create();
+    var totalCopied = 0;
     for (var i = 0; i < files.length; i++) {
       var buf;
       try { buf = await files[i].arrayBuffer(); }
       catch (e) { setStatus('Could not read "' + files[i].name + '". Try choosing it again.'); return; }
       var src;
       try {
-        src = await PDFDocument.load(buf, { ignoreEncryption: true });
+        // No ignoreEncryption: pdf-lib cannot decrypt, and loading an
+        // encrypted file that way copies still-encrypted streams into the
+        // output (verified: the merged file is unparseable). Encrypted
+        // files must fail here, with the message below, instead.
+        src = await PDFDocument.load(buf);
       } catch (e) {
         setStatus('Could not read "' + files[i].name + '". It may be password-protected or corrupted — try another file.');
         return;
       }
       var pages = await out.copyPages(src, src.getPageIndices());
+      totalCopied += pages.length;
       pages.forEach(function (p) { out.addPage(p); });
     }
+    if (!totalCopied) { setStatus('None of the chosen PDFs contain any pages, so there is nothing to merge.'); return; }
     var bytes = await out.save();
     var blob = new Blob([bytes], { type: 'application/pdf' });
     if (lastUrl) URL.revokeObjectURL(lastUrl);

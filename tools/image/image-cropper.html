@@ -129,6 +129,7 @@ document.getElementById('ratio').addEventListener('change',e=>{
 document.getElementById('file').addEventListener('change',e=>{
   const f=e.target.files[0];if(!f)return;
   const rd=new FileReader();
+  rd.onerror=()=>alert('Could not read this file. Try a JPG or PNG image.');
   rd.onload=()=>{const im=new Image();im.onload=()=>{
     img=im;const maxW=560;scale=Math.min(1,maxW/im.naturalWidth);
     cv.width=Math.round(im.naturalWidth*scale);cv.height=Math.round(im.naturalHeight*scale);
@@ -142,7 +143,10 @@ document.getElementById('file').addEventListener('change',e=>{
 document.getElementById('reset').addEventListener('click',()=>{if(!img)return;sel={x:cv.width*0.1,y:cv.height*0.1,w:cv.width*0.8,h:cv.height*0.8};draw();updateInfo();document.getElementById('outWrap').innerHTML='<span style="color:var(--muted)">Your cropped image will appear here</span>';document.getElementById('dlCrop').disabled=true;lastCrop=null;if(lastCropUrl)URL.revokeObjectURL(lastCropUrl);lastCropUrl=null;});
 document.getElementById('crop').addEventListener('click',()=>{
   if(!img||!sel||sel.w<4||sel.h<4){alert('Please choose an image and draw a crop area first.');return;}
-  const sx=Math.round(sel.x/scale),sy=Math.round(sel.y/scale),sw=Math.round(sel.w/scale),sh=Math.round(sel.h/scale);
+  // FIX: clamp the source rect to the real image — rounding against the
+  // display scale could otherwise push it 1px past the edge and blank the crop.
+  const sx=Math.min(Math.max(0,Math.round(sel.x/scale)),img.naturalWidth-1),sy=Math.min(Math.max(0,Math.round(sel.y/scale)),img.naturalHeight-1);
+  const sw=Math.min(Math.round(sel.w/scale),img.naturalWidth-sx),sh=Math.min(Math.round(sel.h/scale),img.naturalHeight-sy);
   const c=document.createElement('canvas');c.width=sw;c.height=sh;
   c.getContext('2d').drawImage(img,sx,sy,sw,sh,0,0,sw,sh);
   // FIX: a cloned canvas carries no pixels, so the old preview was blank.

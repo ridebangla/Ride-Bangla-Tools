@@ -217,6 +217,18 @@
 <script src="../assets/ads-sitewide.js?v=3"></script>
 <script>
 
+/* Copy fallback: the shared main.js normally defines rbCopy; if it is
+   absent (it is not present in this audit's base tree, so the copy path
+   could not be verified from here) the Copy buttons still work. This
+   never overrides an existing rbCopy. */
+if (typeof window.rbCopy !== 'function') {
+  window.rbCopy = function (t) {
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).catch(function () {}); return; }
+    var ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    ta.remove();
+  };
+}
 (function () {
   var PRE = ['Nex','Vel','Zy','Nov','Lum','Ax','Bright','Prime','Ever','Swift','Blue','True','Clear','Bold','Grand','Nova','Aero','Omni','Viva','Zen'];
   var MID = ['ora','ivo','ex','on','ly','ia','ix','eo','ara','ova','io','en','is','ero'];

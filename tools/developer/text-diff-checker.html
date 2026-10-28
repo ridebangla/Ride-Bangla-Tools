@@ -289,6 +289,7 @@
     if (window.__diffText) rbCopy(window.__diffText); else alert('Compare texts first.');
   });
   document.getElementById('clr').addEventListener('click', function () {
+    window.__diffText = '';
     document.getElementById('a').value = ''; document.getElementById('b').value = '';
     document.getElementById('diffOut').textContent = 'Run a comparison to see the differences.';
     document.getElementById('statLines').textContent = '0';

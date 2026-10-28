@@ -164,8 +164,9 @@
 
     ctx.save();
     // FIX: old code always filled white and encoded JPEG, so a transparent
-    // PNG lost transparency. Keep PNG inputs as PNG; fill white for JPEG only.
-    if (imgType !== 'image/png') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+    // PNG lost transparency. Keep PNG/WebP inputs in their own format (no
+    // white fill); fill white for JPEG only.
+    if (imgType === 'image/jpeg') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
@@ -183,9 +184,12 @@
         const url = URL.createObjectURL(blob);
         window._lastEditUrl = url;
         dl.href = url;
-        dl.download = imgType === 'image/png' ? 'edited-photo.png' : 'edited-photo.jpg';
+        // FIX: name the file for the bytes actually produced (an unencodable
+        // WebP request falls back to PNG bytes), never a mismatched extension.
+        const actualType = blob.type || imgType;
+        dl.download = actualType === 'image/png' ? 'edited-photo.png' : actualType === 'image/webp' ? 'edited-photo.webp' : 'edited-photo.jpg';
         dl.style.display = 'inline-block';
-        dl.textContent = 'Download photo';
+        dl.textContent = 'Download photo' + (window._lastEditFileType === 'image/gif' ? ' (still image only — animation is not preserved)' : '');
       }, imgType, imgType === 'image/png' ? undefined : 0.92);
     }, 300);
   }
@@ -207,8 +211,9 @@
       const im = new Image();
       im.onerror = () => alert('Could not read this image. Try a JPG or PNG image.');
       im.onload = () => {
+        window._lastEditFileType = file.type;
         img = im;
-        imgType = (file.type === 'image/png') ? 'image/png' : 'image/jpeg';
+        imgType = (file.type === 'image/png') ? 'image/png' : (file.type === 'image/webp') ? 'image/webp' : 'image/jpeg';
         rotation = 0; flipH = false; flipV = false;
         document.getElementById('peCompare').style.display = 'inline-block';
         redraw();

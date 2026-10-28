@@ -85,9 +85,17 @@
 </section>
 <script>
 const STOP = new Set(['a','an','the','and','or','but','of','in','on','at','to','for','with','is','are']);
+// Letters NFD cannot decompose (ø, æ, ß, ł, …) used to be stripped to a
+// space, mangling words ("Smørrebrød" -> "sm-rrebr-d", "Straße" ->
+// "stra-e") while accented letters like é were transliterated —
+// inconsistent and surprising. Map them explicitly first, so the rule is
+// predictable: Latin letters transliterate, non-Latin input still yields
+// the honest "Nothing to slug" message instead of a fake slug.
+const TRANSLIT = {'æ':'ae','œ':'oe','ß':'ss','ø':'o','ł':'l','đ':'d','þ':'th','ð':'d','ħ':'h','ı':'i','ŋ':'n'};
 function slugify() {
   let words = document.getElementById('title').value
     .toLowerCase()
+    .replace(/[æœßøłđþðħıŋ]/g, ch => TRANSLIT[ch])
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/['"]/g, '')
     .replace(/[^a-z0-9\s-]/g, ' ')
@@ -105,6 +113,7 @@ document.getElementById('removeStop').addEventListener('change', slugify);
 document.getElementById('copySlug').addEventListener('click', () => {
   const o = document.getElementById('out').textContent;
   if (o && !o.startsWith('Nothing to slug')) rbCopy(o);
+  else alert('Please enter a title first.');
 });
 slugify();
 </script>
@@ -240,7 +249,7 @@ $('dlResult').addEventListener('click',()=>{
   var btn = document.getElementById('aiBtn11');
   if (btn && window.RB_AI) {
     btn.addEventListener('click', function() {
-      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.querySelector('textarea, input'); return 'Generate a URL slug for the following title — lowercase letters, numbers and hyphens only, short and clear. Return ONLY the slug: ' + (t?t.value:''); });
+      RB_AI.aiButton(btn, 'improve-text', function() { var t=document.getElementById('title'); return 'Generate a URL slug for the following title — lowercase letters, numbers and hyphens only, short and clear. Return ONLY the slug: ' + (t?t.value:''); });
     });
   }
 })();
