@@ -117,7 +117,7 @@
 <thead><tr><th style="text-align:left;padding:6px">Description</th><th style="width:64px;padding:6px">Qty</th><th style="width:92px;padding:6px">Rate</th><th style="width:40px"></th></tr></thead>
 <tbody id="itemsBody"></tbody>
 </table>
-<div class="btn-row" style="margin-top:8px"><button type="button" class="btn ghost" id="addItem">+ Add item</button></div></div>
+<div class="btn-row" style="margin-top:8px"><button type="button" class="btn ghost" id="addItem">+ Add item</button><button type="button" class="btn ghost" id="newInvoice" style="margin-left:8px" title="Clears this invoice (client, items, notes, totals) — your business details and logo stay">New invoice</button></div></div>
     <div class="field"><label>Notes / payment terms</label><textarea id="notes" rows="2" placeholder="e.g. Payment due within 14 days. Bank: ..."></textarea></div>
     <div class="field"><label style="font-size:12.5px"><input type="checkbox" id="remember" style="width:auto;display:inline;margin-right:6px" checked>Remember my business details on this device</label></div>
     <div class="field"><label style="font-size:12.5px"><input type="checkbox" id="qrInclude" style="width:auto;display:inline;margin-right:6px" checked>Include QR code on the invoice</label></div>
@@ -275,10 +275,16 @@ function addRow(desc, qty, rate) {
 function getItems() {
   var items = [];
   document.querySelectorAll('#itemsBody tr').forEach(function (tr) {
+    var desc = tr.querySelector('.d').value.trim();
+    var rate = parseFloat(tr.querySelector('.r').value) || 0;
+    /* Skip fully-empty rows (blank starter row): they contribute 0 to every
+       total and would otherwise render as a junk "— $0.00" line. A row with
+       a description (even at rate 0, a free item) or with a rate is kept. */
+    if (desc === '' && rate === 0) return;
     items.push({
-      desc: tr.querySelector('.d').value.trim(),
+      desc: desc,
       qty: parseFloat(tr.querySelector('.q').value) || 0,
-      rate: parseFloat(tr.querySelector('.r').value) || 0
+      rate: rate
     });
   });
   return items;
@@ -458,9 +464,28 @@ function todayISO() { return new Date().toISOString().slice(0, 10); }
   document.getElementById('remember').addEventListener('change', function () {
     if (!this.checked) { try { localStorage.removeItem('rb_biz_profile'); localStorage.removeItem('rb_biz_logo'); } catch (e) {} }
   });
-  addRow('Website design — homepage', 1, 150);
-  addRow('Logo design', 1, 80);
+  /* Fresh form starts EMPTY (owner 2026-10-29): no demo rows to delete —
+     a new visitor writes their own items from one blank row. */
+  addRow('', 1, 0);
   document.getElementById('addItem').addEventListener('click', function () { addRow('', 1, 0); });
+  /* New invoice (owner 2026-10-29): one tap empties the INVOICE (client,
+     items, notes, totals, fresh number + dates) so the next person writes
+     their own — business details, logo, currency and payment choice stay,
+     exactly as a fresh form keeps them. */
+  document.getElementById('newInvoice').addEventListener('click', function () {
+    document.getElementById('toName').value = '';
+    document.getElementById('toAddr').value = '';
+    document.getElementById('notes').value = '';
+    document.getElementById('taxRate').value = '0';
+    document.getElementById('discPct').value = '0';
+    document.getElementById('docNo').value = 'INV-' + new Date().getFullYear() + '-' + String(Math.floor(1000 + Math.random() * 9000));
+    document.getElementById('invDate').value = todayISO();
+    var due = new Date(); due.setDate(due.getDate() + 14);
+    document.getElementById('dueDate').value = due.toISOString().slice(0, 10);
+    document.getElementById('itemsBody').innerHTML = '';
+    addRow('', 1, 0);
+    recalc();
+  });
   ['fromName','fromAddr','toName','toAddr','docNo','invDate','dueDate','currency','taxRate','discPct','notes'].forEach(function (id) {
     document.getElementById(id).addEventListener('input', recalc);
   });
