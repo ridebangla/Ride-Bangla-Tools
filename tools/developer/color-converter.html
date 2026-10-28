@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / Color Converter</div>
     <h1>Color Converter</h1>
     <p class="lede">Move a color between HEX, RGB and HSL with a live swatch preview — handy for designers and developers alike.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -77,7 +78,8 @@
     <div class="field"><label>HSL</label><input type="text" id="hsl" value="hsl(142, 76%, 36%)"></div>
     <input type="color" id="picker" value="#16A34A" style="width:100%;height:44px;border:1px solid var(--line);border-radius:6px;background:var(--ink-900);">
 
-  <div class="btn-row" style="margin-top:12px;"><button class="btn-download" id="dlResult" type="button">Download result</button>
+  <p id="colorErr" style="display:none;color:#B91C1C;font-size:13px;margin-top:8px;"></p>
+  <div class="btn-row" style="margin-top:12px;"><button type="button" class="btn ghost" id="copyColor">Copy result</button><button class="btn-download" id="dlResult" type="button">Download result</button>
 <button type="button" class="btn ghost" id="aiBtn3">Suggest Palette</button></div>
   </div>
 </section>
@@ -150,23 +152,31 @@ function updateAll(r,g,b){
   swatch.style.background = hex;
   picker.value = hex;
 }
+const colorErr = document.getElementById('colorErr');
+function showColorErr(msg) { colorErr.textContent = msg; colorErr.style.display = msg ? '' : 'none'; }
 function fromHex() {
   const hex = hexIn.value.trim();
-  if (!/^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hex)) return;
+  if (!/^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hex)) { showColorErr('Not a valid HEX color — use #RGB or #RRGGBB.'); return; }
+  showColorErr('');
   const [r,g,b] = hexToRgb(hex);
   updateAll(r,g,b);
 }
 function fromRgb(){
   const v = parseRgb(rgbIn.value);
-  if(!v) return;
+  if(!v) { showColorErr('Not a valid RGB color — use rgb(R, G, B) with values 0–255.'); return; }
+  showColorErr('');
   updateAll(v[0],v[1],v[2]);
 }
 function fromHsl(){
   const v = parseHsl(hslIn.value);
-  if(!v) return;
+  if(!v) { showColorErr('Not a valid HSL color — use hsl(H, S%, L%) with H 0–360 and S/L 0–100.'); return; }
+  showColorErr('');
   const [r,g,b] = hslToRgb(v[0],v[1],v[2]);
   updateAll(r,g,b);
 }
+document.getElementById('copyColor').addEventListener('click', function () {
+  rbCopy('HEX: ' + hexIn.value + '\nRGB: ' + rgbIn.value + '\nHSL: ' + hslIn.value);
+});
 hexIn.addEventListener('input', fromHex);
 rgbIn.addEventListener('input', fromRgb);
 hslIn.addEventListener('input', fromHsl);

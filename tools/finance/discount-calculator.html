@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Finance</a> / Discount Calculator</div>
     <h1>Discount Calculator</h1>
     <p class="lede">Enter a price and a discount percentage to see the sale price.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -87,7 +88,7 @@
   function money(n, sym) { return sym + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
   function calc() {
     var sym = document.getElementById('dcCur').value;
-    var price = parseFloat(document.getElementById('dcPrice').value) || 0;
+    var price = Math.max(0, parseFloat(document.getElementById('dcPrice').value) || 0);
     var pct = Math.max(0, Math.min(100, parseFloat(document.getElementById('dcPct').value) || 0));
     var save = price * pct / 100;
     document.getElementById('dcSave').textContent = money(save, sym);

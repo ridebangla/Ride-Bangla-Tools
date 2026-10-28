@@ -87,6 +87,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Career</a> / CV & Cover Letter Builder</div>
     <h1>CV & Cover Letter Builder</h1>
     <p class="lede">Fill in your details once, then download a clean, professional CV and a matching cover letter as PDF — nothing is uploaded anywhere.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 
@@ -173,7 +174,7 @@
       <div class="section-label">Professional summary</div>
       <div class="field">
         <textarea id="cv-summary" style="min-height:100px;" placeholder="2–3 sentences on who you are and what you bring — e.g. 'Marketing executive with 4 years' experience running paid social campaigns for e-commerce brands in Bangladesh, with a track record of growing ROAS...'"></textarea>
-<button type="button" class="btn ghost" id="aiSummary" style="margin-top:8px;">Generate with AI</button>
+<button type="button" class="btn ghost" id="aiSummary" style="margin-top:8px;">Generate with AI</button><button type="button" class="btn ghost" id="aiRefineCv" style="margin-top:8px;margin-left:8px;">Refine CV with AI</button>
       </div>
 
       <div class="section-label">Work experience</div>
@@ -810,18 +811,24 @@ document.getElementById('cv-download').addEventListener('click', async () => {
       const education = [...document.querySelectorAll('#edu-list .rep-item')].map(item => ({
         degree: (item.querySelector('.edu-degree')||{value:''}).value.trim(),
         school: (item.querySelector('.edu-school')||{value:''}).value.trim(),
-        details: (item.querySelector('.edu-details')||{value:''}).value.trim(),
+        dates: (item.querySelector('.edu-dates')||{value:''}).value.trim(),
+        details: (item.querySelector('.edu-note')||{value:''}).value.trim(),
       })).filter(e => e.degree || e.school);
+      const ACCENT_HEX = { navy:'#1C385E', charcoal:'#2B3038', teal:'#0D6673', green:'' + accentHex + '', maroon:'#731C29' };
+      const accentHex = ACCENT_HEX[document.getElementById('cv-accent').value] || ACCENT_HEX.navy;
+      const psU = document.getElementById('cv-pagesize').value;
       const div = document.createElement('div');
-      div.style.cssText = 'width:794px;padding:48px;font-family:"Hind Siliguri","Noto Sans",sans-serif;color:#1a1a1a;background:#fff;position:absolute;left:-9999px;top:0;';
-      let html = '<div style="border-bottom:3px solid #0E7A3D;padding-bottom:16px;margin-bottom:20px;">'
+      div.style.cssText = 'width:' + (psU === 'letter' ? 816 : 794) + 'px;padding:48px;font-family:"Hind Siliguri","Noto Sans",sans-serif;color:#1a1a1a;background:#fff;position:absolute;left:-9999px;top:0;';
+      const photoShapeU = document.getElementById('cv-photo-shape').value;
+      let html = '<div style="border-bottom:3px solid ' + accentHex + ';padding-bottom:16px;margin-bottom:20px;overflow:hidden;">'
+        + (photoData ? '<img src="' + photoData + '" style="float:right;width:110px;height:110px;object-fit:cover;border-radius:' + (photoShapeU === 'circle' ? '50%' : '0') + ';margin:0 0 12px 16px;" alt="">' : '')
         + '<div style="font-size:28px;font-weight:800;">' + escH(name) + '</div>'
-        + (title ? '<div style="font-size:16px;color:#0E7A3D;margin-top:4px;">' + escH(title) + '</div>' : '')
+        + (title ? '<div style="font-size:16px;color:' + accentHex + ';margin-top:4px;">' + escH(title) + '</div>' : '')
         + (contact ? '<div style="font-size:12px;color:#555;margin-top:8px;">' + contact + '</div>' : '') + '</div>';
       const summary = rawVal('cv-summary');
-      if (summary) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:#0E7A3D;margin-bottom:6px;">SUMMARY</div><div style="font-size:13px;line-height:1.6;">' + escH(summary).replace(/\n/g,'<br>') + '</div></div>';
+      if (summary) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">SUMMARY</div><div style="font-size:13px;line-height:1.6;">' + escH(summary).replace(/\n/g,'<br>') + '</div></div>';
       if (experiences.length) {
-        html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:#0E7A3D;margin-bottom:6px;">EXPERIENCE</div>';
+        html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">EXPERIENCE</div>';
         experiences.forEach(e => {
           html += '<div style="margin-bottom:10px;"><div style="font-size:13px;font-weight:700;">' + escH(e.role) + (e.company ? ' &mdash; ' + escH(e.company) : '') + '</div>'
             + (e.dates ? '<div style="font-size:11px;color:#777;">' + escH(e.dates) + '</div>' : '')
@@ -830,24 +837,46 @@ document.getElementById('cv-download').addEventListener('click', async () => {
         html += '</div>';
       }
       if (education.length) {
-        html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:#0E7A3D;margin-bottom:6px;">EDUCATION</div>';
+        html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">EDUCATION</div>';
         education.forEach(e => {
           html += '<div style="margin-bottom:8px;"><div style="font-size:13px;font-weight:700;">' + escH(e.degree) + '</div>'
+            + (e.dates ? '<div style="font-size:11px;color:#777;">' + escH(e.dates) + '</div>' : '')
             + (e.school ? '<div style="font-size:12px;color:#555;">' + escH(e.school) + '</div>' : '')
             + (e.details ? '<div style="font-size:12px;">' + escH(e.details) + '</div>' : '') + '</div>';
         });
         html += '</div>';
       }
       const skills = rawVal('cv-skills');
-      if (skills) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:#0E7A3D;margin-bottom:6px;">SKILLS</div><div style="font-size:13px;">' + escH(skills) + '</div></div>';
+      if (skills) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">SKILLS</div><div style="font-size:13px;">' + escH(skills) + '</div></div>';
+      const certs = rawVal('cv-certs');
+      if (certs) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">CERTIFICATIONS</div><div style="font-size:13px;">' + escH(certs).replace(/\n/g,'<br>') + '</div></div>';
       const langs = rawVal('cv-languages');
-      if (langs) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:#0E7A3D;margin-bottom:6px;">LANGUAGES</div><div style="font-size:13px;">' + escH(langs) + '</div></div>';
+      if (langs) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">LANGUAGES</div><div style="font-size:13px;">' + escH(langs) + '</div></div>';
+      const personalU = [];
+      const dobU = rawVal('cv-dob'), genderU = selText('cv-gender'), maritalU = selText('cv-marital'), fatherU = rawVal('cv-father');
+      const citU = selText('cv-citizenship-country'), cit2U = selText('cv-second-country'), resCU = selText('cv-residence-country');
+      const regionU = selText('cv-region') || rawVal('cv-region-manual');
+      const locU = [rawVal('cv-address'), rawVal('cv-area'), rawVal('cv-locality'), rawVal('cv-district'), regionU, resCU, rawVal('cv-postal')].filter(Boolean).join(', ');
+      if (dobU) personalU.push('Date of birth: ' + escH(dobU));
+      if (genderU) personalU.push('Gender: ' + escH(genderU));
+      if (maritalU) personalU.push('Marital status: ' + escH(maritalU));
+      if (fatherU) personalU.push("Father's name: " + escH(fatherU));
+      if (citU) personalU.push('Nationality: ' + escH(citU + (cit2U ? ' / ' + cit2U : '')));
+      if (locU) personalU.push('Address: ' + escH(locU));
+      if (document.getElementById('cv-include-identity').checked) {
+        const passU = rawVal('cv-passport'), natU = rawVal('cv-national-id'), resU = rawVal('cv-residence-id'), workU = rawVal('cv-work-status');
+        if (passU) personalU.push('Passport no.: ' + escH(passU + (rawVal('cv-passport-expiry') ? ' (expires ' + rawVal('cv-passport-expiry') + ')' : '')));
+        if (natU) personalU.push('National ID: ' + escH(natU));
+        if (resU) personalU.push('Residence permit: ' + escH(resU + (rawVal('cv-residence-expiry') ? ' (expires ' + rawVal('cv-residence-expiry') + ')' : '')));
+        if (workU) personalU.push('Work authorization: ' + escH(workU));
+      }
+      if (personalU.length) html += '<div style="margin-bottom:18px;"><div style="font-size:14px;font-weight:700;color:' + accentHex + ';margin-bottom:6px;">PERSONAL DETAILS</div><div style="font-size:13px;line-height:1.6;">' + personalU.join('<br>') + '</div></div>';
       div.innerHTML = html;
       document.body.appendChild(div);
       const canvas = await html2canvas(div, { scale: 2, backgroundColor: '#ffffff' });
       const { PDFDocument } = PDFLib;
       const pdfDoc = await PDFDocument.create();
-      const pageW = 595.28, pageH = 841.89;
+      const pageW = psU === 'letter' ? 612 : 595.28, pageH = psU === 'letter' ? 792 : 841.89;
       const pagePxH = Math.round((pageH / pageW) * canvas.width);
       for (let sy = 0; sy < canvas.height; sy += pagePxH) {
         const sh = Math.min(pagePxH, canvas.height - sy);
@@ -1222,6 +1251,23 @@ document.getElementById('letter-download').addEventListener('click', async () =>
 </script>
 <script src="../assets/ai.js?v=8"></script>
 <script>
+document.getElementById('aiRefineCv').addEventListener('click', function() {
+  var btn = this;
+  if (!window.RB_AI) return;
+  var parts = [];
+  var nm = document.getElementById('cv-name').value || '';
+  var ti = document.getElementById('cv-title').value || '';
+  var su = document.getElementById('cv-summary').value || '';
+  var sk = document.getElementById('cv-skills').value || '';
+  if (nm) parts.push('Name: ' + nm);
+  if (ti) parts.push('Target role: ' + ti);
+  if (su) parts.push('Summary: ' + su);
+  if (sk) parts.push('Skills: ' + sk);
+  RB_AI.aiButton(btn, 'cv-summary', function() {
+    if (!parts.length) return '';
+    return 'Refine this CV content for clarity and professionalism, keeping every fact exactly as it is: ' + parts.join(' | ');
+  });
+});
 document.getElementById('aiSummary').addEventListener('click', function() {
   var btn = this;
   var details = 'Name: ' + (document.getElementById('cv-name').value||'') +

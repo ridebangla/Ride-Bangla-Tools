@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://tools.ridebangla.bd/developer/"}, {"@type": "ListItem", "position": 3, "name": "Markdown to HTML", "item": "https://tools.ridebangla.bd/developer/markdown-to-html.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Markdown to HTML", "description": "Convert Markdown to clean HTML online free. Live preview, headings, lists, code, links — copy the HTML with one click.", "url": "https://tools.ridebangla.bd/developer/markdown-to-html.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Markdown to HTML", "description": "Convert Markdown to clean HTML online free. Live preview, headings, lists, tables, code, links — copy the HTML with one click.", "url": "https://tools.ridebangla.bd/developer/markdown-to-html.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Markdown to HTML free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Markdown to HTML is completely free, with no sign-up, no daily limit, and no watermark on what you download."}},{"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Markdown to HTML runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device."}},{"@type": "Question", "name": "Which Markdown features are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Headings, bold, italic, inline code, code blocks, links, images, unordered and ordered lists, blockquotes and horizontal rules."}}]}</script>
 </head>
 <body>
@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / Markdown to HTML</div>
     <h1>Markdown to HTML</h1>
     <p class="lede">Write Markdown on the left, watch the rendered preview and clean HTML appear on the right — then copy the HTML.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -87,14 +88,38 @@ function inline(s){
 s=s.replace(/`([^`]+)`/g,'<code>$1</code>');s=s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,function(m,a,u){return '<img alt="'+a+'" src="'+safeUrl(u)+'">';});
 s=s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,function(m,a,u){return '<a href="'+safeUrl(u)+'">'+a+'</a>';});s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
 s=s.replace(/(^|\W)\*([^*]+)\*/g,'$1<em>$2</em>');
-s=s.replace(/(^|\W)_([^_\n]+)_/g,'$1<em>$2</em>');return s;}function md(src){const lines=src.split('\n'),out=[];let i=0,list=null;function closeList(){if(list){out.push(list==='ul'?'</ul>':'</ol>');list=null;}}while(i<lines.length){const ln=lines[i];if(/^```/.test(ln)){let code=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){code.push(lines[i]);i++;}i++;out.push('<pre><code>'+esc(code.join('\n'))+'</code></pre>');continue;}const h=ln.match(/^(#{1,6})\s+(.*)/);if(h){closeList();out.push('<h'+h[1].length+'>'+inline(h[2])+'</h'+h[1].length+'>');i++;continue;}if(/^\s*---\s*$/.test(ln)){closeList();out.push('<hr>');i++;continue;}if(/^\s*>/.test(ln)){closeList();out.push('<blockquote>'+inline(ln.replace(/^\s*>\s?/,''))+'</blockquote>');i++;continue;}const ul=ln.match(/^\s*[-*+]\s+(.*)/),ol=ln.match(/^\s*\d+\.\s+(.*)/);if(ul||ol){const want=ul?'ul':'ol';if(list!==want){closeList();out.push('<'+want+'>');list=want;}out.push('<li>'+inline(ul?ul[1]:ol[1])+'</li>');i++;continue;}closeList();if(/^\s*$/.test(ln)){i++;continue;}let para=[ln];i++;while(i<lines.length&&!/^\s*$/.test(lines[i])&&!/^(#{1,6}\s|```|\s*[-*+]\s|\s*\d+\.\s|\s*>|\s*---\s*$)/.test(lines[i])){para.push(lines[i]);i++;}out.push('<p>'+para.map(inline).join('<br>')+'</p>');
+s=s.replace(/(^|\W)_([^_\n]+)_/g,'$1<em>$2</em>');return s;}function md(src){const lines=src.split('\n'),out=[];let i=0,list=null;function closeList(){if(list){out.push(list==='ul'?'</ul>':'</ol>');list=null;}}while(i<lines.length){const ln=lines[i];if(/^```/.test(ln)){let code=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){code.push(lines[i]);i++;}i++;out.push('<pre><code>'+esc(code.join('\n'))+'</code></pre>');continue;}const h=ln.match(/^(#{1,6})\s+(.*)/);if(h){closeList();out.push('<h'+h[1].length+'>'+inline(h[2])+'</h'+h[1].length+'>');i++;continue;}if(/^\s*---\s*$/.test(ln)){closeList();out.push('<hr>');i++;continue;}if(/^\s*>/.test(ln)){closeList();out.push('<blockquote>'+inline(ln.replace(/^\s*>\s?/,''))+'</blockquote>');i++;continue;}if(/^<table>/.test(ln)){closeList();out.push(ln);i++;continue;}const ul=ln.match(/^\s*[-*+]\s+(.*)/),ol=ln.match(/^\s*\d+\.\s+(.*)/);if(ul||ol){const want=ul?'ul':'ol';if(list!==want){closeList();out.push('<'+want+'>');list=want;}out.push('<li>'+inline(ul?ul[1]:ol[1])+'</li>');i++;continue;}closeList();if(/^\s*$/.test(ln)){i++;continue;}let para=[ln];i++;while(i<lines.length&&!/^\s*$/.test(lines[i])&&!/^(#{1,6}\s|```|\s*[-*+]\s|\s*\d+\.\s|\s*>|\s*---\s*$)/.test(lines[i])){para.push(lines[i]);i++;}out.push('<p>'+para.map(inline).join('<br>')+'</p>');
   }
   closeList();
   return out.join('\n');
 }
+function mdTables(src) {
+  var lines = src.split('\n'), out = [], i = 0;
+  function isSep(ln) { return ln.indexOf('|') !== -1 && /^\s*\|?[\s:|-]+\|?\s*$/.test(ln) && ln.indexOf('-') !== -1; }
+  function splitRow(ln) {
+    ln = ln.trim();
+    if (ln.charAt(0) === '|') ln = ln.slice(1);
+    if (ln.charAt(ln.length - 1) === '|') ln = ln.slice(0, -1);
+    return ln.split('|').map(function (c) { return c.trim(); });
+  }
+  while (i < lines.length) {
+    if (i + 1 < lines.length && lines[i].indexOf('|') !== -1 && isSep(lines[i + 1])) {
+      var head = splitRow(lines[i]);
+      var body = [];
+      i += 2;
+      while (i < lines.length && lines[i].indexOf('|') !== -1 && lines[i].trim() !== '') { body.push(splitRow(lines[i])); i++; }
+      var h = '<table><thead><tr>' + head.map(function (c) { return '<th>' + inline(c) + '</th>'; }).join('') + '</tr></thead><tbody>';
+      body.forEach(function (row) {
+        h += '<tr>' + head.map(function (_, j) { return '<td>' + inline(row[j] || '') + '</td>'; }).join('') + '</tr>';
+      });
+      out.push(h + '</tbody></table>');
+    } else { out.push(lines[i]); i++; }
+  }
+  return out.join('\n');
+}
 const inEl=document.getElementById('in');
 function render(){
-  const html=md(inEl.value);
+  const html=md(mdTables(inEl.value));
   document.getElementById('preview').innerHTML=html||'<span style="color:var(--muted)">Nothing to preview yet</span>';
   document.getElementById('html').textContent=html;
 }
@@ -102,6 +127,7 @@ inEl.addEventListener('input',render);
 document.getElementById('copy').addEventListener('click',()=>{const h=document.getElementById('html').textContent;if(h)rbCopy(h);});
 document.getElementById('dl').addEventListener('click',()=>{
   const h=document.getElementById('html').textContent;
+  if(!h){alert('Type some Markdown first.');return;}
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob(['<!doctype html>\n<html>\n<head><meta charset="utf-8"><title>Converted</title></head>\n<body>\n'+h+'\n</body>\n</html>'],{type:'text/html'}));
   a.download='converted.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);

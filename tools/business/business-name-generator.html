@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Business</a> / Business Name Generator</div>
     <h1>Free Business Name Generator</h1>
     <p class="lede">Stuck on a name? Type what your business does, pick an industry vibe, and get dozens of catchy, brandable name ideas with domain-style spellings — free, instant, no account.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -275,6 +276,12 @@
     }
     var box = document.getElementById('out');
     box.innerHTML = '';
+    if (style === 'keyword' && !kw) {
+      var note = document.createElement('div');
+      note.className = 'output';
+      note.textContent = 'Add a keyword for keyword-first names — showing brandable ideas meanwhile.';
+      box.appendChild(note);
+    }
     out.forEach(function (nm) {
       var card = document.createElement('div');
       card.className = 'name-card';

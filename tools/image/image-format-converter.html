@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Image Format Converter</div>
     <h1>Image Format Converter</h1>
     <p class="lede">Convert any image between PNG, JPG and WebP in seconds — pick your format and quality, preview the result, then download. Your photos never leave your device.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -89,7 +90,7 @@ const fileEl=document.getElementById('file'),fmtEl=document.getElementById('fmt'
 let srcImg=null,srcName='image',dlURL=null;
 qEl.addEventListener('input',()=>document.getElementById('qVal').textContent=qEl.value);
 fmtEl.addEventListener('change',()=>document.getElementById('qWrap').style.display=fmtEl.value==='image/png'?'none':'');
-document.getElementById('qWrap').style.display='none';
+document.getElementById('qWrap').style.display=(fmtEl.value==='image/png')?'none':'';
 fileEl.addEventListener('change',()=>{
   const f=fileEl.files[0];if(!f)return;srcName=f.name.replace(/\.[^.]+$/,'')||'image';
   const rd=new FileReader();
@@ -115,6 +116,9 @@ document.getElementById('convert').addEventListener('click',()=>{
     const dl=document.getElementById('dl');dl.disabled=false;
     dl.onclick=()=>{const a=document.createElement('a');a.href=dlURL;a.download=srcName+'.'+ext;a.click();};
     document.getElementById('info').textContent='Done: '+c.width+' × '+c.height+' px, '+(b.size/1024).toFixed(1)+' KB ('+ext.toUpperCase()+')';
+    document.getElementById('prevWrap').innerHTML='';
+    const pv2=new Image();pv2.src=dlURL;pv2.style.maxWidth='100%';pv2.style.maxHeight='260px';pv2.style.borderRadius='8px';
+    document.getElementById('prevWrap').appendChild(pv2);
   },fmtEl.value,q);
 });
 </script>

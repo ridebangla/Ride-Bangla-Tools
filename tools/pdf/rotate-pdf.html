@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rotate PDF Free Online — Turn PDF Pages | Ride Bangla Tools</title>
-<meta name="description" content="Rotate PDF pages online free — turn every page 90, 180 or 270 degrees and download the fixed file. No signup.">
+<meta name="description" content="Rotate PDF pages online free — turn all pages — or just a page range — 90, 180 or 270 degrees and download the fixed file. No signup.">
 <meta name="keywords" content="rotate pdf, turn pdf pages, fix pdf orientation online">
 <link rel="canonical" href="https://tools.ridebangla.bd/pdf/rotate-pdf.html">
 <meta property="og:title" content="Rotate PDF Free Online — Turn PDF Pages | Ride Bangla Tools">
-<meta property="og:description" content="Rotate PDF pages online free — turn every page 90, 180 or 270 degrees and download the fixed file. No signup.">
+<meta property="og:description" content="Rotate PDF pages online free — turn all pages — or just a page range — 90, 180 or 270 degrees and download the fixed file. No signup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/pdf/rotate-pdf.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rotate PDF Free Online — Turn PDF Pages | Ride Bangla Tools">
-<meta name="twitter:description" content="Rotate PDF pages online free — turn every page 90, 180 or 270 degrees and download the fixed file. No signup.">
+<meta name="twitter:description" content="Rotate PDF pages online free — turn all pages — or just a page range — 90, 180 or 270 degrees and download the fixed file. No signup.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://tools.ridebangla.bd/pdf/"}, {"@type": "ListItem", "position": 3, "name": "Rotate PDF", "item": "https://tools.ridebangla.bd/pdf/rotate-pdf.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Rotate PDF", "description": "Rotate every page of a PDF by 90, 180 or 270 degrees.", "url": "https://tools.ridebangla.bd/pdf/rotate-pdf.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Rotate PDF", "description": "Rotate PDF pages by 90, 180 or 270 degrees — all pages, or just a page range.", "url": "https://tools.ridebangla.bd/pdf/rotate-pdf.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Rotate PDF free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Rotate PDF is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Rotate PDF runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Is it safe to paste sensitive code or data here?", "acceptedAnswer": {"@type": "Answer", "text": "Since processing happens locally in your browser and nothing is sent anywhere, it's as safe as any other action on your own device \u2014 but as a habit, avoid pasting real passwords or production secrets into any web tool."}}]}</script>
 <style>
   /* tool-specific: sortable merge list */
@@ -80,7 +80,8 @@
   <div class="container">
     <div class="crumb"><a href="../">All tools</a> / <a href="./">PDF</a> / Rotate PDF</div>
     <h1>Rotate PDF</h1>
-    <p class="lede">Rotate every page of a PDF by 90, 180 or 270 degrees.</p>
+    <p class="lede">Rotate PDF pages by 90, 180 or 270 degrees — all pages, or just a page range.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 
@@ -89,6 +90,12 @@
     <div class="field"><label>PDF file</label><input type="file" id="roIn" accept="application/pdf,.pdf"></div>
     <div class="field"><label>Rotation</label>
       <select id="roDeg"><option value="90">90° clockwise</option><option value="180">180°</option><option value="270">270° clockwise</option></select></div>
+    <div class="field"><label>Pages</label>
+      <select id="roScope"><option value="all" selected>All pages</option><option value="range">Page range</option></select></div>
+    <div class="row" id="roRangeRow" style="display:none;">
+      <div class="field"><label>From page</label><input type="number" id="roFrom" min="1" value="1"></div>
+      <div class="field"><label>To page</label><input type="number" id="roTo" min="1" value="1"></div>
+    </div>
   </div>
   <div class="panel">
     <div class="field"><label>Result</label><div class="output empty" id="roStatus">Choose a PDF to begin.</div></div>
@@ -101,7 +108,10 @@
 
 <script>
 (function () {
-  var pdfFile = null, pdfName = 'document';
+  var pdfFile = null, pdfName = 'document', pageCount = 0;
+  document.getElementById('roScope').addEventListener('change', function (e) {
+    document.getElementById('roRangeRow').style.display = (e.target.value === 'range') ? '' : 'none';
+  });
   var status = document.getElementById('roStatus');
   
 function saveBlob(blob, name) {
@@ -114,27 +124,55 @@ function saveBlob(blob, name) {
   setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
 }
 
-  document.getElementById('roIn').addEventListener('change', function (e) {
+  document.getElementById('roIn').addEventListener('change', async function (e) {
     pdfFile = (e.target.files && e.target.files[0]) || null;
+    pageCount = 0;
     if (pdfFile) {
       pdfName = pdfFile.name.replace(/\.pdf$/i, '');
-      status.textContent = pdfFile.name + ' selected. Click "Rotate pages".';
+      try {
+        var buf0 = await pdfFile.arrayBuffer();
+        var doc0 = await PDFLib.PDFDocument.load(buf0, { ignoreEncryption: true });
+        pageCount = doc0.getPageCount();
+        document.getElementById('roTo').value = pageCount;
+        status.textContent = pdfFile.name + ' — ' + pageCount + ' page' + (pageCount === 1 ? '' : 's') + '. Click "Rotate pages".';
+      } catch (err) {
+        status.textContent = pdfFile.name + ' selected, but it could not be read as a PDF.';
+      }
       status.classList.remove('empty');
     }
   });
   document.getElementById('roBtn').addEventListener('click', async function () {
     if (!pdfFile) { alert('Choose a PDF file first.'); return; }
     var deg = parseInt(document.getElementById('roDeg').value, 10) || 90;
+    // FIX: old code rotated every page with no choice, and rejected
+    // password-protected PDFs that pdf-lib can otherwise open read-only.
+    var scope = document.getElementById('roScope').value;
+    var from = 1, to = pageCount || 0;
+    if (scope === 'range') {
+      from = Math.max(1, parseInt(document.getElementById('roFrom').value, 10) || 1);
+      to = pageCount ? Math.min(pageCount, parseInt(document.getElementById('roTo').value, 10) || pageCount) : from;
+      if (from > to) { alert('The "from" page must be before the "to" page.'); return; }
+    }
     try {
       var buf = await pdfFile.arrayBuffer();
-      var doc = await PDFLib.PDFDocument.load(buf);
-      doc.getPages().forEach(function (pg) {
-        var cur = (pg.getRotation && pg.getRotation().angle) || 0;
-        pg.setRotation(PDFLib.degrees((cur + deg) % 360));
-      });
+      var doc = await PDFLib.PDFDocument.load(buf, { ignoreEncryption: true });
+      var pages = doc.getPages();
+      if (scope === 'range') {
+        for (var i = from - 1; i <= to - 1 && i < pages.length; i++) {
+          var cur = (pages[i].getRotation && pages[i].getRotation().angle) || 0;
+          pages[i].setRotation(PDFLib.degrees((cur + deg) % 360));
+        }
+      } else {
+        pages.forEach(function (pg) {
+          var cur = (pg.getRotation && pg.getRotation().angle) || 0;
+          pg.setRotation(PDFLib.degrees((cur + deg) % 360));
+        });
+      }
       var bytes = await doc.save();
-      saveBlob(new Blob([bytes], { type: 'application/pdf' }), pdfName + '-rotated-' + deg + '.pdf');
-      status.textContent = 'Done — all pages rotated ' + deg + ' degrees.';
+      saveBlob(new Blob([bytes], { type: 'application/pdf' }), pdfName + '-rotated-' + deg + (scope === 'range' ? '-p' + from + '-' + to : '') + '.pdf');
+      status.textContent = scope === 'range'
+        ? 'Done — pages ' + from + ' to ' + to + ' rotated ' + deg + ' degrees.'
+        : 'Done — all pages rotated ' + deg + ' degrees.';
     } catch (err) {
       status.textContent = 'Could not read that file as a PDF.';
     }

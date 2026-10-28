@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Date & Time</a> / Timestamp Converter</div>
     <h1>Timestamp Converter</h1>
     <p class="lede">Convert between Unix timestamps and readable dates.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -86,8 +87,10 @@
   document.getElementById('tsBtn').addEventListener('click', function () {
     var out = document.getElementById('tsOut');
     var v = document.getElementById('tsIn').value.trim();
-    var sec = Number(v);
-    if (v === '' || !isFinite(sec)) { out.textContent = 'Enter a number of seconds first.'; out.classList.remove('empty'); return; }
+    var num = Number(v);
+    if (v === '' || !isFinite(num)) { out.textContent = 'Enter a number of seconds first.'; out.classList.remove('empty'); return; }
+    // 13-digit millisecond timestamps are common (e.g. from Date.now()); treat large values as ms, not seconds.
+    var sec = Math.abs(num) >= 100000000000 ? num / 1000 : num;
     var d = new Date(sec * 1000);
     out.textContent = 'UTC: ' + d.toUTCString() + '\nLocal: ' + d.toLocaleString() + '\nISO: ' + d.toISOString();
     out.classList.remove('empty');
@@ -97,7 +100,7 @@
     var v = document.getElementById('tsDate').value;
     if (!v) { out.textContent = 'Pick a date and time first.'; out.classList.remove('empty'); return; }
     var d = new Date(v);
-    out.textContent = 'Unix timestamp: ' + Math.floor(d.getTime() / 1000) + ' seconds\nThat is ' + d.toUTCString() + ' in UTC.';
+    out.textContent = 'Unix timestamp: ' + Math.floor(d.getTime() / 1000) + ' seconds (' + d.getTime() + ' milliseconds)\nThat is ' + d.toUTCString() + ' in UTC.';
     out.classList.remove('empty');
   });
 })();

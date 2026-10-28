@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Favicon Generator Free Online — Make favicon.ico and App Icons | Ride Bangla Tools</title>
-<meta name="description" content="Generate favicon files from an image online free — a favicon.ico plus PNG icons at 16, 32, 48, 180, 192 and 512 pixels. No signup.">
+<meta name="description" content="Generate favicon files from an image online free — a multi-size favicon.ico (16, 32 and 48) plus PNG icons at 16, 32, 48, 180, 192 and 512 pixels, including apple-touch-icon.png, android-chrome-192x192.png and android-chrome-512x512.png files. No signup.">
 <meta name="keywords" content="favicon generator, make favicon.ico, app icon generator online">
 <link rel="canonical" href="https://tools.ridebangla.bd/image/favicon-generator.html">
 <meta property="og:title" content="Favicon Generator Free Online — Make favicon.ico and App Icons | Ride Bangla Tools">
-<meta property="og:description" content="Generate favicon files from an image online free — a favicon.ico plus PNG icons at 16, 32, 48, 180, 192 and 512 pixels. No signup.">
+<meta property="og:description" content="Generate favicon files from an image online free — a multi-size favicon.ico (16, 32 and 48) plus PNG icons at 16, 32, 48, 180, 192 and 512 pixels, including apple-touch-icon.png, android-chrome-192x192.png and android-chrome-512x512.png files. No signup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/image/favicon-generator.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Favicon Generator Free Online — Make favicon.ico and App Icons | Ride Bangla Tools">
-<meta name="twitter:description" content="Generate favicon files from an image online free — a favicon.ico plus PNG icons at 16, 32, 48, 180, 192 and 512 pixels. No signup.">
+<meta name="twitter:description" content="Generate favicon files from an image online free — a multi-size favicon.ico (16, 32 and 48) plus PNG icons at 16, 32, 48, 180, 192 and 512 pixels, including apple-touch-icon.png, android-chrome-192x192.png and android-chrome-512x512.png files. No signup.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Favicon Generator</div>
     <h1>Favicon Generator</h1>
     <p class="lede">Turn an image into a favicon.ico and PNG app icons.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -75,6 +76,7 @@
     <div class="btn-row"><button type="button" class="btn" id="fvBtn">Generate icons</button></div>
   </div>
   <div class="panel">
+    <div class="field"><label>Preview</label><div class="output empty" id="fvPrevWrap" style="text-align:center;"><span style="color:var(--muted)">Your icon preview will appear here</span></div></div>
     <div class="field"><label>Downloads</label><div class="output empty" id="fvOut">The icon files will appear here.</div></div>
   </div>
 </section>
@@ -89,14 +91,30 @@
     c.getContext('2d').drawImage(img, sx, sy, side, side, 0, 0, size, size);
     return c;
   }
-  function icoFromPng(pngBytes) {
-    var header = new DataView(new ArrayBuffer(6));
-    header.setUint16(0, 0, true); header.setUint16(2, 1, true); header.setUint16(4, 1, true);
-    var entry = new DataView(new ArrayBuffer(16));
-    entry.setUint8(0, 32); entry.setUint8(1, 32); entry.setUint8(2, 0); entry.setUint8(3, 0);
-    entry.setUint16(4, 1, true); entry.setUint16(6, 32, true);
-    entry.setUint32(8, pngBytes.length, true); entry.setUint32(12, 22, true);
-    return new Blob([header.buffer, entry.buffer, pngBytes], { type: 'image/x-icon' });
+  function canvasToPngBytes(c) {
+    return new Promise(function (res) {
+      c.toBlob(function (b) { b.arrayBuffer().then(res); }, 'image/png');
+    });
+  }
+  function icoFromPngs(list) {
+    var count = list.length, header = new DataView(new ArrayBuffer(6));
+    header.setUint16(0, 0, true); header.setUint16(2, 1, true); header.setUint16(4, count, true);
+    var parts = [header.buffer], offset = 6 + 16 * count;
+    list.forEach(function (item) {
+      var entry = new DataView(new ArrayBuffer(16));
+      entry.setUint8(0, item.size); entry.setUint8(1, item.size); entry.setUint8(2, 0); entry.setUint8(3, 0);
+      entry.setUint16(4, 1, true); entry.setUint16(6, 32, true);
+      entry.setUint32(8, item.bytes.byteLength, true); entry.setUint32(12, offset, true);
+      parts.push(entry.buffer); offset += item.bytes.byteLength;
+    });
+    list.forEach(function (item) { parts.push(item.bytes); });
+    return new Blob(parts, { type: 'image/x-icon' });
+  }
+  function addDlLink(out, blob, name, label, first) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name; a.className = 'btn-download';
+    a.textContent = label; a.style.margin = '0 8px 8px 0';
+    if (first && out.firstChild) out.insertBefore(a, out.firstChild); else out.appendChild(a);
   }
   document.getElementById('fvBtn').addEventListener('click', function () {
     var out = document.getElementById('fvOut');
@@ -106,6 +124,20 @@
     img.onload = function () {
       out.innerHTML = '';
       out.classList.remove('empty');
+      // FIX: show what the icon actually looks like (old code downloaded blind),
+      // and warn when a tiny source will look soft at large sizes.
+      var prevWrap = document.getElementById('fvPrevWrap');
+      prevWrap.innerHTML = '';
+      var pv = drawAt(img, 192);
+      pv.style.maxWidth = '100%'; pv.style.borderRadius = '8px';
+      prevWrap.appendChild(pv);
+      prevWrap.classList.remove('empty');
+      if (img.naturalWidth < 512 || img.naturalHeight < 512) {
+        var warn = document.createElement('p');
+        warn.style.cssText = 'font-size:12.5px;color:var(--muted,#6b7280);margin-top:8px;';
+        warn.textContent = 'Note: this image is ' + img.naturalWidth + '×' + img.naturalHeight + ' px. Large icons are upscaled from it and may look soft — a square image of 512×512 or larger gives the sharpest icons. Non-square images are centre-cropped to a square.';
+        prevWrap.appendChild(warn);
+      }
       SIZES.forEach(function (size) {
         drawAt(img, size).toBlob(function (blob) {
           var a = document.createElement('a');
@@ -117,17 +149,17 @@
           out.appendChild(a);
         }, 'image/png');
       });
-      drawAt(img, 32).toBlob(function (blob) {
-        blob.arrayBuffer().then(function (buf) {
-          var a = document.createElement('a');
-          a.href = URL.createObjectURL(icoFromPng(buf));
-          a.download = 'favicon.ico';
-          a.className = 'btn-download';
-          a.textContent = 'favicon.ico (32×32)';
-          a.style.margin = '0 8px 8px 0';
-          out.insertBefore(a, out.firstChild);
-        });
-      }, 'image/png');
+      // Standard set (ADDITIONAL downloads; the icon-<n>.png links above are unchanged):
+      // multi-size favicon.ico (16/32/48), apple-touch-icon.png (180),
+      // android-chrome-192x192.png and android-chrome-512x512.png, all from the same source.
+      Promise.all([16, 32, 48].map(function (s) {
+        return canvasToPngBytes(drawAt(img, s)).then(function (b) { return { size: s, bytes: b }; });
+      })).then(function (list) {
+        addDlLink(out, icoFromPngs(list), 'favicon.ico', 'favicon.ico (16, 32 & 48)', true);
+      });
+      drawAt(img, 180).toBlob(function (blob) { addDlLink(out, blob, 'apple-touch-icon.png', 'apple-touch-icon.png (180×180)'); }, 'image/png');
+      drawAt(img, 192).toBlob(function (blob) { addDlLink(out, blob, 'android-chrome-192x192.png', 'android-chrome-192x192.png'); }, 'image/png');
+      drawAt(img, 512).toBlob(function (blob) { addDlLink(out, blob, 'android-chrome-512x512.png', 'android-chrome-512x512.png'); }, 'image/png');
     };
     img.onerror = function () { out.textContent = 'Could not read that image.'; out.classList.remove('empty'); };
     img.src = URL.createObjectURL(file);

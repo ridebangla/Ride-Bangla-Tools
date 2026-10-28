@@ -67,20 +67,24 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">QR Code</a> / Wi-Fi QR Generator</div>
     <h1>Wi-Fi QR Generator</h1>
     <p class="lede">Let guests join your Wi-Fi with a single scan — no typing passwords, no spelling mistakes.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
   <div class="panel">
     <div class="field"><label>Network name (SSID)</label><input type="text" id="ssid" value="Ride Bangla Office"></div>
-    <div class="field"><label>Password</label><input type="text" id="pw" value=""></div>
+    <div class="field"><label>Password</label><input type="password" id="pw" value="" autocomplete="off">
+      <label style="display:block;margin-top:8px;"><input type="checkbox" id="showPw" style="width:auto;display:inline;margin-right:6px;">Show password</label></div>
     <div class="field"><label>Security</label>
-      <select id="sec"><option value="WPA">WPA / WPA2</option><option value="WEP">WEP</option><option value="nopass">None (open network)</option></select>
+      <select id="sec"><option value="WPA">WPA / WPA2</option><option value="WPA3">WPA3</option><option value="WEP">WEP</option><option value="nopass">None (open network)</option></select>
     </div>
+    <div class="field"><label><input type="checkbox" id="hidden" style="width:auto;display:inline;margin-right:6px;">Hidden network</label></div>
     <div class="btn-row"><button type="button" class="btn" id="gen">Generate Wi-Fi QR code</button></div>
   </div>
   <div class="panel" style="text-align:center;">
-    <div id="qrHolder" style="display:inline-block;padding:16px;background:#fff;border-radius:8px;"></div>
-    <div class="btn-row" style="justify-content:center;margin-top:16px;"><button type="button" class="btn-download" id="dl">Download PNG</button>
+    <div id="qrHolder" style="display:inline-block;padding:16px;background:#fff;border-radius:8px;max-width:100%;"></div>
+    <style>#qrHolder canvas{max-width:100% !important;height:auto !important}</style>
+    <div class="btn-row" style="justify-content:center;margin-top:16px;"><label style="font-size:13px;">PNG size <select id="dlSize"><option value="512" selected>512 px</option><option value="1024">1024 px</option></select></label><button type="button" class="btn-download" id="dl">Download PNG</button>
 <button type="button" class="btn ghost" id="aiBtn22">AI Tips</button></div>
     <p style="font-size:12.5px;margin-top:14px;">Scanning this with a phone camera joins the network directly — no need to share the password out loud.</p>
   </div>
@@ -92,27 +96,42 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
 </script>
 <script>
 function esc(s){ return s.replace(/([\\;,:"])/g, '\\$1'); }
-function generate() {
-  const ssid = esc(document.getElementById('ssid').value);
-  const pw = esc(document.getElementById('pw').value);
+function generate(showAlert) {
+  const ssidRaw = document.getElementById('ssid').value;
+  const pwRaw = document.getElementById('pw').value;
   const sec = document.getElementById('sec').value;
-  const payload = `WIFI:T:${sec};S:${ssid};${sec==='nopass'?'':'P:'+pw+';'}H:false;;`;
+  if (!ssidRaw.trim()) { if (showAlert) alert('Enter the network name (SSID) first.'); return; }
+  if (sec !== 'nopass' && !pwRaw) { if (showAlert) alert('Enter the Wi-Fi password, or choose None (open network).'); return; }
+  const ssid = esc(ssidRaw);
+  const pw = esc(pwRaw);
+  const hidden = document.getElementById('hidden').checked;
+  const payload = `WIFI:T:${sec};S:${ssid};${sec==='nopass'?'':'P:'+pw+';'}H:${hidden ? 'true' : 'false'};;`;
+  window.__wifiPayload = payload;
   const holder = document.getElementById('qrHolder');
   holder.innerHTML = '';
   const canvas = document.createElement('canvas');
   holder.appendChild(canvas);
   QRCode.toCanvas(canvas, payload, { width: 280, color: { dark: '#12151C', light: '#FFFFFF' } });
 }
-document.getElementById('gen').addEventListener('click', generate);
+document.getElementById('gen').addEventListener('click', function () { generate(true); });
+document.getElementById('showPw').addEventListener('change', function () {
+  document.getElementById('pw').type = this.checked ? 'text' : 'password';
+});
 document.getElementById('dl').addEventListener('click', () => {
   const canvas = document.querySelector('#qrHolder canvas');
-  if (!canvas) return;
-  const a = document.createElement('a');
-  a.href = canvas.toDataURL('image/png');
-  a.download = 'wifi-qr.png';
-  a.click();
+  if (!canvas) { alert('Generate a Wi-Fi QR code first.'); return; }
+  if (!window.__wifiPayload) { const a0 = document.createElement('a'); a0.href = canvas.toDataURL('image/png'); a0.download = 'wifi-qr.png'; a0.click(); return; }
+  const size = parseInt(document.getElementById('dlSize').value, 10) || 512;
+  const off = document.createElement('canvas');
+  QRCode.toCanvas(off, window.__wifiPayload, { width: size, color: { dark: '#12151C', light: '#FFFFFF' } }, (err) => {
+    if (err) { alert('Could not render the PNG: ' + err.message); return; }
+    const a = document.createElement('a');
+    a.href = off.toDataURL('image/png');
+    a.download = 'wifi-qr-' + size + '.png';
+    a.click();
+  });
 });
-generate();
+generate(false);
 </script>
 <section class="tool-faq">
   <div class="container">

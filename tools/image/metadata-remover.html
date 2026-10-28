@@ -79,6 +79,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Metadata Remover</div>
     <h1>Metadata Remover</h1>
     <p class="lede">Photos and videos carry hidden data you can't see — camera model, exact date/time, sometimes even the GPS location where it was taken. Clean that out before you share the file, right in your browser.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 
@@ -139,12 +140,13 @@
 
       <div class="mr-bar" id="mrPdfBar"><div class="mr-bar-fill" id="mrPdfBarFill"></div></div>
       <div class="mr-status" id="mrPdfStatus"></div>
+      <div class="mr-found" id="mrPdfFound" hidden></div>
 
       <div class="btn-row" style="margin-top:16px;">
         <button type="button" class="btn" id="mrPdfBtn">Remove metadata</button>
         <a class="btn-download" id="mrPdfDl" style="display:none;">Download cleaned PDF</a>
       </div>
-      <p class="mr-privacy-note">Standard document fields (title, author, producer…) are blanked and timestamps reset — the pages themselves are untouched.</p>
+      <p class="mr-privacy-note">Standard document fields (title, author, subject, keywords, creator, producer) are blanked and creation/modification dates are reset — the pages themselves are untouched. An embedded XMP metadata stream, if the original PDF had one, is not verified as removed.</p>
     </div>
   </div>
 </section>
@@ -205,8 +207,10 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
   var dl = document.getElementById('mrImgDl');
   var currentFile = null;
   var exifrLoaded = false;
+  var lastFound = null;
 
   function renderFound(tags) {
+    lastFound = null;
     if (!tags) {
       foundBox.innerHTML = '<div class="mr-found-row"><span class="k">Scan</span><span class="v">Could not read a metadata preview for this file — it will still be fully stripped when you click Remove.</span></div>';
       foundBox.hidden = false;
@@ -223,13 +227,15 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
       rows.push(['GPS location', tags.latitude.toFixed(5) + ', ' + tags.longitude.toFixed(5)]);
     }
     if (!rows.length) {
+      lastFound = [];
       foundBox.innerHTML = '<div class="mr-clean">No identifying metadata found in this file.</div>';
       foundBox.hidden = false;
       return;
     }
+    lastFound = rows;
     foundBox.innerHTML = '<div class="section-label" style="margin-top:0;">Found in this file</div>' +
       rows.map(function (r) {
-        return '<div class="mr-found-row"><span class="k">' + r[0] + '</span><span class="v">' + r[1].replace(/</g, '&lt;') + '</span></div>';
+        return '<div class="mr-found-row"><span class="k">' + r[0] + '</span><span class="v">' + String(r[1]).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') + '</span></div>';
       }).join('');
     foundBox.hidden = false;
   }
@@ -297,7 +303,21 @@ document.querySelectorAll('.tab-btn').forEach(function (btn) {
           dl.download = mrBaseName(currentFile.name) + '-clean' + outExt;
           dl.style.display = 'inline-block';
           dl.textContent = mrT('common.downloadPhoto', 'Download cleaned photo');
-          status.textContent = rbT('msg.doneMeta','Done — all metadata removed.');
+          status.textContent = rbT('msg.doneMeta','Done — all metadata removed.') + (currentFile.type === 'image/gif' ? ' Note: animation is not preserved — the cleaned file is a still image.' : '');
+          (function () {
+            var esc = function (s) { return String(s).replace(/</g, '&lt;'); };
+            if (lastFound === null) {
+              foundBox.innerHTML = '<div class="section-label" style="margin-top:0;">Before / after</div><div class="mr-found-row"><span class="k">Removed</span><span class="v">A metadata preview could not be read for this file, so individual items cannot be listed — the cleaned file is still a fresh redraw of the image pixels only, with no metadata carried over.</span></div>';
+            } else if (!lastFound.length) {
+              foundBox.innerHTML = '<div class="section-label" style="margin-top:0;">Before / after</div><div class="mr-found-row"><span class="k">Found</span><span class="v">No identifying metadata was found, so there was nothing to remove — the cleaned file is a fresh redraw of the pixels only.</span></div>';
+            } else {
+              var keys = lastFound.map(function (r) { return r[0]; }).join(', ');
+              foundBox.innerHTML = '<div class="section-label" style="margin-top:0;">Before / after</div>' +
+                lastFound.map(function (r) { return '<div class="mr-found-row"><span class="k">' + esc(r[0]) + '</span><span class="v">Found: ' + esc(r[1]) + ' — Removed</span></div>'; }).join('') +
+                '<div class="mr-found-row"><span class="k">Removed</span><span class="v">' + esc(keys) + ' — the cleaned file is a fresh redraw of the image pixels only, so none of these items are in it.</span></div>';
+            }
+            foundBox.hidden = false;
+          })();
         }, mime, quality);
       };
       img.onerror = function () {
@@ -440,7 +460,7 @@ function mrStripMp4(buf) {
           dl.download = mrBaseName(currentFile.name) + '-clean.mp4';
           dl.style.display = 'inline-block';
           dl.textContent = mrT('common.downloadVideo', 'Download cleaned video');
-          status.textContent = n > 0 ? 'Done — metadata removed, video and audio untouched.'
+          status.textContent = n > 0 ? 'Done — metadata removed, video and audio untouched (' + n + ' metadata block(s) wiped).'
                                      : 'Done — no metadata blocks found, file is already clean.';
           bar.style.display = 'none';
           return;
@@ -490,6 +510,8 @@ function mrStripMp4(buf) {
   var barFill = document.getElementById('mrPdfBarFill');
   var status = document.getElementById('mrPdfStatus');
   var btn = document.getElementById('mrPdfBtn');
+  var pdfFoundBox = document.getElementById('mrPdfFound');
+  var lastPdfRows = [];
   var dl = document.getElementById('mrPdfDl');
   var currentFile = null;
   var lastUrl = null;
@@ -498,6 +520,7 @@ function mrStripMp4(buf) {
     currentFile = e.target.files[0] || null;
     dl.style.display = 'none';
     status.textContent = '';
+    pdfFoundBox.hidden = true; pdfFoundBox.innerHTML = '';
   });
 
   btn.addEventListener('click', async function () {
@@ -516,6 +539,25 @@ function mrStripMp4(buf) {
       var pdfDoc = await window.PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
       barFill.style.width = '60%';
       status.textContent = rbT('msg.processing','Removing metadata…');
+      // Before/after summary: read the Info fields actually present, BEFORE clearing
+      // them, so the summary lists real values only (no invented example metadata).
+      lastPdfRows = [];
+      (function () {
+        function addRow(k, v) { if (v !== null && v !== undefined && String(v).trim() !== '') lastPdfRows.push([k, String(v)]); }
+        try { addRow('Title', pdfDoc.getTitle()); } catch (e1) {}
+        try { addRow('Author', pdfDoc.getAuthor()); } catch (e1) {}
+        try { addRow('Subject', pdfDoc.getSubject()); } catch (e1) {}
+        try { var kw = pdfDoc.getKeywords(); addRow('Keywords', Array.isArray(kw) ? kw.join(', ') : kw); } catch (e1) {}
+        try { addRow('Creator', pdfDoc.getCreator()); } catch (e1) {}
+        try { addRow('Producer', pdfDoc.getProducer()); } catch (e1) {}
+        try { var cd = pdfDoc.getCreationDate(); addRow('Created', cd instanceof Date ? cd.toLocaleString() : cd); } catch (e1) {}
+        try { var md = pdfDoc.getModificationDate(); addRow('Modified', md instanceof Date ? md.toLocaleString() : md); } catch (e1) {}
+        var esc = function (s) { return String(s).replace(/</g, '&lt;'); };
+        pdfFoundBox.innerHTML = lastPdfRows.length
+          ? '<div class="section-label" style="margin-top:0;">Found in this file</div>' + lastPdfRows.map(function (r) { return '<div class="mr-found-row"><span class="k">' + esc(r[0]) + '</span><span class="v">' + esc(r[1]) + '</span></div>'; }).join('')
+          : '<div class="mr-clean">No document info or timestamps found in this file.</div>';
+        pdfFoundBox.hidden = false;
+      })();
       pdfDoc.setTitle('');
       pdfDoc.setAuthor('');
       pdfDoc.setSubject('');
@@ -534,7 +576,15 @@ function mrStripMp4(buf) {
       dl.download = mrBaseName(currentFile.name) + '-clean.pdf';
       dl.style.display = 'inline-block';
       dl.textContent = mrT('common.downloadPdf', 'Download cleaned PDF');
-      status.textContent = 'Done — metadata removed, pages untouched.';
+      status.textContent = 'Done — document info and timestamps cleared, pages untouched.';
+      (function () {
+        var esc = function (s) { return String(s).replace(/</g, '&lt;'); };
+        if (lastPdfRows.length) {
+          pdfFoundBox.innerHTML += '<div class="section-label">Removed</div><div class="mr-found-row"><span class="k">Removed</span><span class="v">' + esc(lastPdfRows.map(function (r) { return r[0]; }).join(', ')) + ' — cleared from the document info and timestamps above. An embedded XMP metadata stream, if the original PDF had one, is not verified as removed.</span></div>';
+        } else {
+          pdfFoundBox.innerHTML += '<div class="section-label">Removed</div><div class="mr-found-row"><span class="k">Removed</span><span class="v">Nothing to clear — no document info or timestamps were present. An embedded XMP metadata stream, if the original PDF had one, is not verified as removed.</span></div>';
+        }
+      })();
       bar.style.display = 'none';
     } catch (err) {
       console.error('PDF metadata removal failed:', err);

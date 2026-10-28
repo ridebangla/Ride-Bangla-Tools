@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Split PDF Free Online — Extract PDF Pages | Ride Bangla Tools</title>
-<meta name="description" content="Split a PDF online free — extract a page range into a new PDF file. No signup, files stay in your browser.">
+<meta name="description" content="Split a PDF online free — extract a page range into a new PDF file, or download each page as its own PDF file. No signup, files stay in your browser.">
 <meta name="keywords" content="split pdf, extract pdf pages, separate pdf pages, pdf splitter online">
 <link rel="canonical" href="https://tools.ridebangla.bd/pdf/split-pdf.html">
 <meta property="og:title" content="Split PDF Free Online — Extract PDF Pages | Ride Bangla Tools">
-<meta property="og:description" content="Split a PDF online free — extract a page range into a new PDF file. No signup, files stay in your browser.">
+<meta property="og:description" content="Split a PDF online free — extract a page range into a new PDF file, or download each page as its own PDF file. No signup, files stay in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/pdf/split-pdf.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Split PDF Free Online — Extract PDF Pages | Ride Bangla Tools">
-<meta name="twitter:description" content="Split a PDF online free — extract a page range into a new PDF file. No signup, files stay in your browser.">
+<meta name="twitter:description" content="Split a PDF online free — extract a page range into a new PDF file, or download each page as its own PDF file. No signup, files stay in your browser.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -80,7 +80,8 @@
   <div class="container">
     <div class="crumb"><a href="../">All tools</a> / <a href="./">PDF</a> / Split PDF</div>
     <h1>Split PDF</h1>
-    <p class="lede">Extract a range of pages from a PDF into a new file.</p>
+    <p class="lede">Extract a range of pages from a PDF into a new file — or download each page on its own.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 
@@ -94,6 +95,7 @@
   <div class="panel">
     <div class="field"><label>Result</label><div class="output empty" id="spStatus">Choose a PDF to begin.</div></div>
     <div class="btn-row"><button type="button" class="btn" id="spBtn">Extract pages</button></div>
+    <div class="field"><label>Or download one page at a time</label><div id="spPages"></div><p style="font-size:12.5px;color:var(--muted,#6b7280)">Each page downloads as its own PDF file. There is no combined ZIP download.</p></div>
   </div>
 </section>
 <script src="../assets/pdf-lib.min.js"></script>
@@ -104,6 +106,30 @@
 (function () {
   var pdfDoc = null, pdfName = 'document';
   var info = document.getElementById('spInfo');
+  var pagesBox = document.getElementById('spPages');
+  function renderPageButtons(n) {
+    pagesBox.innerHTML = '';
+    for (var i = 1; i <= n; i++) {
+      (function (p) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'btn ghost'; b.style.margin = '0 8px 8px 0';
+        b.textContent = 'Download page ' + p;
+        b.addEventListener('click', function () { downloadSinglePage(p - 1); });
+        pagesBox.appendChild(b);
+      })(i);
+    }
+  }
+  async function downloadSinglePage(idx) {
+    if (!pdfDoc) { alert('Choose a PDF file first.'); return; }
+    try {
+      var out = await PDFLib.PDFDocument.create();
+      var pages = await out.copyPages(pdfDoc, [idx]);
+      pages.forEach(function (pg) { out.addPage(pg); });
+      var bytes = await out.save();
+      saveBlob(new Blob([bytes], { type: 'application/pdf' }), pdfName + '-page-' + (idx + 1) + '.pdf');
+      status.textContent = 'Done — page ' + (idx + 1) + ' downloaded as its own file.';
+    } catch (err) { status.textContent = 'Could not extract that page.'; }
+  }
   var status = document.getElementById('spStatus');
   
 function saveBlob(blob, name) {
@@ -119,18 +145,21 @@ function saveBlob(blob, name) {
   document.getElementById('spIn').addEventListener('change', async function (e) {
     var file = e.target.files && e.target.files[0];
     pdfDoc = null;
-    if (!file) { info.textContent = 'No file chosen yet.'; return; }
+    if (!file) { info.textContent = 'No file chosen yet.'; pagesBox.innerHTML = ''; return; }
     pdfName = file.name.replace(/\.pdf$/i, '');
     try {
       var buf = await file.arrayBuffer();
-      pdfDoc = await PDFLib.PDFDocument.load(buf);
+      pdfDoc = await PDFLib.PDFDocument.load(buf, { ignoreEncryption: true });
       var n = pdfDoc.getPageCount();
       info.textContent = file.name + ' — ' + n + ' page' + (n === 1 ? '' : 's') + '.';
       document.getElementById('spTo').value = n;
+      document.getElementById('spFrom').value = 1;
       status.textContent = 'Ready. Choose the page range and click "Extract pages".';
+      renderPageButtons(n);
       status.classList.remove('empty');
     } catch (err) {
       info.textContent = 'Could not read that file as a PDF.';
+      pagesBox.innerHTML = '';
     }
   });
   document.getElementById('spBtn').addEventListener('click', async function () {

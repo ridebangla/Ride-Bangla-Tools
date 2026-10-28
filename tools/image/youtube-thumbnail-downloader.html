@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / YouTube Thumbnail Downloader</div>
     <h1>YouTube Thumbnail Downloader</h1>
     <p class="lede">Need a video’s thumbnail? Paste any YouTube link and grab its thumbnail in Full HD, SD or HQ instantly — free, no signup, works with Shorts and live videos too.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -198,7 +199,6 @@
     var m = u.match(/(?:youtube\.com\/(?:watch\?.*v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
     return m ? m[1] : null;
   }
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   document.getElementById('go').addEventListener('click', function () {
     var id = vidId(document.getElementById('url').value);
     var box = document.getElementById('out');
@@ -214,10 +214,39 @@
       var url = 'https://img.youtube.com/vi/' + id + '/' + s.f;
       var d = document.createElement('div');
       d.style.cssText = 'margin-bottom:14px;border:1px solid var(--border,#e5e7eb);border-radius:10px;overflow:hidden';
-      d.innerHTML = '<img src="' + url + '" alt="' + esc(s.n) + ' thumbnail" style="width:100%;display:block" loading="lazy">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px">' +
-        '<span style="font-size:13px;font-weight:600">' + esc(s.n) + '</span>' +
-        '<a class="btn ghost" style="padding:6px 12px" href="' + url + '" target="_blank" rel="noopener" download="thumbnail-' + s.f + '">Download</a></div>';
+      var img = document.createElement('img');
+      img.src = url; img.alt = s.n + ' thumbnail'; img.style.cssText = 'width:100%;display:block'; img.loading = 'lazy';
+      // FIX: videos without a Full HD thumbnail used to show YouTube's grey
+      // placeholder as if it were a real thumbnail. Hide sizes that fail to load.
+      img.onerror = function () {
+        d.remove();
+        if (!box.children.length) box.innerHTML = '<p style="color:var(--muted,#6b7280)">No thumbnail could be loaded for this video. Check the link and try again.</p>';
+      };
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 12px';
+      var label = document.createElement('span');
+      label.style.cssText = 'font-size:13px;font-weight:600'; label.textContent = s.n;
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'btn ghost'; btn.style.padding = '6px 12px'; btn.textContent = 'Download';
+      // FIX: a cross-origin <a download> is ignored by browsers, so "Download"
+      // only opened the image. Fetch it as a blob for a real download, and
+      // fall back to opening it when the fetch is blocked.
+      btn.addEventListener('click', async function () {
+        try {
+          var res = await fetch(url, { mode: 'cors' });
+          if (!res.ok) throw new Error('fetch failed');
+          var blob = await res.blob();
+          var burl = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = burl; a.download = 'thumbnail-' + s.f;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function () { URL.revokeObjectURL(burl); }, 5000);
+        } catch (err) {
+          window.open(url, '_blank', 'noopener');
+        }
+      });
+      row.appendChild(label); row.appendChild(btn);
+      d.appendChild(img); d.appendChild(row);
       box.appendChild(d);
     });
   });

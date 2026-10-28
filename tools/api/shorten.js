@@ -17,8 +17,22 @@
 //    API in Google Cloud, set SAFE_BROWSING_API_KEY in Vercel env, and
 //    query threats.lookup before shortening. Until then, the static
 //    blocklist + rate limit above are the controls in place.
+//  - MAX-01/MAX-02 (security-max, staged): DNS-resolution block,
+//    body-size cap, empty-host rejection, normalized-URL forwarding,
+//    and an env-gated Safe Browsing check (no-op without the key).
+
+import dns from 'node:dns';
 
 const MAX_URL_LEN = 8000;
+
+// The site's PUBLIC site key (same value tools/api/ai.js sends; it only
+// identifies the site — it is NOT a secret and does NOT stop a caller
+// who reads it out of the page source. Its purpose is parity with
+// /api/ai: casual cross-site / drive-by use of this backend stops,
+// while the free public tool keeps working unchanged for visitors.
+// Overridable via env if the key ever rotates.
+const EXPECTED_SITE_KEY =
+  process.env.TOOLS_SHORTEN_SITE_KEY || 'rbsite-00f37b79c72f4e678febbd82d43bb46c';
 
 // ---- Trusted client IP (same rule as tools/api/ai.js) ----
 function getClientIp(req) {
@@ -187,7 +201,10 @@ function isBlockedHost(hostname) {
   if (host.startsWith('[') && host.endsWith(']')) host = host.slice(1, -1);
   if (host.endsWith('.localhost')) return true;
   if (host === '::1' || host === '::') return true;
-  if (host.startsWith('fe80:') || host.startsWith('fc') || host.startsWith('fd')) return true;
+  // MAX-01: IPv6 prefix checks only make sense for an IP literal (a ':'
+  // is present). Without the colon gate, ordinary DNS names starting
+  // with "fc"/"fd" (e.g. fda.gov) were wrongly blocked.
+  if (host.includes(':') && (host.startsWith('fe80:') || host.startsWith('fc') || host.startsWith('fd'))) return true;
   // IPv4-mapped IPv6 — judge the embedded IPv4. WHATWG URL may keep the
   // dotted form ('::ffff:127.0.0.1') or normalize it to hex groups
   // ('::ffff:7f00:1'); handle both.
@@ -243,6 +260,82 @@ function isBlockedHost(hostname) {
   return false;
 }
 
+// ---- DNS-resolution check (MAX-01) ----
+// A public hostname can RESOLVE to a private address (attacker DNS,
+// rebinding-shaped setup) even though its spelling passes isBlockedHost.
+// The server never fetches the target itself, so this is defence-in-depth
+// for the clicker/provider path, not a server-SSRF control: resolve the
+// host and refuse when ANY answer is a blocked address. Fail-OPEN on
+// lookup error/timeout: a DNS outage must not break legitimate links,
+// and rebinding between check time and click time cannot be closed from
+// here (documented residual) — a positive private answer is still a
+// hard block. IP literals are never looked up: the spelling blocklist
+// above already judges them.
+const DNS_LOOKUP_TIMEOUT_MS = 3000;
+
+function resolvedIsPrivate(addresses) {
+  return (addresses || []).some((a) => {
+    const addr = typeof a === 'string' ? a : a && a.address;
+    return typeof addr === 'string' && addr.length > 0 && isBlockedHost(addr);
+  });
+}
+
+async function resolvesToBlockedHost(hostname) {
+  try {
+    const answers = await Promise.race([
+      dns.lookup(hostname, { all: true }),
+      new Promise((resolve) => setTimeout(() => resolve(null), DNS_LOOKUP_TIMEOUT_MS)),
+    ]);
+    if (!answers) return false; // timeout -> fail open (see comment above)
+    return resolvedIsPrivate(answers);
+  } catch {
+    return false; // lookup error -> fail open (see comment above)
+  }
+}
+
+// ---- Safe Browsing opt-in check (MAX-02) ----
+// Only active when the owner has placed SAFE_BROWSING_API_KEY in the
+// Vercel env (owner launch step; see the file header). Without the key
+// this is a no-op and behaviour is exactly as before. On a threat match
+// the URL is refused; on API error/timeout the check fails OPEN (a Safe
+// Browsing outage must not take down the free tool) and the failure is
+// logged. The key itself is never logged or returned.
+const SB_TIMEOUT_MS = 5000;
+const SB_THREAT_TYPES = ['MALWARE', 'SOCIAL_ENGINEERING', 'UNWANTED_SOFTWARE', 'POTENTIALLY_HARMFUL_APPLICATION'];
+
+async function isSafeBrowsingMatch(targetUrl) {
+  const apiKey = process.env.SAFE_BROWSING_API_KEY;
+  if (!apiKey) return false;
+  try {
+    const r = await fetch(
+      'https://safebrowsing.googleapis.com/v4/threatMatches:find?key=' + encodeURIComponent(apiKey),
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client: { clientId: 'ridebangla-tools', clientVersion: '1.0' },
+          threatInfo: {
+            threatTypes: SB_THREAT_TYPES,
+            platformTypes: ['ANY_PLATFORM'],
+            threatEntryTypes: ['URL'],
+            threatEntries: [{ url: targetUrl }],
+          },
+        }),
+        signal: AbortSignal.timeout(SB_TIMEOUT_MS),
+      }
+    );
+    if (!r.ok) {
+      console.error('[shorten] Safe Browsing lookup failed: HTTP ' + r.status);
+      return false;
+    }
+    const data = await r.json().catch(() => null);
+    return !!(data && Array.isArray(data.matches) && data.matches.length > 0);
+  } catch (e) {
+    console.error('[shorten] Safe Browsing lookup error');
+    return false;
+  }
+}
+
 export default async function handler(req, res) {
   const origin = req.headers.origin;
   if (origin && isOriginAllowed(origin)) {
@@ -254,6 +347,16 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
+  // MAX-01: body-size cap. A legitimate shorten body is ~8.1 KB at most
+  // (8000-char URL + site key); anything larger is abuse payload, not a
+  // link. The header check runs before parsing so oversized bodies cost
+  // nothing; the string check below covers bodies without that header.
+  const MAX_BODY_BYTES = 16384;
+  const contentLength = Number(req.headers['content-length']);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return res.status(413).json({ error: 'Request body too large' });
+  }
+
   const ip = getClientIp(req);
   const rl = isRateLimited(ip);
   if (rl.limited) {
@@ -261,11 +364,26 @@ export default async function handler(req, res) {
     return res.status(429).json({ error: 'RATE_LIMITED', message: `Too many shorten requests. Try again in ${rl.retryAfter} seconds.` });
   }
 
+  // MAX-01: raw string-body size cap (see the header check above).
+  if (typeof req.body === 'string' && req.body.length > MAX_BODY_BYTES) {
+    return res.status(413).json({ error: 'Request body too large' });
+  }
+
   let body;
   try {
     body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
   } catch {
     return res.status(400).json({ error: 'Invalid JSON' });
+  }
+
+  // S20-P10: site-key check (mirrors tools/api/ai.js). The shortener
+  // previously accepted any caller with no identifier at all.
+  const siteKey = body && body.siteKey;
+  if (!siteKey || typeof siteKey !== 'string') {
+    return res.status(401).json({ error: 'siteKey is required' });
+  }
+  if (siteKey !== EXPECTED_SITE_KEY) {
+    return res.status(401).json({ error: 'Invalid site key' });
   }
 
   let { url } = body || {};
@@ -282,17 +400,29 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Only http(s) URLs can be shortened' });
   }
   if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+  let parsed = null;
   try {
     const u = new URL(url);
     if (u.protocol !== 'http:' && u.protocol !== 'https:') throw new Error('bad protocol');
+    // PL-03: a short link must never launder login credentials — a URL
+    // carrying userinfo would hand the credentials to anyone holding the link.
+    if (u.username || u.password) {
+      return res.status(400).json({ error: 'URLs with login credentials cannot be shortened' });
+    }
     if (isBlockedHost(u.hostname)) {
       return res.status(400).json({ error: 'URL host is not allowed' });
     }
+    // MAX-01: an empty hostname (a collapsed scheme-relative input)
+    // passed the blocklist vacuously; reject it outright.
+    if (!u.hostname) {
+      return res.status(400).json({ error: 'Invalid URL' });
+    }
+    parsed = u;
   } catch {
     return res.status(400).json({ error: 'Invalid URL' });
   }
 
-  // RECHECK3 FIX (prepared, not yet pushed): provider order swapped.
+  // RECHECK3 FIX (live): provider order swapped.
   // Live evidence 2026-10-23: links created via TinyURL's free
   // api-create.php now route through a tinyurl.com/preview/deprecated/*
   // interstitial and, in a real browser, sometimes stall there instead
@@ -302,6 +432,33 @@ export default async function handler(req, res) {
   // is.gd is therefore primary; TinyURL stays as the fallback so a
   // provider outage still degrades to a working short link.
   // Primary: is.gd
+
+  // MAX-01: DNS-resolution check (fail-open on error/timeout; IP
+  // literals are already judged by the spelling blocklist, so they
+  // are not looked up). A positive private answer is a hard block.
+  // Note: the hostname is logged here only after PL-03 rejected any
+  // credential-bearing URL above, so no userinfo can reach the log.
+  // (Placed after the comment paragraph on purpose: this block's diff
+  // hunk must not touch the paragraph's first line, which other staged
+  // sets word differently.)
+  const hostForDns = parsed.hostname;
+  const isLiteral = hostForDns.includes(':') || /^\d+\.\d+\.\d+\.\d+$/.test(hostForDns);
+  if (!isLiteral && (await resolvesToBlockedHost(hostForDns))) {
+    console.error('[shorten] DNS block: host resolves to a blocked address');
+    return res.status(400).json({ error: 'URL host is not allowed' });
+  }
+
+  // MAX-01: send the provider the NORMALIZED URL that was actually
+  // checked, not the raw input string — otherwise the checked string
+  // and the shortened string can differ (parser normalization, e.g.
+  // embedded tabs/newlines the URL parser strips).
+  url = parsed.href;
+
+  // MAX-02: Safe Browsing (no-op without the owner-placed key).
+  if (await isSafeBrowsingMatch(url)) {
+    return res.status(400).json({ error: 'This URL was flagged as unsafe and cannot be shortened' });
+  }
+
   try {
     const r = await fetch('https://is.gd/create.php?format=simple&url=' + encodeURIComponent(url), { signal: AbortSignal.timeout(10000) });
     if (r.ok) {

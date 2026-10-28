@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / JWT Decoder</div>
     <h1>JWT Decoder</h1>
     <p class="lede">Paste a JSON Web Token to read its header and payload.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -76,6 +77,7 @@
   </div>
   <div class="panel">
     <div class="field"><label>Decoded</label><div class="output empty" id="jwtOut">The header and payload will appear here.</div></div>
+    <div class="btn-row"><button type="button" class="btn ghost" id="jwtCopy">Copy decoded</button><button type="button" class="btn ghost" id="jwtDl">Download .txt</button></div>
   </div>
 </section>
 <script>
@@ -94,6 +96,7 @@
     if (parts.length !== 3) {
       out.textContent = 'That does not look like a JWT — a token has three parts separated by dots.';
       out.classList.remove('empty');
+      window.__jwtOk = false;
       return;
     }
     try {
@@ -111,10 +114,23 @@
       lines.push('', 'Signature: present (' + parts[2].length + ' characters). This tool reads the token only — it does not verify the signature.');
       out.textContent = lines.join('\n');
       out.classList.remove('empty');
+      window.__jwtOk = true;
     } catch (e) {
       out.textContent = 'Could not decode that token: ' + e.message;
       out.classList.remove('empty');
+      window.__jwtOk = false;
     }
+  });
+  document.getElementById('jwtCopy').addEventListener('click', function () {
+    if (!window.__jwtOk) { alert('Decode a token first.'); return; }
+    rbCopy(document.getElementById('jwtOut').textContent);
+  });
+  document.getElementById('jwtDl').addEventListener('click', function () {
+    if (!window.__jwtOk) { alert('Decode a token first.'); return; }
+    var t = document.getElementById('jwtOut').textContent;
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([t], { type: 'text/plain;charset=utf-8' }));
+    a.download = 'jwt-decoded.txt'; document.body.appendChild(a); a.click(); a.remove();
   });
 })();
 </script>

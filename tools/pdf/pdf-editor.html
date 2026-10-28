@@ -56,7 +56,17 @@
   .pe-editbox{position:absolute;z-index:40;display:flex;flex-direction:column;gap:4px;}
   .pe-editbox.bar-above{flex-direction:column-reverse;}
   .pe-editbox textarea{border:1.5px solid var(--brass);background:rgba(255,255,255,.97);padding:1px 3px;line-height:1.25;border-radius:4px;display:block;box-shadow:0 6px 24px rgba(0,0,0,.35);resize:none;overflow:hidden;box-sizing:border-box;font-family:Helvetica,Arial,sans-serif;min-height:0;min-width:0;}
-  .pe-editbar{display:flex;gap:6px;flex-wrap:nowrap;}
+  /* v4-fix: the edit bar must wrap instead of pushing past the phone edge —
+     Apply/Delete/Cancel together are ~240px, wider than a clamped box can be
+     at 360px, so a nowrap bar was itself an off-screen offender. */
+  .pe-editbar{display:flex;gap:6px;flex-wrap:wrap;}
+  /* v4-fix: applied ONLY while a borrowed edit-zoom session is open (see
+     setEditClip). The zoomed canvas is wider than the phone by construction,
+     and without this the document's scrollWidth grows to ~591px at 390px and
+     the view slides sideways. User-chosen 100%/200% edits are NOT clipped:
+     there the wider page is the point of zooming and horizontal panning
+     must keep working. */
+  html.pe-edit-clipped, html.pe-edit-clipped body{overflow-x:hidden;}
   .pe-editbar .pe-tbtn{min-height:36px;padding:6px 13px;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.35);}
   .pe-imgbar{position:absolute;z-index:41;display:flex;gap:6px;background:var(--ink-850);border:1px solid var(--line);border-radius:9px;padding:5px;box-shadow:0 6px 20px rgba(0,0,0,.4);}
   .pe-imgbar .pe-tbtn{min-height:36px;padding:6px 11px;font-size:12.5px;}
@@ -765,6 +775,7 @@
 
     S = newState();
     preEditView = null; /* v4: a borrowed view belongs to the previous document */
+    setEditClip(false); /* v4-fix: a new document ends any borrowed-edit clip */
     if (textEd) { textEd.box.remove(); textEd = null; }
     S.fileName = file.name; S.srcBytes = buf; S.jsDoc = jsDoc;
     var n = libDoc.getPageCount();
@@ -1851,9 +1862,20 @@
     if (preEditView || textEd || !S) return;
     preEditView = { scale: S.scale, zoomMode: S.zoomMode, sx: window.scrollX, sy: window.scrollY };
   }
+  /* v4-fix: document-width clipping for borrowed edit-zoom sessions only.
+     setEditClip(true) is set by editorShell when the session actually raised
+     the scale above the pre-edit scale; it is cleared by maybeRestoreView
+     when the session fully ends (and by editorShell for non-borrowed edits),
+     so a user-chosen 100%/200% page keeps its horizontal pan. */
+  function setEditClip(on) {
+    if (document && document.documentElement) document.documentElement.classList.toggle('pe-edit-clipped', !!on);
+  }
   function maybeRestoreView() {
-    if (editorReplacing || !preEditView || textEd || !S) return;
+    if (editorReplacing) return;
+    if (!preEditView) { setEditClip(false); return; }
+    if (textEd || !S) return;
     var pv = preEditView; preEditView = null;
+    setEditClip(false);
     if (pv.scale !== S.scale || pv.zoomMode !== S.zoomMode) {
       /* restore the scale EXACTLY via pct mode: re-entering a fit mode directly
          would let renderCurrent recompute the fit against the stage while it is
@@ -1905,25 +1927,78 @@
     box.appendChild(ta); box.appendChild(bar);
     wrapEl.appendChild(box);
     editorReplacing = false;
+    /* v4-fix: clip the document width only when this session borrowed a
+       higher scale (fit-width tap on a phone); a non-borrowed edit leaves
+       horizontal panning alone. The box's own left/top are untouched — the
+       box still starts exactly on the run's rect. */
+    setEditClip(!!(preEditView && S && S.scale !== preEditView.scale));
     growEditor(box, ta, geom); /* v4: size to the text NOW — v3 only grew on 'input', so the run's own text wrapped inside its own box (border+padding ate ~9px) */
     if (geom.top + box.offsetHeight > curViewport.height + 40) box.classList.add('bar-above');
     ta.addEventListener('input', function () { growEditor(box, ta, geom); });
     [ta, bar].forEach(function (el) { el.addEventListener('pointerdown', function (e) { e.stopPropagation(); }); });
     ta.focus();
     try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (e) {}
-    keepEditorVisible(box);
+    keepEditorVisible(box, ta, geom);
     return { box: box, ta: ta, bar: bar };
+  }
+  /* v4-fix: how much screen width is left for the edit box, measured from
+     the box's own on-screen left edge to the visual viewport's right edge.
+     Returns null when the box starts off the left edge (its start is not
+     on screen at all) — that case is keepEditorVisible's scroll job, not a
+     width cap, because capping a box whose start you cannot see only hides
+     more of it. */
+  function screenAvailForBox(box) {
+    var vv = window.visualViewport;
+    var vw = vv ? vv.width : window.innerWidth;
+    var vLeft = vv ? vv.offsetLeft : 0;
+    var r = box.getBoundingClientRect();
+    if (r.left - vLeft < 4) return null;
+    return Math.max(0, vw - (r.left - vLeft) - 8);
   }
   function growEditor(box, ta, geom) {
     measureCtx.font = (ta.style.fontWeight === 'bold' ? 'bold ' : '') + (ta.style.fontStyle === 'italic' ? 'italic ' : '') + ta.style.fontSize + ' ' + (ta.style.fontFamily || 'Helvetica, Arial, sans-serif');
     var need = 0;
     ta.value.split('\n').forEach(function (l) { need = Math.max(need, measureCtx.measureText(l).width); });
     var maxW = Math.max(60, curViewport.width - geom.left - 4);
+    /* v4-fix: the old cap was in CANVAS coordinates (~1070px at 200%), so a
+       long line legitimately produced a phone-wider box. Cap ALSO in screen
+       coordinates: the textarea may not run past the phone's right edge, so
+       long text wraps to more lines instead of sliding the view sideways.
+       The box's left/top never move here — only its width, and therefore
+       its wrapped height, change. */
+    var avail = screenAvailForBox(box);
+    if (avail !== null) {
+      maxW = Math.min(maxW, avail);
+      box.style.maxWidth = avail + 'px';
+      /* Near the right edge a cap alone leaves an unusably narrow box (e.g.
+         30px). Shift it left just enough for a 160px box instead — this
+         fallback never fires in the measured fit-width/edit-zoom cases
+         (avail there is 270px+), only for right-edge taps at high zoom. */
+      if (avail < 160) {
+        var vv2 = window.visualViewport;
+        var vLeft2 = vv2 ? vv2.offsetLeft : 0;
+        var curLeft = box.getBoundingClientRect().left;
+        var shift = Math.min(160 - avail, curLeft - (vLeft2 + 4), parseFloat(box.style.left) || 0);
+        if (shift > 0) {
+          box.style.left = (parseFloat(box.style.left) - shift) + 'px';
+          avail = screenAvailForBox(box);
+          if (avail !== null) { maxW = Math.min(Math.max(60, curViewport.width - geom.left - 4), avail); box.style.maxWidth = avail + 'px'; }
+        }
+      }
+    }
     ta.style.width = Math.min(maxW, Math.max(parseFloat(ta.style.width) || 0, need + 16)) + 'px';
     ta.style.height = 'auto';
     ta.style.height = Math.max(geom.h + 2, ta.scrollHeight) + 'px';
+    /* v4-fix: a heavily wrapped box must not grow taller than the screen
+       itself (then neither its top nor its buttons could ever be on screen
+       together). Cap the textarea and let it scroll internally instead. */
+    var vv3 = window.visualViewport;
+    var vh3 = vv3 ? vv3.height : window.innerHeight;
+    var maxH = Math.max(geom.h + 2, vh3 - 140);
+    if (parseFloat(ta.style.height) > maxH) { ta.style.height = maxH + 'px'; ta.style.overflowY = 'auto'; }
+    else ta.style.overflowY = 'hidden';
   }
-  function keepEditorVisible(box) {
+  function keepEditorVisible(box, ta, geom) {
     setTimeout(function () {
       if (!box.isConnected) return;
       var vv = window.visualViewport;
@@ -1933,16 +2008,36 @@
       var vTop = vv ? vv.offsetTop : 0;
       var vLeft = vv ? vv.offsetLeft : 0;
       var dx = 0, dy = 0;
-      /* v4: BOTH axes — after an edit-zoom the box can sit off-screen sideways,
-         and v3's vertical-only scroll left it floating over the wrong text */
-      if (r.right > vLeft + vw - 4) dx = r.right - (vLeft + vw) + 16;
-      else if (r.left < vLeft + 4) dx = r.left - (vLeft + 4);
+      /* v4-fix: NEVER scroll sideways to chase the box's right edge — that
+         scroll is exactly what slid the 360px view sideways, cutting the
+         line's start and the Apply button off the left edge. The right edge
+         is handled by growEditor's screen cap (the box wraps instead).
+         The ONLY horizontal scroll left is bringing a box whose START is
+         off-screen left back into view — a scroll that reveals the line's
+         start and its buttons instead of hiding them. Vertical scrolling
+         is unchanged. */
+      if (r.left < vLeft + 4) dx = r.left - (vLeft + 4);
       if (r.bottom > vTop + vh - 4) dy = r.bottom - (vTop + vh) + 16;
       else if (r.top < vTop + 60) dy = r.top - (vTop + 60);
       if (dx || dy) window.scrollBy(dx, dy);
+      /* After any scroll, re-measure: if the horizontal scroll was clamped
+         (headless horizontal scrolling is clamped; a real phone may differ)
+         and the box start is STILL off-screen left, shift the box itself
+         right to the screen edge as a last resort — a visible box with its
+         buttons beats a half-hidden one, and this path never fires when
+         scrolling works. Then re-grow so the width cap matches the new
+         on-screen position. */
+      setTimeout(function () {
+        if (!box.isConnected) return;
+        var r2 = box.getBoundingClientRect();
+        var vv4 = window.visualViewport;
+        var vLeft4 = vv4 ? vv4.offsetLeft : 0;
+        if (r2.left < vLeft4 + 4) box.style.left = (parseFloat(box.style.left) + (vLeft4 + 4 - r2.left)) + 'px';
+        if (ta && geom) growEditor(box, ta, geom);
+      }, 60);
     }, 80);
   }
-  if (window.visualViewport) window.visualViewport.addEventListener('resize', function () { if (textEd && textEd.box) keepEditorVisible(textEd.box); });
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', function () { if (textEd && textEd.box) keepEditorVisible(textEd.box, textEd.ta, textEd.geom); });
   function barButton(label, primary) {
     var b = document.createElement('button'); b.type = 'button';
     b.className = 'pe-tbtn' + (primary ? ' on' : ''); b.textContent = label;
@@ -1968,7 +2063,11 @@
       var delB = barButton('Delete text');
       var cancelB = barButton('Cancel');
       ed.bar.appendChild(applyB); ed.bar.appendChild(delB); ed.bar.appendChild(cancelB);
-      textEd = { kind: 'tx', box: ed.box, ta: ed.ta, run: run, txAnnot: txAnnot, cols: cols };
+      textEd = { kind: 'tx', box: ed.box, ta: ed.ta, run: run, txAnnot: txAnnot, cols: cols, geom: geom };
+      /* v4-fix: re-grow now the bar exists, so its (possibly wrapped) width
+         is capped to the screen too — Apply/Delete/Cancel stay in-viewport.
+         Cancel is the existing one-tap discard path; it is kept as-is. */
+      growEditor(ed.box, ed.ta, geom);
       applyB.addEventListener('click', function () { closeTxEditor(true, false); });
       delB.addEventListener('click', function () { closeTxEditor(true, true); });
       cancelB.addEventListener('click', function () { closeTextEditor(false); drawOverlay(); });
@@ -2022,7 +2121,9 @@
       var applyB = barButton('Apply', true);
       var cancelB = barButton('Cancel');
       ed.bar.appendChild(applyB); ed.bar.appendChild(cancelB);
-      textEd = { kind: 'add', box: ed.box, ta: ed.ta, idx: idx, pdf: clickPdf, size: size, family: family, bold: bold, ital: ital, color: a ? a.color : S.defaults.textColor, orig: a };
+      textEd = { kind: 'add', box: ed.box, ta: ed.ta, idx: idx, pdf: clickPdf, size: size, family: family, bold: bold, ital: ital, color: a ? a.color : S.defaults.textColor, orig: a, geom: geom };
+      /* v4-fix: re-grow now the bar exists (see the tx editor above). */
+      growEditor(ed.box, ed.ta, geom);
       applyB.addEventListener('click', function () { closeAddEditor(true); });
       cancelB.addEventListener('click', function () { closeTextEditor(false); drawOverlay(); });
     });

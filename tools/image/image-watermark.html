@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Image Watermark Free Online — Add Text to a Photo | Ride Bangla Tools</title>
-<meta name="description" content="Add a text watermark to an image online free — choose the text, position and opacity, then download the watermarked PNG. No signup.">
+<meta name="description" content="Add a text watermark to an image online free — choose the text, size, colour, position and opacity, or a tiled repeat, then download the watermarked PNG. No signup.">
 <meta name="keywords" content="image watermark, add text to photo, watermark maker online">
 <link rel="canonical" href="https://tools.ridebangla.bd/image/image-watermark.html">
 <meta property="og:title" content="Image Watermark Free Online — Add Text to a Photo | Ride Bangla Tools">
-<meta property="og:description" content="Add a text watermark to an image online free — choose the text, position and opacity, then download the watermarked PNG. No signup.">
+<meta property="og:description" content="Add a text watermark to an image online free — choose the text, size, colour, position and opacity, or a tiled repeat, then download the watermarked PNG. No signup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/image/image-watermark.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Image Watermark Free Online — Add Text to a Photo | Ride Bangla Tools">
-<meta name="twitter:description" content="Add a text watermark to an image online free — choose the text, position and opacity, then download the watermarked PNG. No signup.">
+<meta name="twitter:description" content="Add a text watermark to an image online free — choose the text, size, colour, position and opacity, or a tiled repeat, then download the watermarked PNG. No signup.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Image Watermark</div>
     <h1>Image Watermark</h1>
     <p class="lede">Add a text watermark to an image and download the result.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -75,11 +76,15 @@
     <div class="field"><label>Watermark text</label><input type="text" id="wmText" value="© Ride Bangla"></div>
     <div class="field"><label>Position</label>
       <select id="wmPos"><option value="br">Bottom right</option><option value="bl">Bottom left</option><option value="tr">Top right</option><option value="tl">Top left</option><option value="c">Centre</option></select></div>
+      <div class="field"><label>Text size</label><input type="range" id="wmSize" min="50" max="200" value="100"> <span id="wmSizeVal">100%</span></div>
+      <div class="field"><label>Text colour</label><input type="color" id="wmColor" value="#ffffff"></div>
+      <div class="field"><label><input type="checkbox" id="wmTiled"> Tiled / repeated watermark</label></div>
     <div class="field"><label>Opacity (10–100)</label><input type="number" id="wmOpacity" min="10" max="100" value="55"></div>
     <div class="btn-row"><button type="button" class="btn" id="wmBtn">Add watermark</button></div>
   </div>
   <div class="panel">
     <div class="field"><label>Result</label><div class="output empty" id="wmOut">The watermarked image will appear here.</div></div>
+    <div class="btn-row"><button type="button" class="btn-download" id="wmDl" style="display:none;">Download watermarked image</button></div>
   </div>
 </section>
 <script>
@@ -95,38 +100,65 @@ function saveBlob(blob, name) {
   setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
 }
 
+  document.getElementById('wmSize').addEventListener('input', function (e) { document.getElementById('wmSizeVal').textContent = e.target.value + '%'; });
   document.getElementById('wmBtn').addEventListener('click', function () {
     var out = document.getElementById('wmOut');
     var file = document.getElementById('wmIn').files[0];
     if (!file) { alert('Choose an image first.'); return; }
-    var text = document.getElementById('wmText').value || '';
+    var text = (document.getElementById('wmText').value || '').trim();
+    if (!text) { out.textContent = 'Type your watermark text first.'; out.classList.remove('empty'); return; }
     var pos = document.getElementById('wmPos').value;
     var op = Math.max(10, Math.min(100, parseInt(document.getElementById('wmOpacity').value, 10) || 55)) / 100;
+    var sizePct = Math.max(50, Math.min(200, parseInt(document.getElementById('wmSize').value, 10) || 100)) / 100;
+    var colHex = document.getElementById('wmColor').value || '#ffffff';
+    var colR = parseInt(colHex.slice(1, 3), 16), colG = parseInt(colHex.slice(3, 5), 16), colB = parseInt(colHex.slice(5, 7), 16);
+    var tiled = document.getElementById('wmTiled').checked;
     var img = new Image();
     img.onload = function () {
       var c = document.createElement('canvas');
       c.width = img.naturalWidth; c.height = img.naturalHeight;
       var ctx = c.getContext('2d');
       ctx.drawImage(img, 0, 0);
-      var fs = Math.max(14, Math.round(c.width / 18));
+      var fs = Math.max(14, Math.round(c.width / 18 * sizePct));
       ctx.font = '700 ' + fs + 'px sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,' + op + ')';
+      ctx.fillStyle = 'rgba(' + colR + ',' + colG + ',' + colB + ',' + op + ')';
       ctx.strokeStyle = 'rgba(0,0,0,' + (op * 0.8) + ')';
       ctx.lineWidth = Math.max(1, fs / 12);
       var pad = Math.round(fs * 0.8);
       var w = ctx.measureText(text).width;
-      var x = pad, y = pad + fs;
-      if (pos === 'br') { x = c.width - w - pad; y = c.height - pad; }
-      if (pos === 'bl') { x = pad; y = c.height - pad; }
-      if (pos === 'tr') { x = c.width - w - pad; y = pad + fs; }
-      if (pos === 'tl') { x = pad; y = pad + fs; }
-      if (pos === 'c') { x = (c.width - w) / 2; y = c.height / 2; }
-      ctx.strokeText(text, x, y);
-      ctx.fillText(text, x, y);
+      if (tiled) {
+        var drawn = 0;
+        for (var ty = pad + fs; ty <= c.height; ty += Math.round(fs * 2.5)) {
+          for (var tx = pad; tx <= c.width; tx += Math.round(w + pad * 3)) {
+            ctx.strokeText(text, tx, ty);
+            ctx.fillText(text, tx, ty);
+            drawn++;
+          }
+        }
+        if (!drawn) { ctx.strokeText(text, (c.width - w) / 2, c.height / 2); ctx.fillText(text, (c.width - w) / 2, c.height / 2); }
+      } else {
+        var x = pad, y = pad + fs;
+        if (pos === 'br') { x = c.width - w - pad; y = c.height - pad; }
+        if (pos === 'bl') { x = pad; y = c.height - pad; }
+        if (pos === 'tr') { x = c.width - w - pad; y = pad + fs; }
+        if (pos === 'tl') { x = pad; y = pad + fs; }
+        if (pos === 'c') { x = (c.width - w) / 2; y = c.height / 2; }
+        ctx.strokeText(text, x, y);
+        ctx.fillText(text, x, y);
+      }
       c.toBlob(function (blob) {
-        saveBlob(blob, 'watermarked.png');
-        out.textContent = 'Done — watermarked PNG downloaded (' + c.width + '×' + c.height + ').';
+        if (!blob) { out.textContent = 'Could not create the watermarked image. Try another image.'; out.classList.remove('empty'); return; }
+        // FIX: preview first, download on demand (old code downloaded blind).
+        if (window._lastWmUrl) URL.revokeObjectURL(window._lastWmUrl);
+        var url = URL.createObjectURL(blob);
+        window._lastWmUrl = url;
+        out.innerHTML = '';
+        var pv = new Image(); pv.src = url; pv.alt = 'Watermarked image preview'; pv.style.maxWidth = '100%'; pv.style.borderRadius = '8px';
+        out.appendChild(pv);
         out.classList.remove('empty');
+        var dl = document.getElementById('wmDl');
+        dl.href = url; dl.download = 'watermarked.png'; dl.style.display = 'inline-block';
+        dl.onclick = function (ev) { ev.preventDefault(); saveBlob(blob, 'watermarked.png'); };
       }, 'image/png');
     };
     img.onerror = function () { out.textContent = 'Could not read that image.'; out.classList.remove('empty'); };

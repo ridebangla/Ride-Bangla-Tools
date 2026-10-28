@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Image Compressor</div>
     <h1>Image Compressor</h1>
     <p class="lede">Compress images online free — shrink a bulky JPG or PNG down to size — adjust quality and maximum dimensions and watch the file size drop, right in your browser.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -74,6 +75,15 @@
     <div class="field">
       <label>Choose an image</label>
       <input type="file" id="imgIn" accept="image/*">
+    </div>
+    <div class="field">
+      <label>Output format</label>
+      <select id="outFmt">
+        <option value="auto" selected>Same as original (keeps transparency)</option>
+        <option value="image/jpeg">JPG</option>
+        <option value="image/png">PNG</option>
+        <option value="image/webp">WebP</option>
+      </select>
     </div>
     <div class="row">
       <div class="field">
@@ -123,8 +133,13 @@ document.getElementById('compressBtn').addEventListener('click', () => {
       canvas.width = img.width * scale;
       canvas.height = img.height * scale;
       const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // FIX: old code always encoded JPEG over a white background, so a
+      // transparent PNG came out with a white background. Keep the original
+      // format by default; fill white only when the output really is JPEG.
+      const fmtSel = document.getElementById('outFmt').value;
+      let outType = fmtSel;
+      if (fmtSel === 'auto') outType = (origFile.type === 'image/png' || origFile.type === 'image/webp') ? origFile.type : 'image/jpeg';
+      if (outType === 'image/jpeg') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       canvas.toBlob((blob) => {
         if (!blob) { alert('Compression failed. Try another image.'); return; }
@@ -136,8 +151,8 @@ document.getElementById('compressBtn').addEventListener('click', () => {
         document.getElementById('newKb').textContent = (blob.size/1024).toFixed(1);
         const savedPct = (100 * (1 - blob.size / origFile.size)).toFixed(0);
         const dl = document.getElementById('dlLink');
-        dl.href = url; dl.download = 'compressed.jpg'; dl.style.display = 'inline-block';
-        // RECHECK3 FIX (prepared, not yet pushed): when the JPEG re-encode
+        dl.href = url; dl.download = 'compressed.' + (outType === 'image/png' ? 'png' : outType === 'image/webp' ? 'webp' : 'jpg'); dl.style.display = 'inline-block';
+        // RECHECK3 FIX (live): when the JPEG re-encode
         // comes out LARGER than the original (common for small, already
         // well-compressed PNGs — verified live 2026-10-23: 2.7 KB in,
         // 8.5 KB out, stat showed a meaningless "-210%"), say so honestly
@@ -149,7 +164,7 @@ document.getElementById('compressBtn').addEventListener('click', () => {
           document.getElementById('saved').textContent = savedPct + '%';
           dl.textContent = 'Download compressed image';
         }
-      }, 'image/jpeg', quality.value / 100);
+      }, outType, outType === 'image/png' ? undefined : quality.value / 100);
     };
     img.src = e.target.result;
   };

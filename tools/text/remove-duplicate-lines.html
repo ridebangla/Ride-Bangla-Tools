@@ -67,18 +67,20 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Text</a> / Remove Duplicate Lines</div>
     <h1>Remove Duplicate Lines</h1>
     <p class="lede">Paste text and remove repeated lines, keeping the first copy of each.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
   <div class="panel">
     <div class="field"><label>Your text</label><textarea id="rdIn" style="min-height:220px;"></textarea></div>
     <div class="field"><label><input type="checkbox" id="rdCase"> Ignore letter case</label></div>
+    <div class="field"><label><input type="checkbox" id="rdTrim"> Ignore surrounding spaces</label></div>
     <div class="btn-row"><button type="button" class="btn" id="rdBtn">Remove duplicates</button></div>
   </div>
   <div class="panel">
     <div class="field"><label>Result</label><textarea id="rdOut" style="min-height:220px;" readonly></textarea></div>
     <div class="field"><label id="rdStats">No result yet.</label></div>
-    <div class="btn-row"><button type="button" class="btn ghost" id="rdCopy">Copy result</button></div>
+    <div class="btn-row"><button type="button" class="btn ghost" id="rdCopy">Copy result</button><button type="button" class="btn ghost" id="rdDl">Download .txt</button></div>
   </div>
 </section>
 <script>
@@ -86,18 +88,28 @@
   document.getElementById('rdBtn').addEventListener('click', function () {
     var raw = document.getElementById('rdIn').value;
     var ignoreCase = document.getElementById('rdCase').checked;
+    var trimSpace = document.getElementById('rdTrim').checked;
     var lines = raw.split(/\r?\n/);
     var seen = new Set();
     var kept = [];
     lines.forEach(function (line) {
-      var key = ignoreCase ? line.toLowerCase() : line;
+      var key = trimSpace ? line.trim() : line;
+      if (ignoreCase) key = key.toLowerCase();
       if (!seen.has(key)) { seen.add(key); kept.push(line); }
     });
     document.getElementById('rdOut').value = kept.join('\n');
     document.getElementById('rdStats').textContent = 'Kept ' + kept.length + ' of ' + lines.length + ' lines — ' + (lines.length - kept.length) + ' duplicate' + (lines.length - kept.length === 1 ? '' : 's') + ' removed.';
   });
   document.getElementById('rdCopy').addEventListener('click', function () {
-    rbCopy(document.getElementById('rdOut').value);
+    var v = document.getElementById('rdOut').value;
+    if (v) rbCopy(v); else alert('Remove duplicates first.');
+  });
+  document.getElementById('rdDl').addEventListener('click', function () {
+    var v = document.getElementById('rdOut').value;
+    if (!v) { alert('Remove duplicates first.'); return; }
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([v], { type: 'text/plain;charset=utf-8' }));
+    a.download = 'deduped.txt'; document.body.appendChild(a); a.click(); a.remove();
   });
 })();
 </script>

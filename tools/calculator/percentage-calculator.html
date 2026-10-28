@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://tools.ridebangla.bd/calculator/"}, {"@type": "ListItem", "position": 3, "name": "Percentage Calculator", "item": "https://tools.ridebangla.bd/calculator/percentage-calculator.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Percentage Calculator", "description": "Find what X% of a number is, or what percentage one number is of another.", "url": "https://tools.ridebangla.bd/calculator/percentage-calculator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Percentage Calculator", "description": "Find what X% of a number is, what percentage one number is of another, or the percentage change from one number to another.", "url": "https://tools.ridebangla.bd/calculator/percentage-calculator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Percentage Calculator free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Percentage Calculator is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Percentage Calculator runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "How accurate is the result?", "acceptedAnswer": {"@type": "Answer", "text": "The calculation uses the standard formula for this figure, so the result is exact for the numbers you enter \u2014 always double-check the inputs, since the output is only as accurate as what you type in."}}]}</script>
 </head>
 <body>
@@ -66,7 +66,8 @@
   <div class="container">
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Calculator</a> / Percentage Calculator</div>
     <h1>Percentage Calculator</h1>
-    <p class="lede">Percentages made painless — find what X% of a number is, or work out what percentage one number is of another, instantly.</p>
+    <p class="lede">Percentages made painless — find what X% of a number is, work out what percentage one number is of another, or work out the percentage change from one number to another, instantly.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -88,6 +89,14 @@
 <div class="btn-row" style="margin-top:12px;"><button class="btn-download" id="dlResult" type="button">Download result</button>
 <button type="button" class="btn ghost" id="aiBtn1">Explain with AI</button></div>
   </div>
+  <div class="panel">
+    <h3 style="font-family:var(--font-mono);font-size:13px;color:var(--text-lo);">Percentage change (from → to)</h3>
+    <div class="row">
+      <div class="field"><label>From</label><input type="number" id="x3" value="200"></div>
+      <div class="field"><label>To</label><input type="number" id="y3" value="250"></div>
+    </div>
+    <div class="output" id="res3">–</div>
+  </div>
 </section>
 <script>
 function upd() {
@@ -99,8 +108,13 @@ function upd() {
   const y2 = parseFloat(document.getElementById('y2').value);
   const r2 = (x2/y2)*100;
   document.getElementById('res2').textContent = (y2 && isFinite(r2) ? r2.toFixed(2) + '%' : '–');
+
+  const x3 = parseFloat(document.getElementById('x3').value);
+  const y3 = parseFloat(document.getElementById('y3').value);
+  const r3 = ((y3 - x3) / x3) * 100;
+  document.getElementById('res3').textContent = (x3 && isFinite(r3) ? (r3 > 0 ? '+' : '') + r3.toFixed(2) + '% ' + (r3 > 0 ? 'increase' : (r3 < 0 ? 'decrease' : 'no change')) : '–');
 }
-['x1','y1','x2','y2'].forEach(id => document.getElementById(id).addEventListener('input', upd));
+['x1','y1','x2','y2','x3','y3'].forEach(id => document.getElementById(id).addEventListener('input', upd));
 upd();
 </script>
 <section class="tool-faq">
@@ -222,7 +236,7 @@ function rbDL(name,lines){
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
 }
 $('dlResult').addEventListener('click',()=>{
-  rbDL('percentage-result.txt',['What is '+V('x1')+'% of '+V('y1')+'?','Result: '+T('res1'),'','What % is '+V('x2')+' of '+V('y2')+'?','Result: '+T('res2')]);
+  rbDL('percentage-result.txt',['What is '+V('x1')+'% of '+V('y1')+'?','Result: '+T('res1'),'','What % is '+V('x2')+' of '+V('y2')+'?','Result: '+T('res2'),'','Percentage change from '+V('x3')+' to '+V('y3')+'?','Result: '+T('res3')]);
 });
 })();
 </script>

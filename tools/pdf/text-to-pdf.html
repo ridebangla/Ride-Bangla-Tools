@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">PDF</a> / Text to PDF</div>
     <h1>Text to PDF</h1>
     <p class="lede">Paste your text and download a clean, ready-to-share PDF in seconds.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -99,10 +100,12 @@ document.getElementById('makePdf').addEventListener('click', async () => {
   const size = parseInt(document.getElementById('fontSize').value, 10);
   const { PDFDocument } = PDFLib;
   const pdfDoc = await PDFDocument.create();
+  const docTitle = document.getElementById('docTitle').value || 'Document';
+  pdfDoc.setTitle(docTitle);
   const pageW = 595.28, pageH = 841.89, margin = 50;
   const maxWidth = pageW - margin * 2;
 
-  // RECHECK3 FIX (prepared, not yet pushed): the old code rasterised EVERY
+  // RECHECK3 FIX (live): the old code rasterised EVERY
   // document to a PNG, so the PDF had no text layer at all (nothing
   // selectable/searchable — verified live 2026-10-23: no /Font, no Tj,
   // pdftotext extracts nothing). pdf-lib's StandardFonts speak WinAnsi
@@ -125,14 +128,26 @@ document.getElementById('makePdf').addEventListener('click', async () => {
   if (ansiText !== null) {
     const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
     const lineHeightV = size * 1.5;
+    function splitLongAnsi(word) {
+      // FIX: a single word longer than the page used to overflow the margin.
+      const parts = []; let cur = '';
+      for (const ch of word) {
+        if (cur && font.widthOfTextAtSize(cur + ch, size) > maxWidth) { parts.push(cur); cur = ch; }
+        else cur += ch;
+      }
+      if (cur) parts.push(cur);
+      return parts.length ? parts : [''];
+    }
     function wrapAnsi(line) {
       if (!line) return [''];
       const words = line.split(' ');
       const out = []; let cur = '';
       words.forEach(w => {
-        const test = cur ? cur + ' ' + w : w;
-        if (font.widthOfTextAtSize(test, size) > maxWidth && cur) { out.push(cur); cur = w; }
-        else cur = test;
+        splitLongAnsi(w).forEach((piece, pi) => {
+          const test = cur ? cur + ' ' + piece : piece;
+          if (font.widthOfTextAtSize(test, size) > maxWidth && cur) { out.push(cur); cur = piece; }
+          else cur = test;
+        });
       });
       out.push(cur);
       return out;
@@ -152,7 +167,7 @@ document.getElementById('makePdf').addEventListener('click', async () => {
     const vBlob = new Blob([vBytes], { type: 'application/pdf' });
     const va = document.createElement('a');
     va.href = URL.createObjectURL(vBlob);
-    va.download = (document.getElementById('docTitle').value || 'document') + '.pdf';
+    va.download = docTitle + '.pdf';
     document.body.appendChild(va); va.click(); va.remove();
     setTimeout(() => URL.revokeObjectURL(va.href), 5000);
     status.textContent = 'PDF downloaded — ' + vLines.length + ' line(s).';
@@ -185,9 +200,19 @@ document.getElementById('makePdf').addEventListener('click', async () => {
     const words = line.split(' ');
     const out = []; let cur = '';
     words.forEach(w => {
-      const test = cur ? cur + ' ' + w : w;
-      if (meas.measureText(test).width > maxWidth && cur) { out.push(cur); cur = w; }
-      else cur = test;
+      // FIX: same overlong-word overflow as the vector path, for shaped text.
+      let piece = '';
+      const chunks = [];
+      for (const ch of w) {
+        if (piece && meas.measureText(piece + ch).width > maxWidth) { chunks.push(piece); piece = ch; }
+        else piece += ch;
+      }
+      if (piece) chunks.push(piece);
+      chunks.forEach(c => {
+        const test = cur ? cur + ' ' + c : c;
+        if (meas.measureText(test).width > maxWidth && cur) { out.push(cur); cur = c; }
+        else cur = test;
+      });
     });
     out.push(cur);
     return out;

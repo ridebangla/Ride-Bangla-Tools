@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / CSS Minifier</div>
     <h1>CSS Minifier</h1>
     <p class="lede">Shrink your stylesheets in one click — paste your CSS, get clean minified output with exact byte savings, then copy or download it. Free, instant, nothing uploaded.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -198,7 +199,7 @@
 <script>
 
 (function () {
-  function minify(css) {
+  function minifyPart(css) {
     // 1. strip comments (keep /*! important */)
     css = css.replace(/\/\*![\s\S]*?\*\//g, function (m) { return '\u0000' + (window.__keep = (window.__keep || []), window.__keep.push(m) - 1) + '\u0000'; });
     css = css.replace(/\/\*[\s\S]*?\*\//g, '');
@@ -211,7 +212,15 @@
     // 4. restore important comments
     css = css.replace(/\u0000(\d+)\u0000/g, function (m, i) { return (window.__keep || [])[+i] || ''; });
     window.__keep = [];
-    return css.trim();
+    return css;
+  }
+  function minify(css) {
+    // Never rewrite inside quoted strings: content:"a : b" must survive intact.
+    var parts = css.split(/(("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'))/g);
+    for (var i = 0; i < parts.length; i++) {
+      if (i % 4 !== 2) parts[i] = minifyPart(parts[i]);
+    }
+    return parts.join('').trim();
   }
   function fmt(n) {
     if (n < 1024) return n + ' B';
@@ -230,6 +239,9 @@
   });
   document.getElementById('clr').addEventListener('click', function () {
     document.getElementById('css').value = ''; document.getElementById('out').value = '';
+    document.getElementById('sOrig').textContent = '0 B';
+    document.getElementById('sMin').textContent = '0 B';
+    document.getElementById('sSaved').textContent = '0%';
   });
   document.getElementById('copy').addEventListener('click', function () {
     var t = document.getElementById('out').value;

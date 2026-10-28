@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Finance</a> / Zakat Calculator</div>
     <h1>Zakat Calculator</h1>
     <p class="lede">Work out zakat at 2.5% of net zakatable assets above nisab.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -78,7 +79,7 @@
     <div class="field"><label>Value of silver</label><input id="zkSilver" type="number" min="0" step="any" value="0"></div>
     <div class="field"><label>Business goods and money owed to you</label><input id="zkGoods" type="number" min="0" step="any" value="0"></div>
     <div class="field"><label>Debts you owe (subtracted)</label><input id="zkDebts" type="number" min="0" step="any" value="0"></div>
-    <div class="field"><label>Nisab threshold (same currency)</label><input id="zkNisab" type="number" min="0" step="any" value="0"></div>
+    <div class="field"><label>Nisab threshold (same currency)</label><input id="zkNisab" type="number" min="0" step="any" placeholder="Enter nisab amount"><div style="font-size:13px;opacity:.75;margin-top:4px">Enter your own nisab amount — this tool does not set a nisab rate for you.</div></div>
   </div>
   <div class="panel">
     <div class="field"><label>Result</label>
@@ -90,7 +91,7 @@
 <script>
 (function () {
   function money(n, sym) { return sym + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-  function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+  function v(id) { return Math.max(0, parseFloat(document.getElementById(id).value) || 0); }
   function calc() {
     var sym = document.getElementById('zkCur').value;
     var net = v('zkCash') + v('zkGold') + v('zkSilver') + v('zkGoods') - v('zkDebts');

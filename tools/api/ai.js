@@ -48,6 +48,108 @@ const MAX_INPUT_CHARS = 20000;
 const MAX_MESSAGES = 50;
 const MAX_TOKENS_CAP = 4000;
 const ALLOWED_TASKS = ['chat', 'generate'];
+const TOOLS_CATALOGUE = [
+  'Image to PDF',
+  'Text to PDF',
+  'Merge PDF',
+  'Split PDF',
+  'Rotate PDF',
+  'PDF Editor',
+  'Photo Editor',
+  'Background Remover',
+  'Image to Base64',
+  'Image Compressor',
+  'Image Resizer',
+  'Metadata Remover',
+  'HEIC to JPG',
+  'Image Format Converter',
+  'Image Cropper',
+  'Color Palette Generator',
+  'YouTube Thumbnail Downloader',
+  'Favicon Generator',
+  'Image Watermark',
+  'BMI Calculator',
+  'Percentage Calculator',
+  'Unit Converter',
+  'Number Base Converter',
+  'Word Counter',
+  'Lorem Ipsum Generator',
+  'Case Converter',
+  'Text to Speech',
+  'Base64 Encoder / Decoder',
+  'Remove Duplicate Lines',
+  'Meta Tag Generator',
+  'URL Slug Generator',
+  'URL Shortener',
+  'JSON Formatter',
+  'Color Converter',
+  'Password Generator',
+  'URL Encoder / Decoder',
+  'UUID Generator',
+  'CSV to JSON Converter',
+  'Markdown to HTML',
+  'Text Diff Checker',
+  'CSS Minifier',
+  'JWT Decoder',
+  'Regex Tester',
+  'QR Code Generator',
+  'Wi-Fi QR Generator',
+  'Payment QR Generator',
+  'QR Code Reader',
+  'Barcode Generator',
+  'vCard QR Generator',
+  'Age Calculator',
+  'Date Difference Calculator',
+  'Military Time Converter',
+  'Time Zone Converter',
+  'Timestamp Converter',
+  'Countdown Timer',
+  'Loan EMI Calculator',
+  'Simple Interest Calculator',
+  'Mortgage Calculator',
+  'Compound Interest Calculator',
+  'Tip Calculator',
+  'Discount Calculator',
+  'Zakat Calculator',
+  'Invoice Generator',
+  'Quotation Generator',
+  'Business Name Generator',
+  'Freelance Rate Calculator',
+  'CV & Cover Letter Builder'
+];
+
+// ---- Canonical server-side system prompt (PL-01) ----
+// The client MUST NOT be able to replace the system prompt: the browser
+// sends only user content, and the server supplies the system message.
+// This also grounds the model in the exact 67-tool catalogue (no invented
+// tools), enforces the owner's no-fare-figures rule, and keeps answers
+// concise (answer, then stop). When addressing a visitor in Bengali,
+// use "স্যার/ম্যাডাম" for an unknown visitor, never bare "স্যার".
+const CANONICAL_SYSTEM =
+  'You are the Ride Bangla Tools assistant on tools.ridebangla.bd, a site of 67 free ' +
+  'client-side utilities, no signup. Give concise, practical answers, then stop — no brochure walls. ' +
+  'When naming tools, name ONLY tools from this exact list, and say plainly that a tool is not offered ' +
+  'if it is not on the list: ' + TOOLS_CATALOGUE.join(', ') + '. ' +
+  'Never quote ride fares or prices for Ride Bangla rides, and never invent a fare figure. ' +
+  'When addressing an unknown visitor in Bengali, use "স্যার/ম্যাডাম", never bare "স্যার".';
+// M30 HEAD-DECISION NOTE (fix-all-remaining, 2026-10-28) — read before landing:
+// Total non-system (user) input is capped at 20,000 chars and rejected
+// with HTTP 400 BEFORE any provider call (see the total-input check
+// below); PL-01 lands ONLY behind that cap. Canonical system-prompt
+// length MEASURED from this file's own strings (node String length):
+// 1,762 chars (67-tool catalogue joined + fixed wording). The staged
+// prelaunch text also discloses "~2,100 chars/call"; that figure is NOT
+// reproduced by measurement and is retained here ONLY as a conservative
+// budgeting ceiling, never as a measured fact. The staged code excludes
+// the system prompt from the 20,000 total, so a max-size request sends
+// at most 20,000 user chars + 1,762 canonical chars. CORRECTION PATH
+// (owner, one word): "total-including-system" changes the total check
+// to count the system prompt too (user allowance then 18,238 measured,
+// 17,900 on the 2,100 ceiling); "drop PL-01" removes this file's
+// canonical-prompt block and cap together. No cost figure is asserted
+// as fact anywhere in this file.
+const MAX_TOTAL_INPUT_CHARS = 20000;
+
 const ALLOWED_PROVIDERS = ['auto', 'groq', 'gemini'];
 
 // The site's PUBLIC site key (same value assets/ai.js sends; it only
@@ -299,18 +401,29 @@ export default async function handler(req, res) {
       if (!m || typeof m !== 'object' || typeof m.content !== 'string') {
         return res.status(400).json({ ok: false, error: 'each message needs a string content' });
       }
-      const role = ['system', 'user', 'assistant'].includes(m.role) ? m.role : 'user';
+      // PL-01: client-supplied system messages are dropped — the server
+      // supplies the single canonical system message below.
+      if (m.role === 'system') continue;
+      const role = ['assistant', 'user'].includes(m.role) ? m.role : 'user';
       messages.push({ role, content: m.content.slice(0, MAX_INPUT_CHARS) });
     }
+    messages.unshift({ role: 'system', content: CANONICAL_SYSTEM });
   } else {
     // task "generate"
     if (typeof input.prompt !== 'string' || !input.prompt.trim()) {
       return res.status(400).json({ ok: false, error: 'input.prompt is required for task "generate"' });
     }
-    if (typeof input.system === 'string' && input.system) {
-      messages.push({ role: 'system', content: input.system.slice(0, MAX_INPUT_CHARS) });
-    }
+    // PL-01: client-supplied input.system is ignored — the server supplies
+    // the single canonical system message.
+    messages.push({ role: 'system', content: CANONICAL_SYSTEM });
     messages.push({ role: 'user', content: input.prompt.slice(0, MAX_INPUT_CHARS) });
+  }
+
+  // PL-01: cap TOTAL input across all messages. Per-message slicing alone
+  // allowed 50 messages x 20,000 chars = 1,000,000 chars in one request.
+  const totalInputChars = messages.filter((m) => m.role !== 'system').reduce((sum, m) => sum + m.content.length, 0);
+  if (totalInputChars > MAX_TOTAL_INPUT_CHARS) {
+    return res.status(400).json({ ok: false, error: 'total input is limited to 20000 characters' });
   }
 
   // ---- Provider chain ----

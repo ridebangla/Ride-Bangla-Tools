@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Time Zone Converter Free Online | Ride Bangla Tools</title>
-<meta name="description" content="Convert time between time zones free — DST-aware meeting planner for 20+ zones. No signup. Free forever — no signup, everything runs privately in your browser.">
+<meta name="description" content="Convert time between time zones free — DST-aware meeting planner for 19 zones. No signup. Free forever — no signup, everything runs privately in your browser.">
 <meta name="keywords" content="time zone converter, world clock converter, convert time zones, meeting time planner, timezone difference calculator">
 <link rel="canonical" href="https://tools.ridebangla.bd/date-time/time-zone-converter.html">
 <meta property="og:title" content="Time Zone Converter Free Online | Ride Bangla Tools">
-<meta property="og:description" content="Convert time between time zones free — DST-aware meeting planner for 20+ zones. No signup. Free forever — no signup, everything runs privately in your browser.">
+<meta property="og:description" content="Convert time between time zones free — DST-aware meeting planner for 19 zones. No signup. Free forever — no signup, everything runs privately in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/date-time/time-zone-converter.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Time Zone Converter Free Online | Ride Bangla Tools">
-<meta name="twitter:description" content="Convert time between time zones free — DST-aware meeting planner for 20+ zones. No signup. Free forever — no signup, everything runs privately in your browser.">
+<meta name="twitter:description" content="Convert time between time zones free — DST-aware meeting planner for 19 zones. No signup. Free forever — no signup, everything runs privately in your browser.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Date & Time Tools", "item": "https://tools.ridebangla.bd/date-time/"}, {"@type": "ListItem", "position": 3, "name": "Time Zone Converter", "item": "https://tools.ridebangla.bd/date-time/time-zone-converter.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Time Zone Converter", "description": "Convert time between world time zones online free. Dhaka, New York, London, Dubai and 20+ zones — instant, accurate.", "url": "https://tools.ridebangla.bd/date-time/time-zone-converter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Time Zone Converter", "description": "Convert time between world time zones online free. Dhaka, New York, London, Dubai and 19 zones — instant, accurate.", "url": "https://tools.ridebangla.bd/date-time/time-zone-converter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Time Zone Converter free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Time Zone Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download."}},{"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Time Zone Converter runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device."}},{"@type": "Question", "name": "Does it handle daylight saving time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Conversions use your browser's built-in time-zone database, so daylight saving shifts are applied automatically and correctly."}}]}</script>
 </head>
 <body>
@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Date & Time</a> / Time Zone Converter</div>
     <h1>Time Zone Converter</h1>
     <p class="lede">See what time it is anywhere in the world — pick a date and time, choose two zones, get the instant conversion.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -123,9 +124,12 @@ function convert(){
 }
 document.getElementById('conv').addEventListener('click',convert);
 document.getElementById('now').addEventListener('click',()=>{
-  const n=new Date();n.setSeconds(0,0);
-  const p=x=>String(x).padStart(2,'0');
-  document.getElementById('dt').value=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate())+'T'+p(n.getHours())+':'+p(n.getMinutes());
+  // Fill the current time as a wall clock in the selected FROM zone (not the
+  // browser's zone): otherwise a visitor outside that zone gets a wrong conversion.
+  const parts=new Intl.DateTimeFormat('en-CA',{timeZone:fromEl.value,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
+  const get=t=>parts.find(p=>p.type===t).value;
+  let hh=parseInt(get('hour'),10);if(hh===24)hh=0;
+  document.getElementById('dt').value=get('year')+'-'+get('month')+'-'+get('day')+'T'+String(hh).padStart(2,'0')+':'+get('minute');
   convert();
 });
 document.querySelectorAll('[data-pair]').forEach(b=>b.addEventListener('click',()=>{

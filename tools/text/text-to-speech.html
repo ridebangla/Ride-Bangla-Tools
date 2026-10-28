@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Text</a> / Text to Speech</div>
     <h1>Text to Speech</h1>
     <p class="lede">Turn any text into spoken audio — pick a voice, tune the speed and pitch, then listen. Perfect for proofreading, learning and accessibility.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -75,7 +76,7 @@
     <div class="field"><label>Voice</label><select id="voice"><option>Loading voices…</option></select></div>
     <div class="field"><label>Speed: <span id="rateVal">1</span>×</label><input type="range" id="rate" min="0.5" max="2" step="0.1" value="1" style="width:100%;"></div>
     <div class="field"><label>Pitch: <span id="pitchVal">1</span></label><input type="range" id="pitch" min="0" max="2" step="0.1" value="1" style="width:100%;"></div>
-    <div class="btn-row"><button type="button" class="btn" id="speak">Speak</button><button type="button" class="btn ghost" id="stop">Stop</button></div>
+    <div class="btn-row"><button type="button" class="btn" id="speak">Speak</button><button type="button" class="btn ghost" id="pauseBtn">Pause</button><button type="button" class="btn ghost" id="stop">Stop</button></div>
   </div>
   <div class="panel">
     <div class="field"><label>Status</label><div class="output" id="status">Ready. Voices are provided by your browser and device.</div></div>
@@ -92,26 +93,70 @@ function loadVoices(){
   vs.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v.name+' ('+v.lang+')'+(v.default?' — default':'');voiceEl.appendChild(o);});
 }
 if(synth){loadVoices();synth.onvoiceschanged=loadVoices;}
+else {
+  voiceEl.innerHTML = '<option>Not supported in this browser</option>';
+  document.getElementById('status').textContent = 'Speech is not supported in this browser.';
+}
 document.getElementById('rate').addEventListener('input',e=>document.getElementById('rateVal').textContent=e.target.value);
 document.getElementById('pitch').addEventListener('input',e=>document.getElementById('pitchVal').textContent=e.target.value);
 textEl.addEventListener('input',()=>{
   const w=textEl.value.trim().split(/\s+/).filter(Boolean).length;
   document.getElementById('stats').textContent=w+' words · ~'+Math.max(1,Math.round(w/150))+' min at normal speed';
 });
+function splitChunks(t) {
+  var parts = t.match(/[^.!?\n]+[.!?\n]+|[^.!?\n]+$/g) || [t];
+  var chunks = [];
+  parts.forEach(function (part) {
+    part = part.trim();
+    if (!part) return;
+    while (part.length > 200) {
+      var cut = part.lastIndexOf(' ', 200);
+      if (cut < 50) cut = 200;
+      chunks.push(part.slice(0, cut).trim());
+      part = part.slice(cut).trim();
+    }
+    if (part) chunks.push(part);
+  });
+  return chunks.length ? chunks : [t];
+}
+var queue = [], queueIndex = 0, paused = false, speakToken = 0;
+function speakNext(token) {
+  if (token !== speakToken) return;
+  if (queueIndex >= queue.length) { document.getElementById('status').textContent = 'Finished.'; return; }
+  var u = new SpeechSynthesisUtterance(queue[queueIndex]);
+  var vs = synth.getVoices();
+  if (vs.length && voiceEl.value !== '') u.voice = vs[parseInt(voiceEl.value, 10)];
+  u.rate = parseFloat(document.getElementById('rate').value);
+  u.pitch = parseFloat(document.getElementById('pitch').value);
+  u.onend = function () { queueIndex++; if (!paused) speakNext(token); };
+  u.onerror = function (e) { document.getElementById('status').textContent = 'Speech error: ' + (e.error || 'unknown'); };
+  synth.speak(u);
+}
 document.getElementById('speak').addEventListener('click',()=>{
   if(!synth){alert('Speech is not supported in this browser.');return;}
   const t=textEl.value.trim();if(!t){alert('Please enter some text first.');return;}
   synth.cancel();
-  const u=new SpeechSynthesisUtterance(t);
-  const vs=synth.getVoices();if(vs.length&&voiceEl.value!=='')u.voice=vs[parseInt(voiceEl.value,10)];
-  u.rate=parseFloat(document.getElementById('rate').value);
-  u.pitch=parseFloat(document.getElementById('pitch').value);
-  u.onend=()=>document.getElementById('status').textContent='Finished.';
-  u.onerror=e=>document.getElementById('status').textContent='Speech error: '+(e.error||'unknown');
-  synth.speak(u);
+  queue = splitChunks(t); queueIndex = 0; paused = false;
+  speakToken++;
+  document.getElementById('pauseBtn').textContent = 'Pause';
   document.getElementById('status').textContent='Speaking…';
+  speakNext(speakToken);
 });
-document.getElementById('stop').addEventListener('click',()=>{if(synth)synth.cancel();document.getElementById('status').textContent='Stopped.';});
+document.getElementById('pauseBtn').addEventListener('click',()=>{
+  if(!synth) return;
+  if (paused) {
+    paused = false;
+    document.getElementById('pauseBtn').textContent = 'Pause';
+    document.getElementById('status').textContent = 'Speaking…';
+    if (synth.paused) synth.resume(); else speakNext(speakToken);
+  } else {
+    paused = true;
+    document.getElementById('pauseBtn').textContent = 'Resume';
+    document.getElementById('status').textContent = 'Paused.';
+    synth.pause();
+  }
+});
+document.getElementById('stop').addEventListener('click',()=>{if(synth)synth.cancel();speakToken++;queue=[];paused=false;document.getElementById('pauseBtn').textContent='Pause';document.getElementById('status').textContent='Stopped.';});
 </script>
 <div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
 <section class="tool-faq">

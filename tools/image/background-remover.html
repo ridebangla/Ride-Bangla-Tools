@@ -77,6 +77,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Background Remover</div>
     <h1>Background Remover</h1>
     <p class="lede">Remove the background from a photo automatically — an AI model runs right in your browser, so the photo itself never leaves your device.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -101,6 +102,7 @@
       </div>
     </div>
     <p class="br-note">Fast mode removes a plain-colour background (wall, sheet, studio backdrop) in about a second — no download needed. If parts of the background stay, raise Strength; if parts of the person disappear, lower it.</p>
+    <p class="br-note">Output size is capped at 1200 px on the longest side, so very large photos are downloaded smaller than the original.</p>
     <div class="br-bar" id="brBar"><div class="br-bar-fill" id="brBarFill"></div></div>
     <div class="br-status" id="brStatus">Choose a photo to start.</div>
     <div class="btn-row" style="margin-top:16px;">
@@ -262,7 +264,7 @@
     try {
       cutCanvas = fastCut(srcCanvas, parseInt(tolEl.value, 10));
       await render();
-      status.textContent = 'Done! Tap "Download PNG". Not perfect? Change Strength, or try AI mode below.';
+      status.textContent = 'Done! Tap "Download PNG" (' + cutCanvas.width + ' × ' + cutCanvas.height + ' px). Not perfect? Change Strength, or try AI mode below.';
     } catch (err) {
       console.error(err);
       status.textContent = 'Something went wrong: ' + (err && err.message ? err.message : 'unknown error');
@@ -369,7 +371,7 @@
       cutCanvas = c;
       await render();
       stopBar();
-      status.textContent = 'AI mode done! Tap "Download PNG".';
+      status.textContent = 'AI mode done! Tap "Download PNG" (' + cutCanvas.width + ' × ' + cutCanvas.height + ' px).';
     } catch (err) {
       console.error(err);
       stopBar();

@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / UUID Generator</div>
     <h1>UUID Generator</h1>
     <p class="lede">Generate cryptographically-random UUID v4 identifiers — one or a hundred at a time, then copy them all.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -78,7 +79,7 @@
   </div>
   <div class="panel">
     <div class="field"><label>UUIDs</label><div class="output" id="out" style="font-family:var(--mono,monospace);font-size:13px;max-height:300px;overflow:auto;white-space:pre-wrap;"></div></div>
-    <div class="btn-row"><button type="button" class="btn ghost" id="copyAll">Copy all</button></div>
+    <div class="btn-row"><button type="button" class="btn ghost" id="copyAll">Copy all</button><button type="button" class="btn ghost" id="dlUuid">Download .txt</button></div>
   </div>
 </section>
 <script>
@@ -88,16 +89,35 @@ function uuidv4(){
   const h=[...b].map(x=>x.toString(16).padStart(2,'0')).join('');
   return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20);
 }
+var uuidList = [];
 document.getElementById('gen').addEventListener('click',()=>{
   let n=Math.min(500,Math.max(1,parseInt(document.getElementById('count').value,10)||1));
+  document.getElementById('count').value = n;
   const up=document.getElementById('upper').checked,br=document.getElementById('braces').checked;
   const list=[];
   for(let i=0;i<n;i++){let u=uuidv4();if(up)u=u.toUpperCase();if(br)u='{'+u+'}';list.push(u);}
-  document.getElementById('out').textContent=list.join('\n');
+  uuidList = list;
+  var out = document.getElementById('out');
+  out.textContent = '';
+  list.forEach(function (u) {
+    var row = document.createElement('div');
+    row.style.display = 'flex'; row.style.justifyContent = 'space-between'; row.style.alignItems = 'center'; row.style.gap = '8px';
+    var span = document.createElement('span');
+    span.textContent = u; span.style.wordBreak = 'break-all';
+    var btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'btn ghost'; btn.textContent = 'Copy'; btn.style.flexShrink = '0';
+    btn.addEventListener('click', function () { rbCopy(u); btn.textContent = 'Copied!'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); });
+    row.appendChild(span); row.appendChild(btn); out.appendChild(row);
+  });
 });
 document.getElementById('copyAll').addEventListener('click',()=>{
-  const t=document.getElementById('out').textContent;
-  if(t)rbCopy(t);else alert('Generate UUIDs first.');
+  if(uuidList.length)rbCopy(uuidList.join('\n'));else alert('Generate UUIDs first.');
+});
+document.getElementById('dlUuid').addEventListener('click',()=>{
+  if(!uuidList.length){alert('Generate UUIDs first.');return;}
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([uuidList.join('\n')],{type:'text/plain;charset=utf-8'}));
+  a.download='uuids.txt';document.body.appendChild(a);a.click();a.remove();
 });
 document.getElementById('gen').click();
 </script>

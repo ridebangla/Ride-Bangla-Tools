@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Image Cropper</div>
     <h1>Image Cropper</h1>
     <p class="lede">Crop any photo right in your browser — drag to draw the crop box, lock an aspect ratio, then download the cropped image.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -77,7 +78,7 @@
     </div>
     <div class="field"><label>Crop preview — drag on the image</label><div style="position:relative;display:inline-block;max-width:100%;"><canvas id="cv" style="max-width:100%;border-radius:8px;touch-action:none;cursor:crosshair;"></canvas></div></div>
     <div class="field"><label>Selection</label><div class="output" id="selInfo">—</div></div>
-    <div class="btn-row"><button type="button" class="btn" id="crop">Crop &amp; Download</button><button type="button" class="btn ghost" id="reset">Reset selection</button></div>
+    <div class="btn-row"><button type="button" class="btn" id="crop">Crop &amp; preview</button><button type="button" class="btn ghost" id="dlCrop" disabled>Download cropped image</button><button type="button" class="btn ghost" id="reset">Reset selection</button></div>
   </div>
   <div class="panel">
     <div class="field"><label>Cropped result</label><div class="output" id="outWrap" style="min-height:120px;text-align:center;"><span style="color:var(--muted)">Your cropped image will appear here</span></div></div>
@@ -85,7 +86,7 @@
 </section>
 <script>
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
-let img=null,scale=1,sel=null,dragging=false,dragStart=null;
+let img=null,scale=1,sel=null,dragging=false,dragStart=null,lastCrop=null,lastCropUrl=null;
 function draw(){
   if(!img)return;
   ctx.clearRect(0,0,cv.width,cv.height);
@@ -133,18 +134,28 @@ document.getElementById('file').addEventListener('change',e=>{
     cv.width=Math.round(im.naturalWidth*scale);cv.height=Math.round(im.naturalHeight*scale);
     sel={x:cv.width*0.1,y:cv.height*0.1,w:cv.width*0.8,h:cv.height*0.8};
     draw();updateInfo();
-  };im.src=rd.result;};
+    document.getElementById('outWrap').innerHTML='<span style="color:var(--muted)">Your cropped image will appear here</span>';
+    document.getElementById('dlCrop').disabled=true;lastCrop=null;lastCropUrl=null;
+  };im.onerror=()=>alert('Could not read this image. Try a JPG or PNG image.');im.src=rd.result;};
   rd.readAsDataURL(f);
 });
-document.getElementById('reset').addEventListener('click',()=>{if(!img)return;sel={x:cv.width*0.1,y:cv.height*0.1,w:cv.width*0.8,h:cv.height*0.8};draw();updateInfo();});
+document.getElementById('reset').addEventListener('click',()=>{if(!img)return;sel={x:cv.width*0.1,y:cv.height*0.1,w:cv.width*0.8,h:cv.height*0.8};draw();updateInfo();document.getElementById('outWrap').innerHTML='<span style="color:var(--muted)">Your cropped image will appear here</span>';document.getElementById('dlCrop').disabled=true;lastCrop=null;if(lastCropUrl)URL.revokeObjectURL(lastCropUrl);lastCropUrl=null;});
 document.getElementById('crop').addEventListener('click',()=>{
   if(!img||!sel||sel.w<4||sel.h<4){alert('Please choose an image and draw a crop area first.');return;}
   const sx=Math.round(sel.x/scale),sy=Math.round(sel.y/scale),sw=Math.round(sel.w/scale),sh=Math.round(sel.h/scale);
   const c=document.createElement('canvas');c.width=sw;c.height=sh;
   c.getContext('2d').drawImage(img,sx,sy,sw,sh,0,0,sw,sh);
+  // FIX: a cloned canvas carries no pixels, so the old preview was blank.
+  // Show the real cropped canvas, and download only from the Download button.
   const w=document.getElementById('outWrap');w.innerHTML='';
-  const pv=c.cloneNode();pv.style.maxWidth='100%';pv.style.borderRadius='8px';w.appendChild(pv);
-  const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='cropped.png';a.click();
+  c.style.maxWidth='100%';c.style.borderRadius='8px';w.appendChild(c);
+  lastCrop=c;
+  if(lastCropUrl)URL.revokeObjectURL(lastCropUrl);
+  c.toBlob((blob)=>{if(!blob)return;lastCropUrl=URL.createObjectURL(blob);document.getElementById('dlCrop').disabled=false;},'image/png');
+});
+document.getElementById('dlCrop').addEventListener('click',()=>{
+  if(!lastCropUrl)return;
+  const a=document.createElement('a');a.href=lastCropUrl;a.download='cropped.png';a.click();
 });
 </script>
 <div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>
@@ -154,7 +165,7 @@ document.getElementById('crop').addEventListener('click',()=>{
     <ol class="how-steps">
       <li>Choose an image file from your device.</li>
       <li>Drag on the preview to draw your crop area (or pick an aspect-ratio preset).</li>
-      <li>Click Crop & Download to save the cropped image.</li>
+      <li>Click Crop &amp; preview, check the result, then Download cropped image.</li>
     </ol>
     <h2>Frequently asked questions</h2>
     <div class="faq-list">

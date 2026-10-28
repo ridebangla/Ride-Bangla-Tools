@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Text Tools", "item": "https://tools.ridebangla.bd/text/"}, {"@type": "ListItem", "position": 3, "name": "Case Converter", "item": "https://tools.ridebangla.bd/text/case-converter.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Case Converter", "description": "Convert text between UPPERCASE, lowercase, Title Case, Sentence case, alternating case and inverse case instantly in your browser.", "url": "https://tools.ridebangla.bd/text/case-converter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Case Converter", "description": "Convert text between UPPERCASE, lowercase, Title Case, Sentence case, alternating case, inverse case, snake_case, kebab-case and camelCase instantly in your browser.", "url": "https://tools.ridebangla.bd/text/case-converter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Case Converter free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Case Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Case Converter runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Which letter cases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg cAsE and iNVERSE cAsE \u2014 six conversions, applied instantly as you type."}}]}</script>
 </head>
 <body>
@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Text</a> / Case Converter</div>
     <h1>Case Converter</h1>
     <p class="lede">Type or paste your text, then convert it instantly — UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg cAsE or iNVERSE cAsE. Nothing leaves your browser.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body">
@@ -82,6 +83,9 @@
       <button class="btn ghost" data-case="sentence" type="button">Sentence case</button>
       <button class="btn ghost" data-case="alternate" type="button">aLtErNaTiNg</button>
       <button class="btn ghost" data-case="inverse" type="button">iNVERSE</button>
+      <button class="btn ghost" data-case="snake" type="button">snake_case</button>
+      <button class="btn ghost" data-case="kebab" type="button">kebab-case</button>
+      <button class="btn ghost" data-case="camel" type="button">camelCase</button>
     </div>
     <div class="field" style="margin-top:18px;">
       <label>Converted output <span class="hint" id="ccCase" style="margin-left:8px;"></span></label>
@@ -104,7 +108,16 @@ const ccIn = document.getElementById('ccIn');
 const ccOut = document.getElementById('ccOut');
 const ccCase = document.getElementById('ccCase');
 let currentCase = 'upper';
-const caseNames = { upper: 'UPPERCASE', lower: 'lowercase', title: 'Title Case', sentence: 'Sentence case', alternate: 'aLtErNaTiNg cAsE', inverse: 'iNVERSE cAsE' };
+const caseNames = { upper: 'UPPERCASE', lower: 'lowercase', title: 'Title Case', sentence: 'Sentence case', alternate: 'aLtErNaTiNg cAsE', inverse: 'iNVERSE cAsE', snake: 'snake_case', kebab: 'kebab-case', camel: 'camelCase' };
+function toWords(s) {
+  return s.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').trim().split(/\s+/).filter(Boolean);
+}
+function toSnake(s) { return toWords(s).map(function (w) { return w.toLowerCase(); }).join('_'); }
+function toKebab(s) { return toWords(s).map(function (w) { return w.toLowerCase(); }).join('-'); }
+function toCamel(s) {
+  var w = toWords(s).map(function (x) { return x.toLowerCase(); });
+  return w.map(function (x, i) { return i === 0 ? x : x.charAt(0).toUpperCase() + x.slice(1); }).join('');
+}
 
 function toTitle(s) {
   return s.toLowerCase().split(/(\s+)/).map(function (w) {
@@ -132,7 +145,10 @@ const converters = {
   title: toTitle,
   sentence: toSentence,
   alternate: toAlternate,
-  inverse: toInverse
+  inverse: toInverse,
+  snake: toSnake,
+  kebab: toKebab,
+  camel: toCamel
 };
 function convert() {
   const v = ccIn.value;

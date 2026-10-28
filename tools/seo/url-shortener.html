@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free URL Shortener Online — Shorten Links | Ride Bangla Tools</title>
-<meta name="description" content="Shorten long URLs free online — clean short links in one click. No signup required. Free forever — no signup, everything runs privately in your browser.">
+<meta name="description" content="Shorten long URLs free online — clean short links in one click. No signup required. Your link is sent to the shortening service to create the short link.">
 <meta name="keywords" content="url shortener free, shorten link online, short url maker, link shortener, tiny url generator">
 <link rel="canonical" href="https://tools.ridebangla.bd/seo/url-shortener.html">
 <meta property="og:title" content="Free URL Shortener Online — Shorten Links | Ride Bangla Tools">
-<meta property="og:description" content="Shorten long URLs free online — clean short links in one click. No signup required. Free forever — no signup, everything runs privately in your browser.">
+<meta property="og:description" content="Shorten long URLs free online — clean short links in one click. No signup required. Your link is sent to the shortening service to create the short link.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/seo/url-shortener.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Free URL Shortener Online — Shorten Links | Ride Bangla Tools">
-<meta name="twitter:description" content="Shorten long URLs free online — clean short links in one click. No signup required. Free forever — no signup, everything runs privately in your browser.">
+<meta name="twitter:description" content="Shorten long URLs free online — clean short links in one click. No signup required. Your link is sent to the shortening service to create the short link.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">SEO</a> / URL Shortener</div>
     <h1>URL Shortener</h1>
     <p class="lede">Turn long, messy URLs into short, clean links — perfect for social media, SMS and WhatsApp sharing.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -108,12 +109,19 @@ function isValidUrl(s) {
   } catch (e) { return false; }
 }
 
+const SHORTEN_SITE_KEY = 'rbsite-00f37b79c72f4e678febbd82d43bb46c'; // public site key (same identifier /api/ai uses)
+
+// MAX-04: the short link must come from one of our two providers.
+function isTrustedShortHost(h) {
+  return h === 'is.gd' || h === 'tinyurl.com';
+}
+
 async function tryShorten(url) {
   // Via same-origin proxy (avoids browser CORS blocks)
   const res = await fetch('/api/shorten', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url })
+    body: JSON.stringify({ url, siteKey: SHORTEN_SITE_KEY })
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -155,6 +163,12 @@ async function doShorten() {
   resetResult();
   try {
     const short = await tryShorten(url);
+    // MAX-04: tryShorten already requires an http(s) reply, but a
+    // provider reply (or a future provider change) must never turn this
+    // anchor into a link to an arbitrary host.
+    let shortHost = '';
+    try { shortHost = new URL(short).hostname; } catch (e) { shortHost = ''; }
+    if (!isTrustedShortHost(shortHost)) throw new Error('Unexpected response');
     shortLinkEl.href = short;
     shortLinkEl.textContent = short;
     resultBox.style.display = '';

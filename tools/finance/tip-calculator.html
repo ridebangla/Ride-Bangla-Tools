@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Finance</a> / Tip Calculator</div>
     <h1>Tip Calculator</h1>
     <p class="lede">Dinner math in two seconds — enter the bill, tap a tip percentage, split it between friends. Works in any currency. Free, instant, no signup.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -211,8 +212,8 @@
   }
   function calc() {
     var sym = document.getElementById('cur').value;
-    var bill = parseFloat(document.getElementById('bill').value) || 0;
-    var tipP = parseFloat(document.getElementById('tip').value) || 0;
+    var bill = Math.max(0, parseFloat(document.getElementById('bill').value) || 0);
+    var tipP = Math.max(0, parseFloat(document.getElementById('tip').value) || 0);
     var ppl = Math.max(1, parseInt(document.getElementById('ppl').value, 10) || 1);
     var tip = bill * tipP / 100, total = bill + tip;
     document.getElementById('rTip').textContent = money(tip, sym);

@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free Online Photo Editor — Edit Images in Browser | Ride Bangla Tools</title>
-<meta name="description" content="Free online photo editor: crop, resize, adjust &amp; enhance images right in your browser. No signup, no download. Free forever — no signup, photos stay private.">
+<meta name="description" content="Free online photo editor: adjust brightness, contrast, saturation and more, rotate or flip images right in your browser. No signup, no download. Free forever — no signup, photos stay private.">
 <meta name="keywords" content="free online photo editor, edit photos in browser, photo editor no download, image editor online free">
 <link rel="canonical" href="https://tools.ridebangla.bd/image/photo-editor.html">
 <meta property="og:title" content="Free Online Photo Editor — Edit Images in Browser | Ride Bangla Tools">
-<meta property="og:description" content="Free online photo editor: crop, resize, adjust &amp; enhance images right in your browser. No signup, no download. Free forever — no signup, photos stay private.">
+<meta property="og:description" content="Free online photo editor: adjust brightness, contrast, saturation and more, rotate or flip images right in your browser. No signup, no download. Free forever — no signup, photos stay private.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/image/photo-editor.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Free Online Photo Editor — Edit Images in Browser | Ride Bangla Tools">
-<meta name="twitter:description" content="Free online photo editor: crop, resize, adjust &amp; enhance images right in your browser. No signup, no download. Free forever — no signup, photos stay private.">
+<meta name="twitter:description" content="Free online photo editor: adjust brightness, contrast, saturation and more, rotate or flip images right in your browser. No signup, no download. Free forever — no signup, photos stay private.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -77,6 +77,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Photo Editor</div>
     <h1>Photo Editor</h1>
     <p class="lede">Adjust brightness, contrast, saturation and more, rotate or flip, and download — all live, right in your browser.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -100,7 +101,7 @@
       <button type="button" id="peFlipV">&#8597; Flip vertical</button>
       <button type="button" id="peReset">Reset</button>
     </div>
-    <div class="btn-row" style="margin-top:16px;"><a class="btn-download" id="peDl" style="display:none;">Download photo</a></div>
+    <div class="btn-row" style="margin-top:16px;"><a class="btn-download" id="peDl" style="display:none;">Download photo</a> <button type="button" class="btn ghost" id="peCompare" style="display:none;">Show original</button></div>
   </div>
   <div class="panel">
     <div class="pe-canvas-wrap"><canvas id="peCanvas"></canvas></div>
@@ -131,9 +132,12 @@
   };
 
   let img = null;
+  let imgType = 'image/jpeg';
+  let blobTimer = null;
   let rotation = 0;   // 0, 90, 180, 270
   let flipH = false;
   let flipV = false;
+  let showOriginal = false;
 
   function currentFilter(){
     return [
@@ -148,14 +152,20 @@
 
   function redraw(){
     if (!img) return;
+    if (showOriginal) {
+      canvas.width = img.width; canvas.height = img.height;
+      ctx.save(); ctx.filter = 'none'; ctx.drawImage(img, 0, 0); ctx.restore();
+      return;
+    }
     const swapped = rotation === 90 || rotation === 270;
     const w = img.width, h = img.height;
     canvas.width = swapped ? h : w;
     canvas.height = swapped ? w : h;
 
     ctx.save();
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // FIX: old code always filled white and encoded JPEG, so a transparent
+    // PNG lost transparency. Keep PNG inputs as PNG; fill white for JPEG only.
+    if (imgType !== 'image/png') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
@@ -163,16 +173,21 @@
     ctx.drawImage(img, -w / 2, -h / 2, w, h);
     ctx.restore();
 
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      if (window._lastEditUrl) URL.revokeObjectURL(window._lastEditUrl);
-      const url = URL.createObjectURL(blob);
-      window._lastEditUrl = url;
-      dl.href = url;
-      dl.download = 'edited-photo.jpg';
-      dl.style.display = 'inline-block';
-      dl.textContent = 'Download photo';
-    }, 'image/jpeg', 0.92);
+    // FIX: generating a download blob on every slider tick stalls large photos
+    // on phones. The canvas preview stays live; the blob follows 300 ms later.
+    clearTimeout(blobTimer);
+    blobTimer = setTimeout(() => {
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        if (window._lastEditUrl) URL.revokeObjectURL(window._lastEditUrl);
+        const url = URL.createObjectURL(blob);
+        window._lastEditUrl = url;
+        dl.href = url;
+        dl.download = imgType === 'image/png' ? 'edited-photo.png' : 'edited-photo.jpg';
+        dl.style.display = 'inline-block';
+        dl.textContent = 'Download photo';
+      }, imgType, imgType === 'image/png' ? undefined : 0.92);
+    }, 300);
   }
 
   Object.entries(sliders).forEach(([key, el]) => {
@@ -193,7 +208,9 @@
       im.onerror = () => alert('Could not read this image. Try a JPG or PNG image.');
       im.onload = () => {
         img = im;
+        imgType = (file.type === 'image/png') ? 'image/png' : 'image/jpeg';
         rotation = 0; flipH = false; flipV = false;
+        document.getElementById('peCompare').style.display = 'inline-block';
         redraw();
       };
       im.src = ev.target.result;
@@ -205,6 +222,11 @@
   document.getElementById('peRotR').addEventListener('click', () => { rotation = (rotation + 90) % 360; redraw(); });
   document.getElementById('peFlipH').addEventListener('click', () => { flipH = !flipH; redraw(); });
   document.getElementById('peFlipV').addEventListener('click', () => { flipV = !flipV; redraw(); });
+  document.getElementById('peCompare').addEventListener('click', () => {
+    showOriginal = !showOriginal;
+    document.getElementById('peCompare').textContent = showOriginal ? 'Show edited' : 'Show original';
+    redraw();
+  });
   document.getElementById('peReset').addEventListener('click', () => {
     sliders.bright.value = 100; sliders.contrast.value = 100; sliders.sat.value = 100;
     sliders.gray.value = 0; sliders.sepia.value = 0; sliders.blur.value = 0;
@@ -213,6 +235,8 @@
       vals[key].textContent = el.value + unit;
     });
     rotation = 0; flipH = false; flipV = false;
+    showOriginal = false;
+    document.getElementById('peCompare').textContent = 'Show original';
     redraw();
   });
 })();

@@ -1,9 +1,6 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="tools/assets/tools-logo-text-light.png">
-  <img src="tools/assets/tools-logo-text.png" alt="Ride Bangla Tools" width="440">
-</picture>
+<img src="tools/assets/tools-logo-mark.png" alt="Ride Bangla Tools logo" width="120">
 
 # Ride Bangla Tools
 
@@ -12,11 +9,18 @@
 [![Live Website](https://img.shields.io/badge/Live_Website-tools.ridebangla.bd-0B3D2E?style=for-the-badge&logo=googlechrome&logoColor=white)](https://tools.ridebangla.bd)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](LICENSE)
 
-<img src="docs/demo/qr-code-generator-demo.gif" alt="Live demo — recorded from tools.ridebangla.bd, 24 October 2026" width="400">
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://tools.ridebangla.bd)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://tools.ridebangla.bd)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://tools.ridebangla.bd)
+[![PDF.js 3.11.174](https://img.shields.io/badge/PDF.js-3.11.174-FF6F00?style=for-the-badge)](https://tools.ridebangla.bd)
+[![pdf-lib 1.17.1](https://img.shields.io/badge/pdf--lib-1.17.1-0B3D2E?style=for-the-badge)](https://tools.ridebangla.bd)
+[![JsBarcode 3.11.6](https://img.shields.io/badge/JsBarcode-3.11.6-7C3AED?style=for-the-badge)](https://tools.ridebangla.bd)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://tools.ridebangla.bd)
+[![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge)](https://tools.ridebangla.bd)
 
-Live demo — the QR Code Generator in action: a link is typed, the **Bird QR** designer style is picked, **Generate QR code** is clicked, and the finished code — the QR pattern itself forms the bird design — fills the final frames, ready to download as a PNG.
+<img src="docs/demo/qr-code-generator-demo-desktop.gif" alt="Live demo — QR Code Generator on a laptop screen, recorded from tools.ridebangla.bd, 24 October 2026" width="720">
 
-<img src="docs/screenshots/home-desktop.png" alt="Ride Bangla Tools homepage on desktop — the site header carries the Tools toolbox logo, above the hero and the Popular Tools section" width="880">
+Live demo (laptop, 1280×800) — the QR Code Generator in action: a link is typed, a designer style is picked, **Generate QR code** is clicked, and the finished code appears in the preview panel, ready to download as a PNG.
 
 </div>
 
@@ -47,7 +51,7 @@ Edit, merge, split and rotate PDFs, or create one from images or text — all lo
 - **PDF Editor** — tap text to change it, replace, move or delete images, add text and a signature, fill forms, reorder, rotate or delete pages, then download the edited PDF.
 - **Merge PDF**, **Split PDF**, **Rotate PDF** (90° / 180° / 270°), **Image to PDF** and **Text to PDF**.
 
-> **Honest status:** a deep rework of the PDF Editor (v4 — tap-to-edit accuracy at every zoom and pan state, and exact phone fit) is **scheduled, not yet shipped**. The editor above is the current live version; it is not presented here as perfect.
+> **Honest status:** a deep rework of the PDF Editor (v4 — tap-to-edit accuracy at every zoom and pan state, and exact phone fit) **lands in this batch**. The screenshot above is the pre-v4 live editor; v4's real-phone verification is still owed, so it is not presented here as perfect.
 
 ### 🖼️ Image Tools — 13 tools
 
@@ -55,9 +59,9 @@ Background Remover, Photo Editor, Image Compressor, Image Resizer, Image Cropper
 
 ### 📱 QR & Barcode Tools — 6 tools
 
-<img src="docs/screenshots/tool-qr-generator.png" alt="QR Code Generator with Logo — text or URL input, designer styles including Tiger QR, an AI Tips button, and Download PNG" width="820">
+<img src="docs/screenshots/tool-qr-generator.png" alt="QR Code Generator with Logo — text or URL input, designer styles (Classic, Rounded, Sunset Fade), an AI Tips button, and Download PNG" width="820">
 
-- **QR Code Generator** — links and text in **18 designer styles** (the page's own count), with your own logo placed on the code and an optional name label.
+- **QR Code Generator** — links and text in **3 designer styles (Classic, Rounded, Sunset Fade)**, with your own logo placed on the code and an optional name label.
 - **Payment QR Generator** — scannable QR for bKash, Nagad, Rocket, bank or custom payment details.
 - **QR Code Reader** (camera or uploaded photo), **Wi-Fi QR Generator**, **vCard QR Generator** and **Barcode Generator** (Code 128, SVG or PNG).
 
@@ -96,7 +100,7 @@ Every one of the 67 tool pages loads the shared in-tool AI helper (`tools/assets
 - **16 languages** — language packs ship in `tools/assets/i18n/` (English default, plus Bengali and 14 more) for the site chrome.
 - **PWA** — a web app manifest and service worker (`tools/assets/manifest.webmanifest`, `tools/sw.js`) make the toolbox installable and offline-capable.
 
-> **Reviews note:** the site's reviews section currently shows an honest *“Reviews are temporarily unavailable”* state (its loader in `tools/assets/reviews.js` renders that message instead of a fake score when the shared backend quota is exhausted). No live reviews feed is claimed here.
+> **Reviews note:** the site's reviews section loader in `tools/assets/reviews.js` renders an honest unavailable state instead of a fake score when it cannot load (for example when the shared backend quota is exhausted). When reviews load, the homepage also shows per-site rating summaries across the five Ride Bangla websites. No live reviews feed is claimed here until the post-push live drive confirms it.
 
 ---
 
@@ -146,8 +150,8 @@ Only what is actually in this repository:
 
 - **Static site** — plain HTML, CSS and JavaScript under `tools/`; no build step, no framework, no package.json.
 - **Styling** — one shared stylesheet (`tools/assets/style.css`); Google Fonts: Space Grotesk, IBM Plex Mono, Noto Sans Bengali.
-- **PDF** — PDF.js and pdf-lib (vendored in `tools/assets/`, with CDN copies on some pages).
-- **QR & barcodes** — the site's own QR studio/design scripts (`qr-studio.js`, `qr-designs.js`), jsQR for reading, JsBarcode for barcodes.
+- **PDF** — PDF.js 3.11.174 and pdf-lib 1.17.1 (CDN copies recorded in the tool pages, e.g. `tools/pdf/pdf-editor.html`; local vendored copies under `tools/assets/`).
+- **QR & barcodes** — the site's own QR studio/design scripts (`qr-studio.js`, `qr-designs.js`), jsQR for reading, JsBarcode 3.11.6 (CDN copy recorded in `tools/qr/barcode-generator.html`).
 - **Image/media libraries (lazy-loaded per tool, via CDN)** — @imgly/background-removal, heic2any, exifr, ffmpeg.wasm, html2canvas.
 - **Serverless (Vercel)** — two functions only: `tools/api/ai.js` (AI proxy, Groq → Gemini chain) and `tools/api/shorten.js` (URL shortener).
 - **PWA** — web app manifest + service worker; security headers are set in `tools/vercel.json` (CSP, HSTS, `nosniff`, frame and referrer policies).

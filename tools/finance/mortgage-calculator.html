@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Finance</a> / Mortgage Calculator</div>
     <h1>Mortgage Calculator</h1>
     <p class="lede">Buying a home? Enter the price, down payment, rate and term to see your true monthly mortgage payment — principal, interest, tax and insurance.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -251,7 +252,7 @@ function rbDL(name,lines){
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
 }
 $('dlResult').addEventListener('click',()=>{
-  rbDL('mortgage.txt',['Home price: $'+V('price'),'Down payment: $'+V('down')+' ('+V('downPct')+'%)','Rate: '+V('rate')+'%','Term: '+V('term')+' years','Monthly total: '+T('mTotal'),'Principal & interest: '+T('mPI'),'Tax: '+T('mTax'),'Insurance: '+T('mIns'),'Loan amount: '+T('loanAmt'),'Total interest: '+T('totalInt'),'Total cost: '+T('totalCost')]);
+  rbDL('mortgage.txt',['Home price: $'+V('price'),'Down payment: $'+V('down')+' ('+((parseFloat(V('price'))>0)?(100*parseFloat(V('down'))/parseFloat(V('price'))).toFixed(1):'0')+'%)','Rate: '+V('rate')+'%','Term: '+V('term')+' years','Monthly total: '+T('mTotal'),'Principal & interest: '+T('mPI'),'Tax: '+T('mTax'),'Insurance: '+T('mIns'),'Loan amount: '+T('loanAmt'),'Total interest: '+T('totalInt'),'Total cost: '+T('totalCost')]);
 });
 })();
 </script>

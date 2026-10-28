@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://tools.ridebangla.bd/developer/"}, {"@type": "ListItem", "position": 3, "name": "CSV to JSON Converter", "item": "https://tools.ridebangla.bd/developer/csv-json-converter.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "CSV to JSON Converter", "description": "Convert CSV to JSON and JSON to CSV online free. Handles quoted fields and commas correctly — instant, in your browser.", "url": "https://tools.ridebangla.bd/developer/csv-json-converter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "CSV to JSON Converter", "description": "Convert CSV to JSON and JSON to CSV online free. Handles quoted fields correctly, with a comma, semicolon or tab delimiter choice — instant, in your browser.", "url": "https://tools.ridebangla.bd/developer/csv-json-converter.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is CSV to JSON Converter free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. CSV to JSON Converter is completely free, with no sign-up, no daily limit, and no watermark on what you download."}},{"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. CSV to JSON Converter runs entirely in your browser using JavaScript — nothing you type or upload ever leaves your device."}},{"@type": "Question", "name": "Does the first CSV row become the field names?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The first row is treated as headers, and each following row becomes one JSON object keyed by those headers."}}]}</script>
 </head>
 <body>
@@ -67,11 +67,13 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / CSV to JSON Converter</div>
     <h1>CSV to JSON Converter</h1>
     <p class="lede">Convert CSV to JSON or JSON back to CSV — with proper handling of quotes, commas and line breaks.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
   <div class="panel">
     <div class="field"><label>Input (CSV or JSON)</label><textarea id="in" style="min-height:170px;font-family:var(--mono,monospace);font-size:13px;" placeholder="name,age,city&#10;Alice,30,Dhaka&#10;Bob,25,Chattogram"></textarea></div>
+    <div class="field"><label>CSV delimiter</label><select id="delim"><option value=",">Comma (,)</option><option value=";">Semicolon (;)</option><option value="\t">Tab</option></select></div>
     <div class="btn-row"><button type="button" class="btn" id="toJson">CSV → JSON</button><button type="button" class="btn ghost" id="toCsv">JSON → CSV</button></div>
   </div>
   <div class="panel">
@@ -80,7 +82,9 @@
   </div>
 </section>
 <script>
+function csvDelim(){const v=document.getElementById('delim').value;return v==='\t' ? '\t' : v;}
 function parseCSV(text){
+  const delim=csvDelim();
   const rows=[];let row=[],field='',q=false;
   for(let i=0;i<text.length;i++){
     const c=text[i];
@@ -88,7 +92,7 @@ function parseCSV(text){
       if(c==='"'){if(text[i+1]==='"'){field+='"';i++;}else q=false;}
       else field+=c;
     }else if(c==='"'){q=true;}
-    else if(c===','){row.push(field);field='';}
+    else if(c===delim){row.push(field);field='';}
     else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(field);field='';if(row.length>1||row[0]!=='')rows.push(row);row=[];}
     else field+=c;
   }
@@ -98,11 +102,14 @@ function parseCSV(text){
 function csvToJson(t){
   const rows=parseCSV(t).filter(r=>r.some(x=>x.trim()!==''));
   if(rows.length<2)throw new Error('Need a header row plus at least one data row.');
-  const head=rows[0];
-  return JSON.stringify(rows.slice(1).map(r=>{const o={};head.forEach((h,i)=>o[h.trim()]=i<r.length?r[i]:'');return o;}),null,2);
+  const head=rows[0].map(h=>h.trim());
+  const seenHead={};
+  const uniqHead=head.map(h=>{const base=h||'column';if(seenHead[base]==null){seenHead[base]=1;return base;}seenHead[base]++;return base+'_'+seenHead[base];});
+  return JSON.stringify(rows.slice(1).map(r=>{const o={};uniqHead.forEach((h,i)=>o[h]=i<r.length?r[i]:'');return o;}),null,2);
 }
 function jsonToCsv(t){
   const arr=JSON.parse(t);if(!Array.isArray(arr)||!arr.length)throw new Error('Input must be a JSON array of objects.');
+  if(arr.some(o=>!o||typeof o!=='object'||Array.isArray(o)))throw new Error('JSON → CSV needs an array of objects, e.g. [{"name":"Alice"}].');
   const head=[...new Set(arr.flatMap(o=>Object.keys(o)))];
   const esc=v=>{v=v==null?'':String(v);return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
   return [head.map(esc).join(','),...arr.map(o=>head.map(h=>esc(o[h])).join(','))].join('\n');

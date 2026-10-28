@@ -29,6 +29,19 @@
   var COLLECTION = 'website_reviews';
   var MAX_REVIEWS = 24;
   var CACHE_KEY = 'rb-tools-reviews-cache-v2';
+  // HEAD-GRAFT (fix-all-remaining, 2026-10-28): per-site summaries on the
+  // TRUE HEAD base. The held (a) rewrite's SOURCE_SITES enum is reused
+  // ONLY as the validation list for aggregates; no card badge, Google-only
+  // gate, pagination, embedded-config or sign-out change from (a) is
+  // included here. Labels are the (c) summary labels, never invented.
+  var SOURCE_SITES = ['studio', 'tools', 'ai', 'main', 'it'];
+  var SITE_SUMMARY_ORDER = [
+    { key: 'tools', label: 'Ride Bangla Tools', thisSite: true },
+    { key: 'main', label: 'Ride Bangla Main Website' },
+    { key: 'ai', label: 'Ride Bangla AI' },
+    { key: 'studio', label: 'Ride Bangla Studio' },
+    { key: 'it', label: 'Ride Bangla IT Team' }
+  ];
   var TRUNCATE = 80; // Main ReviewsSection compact-card truncation
 
   var root = document.getElementById('rb-reviews');
@@ -91,6 +104,7 @@
   var avgEl = root.querySelector('[data-rb="avg"]');
   var countEl = root.querySelector('[data-rb="count"]');
   var distEl = root.querySelector('[data-rb="dist"]');
+  var siteSummariesEl = root.querySelector('[data-rb="site-summaries"]');
   var listEl = root.querySelector('[data-rb="list"]');
   var formZone = root.querySelector('[data-rb="form-zone"]');
   var statusEl = root.querySelector('[data-rb="status"]');
@@ -143,6 +157,74 @@
     if (avgEl) avgEl.innerHTML = starsRow(0) + '<strong>–</strong>';
     if (countEl) countEl.textContent = 'Reviews unavailable';
     if (distEl) distEl.innerHTML = '';
+  }
+
+  /* ------------- per-site rating summaries (HEAD graft) ------------- */
+  // Aggregates cover the FULL approved pool (see fetchAggregatePool) —
+  // never the 24-review loaded page alone. Attribution is exact only:
+  // a doc counts toward a site ONLY when its sourceSite is one of the
+  // five enum values; every other doc (missing/invalid sourceSite)
+  // counts ONLY toward the legacy row, never toward any site. Averages
+  // reuse computeStats, so per-site rows and the overall row use the
+  // same rating math as the main summary and sum consistently.
+  // Adapted from unified-reviews-completion (c); the (c) text that
+  // depended on the held rewrite's pagination state and its
+  // two-argument summary rendering is NOT copied: HEAD has neither,
+  // so the wiring below uses HEAD's own fetch and summary functions.
+  function computeSiteAggregates(pool) {
+    var groups = {};
+    SITE_SUMMARY_ORDER.forEach(function (s) { groups[s.key] = []; });
+    var legacy = [];
+    pool.forEach(function (r) {
+      if (r.sourceSite && groups.hasOwnProperty(r.sourceSite)) groups[r.sourceSite].push(r);
+      else legacy.push(r);
+    });
+    return { groups: groups, legacy: legacy, overall: computeStats(pool) };
+  }
+
+  function siteSummaryRow(label, stats, opts) {
+    opts = opts || {};
+    var row = el('li', 'rb-site-summary-row' + (opts.rowClass ? ' ' + opts.rowClass : ''));
+    row.appendChild(el('span', 'rb-site-summary-name', label));
+    if (opts.thisSite) row.appendChild(el('span', 'rb-review-site', 'This website'));
+    if (!stats || stats.count === 0) {
+      // Honest empty state: no average, NO stars presented as a rating.
+      row.appendChild(el('span', 'rb-site-summary-empty', 'No reviews yet'));
+    } else {
+      var rating = el('span', 'rb-site-summary-rating');
+      rating.innerHTML = starsRow(stats.average);
+      rating.appendChild(el('strong', '', stats.average.toFixed(1)));
+      rating.appendChild(el('span', 'rb-site-summary-count',
+        '(' + stats.count + (stats.count === 1 ? ' review)' : ' reviews)')));
+      row.appendChild(rating);
+    }
+    return row;
+  }
+
+  // pool === null means the aggregate read failed: heading + an honest
+  // note, never numbers. An empty pool ([]) renders every row as
+  // "No reviews yet" — again no fake average, no stars as a rating.
+  function renderSiteSummaries(pool) {
+    if (!siteSummariesEl) return;
+    siteSummariesEl.innerHTML = '';
+    var box = el('div', 'rb-site-summaries');
+    box.appendChild(el('h4', 'rb-site-summary-title', 'Ratings across Ride Bangla websites'));
+    if (pool === null) {
+      box.appendChild(el('p', 'rb-site-summary-note', 'Per-site ratings are temporarily unavailable.'));
+      siteSummariesEl.appendChild(box);
+      return;
+    }
+    var agg = computeSiteAggregates(pool);
+    var list = el('ul', 'rb-site-summary-list');
+    SITE_SUMMARY_ORDER.forEach(function (s) {
+      list.appendChild(siteSummaryRow(s.label, computeStats(agg.groups[s.key]), { thisSite: !!s.thisSite }));
+    });
+    list.appendChild(siteSummaryRow('Reviews with source not recorded', computeStats(agg.legacy),
+      { rowClass: 'rb-site-summary-legacy' }));
+    list.appendChild(siteSummaryRow('All websites', agg.overall, { rowClass: 'rb-site-summary-overall' }));
+    box.appendChild(list);
+    box.appendChild(el('p', 'rb-site-summary-note', 'Based on all approved reviews across Ride Bangla websites.'));
+    siteSummariesEl.appendChild(box);
   }
 
   /* --------------------------- review cards ---------------------------- */
@@ -386,6 +468,10 @@
       rating: (typeof d.rating === 'number') ? Math.min(5, Math.max(1, Math.round(d.rating))) : 0,
       text: typeof d.comment === 'string' ? d.comment.trim() : '',
       source: typeof d.source === 'string' ? d.source : null,
+      sourceSite: (function () {
+        var s = typeof d.sourceSite === 'string' ? d.sourceSite : null;
+        return SOURCE_SITES.indexOf(s) >= 0 ? s : null;
+      })(),
       createdAt: created
     };
   }
@@ -408,6 +494,25 @@
     }
   }
 
+  // Dedicated aggregate read (HEAD graft): the per-site summaries MUST
+  // cover the FULL approved pool, so they are never computed from the
+  // 24-review loaded page alone. This query is deliberately UNCAPPED
+  // (no limit). HEAD DIFFERENCE from (c): (c) reused the fallback pool
+  // when the fallback already held it; HEAD's fetchApprovedReviews
+  // slices its fallback pool to 24, so no full pool is available to
+  // reuse — this graft therefore runs the dedicated read on EVERY
+  // successful load (at most one extra uncapped read per load). If the
+  // pool ever grows large, the honest fix is a server-side aggregate —
+  // not a page-sliced estimate presented as a total.
+  async function fetchAggregatePool() {
+    var fb = await ensureFirebase(false);
+    var col = fb.db.collection(COLLECTION);
+    var snap = await withTimeout(col.where('status', '==', 'approved').get(), 12000);
+    var all = snap.docs.map(normalizeDoc).filter(function (r) { return r.name && r.text; });
+    all.sort(function (a, b) { return String(b.createdAt || '').localeCompare(String(a.createdAt || '')); });
+    return all;
+  }
+
   /* ------------------------- cache (last good) ------------------------- */
   function saveCache(reviews, stats) {
     try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), reviews: reviews, stats: stats })); } catch (e) {}
@@ -423,6 +528,10 @@
   }
 
   function renderFailure() {
+    // The summaries block has no cached aggregate pool to draw on (the
+    // cache stores the loaded page only), so on ANY failure it renders
+    // the honest unavailable note — never page-sliced numbers.
+    renderSiteSummaries(null);
     var cached = readCache();
     if (cached && cached.reviews.length) {
       renderSummary(cached.stats || computeStats(cached.reviews));
@@ -455,6 +564,15 @@
         var reviews = await fetchApprovedReviews();
         var stats = computeStats(reviews);
         renderSummary(stats);
+        // Full-pool aggregates: run the dedicated aggregate read. An
+        // aggregate failure must NOT break the cards: the summaries
+        // block then renders its unavailable note.
+        var aggregatePool = null;
+        try { aggregatePool = await fetchAggregatePool(); } catch (aggErr) {
+          try { console.error('[rb-reviews] aggregate read failed', aggErr && aggErr.code, aggErr && aggErr.message); } catch (e2) {}
+          aggregatePool = null;
+        }
+        renderSiteSummaries(aggregatePool);
         renderList(reviews);
         saveCache(reviews, stats);
         setStatus('');

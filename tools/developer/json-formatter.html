@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / JSON Formatter</div>
     <h1>JSON Formatter</h1>
     <p class="lede">Paste messy JSON and get it validated and beautifully pretty-printed — or squeeze it back down to a single minified line.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -75,6 +76,7 @@
     <div class="btn-row">
       <button type="button" class="btn" id="format">Format (pretty-print)</button>
       <button type="button" class="btn ghost" id="minify">Minify</button>
+      <button type="button" class="btn ghost" id="clearJson">Clear</button>
     </div>
   </div>
   <div class="panel">
@@ -100,7 +102,17 @@ function run(minify) {
 }
 document.getElementById('format').addEventListener('click', () => run(false));
 document.getElementById('minify').addEventListener('click', () => run(true));
-document.getElementById('copyJson').addEventListener('click', () => rbCopy(document.getElementById('out').textContent));
+document.getElementById('copyJson').addEventListener('click', () => {
+  const o = document.getElementById('out').textContent;
+  if (o && !o.startsWith('Invalid JSON:') && !/will appear here/i.test(o)) rbCopy(o);
+});
+document.getElementById('clearJson').addEventListener('click', () => {
+  document.getElementById('input').value = '';
+  const out = document.getElementById('out');
+  out.textContent = 'Formatted or minified JSON will appear here.';
+  out.classList.add('empty'); out.style.color = '';
+  document.getElementById('input').focus();
+});
 run(false);
 </script>
 <section class="tool-faq">
@@ -224,7 +236,7 @@ function rbDL(name,lines){
 }
 $('dlResult').addEventListener('click',()=>{
   const o=T('out');
-  if(!o||/will appear here/i.test(o)){alert('Please format some JSON first.');return;}
+  if(!o||/will appear here/i.test(o)||o.startsWith('Invalid JSON:')){alert('Please format some JSON first.');return;}
   rbDL('formatted.json.txt',['Formatted JSON:','',''+o]);
 });
 })();

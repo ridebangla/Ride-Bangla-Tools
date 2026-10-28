@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Date & Time Tools", "item": "https://tools.ridebangla.bd/date-time/"}, {"@type": "ListItem", "position": 3, "name": "Date Difference Calculator", "item": "https://tools.ridebangla.bd/date-time/date-difference-calculator.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Date Difference Calculator", "description": "Find the number of days, weeks and months between two dates.", "url": "https://tools.ridebangla.bd/date-time/date-difference-calculator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Date Difference Calculator", "description": "Find the number of days, weeks and months between two dates, with an optional inclusive day count.", "url": "https://tools.ridebangla.bd/date-time/date-difference-calculator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Date Difference Calculator free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Date Difference Calculator is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Date Difference Calculator runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Does it account for time zones and leap years?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, standard calendar rules including leap years are handled automatically based on the dates you enter."}}]}</script>
 </head>
 <body>
@@ -67,12 +67,14 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Date & Time</a> / Date Difference Calculator</div>
     <h1>Date Difference Calculator</h1>
     <p class="lede">Counting down to a deadline or looking back at how long it's been — get the exact days, weeks and months between any two dates.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
   <div class="panel">
     <div class="field"><label>Start date</label><input type="date" id="start"></div>
     <div class="field"><label>End date</label><input type="date" id="end"></div>
+    <div class="field"><label style="font-size:13px"><input type="checkbox" id="incl" style="width:auto;display:inline;margin-right:6px">Include both start and end days</label></div>
   </div>
   <div class="panel">
     <div class="stat-grid">
@@ -80,6 +82,7 @@
       <div class="stat"><div class="n" id="weeks">–</div><div class="l">Weeks</div></div>
       <div class="stat"><div class="n" id="months">–</div><div class="l">Approx. months</div></div>
     </div>
+    <div id="ddNote" style="font-size:13px;opacity:.75;margin-top:8px"></div>
 
     <div class="btn-row" style="margin-top:12px;"><button class="btn-download" id="dlResult" type="button">Download result</button>
 <button type="button" class="btn ghost" id="aiBtn15">AI Tips</button></div>
@@ -95,13 +98,26 @@ end.valueAsDate = new Date(today.getFullYear(), today.getMonth()+1, today.getDat
 function calc() {
   const s = new Date(start.value);
   const e = new Date(end.value);
-  if (isNaN(s) || isNaN(e)) return;
-  const diffDays = Math.round((e - s) / 86400000);
-  document.getElementById('days').textContent = diffDays.toLocaleString();
-  document.getElementById('weeks').textContent = (diffDays/7).toFixed(1);
-  document.getElementById('months').textContent = (diffDays/30.44).toFixed(1);
+  const note = document.getElementById('ddNote');
+  if (isNaN(s) || isNaN(e)) { ['days','weeks','months'].forEach(function (id) { document.getElementById(id).textContent = '–'; }); if (note) note.textContent = ''; return; }
+  /* A reversed range never shows a confusing negative: the note explains
+     the order and every figure is the absolute duration. Inclusive mode
+     counts both the start and the end day, so it adds exactly one day. */
+  const rawDays = Math.round((e - s) / 86400000);
+  const reversed = rawDays < 0;
+  var showDays = Math.abs(rawDays);
+  if (document.getElementById('incl').checked) showDays += 1;
+  document.getElementById('days').textContent = showDays.toLocaleString();
+  document.getElementById('weeks').textContent = (showDays/7).toFixed(1);
+  document.getElementById('months').textContent = (showDays/30.44).toFixed(1);
+  if (note) {
+    var parts = [];
+    if (reversed) parts.push('The end date is before the start date, so the duration above is the absolute time between the two dates.');
+    if (document.getElementById('incl').checked) parts.push('Including both the start and end days.');
+    note.textContent = parts.join(' ');
+  }
 }
-[start, end].forEach(el => el.addEventListener('change', calc));
+[start, end, document.getElementById('incl')].forEach(el => el.addEventListener('change', calc));
 calc();
 </script>
 <section class="tool-faq">

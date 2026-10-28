@@ -67,12 +67,13 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">SEO</a> / Meta Tag Generator</div>
     <h1>Meta Tag Generator</h1>
     <p class="lede">Build a clean title, meta description and Open Graph block for your page head — copy, paste, ship.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
   <div class="panel">
-    <div class="field"><label>Page title</label><input type="text" id="title" value="My Page Title"></div>
-    <div class="field"><label>Meta description</label><textarea id="desc" style="min-height:90px;">A short, clear description of this page for search engines.</textarea></div>
+    <div class="field"><label>Page title</label><input type="text" id="title" value="My Page Title"><span class="hint" id="titleCount"></span></div>
+    <div class="field"><label>Meta description</label><textarea id="desc" style="min-height:90px;">A short, clear description of this page for search engines.</textarea><span class="hint" id="descCount"></span></div>
     <div class="field"><label>Page URL</label><input type="text" id="url" value="https://example.com/page"></div>
     <div class="field"><label>Image URL (for social sharing)</label><input type="text" id="img" value="https://example.com/og-image.jpg"></div>
   </div>
@@ -83,26 +84,29 @@
 </section>
 <script>
 const escAttr = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const oneLine = s => String(s).replace(/\s+/g, ' ').trim();
 function upd() {
-  const t = escAttr(document.getElementById('title').value);
-  const d = escAttr(document.getElementById('desc').value);
-  const u = escAttr(document.getElementById('url').value);
-  const img = escAttr(document.getElementById('img').value);
-  const out = `<title>${t.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</title>
-<meta name="description" content="${d}">
-<link rel="canonical" href="${u}">
-
-<meta property="og:title" content="${t}">
-<meta property="og:description" content="${d}">
-<meta property="og:url" content="${u}">
-<meta property="og:image" content="${img}">
-<meta property="og:type" content="website">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${t}">
-<meta name="twitter:description" content="${d}">
-<meta name="twitter:image" content="${img}">`;
-  document.getElementById('out').textContent = out;
+  const tRaw = oneLine(document.getElementById('title').value);
+  const dRaw = oneLine(document.getElementById('desc').value);
+  const t = escAttr(tRaw);
+  const d = escAttr(dRaw);
+  const u = escAttr(oneLine(document.getElementById('url').value));
+  const img = escAttr(oneLine(document.getElementById('img').value));
+  document.getElementById('titleCount').textContent = tRaw.length + ' characters (about 60 recommended)';
+  document.getElementById('descCount').textContent = dRaw.length + ' characters (about 160 recommended)';
+  const lines = [`<title>${t}</title>`];
+  if (dRaw) lines.push(`<meta name="description" content="${d}">`);
+  if (u) lines.push(`<link rel="canonical" href="${u}">`);
+  lines.push('', `<meta property="og:title" content="${t}">`);
+  if (dRaw) lines.push(`<meta property="og:description" content="${d}">`);
+  if (u) lines.push(`<meta property="og:url" content="${u}">`);
+  if (img) lines.push(`<meta property="og:image" content="${img}">`);
+  lines.push(`<meta property="og:type" content="website">`, '');
+  lines.push(`<meta name="twitter:card" content="summary_large_image">`);
+  lines.push(`<meta name="twitter:title" content="${t}">`);
+  if (dRaw) lines.push(`<meta name="twitter:description" content="${d}">`);
+  if (img) lines.push(`<meta name="twitter:image" content="${img}">`);
+  document.getElementById('out').textContent = lines.join('\n');
 }
 ['title','desc','url','img'].forEach(id => document.getElementById(id).addEventListener('input', upd));
 document.getElementById('copyMeta').addEventListener('click', () => rbCopy(document.getElementById('out').textContent));

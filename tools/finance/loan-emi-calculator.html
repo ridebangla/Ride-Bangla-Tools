@@ -67,10 +67,12 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Finance</a> / Loan EMI Calculator</div>
     <h1>Loan EMI Calculator</h1>
     <p class="lede">Planning a loan? Enter the amount, rate and term to see your monthly EMI before you sign anything.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
   <div class="panel">
+    <div class="field"><label>Currency</label><select id="emiCur"><option value="$">USD — $</option><option value="€">EUR — €</option><option value="£">GBP — £</option><option value="₹">INR — ₹</option><option value="৳">BDT — ৳</option><option value="₨">PKR — ₨</option></select></div>
     <div class="field"><label>Loan amount</label><input type="number" id="p" value="500000"></div>
     <div class="field"><label>Annual interest rate (%)</label><input type="number" id="r" value="12" step="0.1"></div>
     <div class="field"><label>Term (months)</label><input type="number" id="n" value="24"></div>
@@ -87,18 +89,20 @@
 </section>
 <script>
 function calc() {
+  const sym = document.getElementById('emiCur').value;
   const p = parseFloat(document.getElementById('p').value);
   const annualR = parseFloat(document.getElementById('r').value);
   const n = parseFloat(document.getElementById('n').value);
-  if (isNaN(p) || isNaN(n) || isNaN(annualR) || p <= 0 || n <= 0 || annualR < 0) return;
+  if (isNaN(p) || isNaN(n) || isNaN(annualR) || p <= 0 || n <= 0 || annualR < 0) { ['emi','totalPay','totalInt'].forEach(function (id) { document.getElementById(id).textContent = '–'; }); return; }
   const r = annualR / 12 / 100;
   const emi = r === 0 ? p / n : (p * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
   const total = emi * n;
-  document.getElementById('emi').textContent = emi.toLocaleString(undefined,{maximumFractionDigits:0});
-  document.getElementById('totalPay').textContent = total.toLocaleString(undefined,{maximumFractionDigits:0});
-  document.getElementById('totalInt').textContent = (total-p).toLocaleString(undefined,{maximumFractionDigits:0});
+  document.getElementById('emi').textContent = sym + emi.toLocaleString(undefined,{maximumFractionDigits:0});
+  document.getElementById('totalPay').textContent = sym + total.toLocaleString(undefined,{maximumFractionDigits:0});
+  document.getElementById('totalInt').textContent = sym + (total-p).toLocaleString(undefined,{maximumFractionDigits:0});
 }
-['p','r','n'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+['p','r','n','emiCur'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+document.getElementById('emiCur').addEventListener('change', calc);
 calc();
 </script>
 <section class="tool-faq">

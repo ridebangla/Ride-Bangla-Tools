@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Countdown Timer Free Online | Ride Bangla Tools</title>
-<meta name="description" content="A simple countdown timer online free — set minutes and seconds, then start, pause or reset. Runs in your browser.">
+<meta name="description" content="A simple countdown timer online free — set minutes and seconds, then start, pause or reset, with an audible finish signal you can switch off. Runs in your browser.">
 <meta name="keywords" content="countdown timer, online timer, minutes seconds timer">
 <link rel="canonical" href="https://tools.ridebangla.bd/date-time/countdown-timer.html">
 <meta property="og:title" content="Countdown Timer Free Online | Ride Bangla Tools">
-<meta property="og:description" content="A simple countdown timer online free — set minutes and seconds, then start, pause or reset. Runs in your browser.">
+<meta property="og:description" content="A simple countdown timer online free — set minutes and seconds, then start, pause or reset, with an audible finish signal you can switch off. Runs in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/date-time/countdown-timer.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Countdown Timer Free Online | Ride Bangla Tools">
-<meta name="twitter:description" content="A simple countdown timer online free — set minutes and seconds, then start, pause or reset. Runs in your browser.">
+<meta name="twitter:description" content="A simple countdown timer online free — set minutes and seconds, then start, pause or reset, with an audible finish signal you can switch off. Runs in your browser.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Date & Time Tools", "item": "https://tools.ridebangla.bd/date-time/"}, {"@type": "ListItem", "position": 3, "name": "Countdown Timer", "item": "https://tools.ridebangla.bd/date-time/countdown-timer.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Countdown Timer", "description": "A countdown timer with minutes and seconds, start, pause and reset.", "url": "https://tools.ridebangla.bd/date-time/countdown-timer.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Countdown Timer", "description": "A countdown timer with minutes and seconds, start, pause and reset, and an audible finish signal.", "url": "https://tools.ridebangla.bd/date-time/countdown-timer.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Countdown Timer free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Countdown Timer is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Countdown Timer runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Is it safe to paste sensitive code or data here?", "acceptedAnswer": {"@type": "Answer", "text": "Since processing happens locally in your browser and nothing is sent anywhere, it's as safe as any other action on your own device \u2014 but as a habit, avoid pasting real passwords or production secrets into any web tool."}}]}</script>
 </head>
 <body>
@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Date & Time</a> / Countdown Timer</div>
     <h1>Countdown Timer</h1>
     <p class="lede">Set a countdown in minutes and seconds.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -78,6 +79,7 @@
       <button type="button" class="btn ghost" id="cdPause">Pause</button>
       <button type="button" class="btn ghost" id="cdReset">Reset</button>
     </div>
+    <div class="field"><label style="font-size:13px"><input type="checkbox" id="cdSound" style="width:auto;display:inline;margin-right:6px" checked>Sound when finished</label></div>
   </div>
   <div class="panel">
     <div class="field"><label>Time remaining</label><div class="output" id="cdDisp" style="font-size:34px;text-align:center;">05:00</div></div>
@@ -89,6 +91,34 @@
   var remaining = 300, timer = null;
   var disp = document.getElementById('cdDisp');
   var status = document.getElementById('cdStatus');
+  /* Finish sound: created/resumed on the Start tap (a user gesture), so
+     playback is allowed; if audio is unavailable anything here fails
+     silently and the "Done" text below is the fallback. */
+  var audioCtx = null, soundTimers = [];
+  function clearSound() { soundTimers.forEach(function (t) { clearTimeout(t); }); soundTimers = []; }
+  function playDoneSound() {
+    if (!document.getElementById('cdSound').checked) return;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      if (!audioCtx) audioCtx = new AC();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      var ctx = audioCtx;
+      [0, 400, 800].forEach(function (delay) {
+        soundTimers.push(setTimeout(function () {
+          try {
+            var o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'sine'; o.frequency.value = 880;
+            g.gain.setValueAtTime(0.0001, ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.03);
+            g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.28);
+            o.connect(g); g.connect(ctx.destination);
+            o.start(); o.stop(ctx.currentTime + 0.3);
+          } catch (e) {}
+        }, delay));
+      });
+    } catch (e) {}
+  }
   function fmt(s) {
     var m = Math.floor(s / 60), r = s % 60;
     return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r;
@@ -99,9 +129,10 @@
     return m * 60 + s;
   }
   function render() { disp.textContent = fmt(remaining); }
-  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } clearSound(); }
   document.getElementById('cdStart').addEventListener('click', function () {
     if (timer) return;
+    try { var AC0 = window.AudioContext || window.webkitAudioContext; if (AC0) { if (!audioCtx) audioCtx = new AC0(); if (audioCtx.state === 'suspended') audioCtx.resume(); } } catch (e) {}
     if (remaining <= 0) remaining = readInputs();
     if (remaining <= 0) { status.textContent = 'Set a time above zero first.'; status.classList.remove('empty'); return; }
     status.textContent = 'Running.';
@@ -113,6 +144,7 @@
         render();
         stop();
         status.textContent = 'Done — time is up.';
+        playDoneSound();
         return;
       }
       render();

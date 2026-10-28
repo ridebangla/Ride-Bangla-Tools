@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JPG to PDF Converter Free — Image to PDF Online | Ride Bangla Tools</title>
+<title>Image to PDF Converter Free — JPG, PNG to PDF Online | Ride Bangla Tools</title>
 <meta name="description" content="Convert JPG, PNG &amp; images to PDF free online. Combine multiple images into one PDF — no signup, files stay in your browser. Works on any device, no signup.">
 <meta name="keywords" content="image to pdf converter, jpg to pdf, png to pdf, convert photo to pdf online free, pictures to pdf">
 <link rel="canonical" href="https://tools.ridebangla.bd/pdf/image-to-pdf.html">
-<meta property="og:title" content="JPG to PDF Converter Free — Image to PDF Online | Ride Bangla Tools">
+<meta property="og:title" content="Image to PDF Converter Free — JPG, PNG to PDF Online | Ride Bangla Tools">
 <meta property="og:description" content="Convert JPG, PNG &amp; images to PDF free online. Combine multiple images into one PDF — no signup, files stay in your browser. Works on any device, no signup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/pdf/image-to-pdf.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JPG to PDF Converter Free — Image to PDF Online | Ride Bangla Tools">
+<meta name="twitter:title" content="Image to PDF Converter Free — JPG, PNG to PDF Online | Ride Bangla Tools">
 <meta name="twitter:description" content="Convert JPG, PNG &amp; images to PDF free online. Combine multiple images into one PDF — no signup, files stay in your browser. Works on any device, no signup.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">PDF</a> / Image to PDF</div>
     <h1>Image to PDF</h1>
     <p class="lede">Convert JPG or PNG images to PDF — combine one or more images into a single, clean PDF — no installs, no uploads, done entirely in your browser.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body">
@@ -80,6 +81,7 @@
       <div id="thumbs" class="stat-grid"></div>
       <div class="btn-row">
         <button type="button" class="btn-download" id="buildPdf">Build PDF</button>
+        <a class="btn-download" id="retryPdf" style="display:none;">Download PDF again</a>
 <button type="button" class="btn ghost" id="aiBtn20">AI Tips</button>
         <button type="button" class="btn ghost" id="clearImgs">Clear</button>
       </div>
@@ -97,22 +99,45 @@ const input = document.getElementById('imgInput');
 const thumbs = document.getElementById('thumbs');
 const status = document.getElementById('imgStatus');
 
-input.addEventListener('change', () => {
-  files = Array.from(input.files);
+let lastPdfUrl = null;
+function renderThumbs() {
   thumbs.innerHTML = '';
   files.forEach((f, i) => {
     const url = URL.createObjectURL(f);
     const stat = document.createElement('div');
     stat.className = 'stat';
-    stat.innerHTML = `<img src="${url}" alt="Page thumbnail" style="width:100%;border-radius:6px;margin-bottom:6px;"><div class="l">${(f.size/1024).toFixed(0)} KB</div>`;
+    // FIX: page order used to be frozen at pick time — a wrong order meant
+    // clearing everything and re-picking. Now each page can move or be removed.
+    stat.innerHTML = `<img src="${url}" alt="Page ${i + 1} thumbnail" style="width:100%;border-radius:6px;margin-bottom:6px;"><div class="l">Page ${i + 1} — ${(f.size/1024).toFixed(0)} KB</div>`;
+    const acts = document.createElement('div');
+    acts.className = 'btn-row';
+    const up = document.createElement('button'); up.type = 'button'; up.className = 'btn ghost'; up.textContent = '↑';
+    up.disabled = (i === 0); up.setAttribute('aria-label', 'Move page ' + (i + 1) + ' up');
+    up.addEventListener('click', () => { const t = files[i]; files[i] = files[i - 1]; files[i - 1] = t; renderThumbs(); });
+    const down = document.createElement('button'); down.type = 'button'; down.className = 'btn ghost'; down.textContent = '↓';
+    down.disabled = (i === files.length - 1); down.setAttribute('aria-label', 'Move page ' + (i + 1) + ' down');
+    down.addEventListener('click', () => { const t = files[i]; files[i] = files[i + 1]; files[i + 1] = t; renderThumbs(); });
+    const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'btn ghost'; rm.textContent = 'Remove';
+    rm.setAttribute('aria-label', 'Remove page ' + (i + 1));
+    rm.addEventListener('click', () => { files.splice(i, 1); renderThumbs(); });
+    acts.appendChild(up); acts.appendChild(down); acts.appendChild(rm);
+    stat.appendChild(acts);
     thumbs.appendChild(stat);
   });
-  status.textContent = files.length ? files.length + ' image(s) ready.' : 'Add one or more images to begin.';
+  status.textContent = files.length ? files.length + ' image(s) ready — use the arrows to set page order.' : 'Add one or more images to begin.';
   status.classList.toggle('empty', !files.length);
+}
+input.addEventListener('change', () => {
+  // Picking more images adds pages (Clear removes them all).
+  files = files.concat(Array.from(input.files));
+  input.value = '';
+  renderThumbs();
 });
 
 document.getElementById('clearImgs').addEventListener('click', () => {
   files = []; input.value = ''; thumbs.innerHTML = '';
+  if (lastPdfUrl) URL.revokeObjectURL(lastPdfUrl);
+  lastPdfUrl = null; document.getElementById('retryPdf').style.display = 'none';
   status.textContent = 'Add one or more images to begin.';
   status.classList.add('empty');
 });
@@ -160,8 +185,12 @@ document.getElementById('buildPdf').addEventListener('click', async () => {
   }
   const bytes = await pdfDoc.save();
   const blob = new Blob([bytes], { type: 'application/pdf' });
+  if (lastPdfUrl) URL.revokeObjectURL(lastPdfUrl);
+  lastPdfUrl = URL.createObjectURL(blob);
+  const retry = document.getElementById('retryPdf');
+  retry.href = lastPdfUrl; retry.download = 'images.pdf'; retry.style.display = 'inline-block';
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
+  a.href = lastPdfUrl;
   a.download = 'images.pdf';
 
   document.body.appendChild(a);
@@ -170,8 +199,7 @@ document.getElementById('buildPdf').addEventListener('click', async () => {
 
   a.remove();
 
-  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
-  status.textContent = 'PDF downloaded — ' + files.length + ' page(s).';
+  status.textContent = 'PDF downloaded — ' + files.length + ' page(s). If the download did not start, use "Download PDF again".';
 });
 </script>
 <section class="tool-faq">

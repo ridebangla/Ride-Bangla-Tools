@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Date & Time</a> / Age Calculator</div>
     <h1>Age Calculator</h1>
     <p class="lede">Curious exactly how old you are? Drop in a birth date and get your precise age in years, months and days.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -109,6 +110,7 @@ function calc() {
 }
 document.getElementById('calc').addEventListener('click', calc);
 document.getElementById('dob').addEventListener('change', calc);
+document.getElementById('asOf').addEventListener('change', calc);
 calc();
 </script>
 <section class="tool-faq">

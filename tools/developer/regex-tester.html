@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Developer</a> / Regex Tester</div>
     <h1>Regex Tester</h1>
     <p class="lede">Test a regular expression against your text and see every match.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -74,7 +75,7 @@
     <div class="field"><label>Pattern</label><input type="text" id="rePattern" placeholder="e.g. [0-9]+"></div>
     <div class="field"><label>Flags</label><input type="text" id="reFlags" value="g"></div>
     <div class="field"><label>Test text</label><textarea id="reText" style="min-height:160px;"></textarea></div>
-    <div class="btn-row"><button type="button" class="btn" id="reBtn">Find matches</button></div>
+    <div class="btn-row"><button type="button" class="btn" id="reBtn">Find matches</button><button type="button" class="btn ghost" id="reCopy">Copy matches</button></div>
   </div>
   <div class="panel">
     <div class="field"><label>Matches</label><div class="output empty" id="reOut">Matches will appear here.</div></div>
@@ -82,6 +83,9 @@
 </section>
 <script>
 (function () {
+  document.getElementById('reCopy').addEventListener('click', function () {
+    if (window.__reText) rbCopy(window.__reText); else alert('Find matches first.');
+  });
   document.getElementById('reBtn').addEventListener('click', function () {
     var out = document.getElementById('reOut');
     var pattern = document.getElementById('rePattern').value;
@@ -96,26 +100,34 @@
       return;
     }
     var matches = [];
+    var capped = false;
     if (re.global) {
       var m, guard = 0;
       while ((m = re.exec(text)) !== null && guard++ < 1000) {
-        matches.push({ value: m[0], index: m.index });
+        matches.push({ value: m[0], index: m.index, groups: Array.prototype.slice.call(m, 1) });
         if (m[0] === '') re.lastIndex++;
       }
+      if (guard >= 1000) { try { capped = re.exec(text) !== null; } catch (e) { capped = false; } }
     } else {
       var single = re.exec(text);
-      if (single) matches.push({ value: single[0], index: single.index });
+      if (single) matches.push({ value: single[0], index: single.index, groups: Array.prototype.slice.call(single, 1) });
     }
     if (!matches.length) {
       out.textContent = 'No matches found.';
       out.classList.remove('empty');
+      window.__reText = '';
       return;
     }
-    var lines = [matches.length + ' match' + (matches.length === 1 ? '' : 'es') + ':'];
+    var lines = [matches.length + ' match' + (matches.length === 1 ? '' : 'es') + (capped ? ' (first 1000 shown)' : '') + ':'];
     matches.forEach(function (mm, i) {
-      lines.push((i + 1) + '. "' + mm.value + '" at index ' + mm.index);
+      var line = (i + 1) + '. "' + mm.value + '" at index ' + mm.index;
+      if (mm.groups && mm.groups.length) {
+        line += '  groups: ' + mm.groups.map(function (g, gi) { return '$' + (gi + 1) + '=' + (g === undefined ? '(no match)' : '"' + g + '"'); }).join(', ');
+      }
+      lines.push(line);
     });
     out.textContent = lines.join('\n');
+    window.__reText = lines.join('\n');
     out.classList.remove('empty');
   });
 })();

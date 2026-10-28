@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / Image to Base64</div>
     <h1>Image to Base64</h1>
     <p class="lede">Turn any image into a ready-to-paste Base64 data URI — perfect for embedding icons and small graphics directly in your HTML or CSS.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -91,6 +92,7 @@
       <div class="field">
         <label>Format</label>
         <select id="fmt">
+          <option value="original">Original file (exact, no re-encode)</option>
           <option value="image/webp" selected>WebP (smallest)</option>
           <option value="image/jpeg">JPEG</option>
           <option value="image/png">PNG (keeps transparency)</option>
@@ -153,6 +155,30 @@ async function convert(){
   if (busy) { again = true; return; }
   busy = true;
   try {
+    // FIX: "Original file" encodes the chosen file exactly as-is. The other
+    // formats re-encode (and may resize) by design, so their output is not
+    // the original file's Base64.
+    if (fmtEl.value === 'original') {
+      const data = await new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result);
+        r.onerror = () => reject(new Error('Could not read this image'));
+        r.readAsDataURL(currentFile);
+      });
+      currentB64 = data;
+      out.textContent = data;
+      out.classList.remove('empty');
+      preview.src = data;
+      preview.style.display = 'block';
+      document.getElementById('sizeKb').textContent = (currentFile.size / 1024).toFixed(1);
+      document.getElementById('b64Kb').textContent = (data.length / 1024).toFixed(1);
+      document.getElementById('dimTxt').textContent = 'Original';
+      stats.style.display = 'grid';
+      note.textContent = 'Exact Base64 of the original file.';
+      busy = false;
+      if (again) { again = false; convert(); }
+      return;
+    }
     const im = await loadImage(currentFile);
     const maxSide = parseInt(maxSizeEl.value, 10);
     let w = im.naturalWidth || im.width, h = im.naturalHeight || im.height;
@@ -201,15 +227,16 @@ fmtEl.addEventListener('change', convert);
 qEl.addEventListener('input', () => { qVal.textContent = qEl.value; });
 qEl.addEventListener('change', convert);
 
-document.getElementById('copyBtn').addEventListener('click', () => { if (currentB64) rbCopy(currentB64); });
+function needImage() { if (!currentB64) { note.textContent = 'Choose an image first.'; return false; } return true; }
+document.getElementById('copyBtn').addEventListener('click', () => { if (needImage()) rbCopy(currentB64); });
 document.getElementById('copyImgBtn').addEventListener('click', () => {
-  if (currentB64) rbCopy('<img src="' + currentB64 + '" alt="">');
+  if (needImage()) rbCopy('<img src="' + currentB64 + '" alt="">');
 });
 document.getElementById('copyCssBtn').addEventListener('click', () => {
-  if (currentB64) rbCopy('background-image: url("' + currentB64 + '");');
+  if (needImage()) rbCopy('background-image: url("' + currentB64 + '");');
 });
 document.getElementById('txtBtn').addEventListener('click', () => {
-  if (!currentB64) return;
+  if (!needImage()) return;
   const url = URL.createObjectURL(new Blob([currentB64], { type: 'text/plain' }));
   const a = document.createElement('a');
   a.href = url; a.download = 'base64.txt';

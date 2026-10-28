@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Text</a> / Word Counter</div>
     <h1>Word Counter</h1>
     <p class="lede">Count words, characters, sentences and paragraphs as you type, plus an estimated reading time — a free word and character counter great for essays, posts and captions.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -81,12 +82,13 @@
       <div class="stat"><div class="n" id="words">0</div><div class="l">Words</div></div>
       <div class="stat"><div class="n" id="chars">0</div><div class="l">Characters</div></div>
       <div class="stat"><div class="n" id="charsNoSpace">0</div><div class="l">No spaces</div></div>
-      <div class="stat"><div class="n" id="sentences">0</div><div class="l">Sentences</div></div>
+      <div class="stat"><div class="n" id="sentences">0</div><div class="l">Sentences (approx.)</div></div>
       <div class="stat"><div class="n" id="paragraphs">0</div><div class="l">Paragraphs</div></div>
       <div class="stat"><div class="n" id="readTime">0 min</div><div class="l">Reading time</div></div>
     </div>
+    <p style="font-size:13px;opacity:.75">Sentence count is approximate: abbreviations and decimals can inflate it.</p>
 
-    <div class="btn-row" style="margin-top:12px;"><button class="btn-download" id="dlResult" type="button">Download result</button>
+    <div class="btn-row" style="margin-top:12px;"><button type="button" class="btn ghost" id="copyStats">Copy result</button><button type="button" class="btn ghost" id="clearTxt">Clear</button><button class="btn-download" id="dlResult" type="button">Download result</button>
 <button type="button" class="btn ghost" id="aiImprove" style="margin-top:8px;">Improve with AI</button></div>
   </div>
 </section>
@@ -96,13 +98,23 @@ function update() {
   const v = txt.value;
   const words = v.trim() ? v.trim().split(/\s+/).length : 0;
   document.getElementById('words').textContent = words;
-  document.getElementById('chars').textContent = v.length;
-  document.getElementById('charsNoSpace').textContent = v.replace(/\s/g,'').length;
+  document.getElementById('chars').textContent = Array.from(v).length;
+  document.getElementById('charsNoSpace').textContent = Array.from(v.replace(/\s/g,'')).length;
   document.getElementById('sentences').textContent = (v.match(/[.!?]+/g) || []).length;
   document.getElementById('paragraphs').textContent = v.trim() ? v.trim().split(/\n\s*\n/).length : 0;
   document.getElementById('readTime').textContent = (words === 0 ? 0 : Math.max(1, Math.round(words/200))) + ' min';
 }
 txt.addEventListener('input', update);
+document.getElementById('copyStats').addEventListener('click', function () {
+  if (!txt.value.trim()) { alert('Type or paste some text first.'); return; }
+  rbCopy('Words: ' + document.getElementById('words').textContent + '\n' +
+    'Characters: ' + document.getElementById('chars').textContent + '\n' +
+    'Characters (no spaces): ' + document.getElementById('charsNoSpace').textContent + '\n' +
+    'Sentences: ' + document.getElementById('sentences').textContent + '\n' +
+    'Paragraphs: ' + document.getElementById('paragraphs').textContent + '\n' +
+    'Reading time: ' + document.getElementById('readTime').textContent);
+});
+document.getElementById('clearTxt').addEventListener('click', function () { txt.value = ''; update(); txt.focus(); });
 update();
 </script>
 <section class="tool-faq">

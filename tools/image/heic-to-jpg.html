@@ -77,6 +77,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Image</a> / HEIC to JPG</div>
     <h1>HEIC to JPG Converter</h1>
     <p class="lede">iPhone photos save as HEIC — but most websites, apps and Windows PCs can't open them. Convert your HEIC photos to universal JPG right here, free, with nothing uploaded anywhere.</p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 0;">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 
@@ -168,6 +169,8 @@ async function ensureHeic2any() {
 
 convertBtn.addEventListener('click', async function () {
   if (!heicFiles.length) { alert('Choose at least one HEIC file first.'); return; }
+  if (convertBtn.disabled) return;
+  convertBtn.disabled = true;
   statusEl.classList.remove('empty');
   statusEl.textContent = 'Loading converter engine…';
   var ready = await ensureHeic2any();
@@ -223,6 +226,7 @@ convertBtn.addEventListener('click', async function () {
   statusEl.textContent = failed
     ? 'Done: ' + done + ' converted, ' + failed + ' failed.'
     : 'Done — ' + done + ' photo(s) converted to JPG. Click a download button to save.';
+  convertBtn.disabled = false;
 });
 </script>
 <section class="tool-faq">

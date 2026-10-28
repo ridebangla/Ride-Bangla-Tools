@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">SEO</a> / URL Slug Generator</div>
     <h1>URL Slug Generator</h1>
     <p class="lede">Turn any page title into a clean, lowercase, hyphen-separated URL slug — ready for your CMS.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -87,6 +88,7 @@ const STOP = new Set(['a','an','the','and','or','but','of','in','on','at','to','
 function slugify() {
   let words = document.getElementById('title').value
     .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/['"]/g, '')
     .replace(/[^a-z0-9\s-]/g, ' ')
     .trim()
@@ -95,11 +97,15 @@ function slugify() {
   if (document.getElementById('removeStop').checked) {
     words = words.filter(w => !STOP.has(w));
   }
-  document.getElementById('out').textContent = words.length ? words.join('-') : 'Nothing to slug — try English letters, numbers or hyphens.';
+  var slug = words.join('-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+  document.getElementById('out').textContent = slug || 'Nothing to slug — try English letters, numbers or hyphens.';
 }
 document.getElementById('title').addEventListener('input', slugify);
 document.getElementById('removeStop').addEventListener('change', slugify);
-document.getElementById('copySlug').addEventListener('click', () => rbCopy(document.getElementById('out').textContent));
+document.getElementById('copySlug').addEventListener('click', () => {
+  const o = document.getElementById('out').textContent;
+  if (o && !o.startsWith('Nothing to slug')) rbCopy(o);
+});
 slugify();
 </script>
 <section class="tool-faq">
@@ -222,7 +228,7 @@ function rbDL(name,lines){
 }
 $('dlResult').addEventListener('click',()=>{
   const o=T('out');
-  if(!o){alert('Please enter a title first.');return;}
+  if(!o || o.startsWith('Nothing to slug')){alert('Please enter a title first.');return;}
   rbDL('slug.txt',['Title: '+V('title'),'Slug: '+o]);
 });
 })();

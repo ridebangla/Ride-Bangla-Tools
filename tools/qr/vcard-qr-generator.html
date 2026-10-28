@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>vCard QR Code Generator Free Online — Contact Card QR | Ride Bangla Tools</title>
-<meta name="description" content="Create a QR code for a contact card (vCard) online free — name, phone, email and organisation. Scanning it saves the contact. No signup.">
+<meta name="description" content="Create a QR code for a contact card (vCard) online free — name, phone, email, organisation, address and note. Scanning it saves the contact. No signup.">
 <meta name="keywords" content="vcard qr code generator, contact card qr, business card qr online">
 <link rel="canonical" href="https://tools.ridebangla.bd/qr/vcard-qr-generator.html">
 <meta property="og:title" content="vCard QR Code Generator Free Online — Contact Card QR | Ride Bangla Tools">
-<meta property="og:description" content="Create a QR code for a contact card (vCard) online free — name, phone, email and organisation. Scanning it saves the contact. No signup.">
+<meta property="og:description" content="Create a QR code for a contact card (vCard) online free — name, phone, email, organisation, address and note. Scanning it saves the contact. No signup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/qr/vcard-qr-generator.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vCard QR Code Generator Free Online — Contact Card QR | Ride Bangla Tools">
-<meta name="twitter:description" content="Create a QR code for a contact card (vCard) online free — name, phone, email and organisation. Scanning it saves the contact. No signup.">
+<meta name="twitter:description" content="Create a QR code for a contact card (vCard) online free — name, phone, email, organisation, address and note. Scanning it saves the contact. No signup.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "QR Code Tools", "item": "https://tools.ridebangla.bd/qr/"}, {"@type": "ListItem", "position": 3, "name": "vCard QR Generator", "item": "https://tools.ridebangla.bd/qr/vcard-qr-generator.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "vCard QR Generator", "description": "Generate a QR code that carries a vCard contact (name, phone, email, organisation).", "url": "https://tools.ridebangla.bd/qr/vcard-qr-generator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "vCard QR Generator", "description": "Generate a QR code that carries a vCard contact (name, phone, email, organisation, address and note).", "url": "https://tools.ridebangla.bd/qr/vcard-qr-generator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is vCard QR Generator free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. vCard QR Generator is completely free, with no sign-up, no daily limit, and no watermark on what you download."}}, {"@type": "Question", "name": "Is my data uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. vCard QR Generator runs entirely in your browser using JavaScript \u2014 nothing you type or upload ever leaves your device."}}, {"@type": "Question", "name": "Is it safe to paste sensitive code or data here?", "acceptedAnswer": {"@type": "Answer", "text": "Since processing happens locally in your browser and nothing is sent anywhere, it's as safe as any other action on your own device \u2014 but as a habit, avoid pasting real passwords or production secrets into any web tool."}}]}</script>
 </head>
 <body>
@@ -67,6 +67,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">QR Code</a> / vCard QR Generator</div>
     <h1>vCard QR Generator</h1>
     <p class="lede">Make a QR code that saves your contact details when scanned.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -75,11 +76,15 @@
     <div class="field"><label>Phone</label><input type="text" id="vcPhone" placeholder="e.g. +8801XXXXXXXXX"></div>
     <div class="field"><label>Email</label><input type="text" id="vcEmail" placeholder="e.g. name@example.com"></div>
     <div class="field"><label>Organisation</label><input type="text" id="vcOrg" placeholder="e.g. Ride Bangla"></div>
+    <div class="field"><label>Job title <span style="font-weight:600">(optional)</span></label><input type="text" id="vcTitle" placeholder="e.g. Manager"></div>
+    <div class="field"><label>Website <span style="font-weight:600">(optional)</span></label><input type="text" id="vcUrl" placeholder="e.g. https://example.com"></div>
+    <div class="field"><label>Address <span style="font-weight:600">(optional)</span></label><input type="text" id="vcAddr" placeholder="e.g. 12 Green Avenue, Dhaka"></div>
+    <div class="field"><label>Note <span style="font-weight:600">(optional)</span></label><input type="text" id="vcNote" placeholder="e.g. Met at the Dhaka trade fair"></div>
     <div class="btn-row"><button type="button" class="btn" id="vcGen">Generate vCard QR code</button></div>
   </div>
   <div class="panel">
-    <div class="field"><label>QR code</label><div><canvas id="vcCanvas" width="280" height="280"></canvas></div></div>
-    <div class="btn-row"><button type="button" class="btn ghost" id="vcDl">Download PNG</button></div>
+    <div class="field"><label>QR code</label><div><canvas id="vcCanvas" width="280" height="280" style="max-width:100%;height:auto"></canvas></div></div>
+    <div class="btn-row"><label style="font-size:13px;">PNG size <select id="vcSize"><option value="512" selected>512 px</option><option value="1024">1024 px</option></select></label><button type="button" class="btn ghost" id="vcDl">Download PNG</button></div>
   </div>
 </section>
 <script>
@@ -94,23 +99,40 @@ document.getElementById('vcGen').addEventListener('click', function () {
   var phone = document.getElementById('vcPhone').value.trim();
   var email = document.getElementById('vcEmail').value.trim();
   var org = document.getElementById('vcOrg').value.trim();
+  var title = document.getElementById('vcTitle').value.trim();
+  var url = document.getElementById('vcUrl').value.trim();
+  var addr = document.getElementById('vcAddr').value.trim();
+  var note = document.getElementById('vcNote').value.trim();
   if (!name) { alert('Enter the contact name first.'); return; }
   if (!phone && !email) { alert('Enter at least a phone number or an email.'); return; }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('That email address does not look valid.'); return; }
   var lines = ['BEGIN:VCARD', 'VERSION:3.0', 'FN:' + vcEsc(name)];
   if (org) lines.push('ORG:' + vcEsc(org));
+  if (title) lines.push('TITLE:' + vcEsc(title));
+  if (url) lines.push('URL:' + vcEsc(url));
   if (phone) lines.push('TEL;TYPE=CELL:' + vcEsc(phone));
   if (email) lines.push('EMAIL:' + vcEsc(email));
+  if (addr) lines.push('ADR:;;' + vcEsc(addr) + ';;;;');
+  if (note) lines.push('NOTE:' + vcEsc(note));
   lines.push('END:VCARD');
   var payload = lines.join('\n');
+  window.__vcPayload = payload;
   QRCode.toCanvas(document.getElementById('vcCanvas'), payload, { width: 280, color: { dark: '#12151C', light: '#FFFFFF' } }, function (err) {
-    if (err) alert('Could not generate the QR code: ' + err.message);
+    if (err) { alert('Could not generate the QR code: ' + err.message); return; }
+    window.__vcGenerated = true;
   });
 });
 document.getElementById('vcDl').addEventListener('click', function () {
-  var a = document.createElement('a');
-  a.href = document.getElementById('vcCanvas').toDataURL('image/png');
-  a.download = 'vcard-qr.png';
-  document.body.appendChild(a); a.click(); a.remove();
+  if (!window.__vcGenerated || !window.__vcPayload) { alert('Generate a vCard QR code first.'); return; }
+  var size = parseInt(document.getElementById('vcSize').value, 10) || 512;
+  var off = document.createElement('canvas');
+  QRCode.toCanvas(off, window.__vcPayload, { width: size, color: { dark: '#12151C', light: '#FFFFFF' } }, function (err) {
+    if (err) { alert('Could not render the PNG: ' + err.message); return; }
+    var a = document.createElement('a');
+    a.href = off.toDataURL('image/png');
+    a.download = 'vcard-qr-' + size + '.png';
+    document.body.appendChild(a); a.click(); a.remove();
+  });
 });
 </script>
 <div class="btn-row" style="margin:16px 0;"><button type="button" class="btn ghost" id="aiTipsBtn">✨ AI Tips</button></div>

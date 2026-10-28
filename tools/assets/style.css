@@ -1044,6 +1044,29 @@ textarea:focus,input:focus,select:focus{border-color:var(--tools-vibrant);}
 .rb-review-more:hover{text-decoration:underline;}
 .rb-review-note{color:#5B6B5E;font-size:13.5px;margin-top:14px;}
 .rb-review-fail .rb-btn{margin-top:10px;}
+/* HEAD-GRAFT (fix-all-remaining, 2026-10-28): "This website" pill rule
+   from the held F1 hunk (b) — needed ONLY because the summaries block
+   below marks the Tools row with .rb-review-site; no other (b) rule and
+   no card source-badge rule is included. Small (11px) pill, as staged
+   for Tools (M21: small pill kept, top-pill NOT applied). */
+.rb-review-site{display:inline-flex;align-items:center;background:#FFFFFF;color:#0C532E;border:1px solid #C9DDD2;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:600;}
+/* Unified Reviews completion (2026-10-24): per-site rating summaries —
+   badge-pill visual language reused from .rb-review-site; no layout or
+   width rules here, only this block's own card/row styling. */
+.rb-site-summaries{background:#fff;border:1px solid #E3EAE5;border-radius:14px;padding:18px 20px;margin:0 0 26px;box-shadow:0 1px 3px rgba(12,83,46,.06);}
+.rb-site-summary-title{margin:0 0 6px;color:#14202b;font-size:16px;font-weight:700;}
+.rb-site-summary-list{list-style:none;margin:0;padding:0;}
+.rb-site-summary-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-top:1px solid #E3EAE5;}
+.rb-site-summary-row:first-child{border-top:0;}
+.rb-site-summary-name{color:#14202b;font-size:14.5px;font-weight:700;}
+.rb-site-summary-rating{margin-left:auto;display:inline-flex;align-items:center;gap:8px;}
+.rb-site-summary-rating .rb-star-wrap{width:16px;height:16px;}
+.rb-site-summary-rating .rb-star{width:16px;height:16px;}
+.rb-site-summary-rating strong{font-size:16px;color:#14202b;}
+.rb-site-summary-count{color:#5B6B5E;font-size:14px;font-weight:600;}
+.rb-site-summary-empty{margin-left:auto;color:#5B6B5E;font-size:14px;font-weight:600;}
+.rb-site-summary-overall{border-top:2px solid #C9DDD2;}
+.rb-site-summary-note{color:#5B6B5E;font-size:13.5px;margin:10px 0 0;}
 @media (max-width:640px){.reviews-band{padding:46px 0 40px;}}
 
 /* ---- Readability pass (owner order 2026-10-20): every control's text bold,
@@ -1052,3 +1075,27 @@ textarea:focus,input:focus,select:focus{border-color:var(--tools-vibrant);}
 input,textarea,select,button{font-weight:600;}
 ::placeholder{color:#55645A;font-weight:600;opacity:1;}
 .hero-has-video ::placeholder{color:#3C4F43;}
+
+/* ---- Invoice logo (staged batch, additive only — invoice page only) ----
+   Screen preview sizing lives in the invoice page's own <style>; this block
+   only guarantees the print path: screen-only chrome is hidden, the live
+   preview (with header logo + watermark image) is what prints, and images
+   keep their colour/opacity in print. Scoped to body.rb-invoice-logo so no
+   other tool page's print output changes. */
+.rb-invoice-logo #docPreview{position:relative;overflow:hidden}
+.rb-invoice-logo .rb-logo-watermark{opacity:.08}
+.rb-invoice-logo .rb-logo-body{position:relative;z-index:1}
+@media print{
+  .rb-invoice-logo .site-header,.rb-invoice-logo .site-footer,
+  .rb-invoice-logo .tool-header,.rb-invoice-logo .tool-faq,
+  .rb-invoice-logo .ad-slot,.rb-invoice-logo .related,
+  .rb-invoice-logo .tool-body>.panel:first-child,
+  .rb-invoice-logo .tool-body>.panel:last-child>.field>label,
+  .rb-invoice-logo .tool-body .tot-line,
+  .rb-invoice-logo .tool-body .btn-row,
+  .rb-invoice-logo .btn-row{display:none !important}
+  .rb-invoice-logo #docPreview{border:0 !important;box-shadow:none !important}
+  .rb-invoice-logo .rb-logo-header,
+  .rb-invoice-logo .rb-logo-watermark{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rb-invoice-logo .rb-logo-watermark{opacity:.08 !important}
+}

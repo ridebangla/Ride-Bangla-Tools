@@ -8,13 +8,13 @@
 <meta name="keywords" content="qr code reader online, scan qr code from image, qr scanner camera, decode qr code, online qr code scanner">
 <link rel="canonical" href="https://tools.ridebangla.bd/qr/qr-code-reader.html">
 <meta property="og:title" content="Free QR Code Reader &amp; Scanner Online — Decode QR from Image or Camera | Ride Bangla Tools">
-<meta property="og:description" content="Free QR code reader: scan QR codes with your camera or decode them from an uploaded image. Reads URLs, WiFi codes, vCards and text. No signup.">
+<meta property="og:description" content="Free QR code reader: scan QR codes with your camera or decode them from an uploaded image. Reads URLs, WiFi codes, vCards and text. No signup, 100% in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/qr/qr-code-reader.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Free QR Code Reader &amp; Scanner Online — Decode QR from Image or Camera | Ride Bangla Tools">
-<meta name="twitter:description" content="Free QR code reader: scan QR codes with your camera or decode them from an uploaded image. Reads URLs, WiFi codes, vCards and text. No signup.">
+<meta name="twitter:description" content="Free QR code reader: scan QR codes with your camera or decode them from an uploaded image. Reads URLs, WiFi codes, vCards and text. No signup, 100% in your browser.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "QR Code Tools", "item": "https://tools.ridebangla.bd/qr/"}, {"@type": "ListItem", "position": 3, "name": "QR Code Reader", "item": "https://tools.ridebangla.bd/qr/qr-code-reader.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "QR Code Reader", "description": "Decode any QR code from an uploaded image or live camera scan — URLs, WiFi codes, vCards and plain text.", "url": "https://tools.ridebangla.bd/qr/qr-code-reader.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "QR Code Reader & Scanner", "description": "Decode any QR code from an uploaded image or live camera scan — URLs, WiFi codes, vCards and plain text.", "url": "https://tools.ridebangla.bd/qr/qr-code-reader.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is QR Code Reader free to use?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. QR Code Reader is completely free, with no sign-up and no daily limit."}}, {"@type": "Question", "name": "Is my image uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. QR Code Reader runs entirely in your browser using JavaScript — nothing you upload or scan ever leaves your device."}}, {"@type": "Question", "name": "What kinds of QR codes can it read?", "acceptedAnswer": {"@type": "Answer", "text": "URLs, WiFi network codes, vCards, plain text, payment details and any other standard QR payload."}}]}</script>
 <style>
 .qr-drop{border:2px dashed var(--border,#e5e7eb);border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;transition:border-color .15s, background .15s;background:rgba(0,0,0,.015)}
@@ -76,6 +76,7 @@
     <div class="crumb"><a href="../">All tools</a> / <a href="./">QR Code</a> / QR Code Reader</div>
     <h1>QR Code Reader &amp; Scanner</h1>
     <p class="lede">Point your camera at any QR code — or upload a photo of one — and read what it says instantly. URLs, WiFi passwords, vCards, payment details: decoded right here, free, with nothing uploaded anywhere.</p>
+    <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
 <section class="tool-body split">
@@ -222,6 +223,15 @@
     lastText = text;
     var type = detectType(text);
     var html = '<span class="qr-type">' + esc(type) + '</span><div class="payload">' + esc(text) + '</div>';
+    if (type === 'Contact (vCard)') {
+      var fn = (text.match(/^FN:(.*)$/m) || [])[1] || '';
+      var tel = (text.match(/^TEL[^:]*:(.*)$/m) || [])[1] || '';
+      var em = (text.match(/^EMAIL[^:]*:(.*)$/m) || [])[1] || '';
+      html += '<p style="margin-top:10px;font-size:13.5px">' +
+        (fn ? 'Name: <b>' + esc(fn) + '</b><br>' : '') +
+        (tel ? 'Phone: <b>' + esc(tel) + '</b><br>' : '') +
+        (em ? 'Email: <b>' + esc(em) + '</b>' : '') + '</p>';
+    }
     if (type === 'WiFi network') {
       var ssid = (text.match(/S:([^;]*)/) || [])[1] || '';
       var pw = (text.match(/P:([^;]*)/) || [])[1] || '';
@@ -281,6 +291,12 @@
   });
   drop.addEventListener('drop', function (e) {
     if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+  document.addEventListener('paste', function (e) {
+    var items = (e.clipboardData && e.clipboardData.items) || [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image/') === 0) { handleFile(items[i].getAsFile()); return; }
+    }
   });
 
   /* camera scanning */
