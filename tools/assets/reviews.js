@@ -42,6 +42,11 @@
     { key: 'studio', label: 'Ride Bangla Studio' },
     { key: 'it', label: 'Ride Bangla IT Team' }
   ];
+  // Card source labels (Main ReviewsSection pattern, same wording):
+  // built from SITE_SUMMARY_ORDER so card labels can never drift from
+  // the aggregate table's names. Legacy docs get ONLY the fallback.
+  var SOURCE_BADGES = {};
+  SITE_SUMMARY_ORDER.forEach(function (s) { SOURCE_BADGES[s.key] = 'Reviewed on ' + s.label; });
   var TRUNCATE = 80; // Main ReviewsSection compact-card truncation
 
   var root = document.getElementById('rb-reviews');
@@ -295,6 +300,11 @@
     }
     var date = fmtDate(r.createdAt);
     if (date) meta.appendChild(el('span', 'rb-review-date', date));
+    // Source-site line (Main/Studio/IT pattern): every card plainly
+    // labelled with the site it came from; a doc without a valid
+    // sourceSite gets ONLY the truthful fallback, never a guessed site.
+    meta.appendChild(el('span', 'rb-review-source',
+      SOURCE_BADGES[r.sourceSite] || 'Reviewed on Ride Bangla — source site not recorded'));
     if (meta.childNodes.length) card.appendChild(meta);
     // Delete (own reviews only, published included): the public list
     // holds approved reviews, so every card here IS a published review;
