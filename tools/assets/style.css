@@ -1099,3 +1099,16 @@ input,textarea,select,button{font-weight:600;}
   .rb-invoice-logo .rb-logo-watermark{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .rb-invoice-logo .rb-logo-watermark{opacity:.08 !important}
 }
+
+/* ---- Own-review delete controls (2026-10-29, additive only) ----
+   Scoped under #rb-reviews, the container reviews.js renders into.
+   Reuses site conventions only: danger red is the site's own
+   --red-err; pill shape from .rb-review-verified/.rb-review-site;
+   text-button pattern from .rb-review-more; muted text #5B6B5E and
+   input border #D8DEDA from the review block. No existing rule touched. */
+#rb-reviews .rb-review-delete-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;}
+#rb-reviews .rb-review-delete{background:none;border:0;padding:2px 0 0;cursor:pointer;color:var(--red-err);font-size:12.5px;font-weight:700;}
+#rb-reviews .rb-review-delete:hover{text-decoration:underline;}
+#rb-reviews .rb-review-delete-prompt{color:#5B6B5E;font-size:13.5px;font-weight:600;}
+#rb-reviews .rb-review-delete-confirm{background:var(--red-err);color:#fff;border:1px solid var(--red-err);border-radius:999px;padding:3px 12px;cursor:pointer;font-size:12.5px;font-weight:700;}
+#rb-reviews .rb-review-delete-cancel{background:#fff;color:#45554A;border:1px solid #D8DEDA;border-radius:999px;padding:3px 12px;cursor:pointer;font-size:12.5px;font-weight:700;}

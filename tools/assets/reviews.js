@@ -255,6 +255,11 @@
 
   function reviewCard(r) {
     var card = el('article', 'rb-review-card');
+    // Own-review delete needs the doc identity on the card: the doc id
+    // (== author uid per the canonical shape) plus the stored uid field.
+    // Cards without both are never treated as own (fail-closed).
+    if (r.id) card.setAttribute('data-review-id', r.id);
+    if (r.uid) card.setAttribute('data-review-uid', r.uid);
     var head = el('div', 'rb-review-head');
     head.appendChild(avatarNode(r));
     var idCol = el('div', 'rb-review-id');
@@ -291,7 +296,98 @@
     var date = fmtDate(r.createdAt);
     if (date) meta.appendChild(el('span', 'rb-review-date', date));
     if (meta.childNodes.length) card.appendChild(meta);
+    // Delete (own reviews only, published included): the public list
+    // holds approved reviews, so every card here IS a published review;
+    // the uid gate in isOwnReview is what limits the button to the
+    // author's own card. Nothing is appended for anyone else's card.
+    if (isOwnReview(r)) card.appendChild(createDeleteControl(r.id, r.uid));
     return card;
+  }
+
+  /* --------------------- own-review delete -------------------------
+     Delete is the ONLY path for a published review (published reviews
+     cannot be edited, and the live rules allow a signed-in user to
+     delete their OWN review at any status). The button renders ONLY
+     when the card's author uid AND doc id both match the signed-in
+     user, and deleteOwnReview re-checks that match (plus the live
+     Firebase Auth user) immediately before deleting — so a card can
+     never delete another user's doc, and the delete targets exactly
+     one doc: website_reviews/<own uid>. A tap never deletes directly:
+     it swaps to an inline confirm step (Delete / Cancel) first. After
+     a successful delete the list is reloaded from Firestore, so the
+     summary/counts stay honest. No sourceSite gate is applied here:
+     the pool is shared and the doc is the user's single review, so an
+     own card deletes that review whichever site it came from. */
+  function isOwnReview(r) {
+    return !!(state.user && r && r.uid && r.id &&
+      state.user.uid === r.uid && state.user.uid === r.id);
+  }
+
+  function createDeleteControl(reviewId, reviewUid) {
+    var wrap = el('div', 'rb-review-delete-wrap');
+    var delBtn = el('button', 'rb-review-delete', 'Delete');
+    delBtn.type = 'button';
+    delBtn.setAttribute('aria-label', 'Delete your review');
+    delBtn.addEventListener('click', function () {
+      // Confirmation step: replace the single Delete button with an
+      // inline confirm (Delete / Cancel). Nothing is deleted here.
+      wrap.innerHTML = '';
+      wrap.appendChild(el('span', 'rb-review-delete-prompt', 'Delete this review?'));
+      var confirmBtn = el('button', 'rb-review-delete-confirm', 'Delete');
+      confirmBtn.type = 'button';
+      var cancelBtn = el('button', 'rb-review-delete-cancel', 'Cancel');
+      cancelBtn.type = 'button';
+      cancelBtn.addEventListener('click', function () {
+        wrap.innerHTML = '';
+        wrap.appendChild(delBtn);
+      });
+      confirmBtn.addEventListener('click', function () {
+        confirmBtn.disabled = true; cancelBtn.disabled = true;
+        deleteOwnReview(reviewId, reviewUid).then(function () {
+          setStatus('');
+          loadReviews();
+        }).catch(function (e) {
+          confirmBtn.disabled = false; cancelBtn.disabled = false;
+          setStatus(friendlyError(e));
+        });
+      });
+      wrap.appendChild(confirmBtn);
+      wrap.appendChild(cancelBtn);
+    });
+    wrap.appendChild(delBtn);
+    return wrap;
+  }
+
+  async function deleteOwnReview(reviewId, reviewUid) {
+    var user = state.user;
+    if (!user || user.uid !== reviewUid || user.uid !== reviewId) {
+      throw new Error('not-own');
+    }
+    var fb = await ensureFirebase(true);
+    var auth = fb.auth;
+    if (!auth || !auth.currentUser || auth.currentUser.uid !== user.uid) {
+      throw new Error('not-signed-in');
+    }
+    await fb.db.collection(COLLECTION).doc(reviewId).delete();
+  }
+
+  // Late-auth pass: the list usually renders before the persisted
+  // session restores (or before a fresh sign-in completes), so a card
+  // built while signed-out has no Delete button yet. Re-run this after
+  // every auth-state resolution: it adds the button to the signed-in
+  // user's own card(s) and removes it from any card that is not own.
+  // Never duplicates: an existing control is left untouched.
+  function applyOwnDeleteButtons() {
+    if (!listEl) return;
+    var cards = listEl.querySelectorAll('.rb-review-card');
+    cards.forEach(function (card) {
+      var id = card.getAttribute('data-review-id');
+      var uid = card.getAttribute('data-review-uid');
+      var existing = card.querySelector('.rb-review-delete-wrap');
+      var own = !!(state.user && uid && id && state.user.uid === uid && state.user.uid === id);
+      if (own && !existing) card.appendChild(createDeleteControl(id, uid));
+      else if (!own && existing) existing.parentNode.removeChild(existing);
+    });
   }
 
   /* --------------------- slider (Main pattern, 4s) -------------------- */
@@ -394,6 +490,10 @@
 
     layoutCarousel();
     startCarousel();
+    // If the session was already restored, reviewCard added the own
+    // Delete buttons above; this pass is a no-op then. It matters for
+    // cached renders and any card built before sign-in resolved.
+    applyOwnDeleteButtons();
   }
 
   window.addEventListener('resize', function () { layoutCarousel(); });
@@ -463,6 +563,12 @@
     var created = null;
     try { if (d.created_at && typeof d.created_at.toDate === 'function') created = d.created_at.toDate().toISOString(); } catch (e) {}
     return {
+      // id + uid are carried ONLY for the own-review delete gate
+      // (data-review-id / data-review-uid on the card). No summary,
+      // count, aggregate or list math reads them, so they change no
+      // rendered number. A doc without both can never show Delete.
+      id: doc.id,
+      uid: typeof d.uid === 'string' ? d.uid : doc.id,
       name: typeof d.name === 'string' ? d.name.trim() : '',
       photoURL: (typeof d.photo_url === 'string' && /^https:\/\//i.test(d.photo_url)) ? d.photo_url : '',
       rating: (typeof d.rating === 'number') ? Math.min(5, Math.max(1, Math.round(d.rating))) : 0,
@@ -628,6 +734,7 @@
       if (cred && cred.user) {
         state.user = cred.user;
         state.name = (cred.user.displayName || '').slice(0, 40);
+        applyOwnDeleteButtons();
         setStatus('Signed in — write your review below.');
         renderForm();
       }
@@ -658,6 +765,7 @@
               state.user = user;
               state.name = (user.displayName || '').slice(0, 40);
             }
+            applyOwnDeleteButtons();
             resolve(!!user);
           });
           // Never let the Write button wait forever on a stuck listener.
@@ -683,6 +791,7 @@
         if (!user) return; // redirect sign-in in progress
         state.user = user;
         state.name = (user.displayName || '').slice(0, 40);
+        applyOwnDeleteButtons();
         renderForm();
       }).catch(function (e) {
         btn.disabled = false;
