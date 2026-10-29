@@ -28,7 +28,7 @@
   var FB_SDK_VER = '10.12.5';
   var COLLECTION = 'website_reviews';
   var MAX_REVIEWS = 24;
-  var CACHE_KEY = 'rb-tools-reviews-cache-v2';
+  var CACHE_KEY = 'rb-tools-reviews-cache-v3'; /* v3: pre-per-site-filter caches held pool cards; they must not render on the failure path */
   // HEAD-GRAFT (fix-all-remaining, 2026-10-28): per-site summaries on the
   // TRUE HEAD base. The held (a) rewrite's SOURCE_SITES enum is reused
   // ONLY as the validation list for aggregates; no card badge, Google-only
@@ -169,7 +169,7 @@
   // never the 24-review loaded page alone. Attribution is exact only:
   // a doc counts toward a site ONLY when its sourceSite is one of the
   // five enum values; every other doc (missing/invalid sourceSite)
-  // counts ONLY toward the legacy row, never toward any site. Averages
+  // counts ONLY toward the legacy bucket, never toward any site. Averages
   // reuse computeStats, so per-site rows and the overall row use the
   // same rating math as the main summary and sum consistently.
   // Adapted from unified-reviews-completion (c); the (c) text that
@@ -213,7 +213,7 @@
     if (!siteSummariesEl) return;
     siteSummariesEl.innerHTML = '';
     var box = el('div', 'rb-site-summaries');
-    box.appendChild(el('h4', 'rb-site-summary-title', 'Ratings across Ride Bangla websites'));
+    box.appendChild(el('h4', 'rb-site-summary-title', 'Tools rating and main site rating'));
     if (pool === null) {
       box.appendChild(el('p', 'rb-site-summary-note', 'Per-site ratings are temporarily unavailable.'));
       siteSummariesEl.appendChild(box);
@@ -221,14 +221,16 @@
     }
     var agg = computeSiteAggregates(pool);
     var list = el('ul', 'rb-site-summary-list');
-    SITE_SUMMARY_ORDER.forEach(function (s) {
-      list.appendChild(siteSummaryRow(s.label, computeStats(agg.groups[s.key]), { thisSite: !!s.thisSite }));
-    });
-    list.appendChild(siteSummaryRow('Reviews with source not recorded', computeStats(agg.legacy),
-      { rowClass: 'rb-site-summary-legacy' }));
-    list.appendChild(siteSummaryRow('All websites', agg.overall, { rowClass: 'rb-site-summary-overall' }));
+    // Per-site rule 2026-10-29: this block shows ONLY this site's row and
+    // the main site's aggregate row (stars + count, no cards, no text,
+    // no names). Other sites' rows, the legacy row and the overall row
+    // are NOT rendered here. The main row counts ONLY docs with
+    // sourceSite == 'main'; until the backfill lands it honestly shows
+    // 'No reviews yet' — pool totals are never presented as Main's.
+    list.appendChild(siteSummaryRow('Ride Bangla Tools', computeStats(agg.groups['tools']), { thisSite: true }));
+    list.appendChild(siteSummaryRow('Ride Bangla Main Website', computeStats(agg.groups['main']), {}));
     box.appendChild(list);
-    box.appendChild(el('p', 'rb-site-summary-note', 'Based on all approved reviews across Ride Bangla websites.'));
+    box.appendChild(el('p', 'rb-site-summary-note', 'Based on approved reviews attributed to each site.'));
     siteSummariesEl.appendChild(box);
   }
 
@@ -597,14 +599,14 @@
     var col = fb.db.collection(COLLECTION);
     try {
       var snap = await withTimeout(
-        col.where('status', '==', 'approved').orderBy('created_at', 'desc').limit(MAX_REVIEWS).get(), 12000);
-      return snap.docs.map(normalizeDoc).filter(function (r) { return r.name && r.text; });
+        col.where('status', '==', 'approved').where('sourceSite', '==', 'tools').orderBy('created_at', 'desc').limit(MAX_REVIEWS).get(), 12000);
+      return snap.docs.map(normalizeDoc).filter(function (r) { return r.name && r.text && r.sourceSite === 'tools'; });
     } catch (primaryErr) {
       // Main's fallback: keep working if the composite index is missing —
       // unordered approved query, sorted + sliced client-side.
       try { console.error('[rb-reviews] primary query failed, trying fallback', primaryErr && primaryErr.code, primaryErr && primaryErr.message); } catch (e) {}
       var snap2 = await withTimeout(col.where('status', '==', 'approved').get(), 12000);
-      var all = snap2.docs.map(normalizeDoc).filter(function (r) { return r.name && r.text; });
+      var all = snap2.docs.map(normalizeDoc).filter(function (r) { return r.name && r.text && r.sourceSite === 'tools'; });
       all.sort(function (a, b) { return String(b.createdAt || '').localeCompare(String(a.createdAt || '')); });
       return all.slice(0, MAX_REVIEWS);
     }
@@ -689,6 +691,20 @@
           aggregatePool = null;
         }
         renderSiteSummaries(aggregatePool);
+        if (aggregatePool) {
+          // Header = Tools-only lifetime stats from the FULL pool, never
+          // the 24-review card page and never other sites' reviews.
+          // Empty own pool: NO 0.0 presented as a rating (same honesty
+          // rule as the site-summary rows) — a dash + 'No reviews yet'.
+          var ownStats = computeStats(aggregatePool.filter(function (r) { return r.sourceSite === 'tools'; }));
+          if (ownStats.count > 0) { renderSummary(ownStats); }
+          else {
+            if (avgEl) avgEl.innerHTML = starsRow(0) + '<strong>\u2013</strong>';
+            if (countEl) countEl.textContent = 'No reviews yet';
+            if (distEl) distEl.innerHTML = '';
+          }
+          stats = ownStats;
+        }
         renderList(reviews);
         saveCache(reviews, stats);
         setStatus('');
