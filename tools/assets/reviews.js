@@ -119,13 +119,18 @@
   // Summary math matches Main's useReviews(): average + count computed
   // from the fetched approved pool itself; plus the owner-required
   // per-star distribution (count + % of the same pool, never invented).
+  // FIX (reviews program, Tools leg): a doc with a missing/non-numeric
+  // rating previously counted as 1 star (Math.max(1, 0)) AND counted in
+  // the denominator, dragging every average down. Invalid ratings are
+  // now excluded from count/average/distribution instead of invented.
   function computeStats(reviews) {
-    var count = reviews.length;
+    var count = 0;
     var sum = 0;
     var perStar = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
     reviews.forEach(function (r) {
-      var rating = Math.min(5, Math.max(1, Math.round(Number(r.rating) || 0)));
-      if (rating >= 1) { sum += rating; perStar[rating]++; }
+      var rating = Math.round(Number(r.rating) || 0);
+      if (rating < 1 || rating > 5) return;
+      count++; sum += rating; perStar[rating]++;
     });
     return { average: count ? sum / count : 0, count: count, perStar: perStar };
   }
@@ -271,7 +276,7 @@
     head.appendChild(avatarNode(r));
     var idCol = el('div', 'rb-review-id');
     idCol.appendChild(el('strong', 'rb-review-name', String(r.name || 'Verified visitor').slice(0, 40)));
-    var s = el('span'); s.innerHTML = starsRow(Number(r.rating) || 5);
+    var s = el('span'); s.innerHTML = starsRow((r.rating >= 1 && r.rating <= 5) ? r.rating : 0); // FIX: missing rating showed 5 stars; now empty stars, never an invented rating
     idCol.appendChild(s);
     head.appendChild(idCol);
     card.appendChild(head);
@@ -651,9 +656,13 @@
     // the honest unavailable note — never page-sliced numbers.
     renderSiteSummaries(null);
     var cached = readCache();
-    if (cached && cached.reviews.length) {
-      renderSummary(cached.stats || computeStats(cached.reviews));
-      renderList(cached.reviews);
+    // FIX: never render a cached card that is not Tools-attributed, even
+    // if an older cache entry held pool cards; stats are recomputed from
+    // the filtered set so they cannot carry another site's numbers.
+    var cachedTools = (cached && cached.reviews) ? cached.reviews.filter(function (r) { return r.sourceSite === 'tools'; }) : [];
+    if (cachedTools.length) {
+      renderSummary(computeStats(cachedTools));
+      renderList(cachedTools);
       if (listEl) {
         var note = el('p', 'rb-review-note', 'Showing the last loaded reviews — we could not refresh them just now.');
         listEl.appendChild(note);
