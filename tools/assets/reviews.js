@@ -854,6 +854,22 @@
     if (existing.exists && existing.data().status === 'approved') {
       throw new Error('Your review is already published and can no longer be edited.');
     }
+    // A1 (rejected-review dead-end): the rules allow an owner update ONLY
+    // while the stored doc is 'pending', and allow an owner delete at ANY
+    // status — so a rejected doc must never reach ref.set() below (that
+    // would surface as a raw permission error) and must never be edited
+    // in place. Fail with a marked error instead: the form offers to
+    // delete this rejected review first, after which the same form can
+    // submit a fresh review (create path, status 'pending'). No edit of
+    // a rejected review is enabled here. NOTE: no 'code' property is set
+    // on purpose — the form's catch shows e.message directly for plain
+    // errors, and a 'code' would divert it into friendlyError's generic
+    // fallback instead.
+    if (existing.exists && existing.data().status === 'rejected') {
+      var rejectedErr = new Error('Your review was not approved and cannot be edited here. You can delete it and submit a new review instead.');
+      rejectedErr.rejectedReview = true;
+      throw rejectedErr;
+    }
     // SAME-WAY 2026-10-28 (owner: perfect, no problems): mirror Main/Studio/IT
     // exactly — an edit must never move a review to another site (the final
     // rules reject a sourceSite change too, but the visitor gets this clear
@@ -932,6 +948,45 @@
         submit.disabled = false;
         var isLib = e && typeof e === 'object' && 'code' in e;
         setStatus(isLib ? friendlyError(e) : (e && e.message) || friendlyError(e));
+        // A1 offer: a rejected review is invisible in the approved-only
+        // list, so it has no Delete button anywhere else. Offer the one
+        // rules-allowed path here — delete (two-step confirm, reusing
+        // deleteOwnReview's own-doc gate), then the same form can submit
+        // a fresh review. Nothing is deleted or resubmitted automatically:
+        // the user confirms the delete, then taps Post review again.
+        if (e && e.rejectedReview && !box.querySelector('.rb-review-rejected-offer')) {
+          var offerWrap = el('div', 'rb-review-delete-wrap rb-review-rejected-offer');
+          var offerBtn = el('button', 'rb-review-delete', 'Delete rejected review');
+          offerBtn.type = 'button';
+          offerBtn.setAttribute('aria-label', 'Delete your rejected review');
+          offerBtn.addEventListener('click', function () {
+            offerWrap.innerHTML = '';
+            offerWrap.appendChild(el('span', 'rb-review-delete-prompt', 'Delete this rejected review?'));
+            var confirmBtn = el('button', 'rb-review-delete-confirm', 'Delete');
+            confirmBtn.type = 'button';
+            var cancelBtn = el('button', 'rb-review-delete-cancel', 'Cancel');
+            cancelBtn.type = 'button';
+            cancelBtn.addEventListener('click', function () {
+              offerWrap.innerHTML = '';
+              offerWrap.appendChild(offerBtn);
+            });
+            confirmBtn.addEventListener('click', function () {
+              confirmBtn.disabled = true; cancelBtn.disabled = true;
+              deleteOwnReview(state.user.uid, state.user.uid).then(function () {
+                offerWrap.parentNode.removeChild(offerWrap);
+                setStatus('Rejected review deleted. You can now submit a new review.');
+                loadReviews();
+              }).catch(function (delErr) {
+                confirmBtn.disabled = false; cancelBtn.disabled = false;
+                setStatus(friendlyError(delErr));
+              });
+            });
+            offerWrap.appendChild(confirmBtn);
+            offerWrap.appendChild(cancelBtn);
+          });
+          offerWrap.appendChild(offerBtn);
+          box.appendChild(offerWrap);
+        }
       });
     });
     box.appendChild(submit);

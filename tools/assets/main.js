@@ -282,6 +282,12 @@ if ('serviceWorker' in navigator) {
    parsed — and skipped, so the widget never mounts twice.
    ========================================================================== */
 (function () {
+  /* Tools agent-identity prep (2026-10-31): the widget site key lives in
+     ONE constant so the future gated flip changes one value here (plus
+     the Help Center static tag, which cannot read JS). Value UNCHANGED:
+     still the Main company business key until the Tools business is
+     created and seeded — the agent still answers as Main until then. */
+  var RB_WIDGET_SITE_KEY = 'rbsite-00f37b79c72f4e678febbd82d43bb46c';
   function injectAgentWidget() {
     if (window.__rbaiChatEmbedInjected) return;
     if (document.querySelector('script[src*="ride-bangla-chat.js"]')) return;
@@ -289,7 +295,7 @@ if ('serviceWorker' in navigator) {
     var s = document.createElement('script');
     s.src = 'https://ai.ridebangla.bd/widget/ride-bangla-chat.js';
     s.setAttribute('data-server', 'https://ai.ridebangla.bd');
-    s.setAttribute('data-site-key', 'rbsite-00f37b79c72f4e678febbd82d43bb46c');
+    s.setAttribute('data-site-key', RB_WIDGET_SITE_KEY);
     s.async = true;
     document.body.appendChild(s);
   }
