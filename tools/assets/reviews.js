@@ -218,7 +218,7 @@
     if (!siteSummariesEl) return;
     siteSummariesEl.innerHTML = '';
     var box = el('div', 'rb-site-summaries');
-    box.appendChild(el('h4', 'rb-site-summary-title', 'Tools rating and main site rating'));
+    box.appendChild(el('h4', 'rb-site-summary-title', 'Tools rating'));
     if (pool === null) {
       box.appendChild(el('p', 'rb-site-summary-note', 'Per-site ratings are temporarily unavailable.'));
       siteSummariesEl.appendChild(box);
@@ -226,16 +226,13 @@
     }
     var agg = computeSiteAggregates(pool);
     var list = el('ul', 'rb-site-summary-list');
-    // Per-site rule 2026-10-29: this block shows ONLY this site's row and
-    // the main site's aggregate row (stars + count, no cards, no text,
-    // no names). Other sites' rows, the legacy row and the overall row
-    // are NOT rendered here. The main row counts ONLY docs with
-    // sourceSite == 'main'; until the backfill lands it honestly shows
-    // 'No reviews yet' — pool totals are never presented as Main's.
+    // Strict per-site rule 2026-10-31: this block shows ONLY this
+    // site's row (stars + count, no cards, no text, no names).
+    // No other site's row, no legacy row and no overall row is
+    // rendered here.
     list.appendChild(siteSummaryRow('Ride Bangla Tools', computeStats(agg.groups['tools']), { thisSite: true }));
-    list.appendChild(siteSummaryRow('Ride Bangla Main Website', computeStats(agg.groups['main']), {}));
     box.appendChild(list);
-    box.appendChild(el('p', 'rb-site-summary-note', 'Based on approved reviews attributed to each site.'));
+    box.appendChild(el('p', 'rb-site-summary-note', 'Based on approved reviews for Ride Bangla Tools.'));
     siteSummariesEl.appendChild(box);
   }
 
