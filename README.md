@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="tools/assets/tools-logo-mark.png" alt="Ride Bangla Tools logo" width="120">
+<img src="tools/assets/tools-logo-text.png" alt="Ride Bangla Tools logo" width="320">
 
 # Ride Bangla Tools
 
@@ -18,11 +18,13 @@
 [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://tools.ridebangla.bd)
 [![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge)](https://tools.ridebangla.bd)
 
-<img src="docs/demo/qr-code-generator-demo-desktop.gif" alt="Live demo — QR Code Generator on a laptop screen, recorded from tools.ridebangla.bd, 24 October 2026" width="720">
+<!-- MEDIA: hero-video-laptop — GENUINE LAPTOP-SCREEN VIDEO STILL OWED. No laptop video and no laptop GIF exists in this repository (the only demo GIF is a phone-screen capture and is never used here). Replace this placeholder with a real laptop-screen recording of a tool in use — see media-needs.md — and delete this comment when it lands. Nothing here is a substitute video. -->
 
-Live demo (laptop, 1280×800) — the QR Code Generator in action: a link is typed, a designer style is picked, **Generate QR code** is clicked, and the finished code appears in the preview panel, ready to download as a PNG.
+*Hero video (laptop screen) — owed. Until a genuine laptop-screen recording is captured, this space stays empty rather than showing a phone video or a showcase scene as if it were a screen recording.*
 
 </div>
+
+> **Honest status — read before trusting any tool claim here.** All 67 tools are **UNVERIFIED by a live phone drive**: no claim in this README means "verified working live". A full code audit landed as **61 FIXED / 4 OK / 2 NEEDS-OWNER-INPUT** (see [Audit outcome](#-audit-outcome--live-verification-status)). The PDF Editor's v3 build **failed on the owner's own phone** (see [PDF Tools](#-pdf-tools--6-tools)); a deep v4 rework is owed in its proper slot and is **not** shipped here. Nothing below is called Sejda-like or fully working.
 
 ---
 
@@ -34,9 +36,7 @@ There is **no account system and no database**. Every tool runs with JavaScript 
 
 The site is styled in Tools' own design language — a deep-green (`#0B3D2E`) and vibrant-green palette with white surfaces, Space Grotesk headings and IBM Plex Mono labels — deliberately distinct from the main Ride Bangla website, while its header credits it as *“A Ride Bangla Product”*.
 
-<div align="center">
-<img src="docs/screenshots/home-phone.png" alt="Ride Bangla Tools homepage on a phone (390px wide)" width="300">
-</div>
+<img src="docs/screenshots/home-top-band-2026-11-01.png" alt="Ride Bangla Tools homepage top — fresh capture, 2026-11-01 (landscape band of the print render: header and hero video frame)" width="820">
 
 ---
 
@@ -46,28 +46,30 @@ The site is styled in Tools' own design language — a deep-green (`#0B3D2E`) an
 
 Edit, merge, split and rotate PDFs, or create one from images or text — all locally in the browser, using PDF.js and pdf-lib.
 
-<img src="docs/screenshots/tool-pdf-editor.png" alt="PDF Editor — choose a PDF, edit it in the browser, then download the edited file" width="820">
+<img src="docs/screenshots/tool-pdf-editor-band-2026-11-01.png" alt="PDF Editor — fresh capture, 2026-11-01 (landscape band of the print render): choose a PDF, edit it in the browser, then download the edited file" width="820">
 
 - **PDF Editor** — tap text to change it, replace, move or delete images, add text and a signature, fill forms, reorder, rotate or delete pages, then download the edited PDF.
 - **Merge PDF**, **Split PDF**, **Rotate PDF** (90° / 180° / 270°), **Image to PDF** and **Text to PDF**.
 
-> **Honest status:** a deep rework of the PDF Editor (v4 — tap-to-edit accuracy at every zoom and pan state, and exact phone fit) **lands in this batch**. The screenshot above is the pre-v4 live editor; v4's real-phone verification is still owed, so it is not presented here as perfect.
+> **Honest status — PDF Editor v3 FAILED on the owner's phone.** His verdict: the page does not fit/centre on the phone screen (content overflows right), the text-edit box is NOT on the tapped text (it floats top-left, oversized, covering other text), and zoom behaves wrong (the tapped text must be edited exactly in its own place). A deep v4 rework — tap-to-edit accuracy at every zoom and pan state, and exact phone fit — is owed in its proper slot, verified against real zoom/pan states, not only static geometry. The screenshot above is the current (v3) live editor; v4's real-phone verification is still owed, so the editor is not presented here as perfect, working, or Sejda-like.
 
 ### 🖼️ Image Tools — 13 tools
 
-Background Remover, Photo Editor, Image Compressor, Image Resizer, Image Cropper, Image Format Converter (PNG / JPG / WebP), Image to Base64, Image Watermark, Metadata Remover (strips EXIF/GPS from photos), HEIC to JPG, Favicon Generator, Color Palette Generator and YouTube Thumbnail Downloader.
+Photo Editor, Background Remover, Image to Base64, Image Compressor, Image Resizer, Metadata Remover (strips EXIF/GPS from photos), HEIC to JPG, Image Format Converter (PNG / JPG / WebP), Image Cropper, Color Palette Generator, YouTube Thumbnail Downloader, Favicon Generator and Image Watermark.
 
 ### 📱 QR & Barcode Tools — 6 tools
 
-<img src="docs/screenshots/tool-qr-generator.png" alt="QR Code Generator with Logo — text or URL input, designer styles (Classic, Rounded, Sunset Fade), an AI Tips button, and Download PNG" width="820">
+<img src="docs/screenshots/tool-qr-generator-band-2026-11-01.png" alt="QR Code Generator with Logo — fresh capture, 2026-11-01 (landscape band of the print render): text or URL input, designer styles, and logo upload" width="820">
 
 - **QR Code Generator** — links and text in **3 designer styles (Classic, Rounded, Sunset Fade)**, with your own logo placed on the code and an optional name label.
 - **Payment QR Generator** — scannable QR for bKash, Nagad, Rocket, bank or custom payment details.
 - **QR Code Reader** (camera or uploaded photo), **Wi-Fi QR Generator**, **vCard QR Generator** and **Barcode Generator** (Code 128, SVG or PNG).
 
+The 15 motif designs (Tiger, Lion, Cat, Panda, Owl, Fox, Bird, Kite, Ocean, Robot, Triangle, Heart, Star, Leaf, Flower) were **removed** under the owner's decode-or-remove rule: they rendered as square QR codes with a coloured mosaic inside, not as realistic organic shapes, and a true organic silhouette cannot scan reliably with standard decoders. Unconvertible motifs are removed, not kept as decoration.
+
 ### 🎓 Career — CV & Cover Letter Builder
 
-<img src="docs/screenshots/tool-cv-builder.png" alt="CV & Cover Letter Builder — fill in your details once and download a professional CV and matching cover letter as PDF" width="820">
+<img src="docs/screenshots/tool-cv-builder-band-2026-11-01.png" alt="CV & Cover Letter Builder — fresh capture, 2026-11-01 (landscape band of the print render) in DEFAULT/DEMO state: the form carries the tool's own pre-filled demo values" width="820">
 
 Fill in your details once — with Bangladesh location data built in — then download a clean, professional CV and a matching cover letter as PDF. Nothing is uploaded anywhere.
 
@@ -75,6 +77,14 @@ Fill in your details once — with Bangladesh location data built in — then do
 
 - **Finance (7):** Loan EMI Calculator, Mortgage Calculator, Compound Interest Calculator, Simple Interest Calculator, Discount Calculator, Tip Calculator, Zakat Calculator.
 - **Business (4):** Invoice Generator, Quotation Generator, Business Name Generator, Freelance Rate Calculator.
+
+#### Invoice Generator — rounds shipped (live drive still owed)
+
+- **Payment select** — pay-later due date, paid cash-on-delivery, paid cash-in-hand and further payment options in one select.
+- **Logo as a real PNG** — an uploaded logo is converted on a canvas to a valid PNG (downscaled to at most 1000px on the long side), so the preview and the PDF always get a decodable image.
+- **Amount-header fix** — the invoice table's Amount column header is present and right-aligned.
+- **Watermark opt-in** — the logo watermark is off unless the visitor opts in; it renders centred and faint behind the invoice content.
+- **Fresh blank form + New invoice button** — one tap clears the invoice (client, items, notes, totals, fresh number + dates) back to a single blank row, exactly as a fresh form.
 
 ### 🧮 Calculators, Converters & Date/Time — 10 tools
 
@@ -88,11 +98,11 @@ Fill in your details once — with Bangladesh location data built in — then do
 - **Text (6):** Word Counter, Case Converter, Lorem Ipsum Generator, Remove Duplicate Lines, Text to Speech, Base64 Encoder / Decoder.
 - **SEO (3):** Meta Tag Generator, Slug Generator, URL Shortener.
 
-<img src="docs/screenshots/tools-grid-desktop.png" alt="The All Tools grid on the homepage — PDF cards above the Image category, which is labelled 13 tools" width="820">
+<img src="docs/screenshots/tools-grid-desktop.png" alt="The All Tools grid on the homepage on a laptop screen (1280×800)" width="820">
 
 ### 🤖 AI assistance inside every tool
 
-Every one of the 67 tool pages loads the shared in-tool AI helper (`tools/assets/ai.js` — verified present in 67 of 67 tool pages in this repository). It opens a styled in-panel assistant — visible as the **AI Tips** button in the QR screenshot above — and never a native alert or raw markdown. Requests go through this site's own serverless proxy (`tools/api/ai.js`), which runs a Groq → Gemini chain; provider keys stay server-side and never reach the browser. The site-wide help is the Ride Bangla AI Agent widget.
+Every one of the 67 tool pages is built to load the shared in-tool AI helper (`tools/assets/ai.js` — repository-level presence re-verified in all 67 of 67 tool pages at the audited HEAD; this is a code-presence fact, not a live-working claim). It opens a styled in-panel assistant (the **AI Tips** button on each tool page) — and never a native alert or raw markdown. Requests go through this site's own serverless proxy (`tools/api/ai.js`), which runs a Groq → Gemini chain; provider keys stay server-side and never reach the browser. The site-wide help is the Ride Bangla AI Agent widget. (Live behaviour on a real phone is still owed — see below.)
 
 ### 🔒 Private by design, multilingual, installable
 
@@ -100,7 +110,18 @@ Every one of the 67 tool pages loads the shared in-tool AI helper (`tools/assets
 - **16 languages** — language packs ship in `tools/assets/i18n/` (English default, plus Bengali and 14 more) for the site chrome.
 - **PWA** — a web app manifest and service worker (`tools/assets/manifest.webmanifest`, `tools/sw.js`) make the toolbox installable and offline-capable.
 
-> **Reviews note:** the site's reviews section loader in `tools/assets/reviews.js` renders an honest unavailable state instead of a fake score when it cannot load (for example when the shared backend quota is exhausted). When reviews load, the homepage also shows per-site rating summaries across the five Ride Bangla websites. No live reviews feed is claimed here until the post-push live drive confirms it.
+### ⭐ Reviews — your own review, deletable
+
+The site's reviews section loader in `tools/assets/reviews.js` renders an honest unavailable state instead of a fake score when it cannot load (for example when the shared backend quota is exhausted). When reviews load, the homepage also shows per-site rating summaries across the five Ride Bangla websites. No live reviews feed is claimed here until the post-push live drive confirms it.
+
+A signed-in reviewer can **delete their own review** (published reviews included) through a two-step confirmation — Delete, then confirm Delete / Cancel — and nothing else is ever touched. The delete control is styled in the site's error red (`--red-err: #DC2626` in `tools/assets/style.css`).
+
+### 📋 Audit outcome — live-verification status
+
+- **Full audit outcome: 61 FIXED / 4 OK / 2 NEEDS-OWNER-INPUT.** That is a code-audit result, not a live-working claim: all 67 tools remain **UNVERIFIED by a live phone drive**, and this README does not claim otherwise.
+- **Needs owner input (1 of 2, confirmed in code):** the Zakat Calculator's wording — page copy says zakat applies "above nisab" while the calculator's own result status says "at or above nisab". The owner must settle which wording is correct.
+- **Needs owner input (2 of 2):** the Background Remover's AI-presentation wording — awaiting the owner's decision on how the AI aspect is presented.
+- **Full functional pass still owed:** every one of the 67 tools must be driven end-to-end on a real phone before any of them is called working.
 
 ---
 
@@ -144,17 +165,32 @@ tools/
 
 ---
 
-## Tech stack
+## Built with — কি কি দিয়ে তৈরি হয়েছে
 
-Only what is actually in this repository:
+Only what is actually in this repository — nothing invented:
 
-- **Static site** — plain HTML, CSS and JavaScript under `tools/`; no build step, no framework, no package.json.
-- **Styling** — one shared stylesheet (`tools/assets/style.css`); Google Fonts: Space Grotesk, IBM Plex Mono, Noto Sans Bengali.
-- **PDF** — PDF.js 3.11.174 and pdf-lib 1.17.1 (CDN copies recorded in the tool pages, e.g. `tools/pdf/pdf-editor.html`; local vendored copies under `tools/assets/`).
-- **QR & barcodes** — the site's own QR studio/design scripts (`qr-studio.js`, `qr-designs.js`), jsQR for reading, JsBarcode 3.11.6 (CDN copy recorded in `tools/qr/barcode-generator.html`).
-- **Image/media libraries (lazy-loaded per tool, via CDN)** — @imgly/background-removal, heic2any, exifr, ffmpeg.wasm, html2canvas.
-- **Serverless (Vercel)** — two functions only: `tools/api/ai.js` (AI proxy, Groq → Gemini chain) and `tools/api/shorten.js` (URL shortener).
-- **PWA** — web app manifest + service worker; security headers are set in `tools/vercel.json` (CSP, HSTS, `nosniff`, frame and referrer policies).
+- **Static site, no framework** — plain HTML, CSS and JavaScript under `tools/`; **no package.json, no build step**. The whole toolbox is hand-written web pages plus shared assets.
+- **Styling** — one shared stylesheet (`tools/assets/style.css`) in Tools' own design language: deep-green (`#0B3D2E`) and vibrant-green palette with white surfaces, Space Grotesk headings, IBM Plex Mono labels, and Noto Sans Bengali support.
+- **PDF engine** — PDF.js **3.11.174** and pdf-lib **1.17.1** (CDN copies recorded in `tools/pdf/pdf-editor.html`; local vendored copies under `tools/assets/`), so PDFs are edited entirely in the visitor's browser.
+- **QR & barcodes** — the site's own QR studio and design scripts (`tools/assets/qr-studio.js`, `tools/assets/qr-designs.js` v5: 3 plain designs — Classic, Rounded, Sunset Fade), jsQR for reading codes, and JsBarcode **3.11.6** for barcodes.
+- **Image & media helpers (lazy-loaded per tool, via CDN)** — @imgly/background-removal, heic2any, exifr, ffmpeg.wasm and html2canvas, each loaded only by the tool that needs it.
+- **In-tool AI** — the shared helper `tools/assets/ai.js` (present in all 67 tool pages) talking to the site's own serverless proxy `tools/api/ai.js`, which runs a Groq → Gemini chain with provider keys kept server-side.
+- **Serverless, only two functions** — `tools/api/ai.js` (AI proxy) and `tools/api/shorten.js` (URL-shortener proxy), both Vercel functions. There is no database and no account system.
+- **Installable (PWA)** — web app manifest (`tools/assets/manifest.webmanifest`) + service worker (`tools/sw.js`), so the toolbox can be installed and works offline where cached.
+- **Multilingual** — 16 language packs in `tools/assets/i18n/` (English default, plus Bengali and 14 more) for the site chrome.
+- **Secure by default** — security headers set in `tools/vercel.json` (Content-Security-Policy, HSTS, `nosniff`, frame and referrer policies; camera allowed only on the QR reader page).
+- **Hosting** — Vercel, serving [tools.ridebangla.bd](https://tools.ridebangla.bd).
+
+---
+
+## Roadmap — OWED, NOT SHIPPED
+
+Nothing in this section is live. It is listed here only so the gap is visible, never as a shipped feature.
+
+- **Laptop-screen video (OWED)** — a genuine laptop/computer-screen video of a tool in use (for example the QR Code Generator or PDF Editor, recorded on a laptop screen). The site hero video is a showcase scene, not a screen recording, and the only demo GIF in the repository (`docs/demo/qr-code-generator-demo.gif`) is a portrait phone-screen capture — phone-screen video is never acceptable as a substitute, and no laptop GIF exists either.
+- **PDF Editor v4 (OWED, in its proper slot)** — the deep rework for tap-to-edit accuracy at every zoom and pan state and exact phone fit, verified on a real phone. v3's owner-phone failure stands until then.
+- **Live phone drive for all 67 tools (OWED)** — every tool driven end-to-end on a real phone before any of them is called working.
+- **Owner input (OWED)** — Zakat Calculator wording ("above nisab" vs "at or above nisab") and Background Remover AI-presentation wording.
 
 ---
 
@@ -194,7 +230,7 @@ Ride Bangla Limited is led by Enamul Seddik (Co-Founder & CEO), Emon Seddik (Co-
   <a href="https://www.facebook.com/ridebangla"><img src="https://cdn.simpleicons.org/facebook/1877F2" width="22" alt="Facebook"></a>&nbsp; <a href="https://www.facebook.com/ridebangla">Facebook</a> &nbsp;·&nbsp;
   <a href="https://x.com/ridebangla"><img src="https://cdn.simpleicons.org/x/000000" width="22" alt="X"></a>&nbsp; <a href="https://x.com/ridebangla">X</a> &nbsp;·&nbsp;
   <a href="https://www.instagram.com/ride.bangla_"><img src="https://cdn.simpleicons.org/instagram/E4405F" width="22" alt="Instagram"></a>&nbsp; <a href="https://www.instagram.com/ride.bangla_">Instagram</a> &nbsp;·&nbsp;
-  <a href="https://www.threads.net/@ride.bangla_"><img src="https://cdn.simpleicons.org/threads/000000" width="22" alt="Threads"></a>&nbsp; <a href="https://www.threads.net/@ride.bangla_">Threads</a> &nbsp;·&nbsp;
+  <a href="https://www.threads.net/@ride.bangla_"><img src="https://cdn.simpleicons.org/threads/000000" width="22" alt="Threads"></a> &nbsp;·&nbsp;
   <a href="https://www.tiktok.com/@ridebangla0"><img src="https://cdn.simpleicons.org/tiktok/000000" width="22" alt="TikTok"></a>&nbsp; <a href="https://www.tiktok.com/@ridebangla0">TikTok</a> &nbsp;·&nbsp;
   <a href="https://www.youtube.com/@ridebangla-0"><img src="https://cdn.simpleicons.org/youtube/FF0000" width="22" alt="YouTube"></a>&nbsp; <a href="https://www.youtube.com/@ridebangla-0">YouTube</a>
 </p>
