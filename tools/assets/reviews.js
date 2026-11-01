@@ -315,6 +315,14 @@
     // the uid gate in isOwnReview is what limits the button to the
     // author's own card. Nothing is appended for anyone else's card.
     if (isOwnReview(r)) card.appendChild(createDeleteControl(r.id, r.uid));
+    /* Own-review edit (review-edit program): same isOwnReview gate as
+       Delete (signed-in uid must equal BOTH the review uid and the doc
+       id). Loads the user's own doc for prefill, renders the prefilled
+       form, and scrolls to it. The save is enforced server-side by the
+       rules leg (auth uid == stored uid). NOTE FOR HEAD: class
+       "rb-review-edit" has no stylesheet rule yet — add one (or reuse
+       the delete-button style) before push. */
+    if (isOwnReview(r)) card.appendChild(createEditControl());
     return card;
   }
 
@@ -335,6 +343,19 @@
   function isOwnReview(r) {
     return !!(state.user && r && r.uid && r.id &&
       state.user.uid === r.uid && state.user.uid === r.id);
+  }
+
+  function createEditControl() {
+    var btn = el('button', 'rb-review-edit', 'Edit');
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Edit your review');
+    btn.addEventListener('click', function () {
+      loadOwnForForm().then(function () {
+        renderForm();
+        formZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+    return btn;
   }
 
   function createDeleteControl(reviewId, reviewUid) {
@@ -768,7 +789,7 @@
         state.name = (cred.user.displayName || '').slice(0, 40);
         applyOwnDeleteButtons();
         setStatus('Signed in — write your review below.');
-        renderForm();
+        loadOwnForForm().then(renderForm);
       }
     } catch (e) {
       setStatus(friendlyError(e));
@@ -809,7 +830,7 @@
   }
 
   /* ------------------------------- write UI ----------------------------- */
-  var state = { user: null, name: '' };
+  var state = { user: null, name: '', ownRating: 0, ownComment: '', ownStatus: null };
 
   function renderSignIn() {
     formZone.innerHTML = '';
@@ -824,7 +845,7 @@
         state.user = user;
         state.name = (user.displayName || '').slice(0, 40);
         applyOwnDeleteButtons();
-        renderForm();
+        loadOwnForForm().then(renderForm);
       }).catch(function (e) {
         btn.disabled = false;
         setStatus(friendlyError(e));
@@ -848,9 +869,9 @@
     if (text.length > 600) throw new Error('Please keep your review under 600 characters.');
     var ref = db.collection(COLLECTION).doc(user.uid);
     var existing = await ref.get();
-    if (existing.exists && existing.data().status === 'approved') {
-      throw new Error('Your review is already published and can no longer be edited.');
-    }
+    // EDIT (review-edit program): an approved review is now editable —
+    // the partial update below resets it to pending re-approval. The
+    // rejected marked-error and the cross-site throw below are unchanged.
     // A1 (rejected-review dead-end): the rules allow an owner update ONLY
     // while the stored doc is 'pending', and allow an owner delete at ANY
     // status — so a rejected doc must never reach ref.set() below (that
@@ -895,18 +916,54 @@
     // make Tools submissions fail until the rules land.
     if (!existing.exists) payload.sourceSite = 'tools';
     else if (typeof existing.data().sourceSite === 'string') payload.sourceSite = existing.data().sourceSite;
-    await ref.set(payload);
+    // EDIT: edits are partial updates (only the keys the amended rules
+    // leg allows) so name/uid/created_at/source/sourceSite stay exactly
+    // as stored — the stored name is never overwritten with a
+    // possibly-changed Google display name. Creates use ref.set as before.
+    if (existing.exists) {
+      await ref.update({
+        rating: Math.round(rating),
+        comment: text,
+        photo_url: user.photoURL || null,
+        status: 'pending',
+        updated_at: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } else {
+      await ref.set(payload);
+    }
+  }
+
+  /* Own-review load for edit prefill (review-edit program): reads ONLY
+     doc(state.user.uid) — the signed-in user's own document, never
+     another user's. Prefill applies only when the doc belongs to this
+     site or is a legacy doc with no sourceSite; a known other-site doc
+     is left unprefilled (submitReview's cross-site throw still blocks
+     moving it here). Best-effort: on failure the form renders fresh. */
+  async function loadOwnForForm() {
+    state.ownRating = 0; state.ownComment = ''; state.ownStatus = null;
+    if (!state.user) return;
+    try {
+      var fb = await ensureFirebase(true);
+      var snap = await fb.db.collection(COLLECTION).doc(state.user.uid).get();
+      if (!snap.exists) return;
+      var d = snap.data() || {};
+      var src = typeof d.sourceSite === 'string' ? d.sourceSite : null;
+      if (src && src !== 'tools') return;
+      state.ownStatus = typeof d.status === 'string' ? d.status : null;
+      state.ownRating = typeof d.rating === 'number' ? d.rating : 0;
+      state.ownComment = typeof d.comment === 'string' ? d.comment : '';
+    } catch (e) { /* prefill is best-effort; the form still renders fresh */ }
   }
 
   function renderForm() {
     formZone.innerHTML = '';
     var box = el('div', 'rb-review-form');
-    var rating = 5;
+    var rating = state.ownRating >= 1 && state.ownRating <= 5 ? state.ownRating : 5;
     var stars = el('div', 'rb-review-pick');
     var starBtns = [];
     for (var i = 1; i <= 5; i++) {
       (function (v) {
-        var b = el('button', 'rb-pick-star on', '');
+        var b = el('button', 'rb-pick-star' + (v <= rating ? ' on' : ''), '');
         b.type = 'button';
         b.setAttribute('aria-label', v + ' star' + (v > 1 ? 's' : ''));
         b.innerHTML = starSvg(true);
@@ -929,14 +986,23 @@
     textArea.placeholder = 'What do you like about Ride Bangla Tools?';
     textArea.maxLength = 600;
     textArea.rows = 4;
+    textArea.value = state.ownComment || '';
     box.appendChild(textArea);
-    var submit = el('button', 'rb-btn rb-btn-gold', 'Post review');
+    var submit = el('button', 'rb-btn rb-btn-gold', (state.ownStatus === 'pending' || state.ownStatus === 'approved') ? 'Update review' : 'Post review');
     submit.type = 'button';
     submit.addEventListener('click', function () {
       var text = textArea.value.trim();
       if (!text) { setStatus('Please write a few words first.'); return; }
       submit.disabled = true; setStatus('');
+      var wasEdit = state.ownStatus === 'pending' || state.ownStatus === 'approved';
       submitReview(state.user, rating, text).then(function () {
+        if (wasEdit) {
+          // An edited approved review leaves the public list until
+          // re-approved — refresh the list at once, and record the new
+          // pending state so a re-render shows the pending path.
+          state.ownStatus = 'pending'; state.ownRating = rating; state.ownComment = text;
+          loadReviews();
+        }
         // Canonical moderation: a new review is "pending" until approved,
         // so it does NOT appear instantly — say exactly that.
         setStatus('Thank you — your review has been received and will appear here after a quick check.');
@@ -998,7 +1064,7 @@
       // one-time restore first also closes the race where a fast click
       // landed before onAuthStateChanged had delivered the saved user.
       if (!state.user) { try { await restoreSession(); } catch (e) {} }
-      if (state.user) renderForm();
+      if (state.user) { loadOwnForForm().then(renderForm); }
       else renderSignIn();
       formZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
