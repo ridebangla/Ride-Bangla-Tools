@@ -5,8 +5,9 @@
    Firestore collection `website_reviews`; the public feed is the APPROVED
    pool (status == "approved", newest first, limit 24) read directly via
    the Firebase compat SDK; a review is written after Google sign-in with
-   doc id == uid, status "pending" (admin-moderated -> approved) and
-   source "google", exactly the shape the deployed rules allow.
+   doc id == uid, status "approved" (auto-live — live the moment it
+   is given, no admin-approval step) and source "google", exactly
+   the shape the deployed rules allow.
    PREVIOUSLY this file read a different pool (`site_reviews`, served by
    https://ai.ridebangla.bd/api/public/reviews?site=tools) — a separate,
    server-mediated pool. That API returned HTTP 500 with
@@ -856,7 +857,7 @@
   }
 
   // Write path = Main's submitReview(): doc id == uid in website_reviews,
-  // the exact field set the deployed rules validate (status "pending",
+  // the exact field set the deployed rules validate (status "approved",
   // source "google", name/photo bound to the Google account).
   async function submitReview(user, rating, comment) {
     var fb = await ensureFirebase(true);
@@ -881,7 +882,7 @@
     // would surface as a raw permission error) and must never be edited
     // in place. Fail with a marked error instead: the form offers to
     // delete this rejected review first, after which the same form can
-    // submit a fresh review (create path, status 'pending'). No edit of
+    // submit a fresh review (create path, status 'approved'). No edit of
     // a rejected review is enabled here. NOTE: no 'code' property is set
     // on purpose — the form's catch shows e.message directly for plain
     // errors, and a 'code' would divert it into friendlyError's generic
@@ -904,7 +905,7 @@
       photo_url: user.photoURL || null,
       rating: Math.round(rating),
       comment: text,
-      status: 'pending',
+      status: 'approved',
       source: 'google',
       created_at: existing.exists ? existing.data().created_at : firebase.firestore.FieldValue.serverTimestamp(),
       updated_at: firebase.firestore.FieldValue.serverTimestamp()
@@ -999,22 +1000,22 @@
       var wasEdit = state.ownStatus === 'pending' || state.ownStatus === 'approved';
       var preStatus = state.ownStatus;
       submitReview(state.user, rating, text).then(function () {
-        if (wasEdit) {
-          // Immediate-live: an approved edit stays approved (live with
-          // the new values), a pending edit stays pending — refresh the
-          // list at once so the result shows immediately. ownStatus is
-          // deliberately left at its pre-edit value.
-          state.ownRating = rating; state.ownComment = text;
-          loadReviews();
-        }
-        // A new review — or a pending edit — is "pending" until approved,
-        // so it does NOT appear instantly; say exactly that. An approved
-        // edit is already live, so no approval-waiting message is shown
-        // for it (the refreshed list shows the new values).
-        if (wasEdit && preStatus === 'approved') {
-          setStatus('');
-        } else {
+        // Auto-live: a create publishes immediately (approved), a
+        // pending edit stays pending and an approved edit stays
+        // approved. Refresh the list at once in all cases so the
+        // result shows immediately; a create sets ownStatus to
+        // 'approved' (it was null), edits keep their pre-edit value.
+        state.ownRating = rating; state.ownComment = text;
+        if (!wasEdit) state.ownStatus = 'approved';
+        loadReviews();
+        // Only a pending edit (an old not-yet-approved doc) still
+        // waits, so only it gets the approval-waiting message. Creates
+        // are live at once and approved edits are already live, so no
+        // approval-waiting message is shown for them.
+        if (wasEdit && preStatus === 'pending') {
           setStatus('Thank you — your review has been received and will appear here after a quick check.');
+        } else {
+          setStatus('');
         }
         setTimeout(function () { formZone.innerHTML = ''; }, 3000);
       }).catch(function (e) {
