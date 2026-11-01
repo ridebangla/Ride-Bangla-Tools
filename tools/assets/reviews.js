@@ -870,10 +870,13 @@
     var ref = db.collection(COLLECTION).doc(user.uid);
     var existing = await ref.get();
     // EDIT (review-edit program): an approved review is now editable —
-    // the partial update below resets it to pending re-approval. The
-    // rejected marked-error and the cross-site throw below are unchanged.
+    // immediate-live policy: the partial update below never changes
+    // status, so an approved edit stays approved (live) and a pending
+    // edit stays pending. The rejected marked-error and the cross-site
+    // throw below are unchanged.
     // A1 (rejected-review dead-end): the rules allow an owner update ONLY
-    // while the stored doc is 'pending', and allow an owner delete at ANY
+    // while the stored doc is 'pending' or 'approved', and allow an
+    // owner delete at ANY
     // status — so a rejected doc must never reach ref.set() below (that
     // would surface as a raw permission error) and must never be edited
     // in place. Fail with a marked error instead: the form offers to
@@ -925,7 +928,6 @@
         rating: Math.round(rating),
         comment: text,
         photo_url: user.photoURL || null,
-        status: 'pending',
         updated_at: firebase.firestore.FieldValue.serverTimestamp()
       });
     } else {
@@ -995,17 +997,25 @@
       if (!text) { setStatus('Please write a few words first.'); return; }
       submit.disabled = true; setStatus('');
       var wasEdit = state.ownStatus === 'pending' || state.ownStatus === 'approved';
+      var preStatus = state.ownStatus;
       submitReview(state.user, rating, text).then(function () {
         if (wasEdit) {
-          // An edited approved review leaves the public list until
-          // re-approved — refresh the list at once, and record the new
-          // pending state so a re-render shows the pending path.
-          state.ownStatus = 'pending'; state.ownRating = rating; state.ownComment = text;
+          // Immediate-live: an approved edit stays approved (live with
+          // the new values), a pending edit stays pending — refresh the
+          // list at once so the result shows immediately. ownStatus is
+          // deliberately left at its pre-edit value.
+          state.ownRating = rating; state.ownComment = text;
           loadReviews();
         }
-        // Canonical moderation: a new review is "pending" until approved,
-        // so it does NOT appear instantly — say exactly that.
-        setStatus('Thank you — your review has been received and will appear here after a quick check.');
+        // A new review — or a pending edit — is "pending" until approved,
+        // so it does NOT appear instantly; say exactly that. An approved
+        // edit is already live, so no approval-waiting message is shown
+        // for it (the refreshed list shows the new values).
+        if (wasEdit && preStatus === 'approved') {
+          setStatus('');
+        } else {
+          setStatus('Thank you — your review has been received and will appear here after a quick check.');
+        }
         setTimeout(function () { formZone.innerHTML = ''; }, 3000);
       }).catch(function (e) {
         submit.disabled = false;
