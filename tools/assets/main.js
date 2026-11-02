@@ -287,7 +287,7 @@ if ('serviceWorker' in navigator) {
      the Help Center static tag, which cannot read JS). Value UNCHANGED:
      still the Main company business key until the Tools business is
      created and seeded — the agent still answers as Main until then. */
-  var RB_WIDGET_SITE_KEY = 'rbsite-00f37b79c72f4e678febbd82d43bb46c';
+  var RB_WIDGET_SITE_KEY = 'rbsite-2be28bb8f1374ce5b6d7373c0a900b55';
   function injectAgentWidget() {
     if (window.__rbaiChatEmbedInjected) return;
     if (document.querySelector('script[src*="ride-bangla-chat.js"]')) return;
