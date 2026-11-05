@@ -156,6 +156,7 @@ function saveBlob(blob, name) {
     if (scope === 'range') {
       from = Math.max(1, parseInt(document.getElementById('roFrom').value, 10) || 1);
       to = pageCount ? Math.min(pageCount, parseInt(document.getElementById('roTo').value, 10) || pageCount) : from;
+      if (pageCount && from > pageCount) { alert('This PDF only has ' + pageCount + ' page' + (pageCount === 1 ? '' : 's') + ' — "from" page ' + from + ' is out of range.'); return; }
       if (from > to) { alert('The "from" page must be before the "to" page.'); return; }
     }
     try {
@@ -166,12 +167,12 @@ function saveBlob(blob, name) {
       if (scope === 'range') {
         for (var i = from - 1; i <= to - 1 && i < pages.length; i++) {
           var cur = (pages[i].getRotation && pages[i].getRotation().angle) || 0;
-          pages[i].setRotation(PDFLib.degrees((cur + deg) % 360));
+          pages[i].setRotation(PDFLib.degrees((((cur + deg) % 360) + 360) % 360));
         }
       } else {
         pages.forEach(function (pg) {
           var cur = (pg.getRotation && pg.getRotation().angle) || 0;
-          pg.setRotation(PDFLib.degrees((cur + deg) % 360));
+          pg.setRotation(PDFLib.degrees((((cur + deg) % 360) + 360) % 360));
         });
       }
       var bytes = await doc.save();

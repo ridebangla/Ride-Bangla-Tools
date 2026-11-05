@@ -113,7 +113,9 @@ document.getElementById('vcGen').addEventListener('click', function () {
   if (!name) { alert('Enter the contact name first.'); return; }
   if (!phone && !email) { alert('Enter at least a phone number or an email.'); return; }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('That email address does not look valid.'); return; }
-  var lines = ['BEGIN:VCARD', 'VERSION:3.0', 'FN:' + vcEsc(name)];
+  // vCard 3.0 requires an N (family;given) line; phones (esp. iOS) import cleanly with it.
+  var parts = name.split(/\s+/), family = parts.length > 1 ? parts.pop() : '', given = parts.join(' ');
+  var lines = ['BEGIN:VCARD', 'VERSION:3.0', 'N:' + vcEsc(family) + ';' + vcEsc(given) + ';;;', 'FN:' + vcEsc(name)];
   if (org) lines.push('ORG:' + vcEsc(org));
   if (title) lines.push('TITLE:' + vcEsc(title));
   if (url) lines.push('URL:' + vcEsc(url));

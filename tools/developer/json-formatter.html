@@ -87,12 +87,41 @@
   </div>
 </section>
 <script>
+// Re-indent / minify the ORIGINAL text (already validated by JSON.parse) so
+// big integers (12345678901234567890), exponents and key order survive
+// exactly; JSON.stringify(JSON.parse()) would silently round them.
+function reformat(src, minify) {
+  var out = '', ind = 0, inStr = false, esc = false, i, c, j, close;
+  function pad(n) { return '  '.repeat(n); }
+  for (i = 0; i < src.length; i++) {
+    c = src[i];
+    if (inStr) { out += c; if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; continue; }
+    if (c === '"') { inStr = true; out += c; continue; }
+    if (c === ' ' || c === '\t' || c === '\n' || c === '\r') continue;
+    if (c === '{' || c === '[') {
+      j = i + 1; while (j < src.length && /[ \t\n\r]/.test(src[j])) j++;
+      close = c === '{' ? '}' : ']';
+      if (src[j] === close) { out += c + close; i = j; continue; }
+      out += c; if (!minify) { ind++; out += '\n' + pad(ind); } continue;
+    }
+    if (c === '}' || c === ']') { if (!minify) { ind--; out += '\n' + pad(ind); } out += c; continue; }
+    if (c === ',') { out += c; if (!minify) out += '\n' + pad(ind); continue; }
+    if (c === ':') { out += minify ? ':' : ': '; continue; }
+    out += c;
+  }
+  return out;
+}
 function run(minify) {
-  const input = document.getElementById('input').value;
+  const input = document.getElementById('input').value.replace(/^\uFEFF/, '');
   const out = document.getElementById('out');
+  if (!input.trim()) {
+    out.textContent = 'Invalid JSON: paste some JSON first.';
+    out.style.color = 'var(--red-err)';
+    return;
+  }
   try {
-    const parsed = JSON.parse(input);
-    out.textContent = minify ? JSON.stringify(parsed) : JSON.stringify(parsed, null, 2);
+    JSON.parse(input);
+    out.textContent = reformat(input, minify);
     out.classList.remove('empty');
     out.style.color = 'var(--text-hi)';
   } catch (e) {

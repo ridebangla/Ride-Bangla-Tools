@@ -113,11 +113,14 @@ function calcBmi() {
     elc.style.color = '';
     return;
   }
-  const bmi = w / (h*h);
-  if (!isFinite(bmi)) {
+  /* Round once to the displayed 1 decimal and categorise that same value, so
+     the number shown and the category can never disagree (e.g. 24.96 shows
+     25.0 and is Overweight; 64 kg at 160 cm is exactly 25.0, not 24.99999). */
+  const bmi = Math.round((w / (h*h)) * 10 + 1e-9) / 10;
+  if (!isFinite(bmi) || bmi < 1 || bmi > 300) {
     document.getElementById('bmiOut').textContent = '–';
     const eld = document.getElementById('bmiCat');
-    eld.textContent = '–';
+    eld.textContent = isFinite(bmi) ? 'Please enter a realistic height and weight.' : '–';
     eld.style.color = '';
     return;
   }

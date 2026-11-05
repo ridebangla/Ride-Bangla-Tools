@@ -107,8 +107,12 @@ function ciReset() {
   });
 }
 function calc() {
+  // A blank initial investment or monthly contribution means 0 (e.g. only
+  // saving monthly, or only a lump sum), not an invalid form.
   var p = parseFloat(document.getElementById('ci-p').value);
   var pmt = parseFloat(document.getElementById('ci-pmt').value);
+  if (document.getElementById('ci-p').value.trim() === '') p = 0;
+  if (document.getElementById('ci-pmt').value.trim() === '') pmt = 0;
   var rate = parseFloat(document.getElementById('ci-r').value);
   var years = parseFloat(document.getElementById('ci-t').value);
   var n = parseInt(document.getElementById('ci-n').value, 10);

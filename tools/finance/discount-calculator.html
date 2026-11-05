@@ -99,6 +99,7 @@
     var priceC = r2(price);
     var save = r2(priceC * pct / 100);
     var final = r2(priceC - save);
+    if (!isFinite(save) || !isFinite(final)) { document.getElementById('dcSave').textContent = '–'; document.getElementById('dcFinal').textContent = '–'; return; }
     document.getElementById('dcSave').textContent = money(save, sym);
     document.getElementById('dcFinal').textContent = money(final, sym);
   }

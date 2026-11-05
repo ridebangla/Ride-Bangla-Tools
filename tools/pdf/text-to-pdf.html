@@ -94,7 +94,9 @@
 <script>if (!window.PDFLib) { document.write('<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/script>'); }</script>
 <script>
 document.getElementById('makePdf').addEventListener('click', async () => {
-  const text = document.getElementById('txt').value;
+  // Normalise Windows/old-Mac line endings and tabs: Helvetica (WinAnsi) cannot encode \r or \t, so
+  // pasted CRLF text used to fail with a generic error.
+  const text = document.getElementById('txt').value.replace(/\r\n?/g, '\n').replace(/\t/g, '    ');
   const status = document.getElementById('pdfStatus');
   if (!text.trim()) { status.textContent = 'Type some text first.'; status.classList.remove('empty'); return; }
   if (!window.PDFLib) { status.textContent = 'The PDF engine could not load. Check your internet connection and refresh the page.'; status.classList.remove('empty'); return; }
@@ -146,7 +148,8 @@ document.getElementById('makePdf').addEventListener('click', async () => {
       const out = []; let cur = '';
       words.forEach(w => {
         splitLongAnsi(w).forEach((piece, pi) => {
-          const test = cur ? cur + ' ' + piece : piece;
+          // pieces of one over-long word must be joined WITHOUT a space (no phantom space inside the word)
+          const test = cur ? cur + (pi > 0 ? '' : ' ') + piece : piece;
           if (font.widthOfTextAtSize(test, size) > maxWidth && cur) { out.push(cur); cur = piece; }
           else cur = test;
         });
@@ -208,8 +211,8 @@ document.getElementById('makePdf').addEventListener('click', async () => {
         else piece += ch;
       }
       if (piece) chunks.push(piece);
-      chunks.forEach(c => {
-        const test = cur ? cur + ' ' + c : c;
+      chunks.forEach((c, ci) => {
+        const test = cur ? cur + (ci > 0 ? '' : ' ') + c : c;
         if (meas.measureText(test).width > maxWidth && cur) { out.push(cur); cur = c; }
         else cur = test;
       });

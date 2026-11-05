@@ -94,6 +94,7 @@ milEl.addEventListener('input',()=>{
   const v=milEl.value.replace(/\D/g,'');
   if(v.length===3||v.length===4){
     const h=parseInt(v.slice(0,v.length-2),10),m=parseInt(v.slice(-2),10);
+    if(h===24&&m===0){stdEl.value='12:00 AM';outEl.textContent=v+' → 12:00 AM (midnight, end of day)';return;}
     if(h<24&&m<60){const s=toStd(h,m);stdEl.value=s;outEl.textContent=v+' → '+s;return;}
   }
   /* Clear the other field on any non-converting input: otherwise a previous

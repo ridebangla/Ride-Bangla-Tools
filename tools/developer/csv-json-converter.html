@@ -84,6 +84,7 @@
 <script>
 function csvDelim(){const v=document.getElementById('delim').value;return (v==='\\t'||v==='\t') ? '\t' : v;}
 function parseCSV(text){
+  text=text.replace(/^\uFEFF/,'');
   const delim=csvDelim();
   const rows=[];let row=[],field='',q=false;
   for(let i=0;i<text.length;i++){
@@ -113,7 +114,7 @@ function jsonToCsv(t){
   if(arr.some(o=>!o||typeof o!=='object'||Array.isArray(o)))throw new Error('JSON → CSV needs an array of objects, e.g. [{"name":"Alice"}].');
   const head=[...new Set(arr.flatMap(o=>Object.keys(o)))];
   const d=csvDelim();
-  const esc=v=>{v=v==null?'':String(v);return (v.indexOf(d)!==-1||/[",\n\r]/.test(v))?'"'+v.replace(/"/g,'""')+'"':v;};
+  const esc=v=>{v=v==null?'':(typeof v==='object'?JSON.stringify(v):String(v));return (v.indexOf(d)!==-1||/[",\n\r]/.test(v))?'"'+v.replace(/"/g,'""')+'"':v;};
   return [head.map(esc).join(d),...arr.map(o=>head.map(h=>esc(o[h])).join(d))].join('\n');
 }
 let lastName='converted.txt';

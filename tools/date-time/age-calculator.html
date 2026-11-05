@@ -90,7 +90,9 @@
   </div>
 </section>
 <script>
-document.getElementById('asOf').valueAsDate = new Date();
+/* Local calendar date: valueAsDate = new Date() uses the UTC date, which is
+   yesterday for users east of UTC (e.g. Dhaka) between midnight and 6 am. */
+(function () { var t = new Date(); document.getElementById('asOf').value = t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0'); })();
 function calc() {
   /* Strict parse: reject empty values and impossible dates (e.g. Feb 30),
      which the Date constructor would otherwise silently roll over to March. */
@@ -116,11 +118,19 @@ function calc() {
     return;
   }
   if (msg) msg.textContent = '';
-  let y = asOf.getFullYear() - dob.getFullYear();
-  let m = asOf.getMonth() - dob.getMonth();
-  let d = asOf.getDate() - dob.getDate();
-  if (d < 0) { m--; d += new Date(asOf.getFullYear(), asOf.getMonth(), 0).getDate(); }
-  if (m < 0) { y--; m += 12; }
+  /* Whole months = largest n such that dob + n months (day clamped to the
+     target month's last day) is not after the "As of" date. The remainder is
+     the day count. The old borrow-from-previous-month approach produced
+     negative days (e.g. 31 Jan -> 1 Mar gave -2 days). */
+  const addM = (n) => {
+    const yy = dob.getFullYear(), mm = dob.getMonth() + n;
+    const last = new Date(yy, mm + 1, 0).getDate();
+    return new Date(yy, mm, Math.min(dob.getDate(), last));
+  };
+  let tm = (asOf.getFullYear() - dob.getFullYear()) * 12 + asOf.getMonth() - dob.getMonth();
+  while (tm > 0 && addM(tm) > asOf) tm--;
+  const y = Math.floor(tm / 12), m = tm % 12;
+  const d = Math.round((Date.UTC(asOf.getFullYear(), asOf.getMonth(), asOf.getDate()) - Date.UTC(addM(tm).getFullYear(), addM(tm).getMonth(), addM(tm).getDate())) / 86400000);
   document.getElementById('years').textContent = y;
   document.getElementById('months').textContent = m;
   document.getElementById('days').textContent = d;

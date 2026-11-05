@@ -149,41 +149,41 @@ function parseHsl(str){
   if(v[0]>360 || v[1]>100 || v[2]>100) return null;
   return v;
 }
-function updateAll(r,g,b){
+function updateAll(r,g,b,skip){
   const hex = rgbToHex(r,g,b);
-  hexIn.value = hex;
-  rgbIn.value = `rgb(${r}, ${g}, ${b})`;
+  if (skip!=='hex') hexIn.value = hex;
+  if (skip!=='rgb') rgbIn.value = `rgb(${r}, ${g}, ${b})`;
   const [h,s,l] = rgbToHsl(r,g,b);
-  hslIn.value = `hsl(${h}, ${s}%, ${l}%)`;
+  if (skip!=='hsl') hslIn.value = `hsl(${h}, ${s}%, ${l}%)`;
   swatch.style.background = hex;
   picker.value = hex;
 }
 const colorErr = document.getElementById('colorErr');
 function showColorErr(msg) { colorErr.textContent = msg; colorErr.style.display = msg ? '' : 'none'; }
-function fromHex() {
+function fromHex(skip) {
   const hex = hexIn.value.trim();
   if (!/^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hex)) { showColorErr('Not a valid HEX color — use #RGB or #RRGGBB.'); return; }
   showColorErr('');
   const [r,g,b] = hexToRgb(hex);
-  updateAll(r,g,b);
+  updateAll(r,g,b,skip);
 }
 function fromRgb(){
   const v = parseRgb(rgbIn.value);
   if(!v) { showColorErr('Not a valid RGB color — use rgb(R, G, B) with values 0–255.'); return; }
   showColorErr('');
-  updateAll(v[0],v[1],v[2]);
+  updateAll(v[0],v[1],v[2],'rgb');
 }
 function fromHsl(){
   const v = parseHsl(hslIn.value);
   if(!v) { showColorErr('Not a valid HSL color — use hsl(H, S%, L%) with H 0–360 and S/L 0–100.'); return; }
   showColorErr('');
   const [r,g,b] = hslToRgb(v[0],v[1],v[2]);
-  updateAll(r,g,b);
+  updateAll(r,g,b,'hsl');
 }
 document.getElementById('copyColor').addEventListener('click', function () {
   rbCopy('HEX: ' + hexIn.value + '\nRGB: ' + rgbIn.value + '\nHSL: ' + hslIn.value);
 });
-hexIn.addEventListener('input', fromHex);
+hexIn.addEventListener('input', () => fromHex('hex'));
 rgbIn.addEventListener('input', fromRgb);
 hslIn.addEventListener('input', fromHsl);
 picker.addEventListener('input', () => { hexIn.value = picker.value; fromHex(); });

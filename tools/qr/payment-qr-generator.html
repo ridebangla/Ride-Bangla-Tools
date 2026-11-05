@@ -278,7 +278,10 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
     });
     // pre-apply brand badge to Logo 1 only if the user has not already
     // placed a logo/badge there (switching method must not discard it).
-    if (M.brand && !slots[0].img) applyBrand(0, M.brand);
+    // A badge that was auto-applied for the previous method follows the
+    // method (bKash -> Nagad swaps the badge); a user-chosen/uploaded logo stays.
+    if (slots[0].img && slots[0].auto && !(M.brand)) clearSlot(0);
+    if (M.brand && (!slots[0].img || slots[0].auto)) { applyBrand(0, M.brand); slots[0].auto = true; }
     generate();
   }
   document.querySelectorAll('#methodRow .qr-preset').forEach(function (b) {
@@ -300,6 +303,7 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
     document.getElementById('clear' + s).style.display = '';
   }
   function applyBrand(s, bid) {
+    slots[s].auto = false;
     slots[s].img = QRStudio.makeBrandBadge(bid);
     var brow = document.getElementById('brands' + s);
     brow.querySelectorAll('.qr-brand').forEach(function (x) {
@@ -309,7 +313,7 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
     refreshPosPills();
   }
   function clearSlot(s) {
-    slots[s].img = null;
+    slots[s].img = null; slots[s].auto = false;
     document.getElementById('brands' + s).querySelectorAll('.qr-brand').forEach(function (x) { x.classList.remove('active'); });
     thumbFor(s, null);
     refreshPosPills();
@@ -357,7 +361,7 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
       var f = e.target.files && e.target.files[0];
       if (!f) return;
       QRStudio.fileToLogo(f).then(function (logo) {
-        slots[s].img = logo;
+        slots[s].img = logo; slots[s].auto = false;
         brow.querySelectorAll('.qr-brand').forEach(function (x) { x.classList.remove('active'); });
         thumbFor(s, URL.createObjectURL(f));
         refreshPosPills(); generate();
@@ -370,13 +374,15 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
   function payload() {
     var M = METHODS[method];
     var acc = document.getElementById('payAcc').value.trim();
+    if (method === 'bkash' || method === 'nagad' || method === 'rocket') acc = acc.replace(/[\s-]/g, '');
     var name = document.getElementById('payName').value.trim();
-    var amt = document.getElementById('payAmt').value.trim();
+    var amt = document.getElementById('payAmt').value.trim().replace(/,/g, '');
+    if (/^\.\d/.test(amt)) amt = '0' + amt;
     var note = document.getElementById('payNote').value.trim();
     var lines = [M.title];
     if (acc) lines.push('Account: ' + acc);
     if (name) lines.push('Name: ' + name);
-    if (amt) lines.push('Amount: ' + amt);
+    if (amt) lines.push('Amount: ' + amt + ' BDT');
     if (note) lines.push('Note: ' + note);
     return { text: lines.join('\n'), acc: acc, name: name };
   }
@@ -388,11 +394,12 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
   });
 
   function generate() {
-    var amtRaw = document.getElementById('payAmt').value.trim();
-    if (amtRaw && !/^\d+(\.\d{1,2})?$/.test(amtRaw)) {
+    var amtRaw = document.getElementById('payAmt').value.trim().replace(/,/g, '');
+    if (/^\.\d/.test(amtRaw)) amtRaw = '0' + amtRaw;
+    if (amtRaw && (!/^\d+(\.\d{1,2})?$/.test(amtRaw) || !(parseFloat(amtRaw) > 0))) {
       holder.innerHTML = '';
       currentCanvas = null;
-      statusEl.textContent = 'Amount must be a number, e.g. 500.';
+      statusEl.textContent = 'Amount must be a number greater than 0 (up to 2 decimals), e.g. 500.';
       updateCaption();
       return;
     }
@@ -400,9 +407,16 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
     holder.innerHTML = '';
     currentCanvas = null;
     var mobileMethods = { bkash: 1, nagad: 1, rocket: 1 };
-    var accWarn = mobileMethods[method] && p.acc && !/^(\+8801[3-9]\d{8}|01[3-9]\d{8})$/.test(p.acc);
+    // Rocket accounts are the mobile number plus one extra digit (12 digits), so allow that for Rocket only.
+    var accRe = method === 'rocket' ? /^(\+?8801[3-9]\d{8}\d?|01[3-9]\d{8}\d?)$/ : /^(\+?8801[3-9]\d{8}|01[3-9]\d{8})$/;
+    var accWarn = mobileMethods[method] && p.acc && !accRe.test(p.acc);
     if (!p.acc && !p.name) {
       statusEl.textContent = 'Enter your account number or name above, then click "Generate payment QR".';
+      updateCaption();
+      return;
+    }
+    if (accWarn) {
+      statusEl.textContent = 'Enter a valid Bangladeshi mobile number: 01XXXXXXXXX or +8801XXXXXXXXX.';
       updateCaption();
       return;
     }
@@ -418,7 +432,7 @@ var QRCode=function(t){"use strict";var r,e=function(){return"function"==typeof 
       canvas.style.boxShadow = '0 10px 30px rgba(0,0,0,.12)';
       holder.appendChild(canvas);
       currentCanvas = canvas;
-      statusEl.textContent = accWarn ? 'Check the number: it does not look like a Bangladeshi mobile number.' : '';
+      statusEl.textContent = '';
     } catch (err) {
       statusEl.textContent = 'Could not generate QR code: ' + (err.message || err);
     }

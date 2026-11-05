@@ -227,6 +227,7 @@
     var billC = r2(bill);
     var tip = r2(billC * tipP / 100);
     var total = r2(billC + tip);
+    if (!isFinite(tip) || !isFinite(total)) { ['rTip','rTotal','rEach'].forEach(function (id) { document.getElementById(id).textContent = '–'; }); return; }
     document.getElementById('rTip').textContent = money(tip, sym);
     document.getElementById('rTotal').textContent = money(total, sym);
     document.getElementById('rEach').textContent = money(r2(total / ppl), sym);

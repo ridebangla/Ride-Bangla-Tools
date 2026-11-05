@@ -76,6 +76,12 @@
   .pe-zoommenu button:hover{background:var(--ink-900);}
   .pe-zoommenu button.on{color:var(--brass);}
   .pe-thumbs{display:flex;gap:10px;overflow-x:auto;padding:12px 2px 4px;}
+  /* phone fit: a flex/grid child defaults to min-width:auto, so the thumbnail strip widened the whole page
+     (content ran off the right edge). Let the editor shrink to the screen and scroll the strip inside itself. */
+  #peEditor,.pe-stage,.pe-thumbs,.tool-body .panel,.tool-body .container{min-width:0;max-width:100%;}
+  .pe-thumbs{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;}
+  /* on phones the wrapped toolbar is ~4 rows tall; sticky, it covered the top of the page being edited */
+  @media (max-width:640px){.pe-toolbar{position:static;}}
   .pe-thumb{flex:none;width:118px;border:1.5px solid var(--line);border-radius:10px;background:var(--ink-850);padding:6px;text-align:center;cursor:pointer;}
   .pe-thumb.cur{border-color:var(--brass);}
   .pe-thumb canvas{max-width:100%;height:auto;border-radius:4px;background:#fff;}

@@ -196,7 +196,8 @@
 (function () {
   function vidId(u) {
     u = (u || '').trim();
-    var m = u.match(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?.*v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    if (/^[A-Za-z0-9_-]{11}$/.test(u)) return u; /* a bare video ID */
+    var m = u.match(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/|v\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
     return m ? m[1] : null;
   }
   document.getElementById('go').addEventListener('click', function () {

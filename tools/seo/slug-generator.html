@@ -92,8 +92,29 @@ const STOP = new Set(['a','an','the','and','or','but','of','in','on','at','to','
 // predictable: Latin letters transliterate, non-Latin input still yields
 // the honest "Nothing to slug" message instead of a fake slug.
 const TRANSLIT = {'æ':'ae','œ':'oe','ß':'ss','ø':'o','ł':'l','đ':'d','þ':'th','ð':'d','ħ':'h','ı':'i','ŋ':'n'};
+// Bengali -> Latin (simple, readable romanisation for URLs: আমার সোনার বাংলা -> amar-sonar-bangla)
+const BN_CONS = {'ক':'k','খ':'kh','গ':'g','ঘ':'gh','ঙ':'ng','চ':'ch','ছ':'chh','জ':'j','ঝ':'jh','ঞ':'n','ট':'t','ঠ':'th','ড':'d','ঢ':'dh','ণ':'n','ত':'t','থ':'th','দ':'d','ধ':'dh','ন':'n','প':'p','ফ':'f','ব':'b','ভ':'bh','ম':'m','য':'j','র':'r','ল':'l','শ':'sh','ষ':'sh','স':'s','হ':'h','ড়':'r','ঢ়':'rh','য়':'y','ৎ':'t'};
+const BN_VOW = {'অ':'o','আ':'a','ই':'i','ঈ':'i','উ':'u','ঊ':'u','ঋ':'ri','এ':'e','ঐ':'oi','ও':'o','ঔ':'ou'};
+const BN_SIGN = {'া':'a','ি':'i','ী':'i','ু':'u','ূ':'u','ৃ':'ri','ে':'e','ৈ':'oi','ো':'o','ৌ':'ou'};
+const BN_MISC = {'ং':'ng','ঃ':'','ঁ':'','\u09CD':'','০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9','।':' '};
+function bnToLatin(str) {
+  str = str.normalize('NFC').replace(/ড\u09BC/g,'ড়').replace(/ঢ\u09BC/g,'ঢ়').replace(/য\u09BC/g,'য়');
+  var out = '', ch, nx, i;
+  for (i = 0; i < str.length; i++) {
+    ch = str[i]; nx = str[i + 1];
+    if (BN_CONS[ch] !== undefined) {
+      out += BN_CONS[ch];
+      // inherent vowel "o" only between two consonants (কলম -> kolom), never word-final
+      if (nx && BN_CONS[nx] !== undefined) out += 'o';
+    } else if (BN_VOW[ch] !== undefined) out += BN_VOW[ch];
+    else if (BN_SIGN[ch] !== undefined) out += BN_SIGN[ch];
+    else if (BN_MISC[ch] !== undefined) out += BN_MISC[ch];
+    else out += ch;
+  }
+  return out;
+}
 function slugify() {
-  let words = document.getElementById('title').value
+  let words = bnToLatin(document.getElementById('title').value)
     .toLowerCase()
     .replace(/[æœßøłđþðħıŋ]/g, ch => TRANSLIT[ch])
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -106,7 +127,7 @@ function slugify() {
     words = words.filter(w => !STOP.has(w));
   }
   var slug = words.join('-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
-  document.getElementById('out').textContent = slug || 'Nothing to slug — try English letters, numbers or hyphens.';
+  document.getElementById('out').textContent = slug || 'Nothing to slug — try letters (English or Bengali), numbers or hyphens.';
 }
 document.getElementById('title').addEventListener('input', slugify);
 document.getElementById('removeStop').addEventListener('change', slugify);

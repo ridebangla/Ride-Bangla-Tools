@@ -112,7 +112,7 @@ function calc() {
   // Reject negative inputs: previously a negative down payment inflated the
   // loan above the home price, and a negative rate produced a negative
   // "total interest". Non-finite prices are also rejected.
-  if (!price || price <= 0 || !isFinite(price) || down < 0 || down >= price ||
+  if (!price || price <= 0 || !isFinite(price) || price > 1e12 || down < 0 || down >= price ||
       annualR < 0 || taxY < 0 || insY < 0 || !years) {
     ['mTotal','mPI','mTax','mIns','loanAmt','totalInt','totalCost'].forEach(id => $(id).textContent = '–');
     return;
@@ -140,7 +140,7 @@ function calc() {
   // Interest can never be negative at a non-negative rate; the max() only
   // absorbs the rounding dip when a 0% monthly payment rounds down
   // (e.g. 240000 over 180 months: 1333.33 x 180 = 239999.40, not -0.60 interest).
-  const totalInt = Math.max(0, r2(pi * n - PC));
+  const totalInt = r === 0 ? 0 : Math.max(0, r2(pi * n - PC));
   const totalCost = r2(total * n);
   $('mTotal').textContent = usd(total, 2);
   $('mPI').textContent = usd(pi, 2);

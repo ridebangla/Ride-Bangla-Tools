@@ -100,19 +100,18 @@
       window.__reText = '';
       return;
     }
-    var matches = [];
-    var capped = false;
-    if (re.global) {
-      var m, guard = 0;
-      while ((m = re.exec(text)) !== null && guard++ < 1000) {
-        matches.push({ value: m[0], index: m.index, groups: Array.prototype.slice.call(m, 1) });
-        if (m[0] === '') re.lastIndex++;
-      }
-      if (guard >= 1000) { try { capped = re.exec(text) !== null; } catch (e) { capped = false; } }
-    } else {
-      var single = re.exec(text);
-      if (single) matches.push({ value: single[0], index: single.index, groups: Array.prototype.slice.call(single, 1) });
-    }
+    // Run the matching in a Web Worker with a time limit: a pattern such as (a+)+$ on a
+    // long "aaaa...!" string backtracks catastrophically and used to freeze the whole tab.
+    out.textContent = 'Matching…';
+    out.classList.remove('empty');
+    var workerSrc = 'onmessage=function(e){var d=e.data,matches=[],capped=false;try{var re=new RegExp(d.pattern,d.flags);'
+      + 'if(re.global){var m,g=0;while((m=re.exec(d.text))!==null&&g++<1000){matches.push({value:m[0],index:m.index,groups:Array.prototype.slice.call(m,1)});if(m[0]===\'\')re.lastIndex++;}'
+      + 'if(g>=1000){try{capped=re.exec(d.text)!==null;}catch(x){capped=false;}}}'
+      + 'else{var s=re.exec(d.text);if(s)matches.push({value:s[0],index:s.index,groups:Array.prototype.slice.call(s,1)});}'
+      + 'postMessage({matches:matches,capped:capped});}catch(err){postMessage({error:String(err.message||err)});}};';
+    var runId = (window.__reRun = (window.__reRun || 0) + 1);
+    var finish = function (matches, capped) { if (runId !== window.__reRun) return; render(matches, capped); };
+    var render = function (matches, capped) {
     if (!matches.length) {
       out.textContent = 'No matches found.';
       out.classList.remove('empty');
@@ -130,6 +129,31 @@
     out.textContent = lines.join('\n');
     window.__reText = lines.join('\n');
     out.classList.remove('empty');
+    };
+    var w;
+    try { w = new Worker(URL.createObjectURL(new Blob([workerSrc], { type: 'application/javascript' }))); }
+    catch (e) { w = null; }
+    if (!w) { // very old browser: fall back to in-page matching
+      var mm0 = [], cap0 = false;
+      try { var r0 = new RegExp(pattern, flags);
+        if (r0.global) { var x, g0 = 0; while ((x = r0.exec(text)) !== null && g0++ < 1000) { mm0.push({ value: x[0], index: x.index, groups: Array.prototype.slice.call(x, 1) }); if (x[0] === '') r0.lastIndex++; } }
+        else { var y = r0.exec(text); if (y) mm0.push({ value: y[0], index: y.index, groups: Array.prototype.slice.call(y, 1) }); }
+      } catch (e) {}
+      finish(mm0, cap0); return;
+    }
+    var timer = setTimeout(function () {
+      w.terminate();
+      if (runId !== window.__reRun) return;
+      out.textContent = 'Stopped: this pattern took longer than 3 seconds on this text. It likely has catastrophic backtracking (for example nested quantifiers like (a+)+). Simplify the pattern.';
+      window.__reText = '';
+    }, 3000);
+    w.onmessage = function (ev) {
+      clearTimeout(timer); w.terminate();
+      if (ev.data.error) { if (runId === window.__reRun) { out.textContent = 'Invalid regular expression: ' + ev.data.error; window.__reText = ''; } return; }
+      finish(ev.data.matches, ev.data.capped);
+    };
+    w.onerror = function () { clearTimeout(timer); w.terminate(); out.textContent = 'Could not run the pattern.'; window.__reText = ''; };
+    w.postMessage({ pattern: pattern, flags: flags, text: text });
   });
 })();
 </script>

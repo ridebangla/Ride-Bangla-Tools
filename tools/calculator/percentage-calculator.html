@@ -99,20 +99,29 @@
   </div>
 </section>
 <script>
+function pFmt(v, d, mn) {
+  /* Strip float noise first (0.1+0.2 style), then keep up to d decimals so
+     tiny results (0.0001% of 5 = 0.000005) don't collapse to "0". */
+  return Number(v.toPrecision(12)).toLocaleString(undefined, { minimumFractionDigits: mn || 0, maximumFractionDigits: d });
+}
 function upd() {
   const x1 = parseFloat(document.getElementById('x1').value);
   const y1 = parseFloat(document.getElementById('y1').value);
-  document.getElementById('res1').textContent = (isFinite(x1*y1/100) ? (x1*y1/100).toLocaleString() : '–');
+  document.getElementById('res1').textContent = (isFinite(x1*y1/100) ? pFmt(x1*y1/100, 8) : '–');
 
   const x2 = parseFloat(document.getElementById('x2').value);
   const y2 = parseFloat(document.getElementById('y2').value);
   const r2 = (x2/y2)*100;
-  document.getElementById('res2').textContent = (y2 && isFinite(r2) ? r2.toFixed(2) + '%' : '–');
+  document.getElementById('res2').textContent = (y2 && isFinite(r2) ? pFmt(r2, 2, 2) + '%' : '–');
 
   const x3 = parseFloat(document.getElementById('x3').value);
   const y3 = parseFloat(document.getElementById('y3').value);
-  const r3 = ((y3 - x3) / x3) * 100;
-  document.getElementById('res3').textContent = (x3 && isFinite(r3) ? (r3 > 0 ? '+' : '') + r3.toFixed(2) + '% ' + (r3 > 0 ? 'increase' : (r3 < 0 ? 'decrease' : 'no change')) : '–');
+  /* Divide by |from| so a negative starting value keeps the right direction
+     (-100 -> -50 is an increase, not a decrease). Sign/wording follow the
+     rounded figure so "+0.00% increase" / "-0.00%" never appear. */
+  const r3 = ((y3 - x3) / Math.abs(x3)) * 100;
+  const r3r = isFinite(r3) ? Math.round(r3 * 100) / 100 : r3;
+  document.getElementById('res3').textContent = (x3 && isFinite(r3) ? (r3r > 0 ? '+' : '') + pFmt(r3r, 2, 2) + '% ' + (r3r > 0 ? 'increase' : (r3r < 0 ? 'decrease' : 'no change')) : '–');
 }
 ['x1','y1','x2','y2','x3','y3'].forEach(id => document.getElementById(id).addEventListener('input', upd));
 upd();

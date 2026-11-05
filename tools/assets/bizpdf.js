@@ -43,8 +43,30 @@
     var PDFLib = window.PDFLib;
     if (!PDFLib) throw new Error('PDF engine failed to load.');
     var pdf = await PDFLib.PDFDocument.create();
-    var helv = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
-    var helvB = await pdf.embedFont(PDFLib.StandardFonts.HelveticaBold);
+    var helvStd = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+    var helvBStd = await pdf.embedFont(PDFLib.StandardFonts.HelveticaBold);
+    /* Non-Latin text (Bengali names/descriptions, the ৳ currency sign, ₹, ₨ ...) cannot be written
+       with the standard PDF fonts ("WinAnsi cannot encode ..." aborted the whole PDF). Such strings
+       are shaped by the browser on a canvas and embedded as crisp PNG images; plain Latin text stays
+       real, selectable vector text. */
+    var RASTER_SCALE = 4, rasterQueue = [];
+    function isAnsi(str) { return !/[^\u0009\u000A\u000D\u0020-\u007E\u00A0-\u00FF\u20AC\u2018\u2019\u201C\u201D\u2013\u2014\u2026\u2022]/.test(str); }
+    var measureCtx = document.createElement('canvas').getContext('2d');
+    var CANVAS_FONT = '"Noto Sans Bengali","Hind Siliguri","Kalpurush","Nirmala UI","Vrinda",Helvetica,Arial,sans-serif';
+    function canvasFont(size, bold) { return (bold ? 'bold ' : '') + (size * RASTER_SCALE) + 'px ' + CANVAS_FONT; }
+    function mkFont(base, bold) {
+      return {
+        raw: base, bold: bold,
+        widthOfTextAtSize: function (str, size) {
+          str = String(str == null ? '' : str);
+          if (isAnsi(str)) return base.widthOfTextAtSize(str, size);
+          measureCtx.font = canvasFont(size, bold);
+          return measureCtx.measureText(str).width / RASTER_SCALE;
+        }
+      };
+    }
+    var helv = mkFont(helvStd, false);
+    var helvB = mkFont(helvBStd, true);
     var W = 595.28, H = 841.89; // A4
     var M = 46;                  // margin
     var ACCENT = PDFLib.rgb(0.05, 0.33, 0.18);   // deep green
@@ -137,12 +159,23 @@
     function drawWatermarkFirstPage() { drawWatermark(); }
     function text(str, x, yy, opts) {
       opts = opts || {};
-      page.drawText(String(str == null ? '' : str), {
-        x: x, y: yy, size: opts.size || 10,
-        font: opts.bold ? helvB : helv,
-        color: opts.color || PDFLib.rgb(0.12, 0.12, 0.12),
-        maxWidth: opts.maxWidth || undefined
-      });
+      str = String(str == null ? '' : str);
+      var f = opts.bold ? helvB : helv, size = opts.size || 10;
+      var col = opts.color || PDFLib.rgb(0.12, 0.12, 0.12);
+      if (isAnsi(str)) {
+        page.drawText(str, { x: x, y: yy, size: size, font: f.raw, color: col, maxWidth: opts.maxWidth || undefined });
+        return;
+      }
+      if (!str.trim()) return;
+      /* canvas -> PNG, embedded after layout (embedPng is async); drawn on the page that was current now */
+      var cw = Math.max(1, Math.ceil(f.widthOfTextAtSize(str, size) * RASTER_SCALE) + 4);
+      var chH = Math.ceil(size * 1.6 * RASTER_SCALE);
+      var cv = document.createElement('canvas'); cv.width = cw; cv.height = chH;
+      var cx = cv.getContext('2d');
+      cx.font = canvasFont(size, f.bold); cx.textBaseline = 'alphabetic';
+      cx.fillStyle = 'rgb(' + Math.round(col.red * 255) + ',' + Math.round(col.green * 255) + ',' + Math.round(col.blue * 255) + ')';
+      cx.fillText(str, 2, size * 1.2 * RASTER_SCALE);
+      rasterQueue.push({ page: page, png: cv.toDataURL('image/png'), x: x - 2 / RASTER_SCALE, y: yy - size * 0.4, w: cw / RASTER_SCALE, h: chH / RASTER_SCALE });
     }
     function textR(str, yy, opts) {
       /* Right-aligned text against the right margin (header title block). */
@@ -356,6 +389,15 @@
     var f = 'Generated free with Ride Bangla Tools — tools.ridebangla.bd';
     text(f, M, 36, { size: 8.5, color: GRAY });
 
+    for (var ri = 0; ri < rasterQueue.length; ri++) {
+      var rq = rasterQueue[ri];
+      try {
+        var rimg = await pdf.embedPng(rq.png);
+        rq.page.drawImage(rimg, { x: rq.x, y: rq.y, width: rq.w, height: rq.h });
+      } catch (e) {
+        if (warnings.indexOf('Some non-Latin text could not be drawn in the PDF.') < 0) warnings.push('Some non-Latin text could not be drawn in the PDF.');
+      }
+    }
     return { bytes: await pdf.save(), total: total, money: money, warnings: warnings };
   }
 

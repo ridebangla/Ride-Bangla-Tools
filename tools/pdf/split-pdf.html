@@ -171,6 +171,7 @@ function saveBlob(blob, name) {
     var total = pdfDoc.getPageCount();
     var from = Math.max(1, parseInt(document.getElementById('spFrom').value, 10) || 1);
     var to = Math.min(total, parseInt(document.getElementById('spTo').value, 10) || total);
+    if (from > total) { alert('This PDF only has ' + total + ' page' + (total === 1 ? '' : 's') + ' — "from" page ' + from + ' is out of range.'); return; }
     if (from > to) { alert('The "from" page must be before the "to" page.'); return; }
     try {
       var out = await PDFLib.PDFDocument.create();

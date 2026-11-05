@@ -92,11 +92,12 @@
 const start = document.getElementById('start');
 const end = document.getElementById('end');
 const today = new Date();
-start.valueAsDate = today;
+function localISO(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+start.value = localISO(today); /* local date, not UTC (valueAsDate is UTC) */
 /* Default end = same day next month, clamped to that month's last day:
    Jan 31 + 1 month used to roll over to Mar 3 instead of Feb 28. */
 var nextMonthLastDay = new Date(today.getFullYear(), today.getMonth() + 2, 0).getDate();
-end.valueAsDate = new Date(today.getFullYear(), today.getMonth() + 1, Math.min(today.getDate(), nextMonthLastDay));
+end.value = localISO(new Date(today.getFullYear(), today.getMonth() + 1, Math.min(today.getDate(), nextMonthLastDay)));
 
 function parseDateStrict(v) {
   /* Reject impossible dates (e.g. Feb 30), which new Date('2026-02-30')

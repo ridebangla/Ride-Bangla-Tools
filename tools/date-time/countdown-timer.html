@@ -139,8 +139,12 @@
     if (remaining <= 0) { status.textContent = 'Set a time above zero first.'; status.classList.remove('empty'); return; }
     status.textContent = 'Running.';
     status.classList.remove('empty');
+    /* Count against a wall-clock end time, not by decrementing once per tick:
+       browsers throttle timers in background tabs (down to once a minute), so a
+       decrement-per-tick timer would run slow whenever the tab is hidden. */
+    var endAt = Date.now() + remaining * 1000;
     timer = setInterval(function () {
-      remaining--;
+      remaining = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
       if (remaining <= 0) {
         remaining = 0;
         render();
@@ -150,7 +154,7 @@
         return;
       }
       render();
-    }, 1000);
+    }, 250);
     render();
   });
   document.getElementById('cdPause').addEventListener('click', function () {

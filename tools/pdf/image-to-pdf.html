@@ -100,10 +100,13 @@ const thumbs = document.getElementById('thumbs');
 const status = document.getElementById('imgStatus');
 
 let lastPdfUrl = null;
+let thumbUrls = [];
 function renderThumbs() {
+  // revoke the previous render's thumbnail object URLs (they used to leak on every re-render)
+  thumbUrls.forEach(u => URL.revokeObjectURL(u)); thumbUrls = [];
   thumbs.innerHTML = '';
   files.forEach((f, i) => {
-    const url = URL.createObjectURL(f);
+    const url = URL.createObjectURL(f); thumbUrls.push(url);
     const stat = document.createElement('div');
     stat.className = 'stat';
     // FIX: page order used to be frozen at pick time — a wrong order meant
@@ -136,6 +139,7 @@ input.addEventListener('change', () => {
 
 document.getElementById('clearImgs').addEventListener('click', () => {
   files = []; input.value = ''; thumbs.innerHTML = '';
+  thumbUrls.forEach(u => URL.revokeObjectURL(u)); thumbUrls = [];
   if (lastPdfUrl) URL.revokeObjectURL(lastPdfUrl);
   lastPdfUrl = null; document.getElementById('retryPdf').style.display = 'none';
   status.textContent = 'Add one or more images to begin.';
@@ -184,8 +188,12 @@ document.getElementById('buildPdf').addEventListener('click', async () => {
     // "Building PDF…" with no output and no message.
     try {
       const img = data.png ? await pdfDoc.embedPng(data.bytes) : await pdfDoc.embedJpg(data.bytes);
-      const page = pdfDoc.addPage([img.width, img.height]);
-      page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+      // Page = image aspect ratio; cap the longest side at A4 length (842pt) so a 6000x4000
+      // photo is not a 83-inch page. Pixel data is embedded untouched, so quality is unchanged.
+      const k = Math.min(1, 842 / Math.max(img.width, img.height));
+      const pw = img.width * k, ph = img.height * k;
+      const page = pdfDoc.addPage([pw, ph]);
+      page.drawImage(img, { x: 0, y: 0, width: pw, height: ph });
     } catch (e) { status.textContent = 'Could not add "' + file.name + '" to the PDF. Try a JPG or PNG image.'; return; }
   }
   let bytes;

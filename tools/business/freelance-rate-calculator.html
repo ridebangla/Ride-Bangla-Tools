@@ -212,7 +212,12 @@
     var target = Math.max(0, parseFloat(document.getElementById('target').value) || 0);
     var tax = Math.min(90, Math.max(0, parseFloat(document.getElementById('tax').value) || 0)) / 100;
     var exp = Math.max(0, parseFloat(document.getElementById('exp').value) || 0);
-    var hrs = Math.min(80, Math.max(1, parseFloat(document.getElementById('hrs').value) || 1));
+    var hrsRaw = parseFloat(document.getElementById('hrs').value);
+    if (!(hrsRaw > 0)) {
+      document.getElementById('out').innerHTML = '<div class="tot-line"><span>Enter the billable hours you can work per week (more than 0) to see your rates.</span></div>';
+      return;
+    }
+    var hrs = Math.min(80, hrsRaw);
     var off = Math.min(40, Math.max(0, parseFloat(document.getElementById('off').value) || 0));
     var billableHrs = hrs * (52 - off);
     var revenueNeeded = target / (1 - tax) + exp;

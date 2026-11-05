@@ -105,7 +105,7 @@ function generate(showAlert) {
   const ssid = esc(ssidRaw);
   const pw = esc(pwRaw);
   const hidden = document.getElementById('hidden').checked;
-  const payload = `WIFI:T:${sec};S:${ssid};${sec==='nopass'?'':'P:'+pw+';'}H:${hidden ? 'true' : 'false'};;`;
+  const payload = `WIFI:T:${sec};S:${ssid};${sec==='nopass'?'':'P:'+pw+';'}${hidden ? 'H:true;' : ''};`;
   window.__wifiPayload = payload;
   const holder = document.getElementById('qrHolder');
   holder.innerHTML = '';

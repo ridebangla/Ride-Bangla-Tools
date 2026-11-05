@@ -125,7 +125,14 @@ function convert(){
   }
   const utc=zonedToUtc(wall,fz);
   const target=new Date(utc);
-  document.getElementById('out').innerHTML='<strong>'+fmt(target,tz)+'</strong><br><span style="color:var(--muted);font-size:13px;">'+fmt(target,fz)+' ('+fromEl.options[fromEl.selectedIndex].text+')</span>';
+  /* A wall-clock time skipped by a DST jump (e.g. 2:30 AM on the US spring-
+     forward day) does not exist in the From zone; the result is the nearest
+     real time, so say so instead of silently shifting by an hour. */
+  const rt=new Intl.DateTimeFormat('en-CA',{timeZone:fz,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(target);
+  const rg=t=>rt.find(p=>p.type===t).value;
+  const rtWall=Date.UTC(+rg('year'),+rg('month')-1,+rg('day'),(+rg('hour'))%24,+rg('minute'),+rg('second'));
+  const gapNote=rtWall!==wall?'<br><span style="color:var(--muted);font-size:13px;">Note: that local time does not exist in the From zone (clocks skip forward), so the nearest valid time is used.</span>':'';
+  document.getElementById('out').innerHTML='<strong>'+fmt(target,tz)+'</strong><br><span style="color:var(--muted);font-size:13px;">'+fmt(target,fz)+' ('+fromEl.options[fromEl.selectedIndex].text+')</span>'+gapNote;
 }
 document.getElementById('conv').addEventListener('click',convert);
 document.getElementById('now').addEventListener('click',()=>{

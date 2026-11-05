@@ -276,7 +276,10 @@ if (typeof window.rbCopy !== 'function') {
     return name.toLowerCase().replace(/[^a-z0-9]+/g,'') + '.com';
   }
   document.getElementById('gen').addEventListener('click', function () {
-    var kw = document.getElementById('kw').value.trim();
+    var kwRaw = document.getElementById('kw').value.trim();
+    /* names double as .com domains, so only Latin letters/digits are usable in the keyword
+       (a Bengali or symbol-laden keyword used to leave junk like "<b>xlab" or "hub.com") */
+    var kw = kwRaw.replace(/[^A-Za-z0-9]+/g, '').slice(0, 12);
     var style = document.getElementById('style').value;
     var ind = document.getElementById('ind').value;
     var n = Math.min(50, Math.max(5, parseInt(document.getElementById('count').value, 10) || 15));
@@ -291,7 +294,7 @@ if (typeof window.rbCopy !== 'function') {
     if (style === 'keyword' && !kw) {
       var note = document.createElement('div');
       note.className = 'output';
-      note.textContent = 'Add a keyword for keyword-first names — showing brandable ideas meanwhile.';
+      note.textContent = kwRaw ? 'Use English letters or numbers for the keyword (names double as .com domains) — showing brandable ideas meanwhile.' : 'Add a keyword for keyword-first names — showing brandable ideas meanwhile.';
       box.appendChild(note);
     }
     out.forEach(function (nm) {

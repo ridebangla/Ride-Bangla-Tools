@@ -201,9 +201,11 @@
   function drawFinder(px, fr, fc, m, ox, oy, style, fg, bg, fg2) {
     var x = ox + fc * m, y = oy + fr * m, s = 7 * m;
     if (style === 'round') {
-      fillCircle(px, x + s / 2, y + s / 2, s / 2, fg);
-      fillCircle(px, x + s / 2, y + s / 2, s / 2 - m, bg);
-      fillCircle(px, x + s / 2, y + s / 2, s / 2 - 2 * m, fg);
+      /* rounded-square finders (round circles broke decoding on dense codes) */
+      var fr = m * 1.6;
+      roundRect(px, x, y, s, s, fr, fg);
+      roundRect(px, x + m, y + m, s - 2 * m, s - 2 * m, fr * 0.6, bg);
+      roundRect(px, x + 2 * m, y + 2 * m, s - 4 * m, s - 4 * m, fr * 0.5, fg);
     } else if (style === 'gradient') {
       for (var r = 0; r < 7; r++) fillRect(px, x, y + r * m, s, m, lerpRGB(fg, fg2 || fg, r / 6));
       fillRect(px, x + m, y + m, s - 2 * m, s - 2 * m, bg);
@@ -221,7 +223,7 @@
       for (var c = 0; c < n; c++) {
         if (!data[r * n + c] || isFinderZone(r, c, n)) continue;
         var x = ox + c * m, y = oy + r * m;
-        if (style === 'round') roundRect(px, x, y, m, m, m * 0.3, grow);
+        if (style === 'round') roundRect(px, x, y, m, m, m * (m >= 12 ? 0.3 : (m >= 9 ? 0.2 : 0.1)), grow); /* gentler corners at small module sizes so dense codes still scan */
         else fillRect(px, x, y, m, m, grow);
       }
     }
