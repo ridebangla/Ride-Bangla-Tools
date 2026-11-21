@@ -80,31 +80,33 @@
 #invApp .inv-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding:26px 0 56px}
 /* the site header scrolls away on this page so the live preview can stay pinned */
 .site-header{position:static}
-/* write on the LEFT, live preview on the RIGHT — from small tablets / phones in desktop mode upward */
-@media(min-width:600px){
-  #invApp .inv-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
-  #invApp .pane-preview{position:sticky;top:12px}
+/* EXACTLY like the Ride Bangla invoice: write on the LEFT, live preview on the RIGHT, on every screen size */
+#invApp .inv-wrap{grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:start;gap:14px}
+#invApp .pane-preview{position:sticky;top:8px}
+#invApp .pv-wrap{max-height:calc(100vh - 16px)}
+@media(min-width:1000px){
+  #invApp .inv-wrap{grid-template-columns:minmax(0,500px) minmax(0,1fr);gap:20px}
+  #invApp .pane-preview{top:12px}
   #invApp .pv-wrap{max-height:calc(100vh - 150px)}
 }
-@media(min-width:1000px){
-  #invApp .inv-wrap{grid-template-columns:minmax(0,500px) minmax(0,1fr)}
+@media(max-width:700px){
+  #invApp .container{padding-left:8px;padding-right:8px}
+  #invApp .inv-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+  #invApp .g2,#invApp .g3{grid-template-columns:1fr !important}
+  #invApp .upl input[type=file]{font-size:11px;padding:6px;width:100%;flex:1 1 100%}
+  #invApp .item .it-nums{grid-template-columns:1fr 1fr}
+  #invApp .item .amt{grid-column:1/-1;text-align:left}
+  #invApp details.sec>summary{padding:12px 12px;font-size:14.5px}
+  #invApp .sec-body{padding:2px 12px 12px}
+  #invApp .act-bar button.btn{padding:9px 8px;font-size:12.5px;flex:1 1 40%}
+  #invApp .pv-totals{padding:8px 10px;margin:10px 0}
+  #invApp .tot-line{font-size:12.5px}
+  #invApp .tot-line.grand{font-size:15px}
 }
 #invApp .pane-preview{min-width:0}
 #invApp .pane-edit{min-width:0}
 
 /* phones: one thing at a time — Edit or Preview (tabs), actions pinned at the bottom */
-#invApp .viewtabs{display:none;gap:8px;margin:0 0 12px}
-#invApp .viewtabs button{flex:1;border:1.5px solid var(--brass);background:#fff;color:var(--brass);border-radius:10px;padding:10px;font-family:var(--font-display);font-weight:700;font-size:14.5px;cursor:pointer}
-#invApp .viewtabs button.on{background:var(--brass);color:#fff}
-#invApp .viewtabs{display:none !important}
-/* narrow phones (no room for two columns): the preview stays pinned at the top while you type below it — never a separate screen */
-@media(max-width:599px){
-  #invApp .inv-wrap{display:flex;flex-direction:column;gap:12px;padding-top:0}
-  #invApp .pane-preview{order:-1;position:sticky;top:0;z-index:50;background:#fff;padding:8px 0 6px;border-bottom:1px solid var(--line);box-shadow:0 6px 14px rgba(16,24,40,.08)}
-  #invApp .pv-wrap{max-height:36vh;max-height:36dvh}
-  #invApp .act-bar:not(.act-sticky){display:none}
-  #invApp .pv-totals{display:none}
-}
 #invApp .installbar{display:none;align-items:center;gap:10px;background:#eef5f0;border:1px solid #cfe3d6;border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13px;color:var(--text-mid)}
 #invApp .installbar.show{display:flex}
 #invApp .installbar span{flex:1;min-width:0}
@@ -158,13 +160,7 @@
 #invApp .act-bar button.sendb{background:linear-gradient(135deg,#F59E0B,#EA580C);box-shadow:0 4px 12px rgba(234,88,12,.25)}
 #invApp .act-bar button[disabled]{opacity:.65;cursor:wait}
 #invApp .act-top{margin-bottom:14px}
-#invApp .act-sticky{display:none}
-@media(max-width:599px){
-  #invApp .act-sticky{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;position:fixed;left:0;right:0;bottom:0;z-index:60;background:#fff;border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -6px 18px rgba(16,24,40,.12)}
-  #invApp .act-sticky button.btn{flex-direction:column;gap:3px;padding:8px 4px;font-size:11.5px;white-space:normal;line-height:1.15;border-radius:9px}
-  #invApp .act-sticky button.btn svg{width:18px;height:18px}
-  #invApp{padding-bottom:78px}
-}
+#invApp .act-sticky{display:none !important}
 
 /* preview */
 #invApp .pv-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-family:var(--font-mono);font-size:12.5px;color:var(--text-lo)}
@@ -251,9 +247,8 @@
 .paper .p-thanks{text-align:center;font-weight:700;color:var(--ac);font-size:13px;margin-top:14px}
 .paper .p-foot{color:#555;font-size:11px;font-weight:600;margin-top:12px;border-top:1px solid #eee;padding-top:8px;text-align:center}
 </style>
-<section id="invApp" data-view="edit">
+<section id="invApp">
   <div class="container">
-    <div class="viewtabs" id="viewTabs"><button type="button" class="on" data-v="edit">✏️ Fill in</button><button type="button" data-v="preview">👁 Preview</button></div>
     <div class="inv-wrap">
 
       <!-- ============ LEFT: EDITOR ============ -->
@@ -1413,13 +1408,6 @@ function init() {
   window.addEventListener('pagehide', saveNow);
   document.addEventListener('visibilitychange', function () { if (document.hidden) saveNow(); });
 
-  /* phones: Fill in / Preview tabs */
-  $('viewTabs').addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-v]'); if (!b) return;
-    $('invApp').setAttribute('data-view', b.getAttribute('data-v'));
-    document.querySelectorAll('#viewTabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
-    try { $('viewTabs').scrollIntoView(); } catch (er) {} setTimeout(fit, 30);
-  });
   /* action bars (event delegation) */
   $('invApp').addEventListener('click', function (e) {
     var b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
