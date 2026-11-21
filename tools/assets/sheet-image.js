@@ -42,10 +42,16 @@
     breaks.sort(function (a, b) { return a - b; });
     holder.removeChild(clone); holder.removeChild(st); document.body.removeChild(holder);
 
+    clone.style.textRendering = 'geometricPrecision';
+    clone.style.setProperty('font-kerning', 'normal');
+    clone.style.setProperty('-webkit-font-smoothing', 'antialiased');
     var xhtml = new XMLSerializer().serializeToString(clone);
     var cssSafe = String(opt.cssText || '').replace(/]]>/g, ']] >');
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" viewBox="0 0 ' + width + ' ' + height + '">' +
-      '<foreignObject x="0" y="0" width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:' + width + 'px;height:' + height + 'px;background:#fff">' +
+    var W = Math.round(width * scale), H = Math.ceil(height * scale) + Math.ceil(6 * scale);
+    /* The sheet is laid out at its FINAL size (zoom), not laid out small and then enlarged:
+       enlarging a small layout is what made letters collide / drift apart on some phones. */
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' +
+      '<foreignObject x="0" y="0" width="' + W + '" height="' + H + '"><div xmlns="http://www.w3.org/1999/xhtml" style="width:' + width + 'px;height:' + (H / scale) + 'px;background:#fff;zoom:' + scale + ';text-rendering:geometricPrecision">' +
       '<style><![CDATA[' + cssSafe + ']]></style>' + xhtml + '</div></foreignObject></svg>';
     var img = new Image();
     await new Promise(function (res, rej) {
@@ -53,10 +59,10 @@
       img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     });
     var cv = document.createElement('canvas');
-    cv.width = Math.round(width * scale); cv.height = Math.round(height * scale);
+    cv.width = W; cv.height = H;
     var cx = cv.getContext('2d');
     cx.fillStyle = '#ffffff'; cx.fillRect(0, 0, cv.width, cv.height);
-    cx.drawImage(img, 0, 0, cv.width, cv.height);
+    cx.drawImage(img, 0, 0);
     return { canvas: cv, width: width, height: height, scale: scale, breaks: breaks };
   }
   async function toPngBlob(node, opt) {
