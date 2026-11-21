@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free Invoice Generator — Make Professional Invoices Online (PDF) | Ride Bangla Tools</title>
-<meta name="description" content="Create professional invoices online free — your own logo, company details, signature, 3 layouts and colours. Print, download PDF, or send straight to your customer by email or WhatsApp. No signup, everything stays in your browser.">
+<meta name="description" content="Create professional invoices online free — your own logo, company details, signature and colours. Print, download PDF, or send straight to your customer by email or WhatsApp. No signup, everything stays in your browser.">
 <meta name="keywords" content="free invoice generator, make invoice online, invoice maker pdf, create professional invoice, online billing invoice">
 <link rel="canonical" href="https://tools.ridebangla.bd/business/invoice-generator.html">
 <meta property="og:title" content="Free Invoice Generator — Make Professional Invoices Online (PDF) | Ride Bangla Tools">
-<meta property="og:description" content="Create professional invoices online free — your own logo, company details, signature, 3 layouts and colours. Print, download PDF, or send straight to your customer by email or WhatsApp. No signup, everything stays in your browser.">
+<meta property="og:description" content="Create professional invoices online free — your own logo, company details, signature and colours. Print, download PDF, or send straight to your customer by email or WhatsApp. No signup, everything stays in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tools.ridebangla.bd/business/invoice-generator.html">
 <meta property="og:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Free Invoice Generator — Make Professional Invoices Online (PDF) | Ride Bangla Tools">
-<meta name="twitter:description" content="Create professional invoices online free — your own logo, company details, signature, 3 layouts and colours. Print, download PDF, or send straight to your customer by email or WhatsApp. No signup, everything stays in your browser.">
+<meta name="twitter:description" content="Create professional invoices online free — your own logo, company details, signature and colours. Print, download PDF, or send straight to your customer by email or WhatsApp. No signup, everything stays in your browser.">
 <meta name="twitter:image" content="https://tools.ridebangla.bd/assets/icon-512.png">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png">
@@ -30,8 +30,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="../assets/pdf-lib.min.js" defer></script>
+<script src="../assets/sheet-image.js" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tools.ridebangla.bd/"}, {"@type": "ListItem", "position": 2, "name": "Business Tools", "item": "https://tools.ridebangla.bd/business/"}, {"@type": "ListItem", "position": 3, "name": "Invoice Generator", "item": "https://tools.ridebangla.bd/business/invoice-generator.html"}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Invoice Generator", "description": "Create professional invoices online free — your own logo, company details, signature, 3 layouts and colours. Print, download PDF, or send straight to your customer by email or WhatsApp. No signup, everything stays in your browser.", "url": "https://tools.ridebangla.bd/business/invoice-generator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Invoice Generator", "description": "Create professional invoices online free — your own logo, company details, signature and colours. Print, download PDF, or send straight to your customer by email or WhatsApp. No signup, everything stays in your browser.", "url": "https://tools.ridebangla.bd/business/invoice-generator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "Ride Bangla Tools", "url": "https://tools.ridebangla.bd/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the invoice generator really free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — completely free, no sign-up, no watermark, no limit on how many invoices you make."}}, {"@type": "Question", "name": "Is my business data uploaded anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs in your browser. Your business details are saved only in your own browser’s local storage if you tick \"remember\"."}}, {"@type": "Question", "name": "Which currencies are supported?", "acceptedAnswer": {"@type": "Answer", "text": "USD, EUR, GBP, INR, BDT, PKR and JPY are built in — the symbol prints on both the preview and the PDF."}}, {"@type": "Question", "name": "Can I print the invoice instead of downloading?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — the Print button turns your invoice into a PDF and opens it in your browser’s print dialog."}}, {"@type": "Question", "name": "Is this invoice legally valid?", "acceptedAnswer": {"@type": "Answer", "text": "It produces a standard commercial invoice layout used worldwide, but tax rules differ by country — check your local requirements for tax invoices."}}]}</script>
 </head>
 <body>
@@ -69,7 +70,7 @@
   <div class="container">
     <div class="crumb"><a href="../">All tools</a> / <a href="./">Business</a> / Invoice Generator</div>
     <h1>Free Invoice Generator</h1>
-    <p class="lede">Make a professional invoice in minutes — add your logo and company details, choose a layout, then print it, download the PDF or send it straight to your customer. Free forever, no account, nothing uploaded.</p>
+    <p class="lede">Make a professional invoice in minutes — add your logo and company details once, then print it, download the PDF or send it straight to your customer. Free forever, no account, nothing uploaded.</p>
     <p style="font-size:13px;opacity:.75">Private files stay in your browser. AI prompts you send leave your device.</p>
   </div>
 </section>
@@ -82,24 +83,26 @@
 @media(min-width:1000px){
   #invApp .inv-wrap{grid-template-columns:minmax(0,500px) minmax(0,1fr);align-items:start}
   #invApp .pane-preview{position:sticky;top:12px}
-  #invApp .pv-tog{display:none}
-  #invApp .pv-wrap{max-height:calc(100vh - 150px)}
+    #invApp .pv-wrap{max-height:calc(100vh - 150px)}
 }
 #invApp .pane-preview{min-width:0}
 #invApp .pane-edit{min-width:0}
 
-/* phones: live preview pinned on top, form scrolls underneath (both visible together) */
+/* phones: one thing at a time — Edit or Preview (tabs), actions pinned at the bottom */
+#invApp .viewtabs{display:none;gap:8px;margin:0 0 12px}
+#invApp .viewtabs button{flex:1;border:1.5px solid var(--brass);background:#fff;color:var(--brass);border-radius:10px;padding:10px;font-family:var(--font-display);font-weight:700;font-size:14.5px;cursor:pointer}
+#invApp .viewtabs button.on{background:var(--brass);color:#fff}
 @media(max-width:999px){
-  #invApp .inv-wrap{display:flex;flex-direction:column;gap:12px;padding-top:0}
-  #invApp .pane-preview{order:-1;position:sticky;top:0;z-index:50;background:#fff;padding:8px 0 6px;border-bottom:1px solid var(--line);box-shadow:0 6px 14px rgba(16,24,40,.08)}
-  #invApp .pv-totals{display:none}
+  #invApp .inv-wrap{display:flex;flex-direction:column;gap:0;padding-top:14px}
+  #invApp .viewtabs{display:flex}
+  #invApp[data-view="edit"] .pane-preview{display:none}
+  #invApp[data-view="preview"] .pane-edit{display:none}
   #invApp .act-bar:not(.act-sticky){display:none}
-  #invApp .pv-wrap{max-height:30vh;max-height:30dvh}
-  #invApp[data-pv="lg"] .pv-wrap{max-height:68vh;max-height:68dvh}
-  #invApp[data-pv="off"] .pv-wrap{display:none}
+  #invApp .pv-totals{display:none}
 }
-#invApp .pv-tog{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 10px;font-family:var(--font-mono);font-size:12px;color:var(--text-mid);cursor:pointer}
-
+#invApp .installbar{display:none;align-items:center;gap:10px;background:#eef5f0;border:1px solid #cfe3d6;border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13px;color:var(--text-mid)}
+#invApp .installbar.show{display:flex}
+#invApp .installbar span{flex:1;min-width:0}
 /* form cards */
 #invApp details.sec{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
 #invApp details.sec>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px;font-family:var(--font-display);font-weight:700;font-size:15.5px;color:var(--text-hi)}
@@ -188,267 +191,175 @@
 .inv-modal .note{font-size:12px;color:var(--text-lo);margin-top:12px;line-height:1.5;font-weight:500;max-width:none}
 .inv-modal .wa{background:linear-gradient(135deg,#25D366,#128C7E)}
 
-/* ===== The invoice paper (A4 @96dpi = 794 x 1123) ===== */
-.paper{width:794px;min-height:1123px;background:#fff;color:#1f2933;font:400 13px/1.5 'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans Bengali','Hind Siliguri','Nirmala UI',sans-serif;position:relative;overflow:hidden;box-sizing:border-box;--pt:48px;padding:var(--pt) 52px 40px;letter-spacing:0}
-.paper *{box-sizing:border-box;font-weight:inherit;letter-spacing:inherit}
-.paper b,.paper .b{font-weight:700}
-.paper .pbody{display:flex;flex-direction:column;min-height:calc(1123px - var(--pt) - 40px);position:relative;z-index:1}
-.paper .pf{margin-top:auto;padding-top:22px}
-.paper .wm{position:absolute;left:50%;top:50%;width:430px;max-width:70%;transform:translate(-50%,-50%);opacity:.07;pointer-events:none;z-index:0}
-.paper .stamp{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%) rotate(-24deg);font-size:118px;font-weight:800;line-height:1;letter-spacing:.08em;color:#16a34a;opacity:.13;border:10px solid #16a34a;padding:6px 26px;border-radius:16px;pointer-events:none;white-space:nowrap;z-index:2}
-.paper .ph{display:flex;justify-content:space-between;gap:28px;align-items:flex-start}
-.paper .ph-l{min-width:0;flex:1}
-.paper .ph-brand{display:flex;gap:14px;align-items:flex-start}
-.paper .ph-logo{max-height:62px;max-width:160px;object-fit:contain;flex:none}
-.paper .ph-name{font-size:21px;font-weight:700;line-height:1.2;color:#111827;word-break:break-word}
-.paper .ph-tag{color:#6b7280;font-size:12px;margin-top:2px}
-.paper .ph-contact{margin-top:9px;color:#4b5563;font-size:12px;line-height:1.55;word-break:break-word}
-.paper .ph-doc{text-align:right;flex:none;max-width:260px}
-.paper .ph-title{font-size:32px;font-weight:800;letter-spacing:.04em;color:var(--ac);line-height:1.05;word-break:break-word}
-.paper .ph-no{margin-top:9px;color:#4b5563;font-size:13px}
-.paper.t-modern .ph{background:var(--ac);color:var(--on);margin:calc(-1*var(--pt)) -52px 0;padding:34px 52px 28px}
-.paper.t-modern .ph-name,.paper.t-modern .ph-title{color:var(--on)}
-.paper.t-modern .ph-tag,.paper.t-modern .ph-contact,.paper.t-modern .ph-no{color:var(--on);opacity:.85}
-.paper.t-modern .ph-logo{background:#fff;padding:6px;border-radius:8px}
-.paper.t-minimal .ph{border-bottom:2px solid #111827;padding-bottom:18px}
-.paper.t-minimal .ph-title{color:#111827;font-weight:300;letter-spacing:.22em;font-size:26px}
-.paper .pm{display:flex;justify-content:space-between;gap:28px;margin-top:26px}
-.paper .lbl{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin-bottom:5px}
-.paper.t-minimal .lbl{color:#6b7280}
-.paper .pm-name{font-size:15px;font-weight:700;color:#111827;word-break:break-word}
-.paper .pm-sub{color:#4b5563;font-size:12.5px;line-height:1.55;word-break:break-word}
-.paper .pm-bill{min-width:0;flex:1}
-.paper table{border-collapse:collapse;width:100%}
-.paper .mt{width:auto;min-width:230px}
-.paper .mt td{padding:2px 0;font-size:12.5px;vertical-align:top}
-.paper .mt td:first-child{color:#6b7280;padding-right:18px;white-space:nowrap}
-.paper .mt td:last-child{text-align:right;font-weight:700;color:#111827}
-.paper .it{margin-top:26px}
-.paper .it th{padding:9px 10px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:left;background:var(--ac);color:var(--on)}
-.paper .it th.r,.paper .it td.r{text-align:right}
-.paper .it td{padding:10px;border-bottom:1px solid #e5e7eb;vertical-align:top;font-size:13px}
-.paper .it td.n{color:#9ca3af;width:34px}
-.paper .it .dt{color:#6b7280;font-size:11.5px;margin-top:2px;white-space:pre-line}
-.paper .it .dsc{word-break:break-word;font-weight:600}
-.paper .it tr{break-inside:avoid;page-break-inside:avoid}
-.paper .it thead{display:table-header-group}
-.paper.t-modern .it th{background:color-mix(in srgb,var(--ac) 10%,#fff);color:var(--ac);border-bottom:2px solid var(--ac)}
-.paper.t-modern .it tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--ac) 4%,#fff)}
-.paper.t-minimal .it th{background:none;color:#111827;border-bottom:2px solid #111827;padding-left:4px;padding-right:4px}
-.paper.t-minimal .it td{padding-left:4px;padding-right:4px}
-.paper .pb{display:flex;justify-content:space-between;gap:28px;margin-top:18px;break-inside:avoid;page-break-inside:avoid}
-.paper .pb-l{flex:1;min-width:0;padding-right:10px}
-.paper .words{font-size:12.5px;color:#374151;line-height:1.5}
-.paper .tt{width:270px;flex:none}
-.paper .tt td{padding:5px 10px;font-size:13px}
-.paper .tt td:first-child{color:#6b7280}
-.paper .tt td:last-child{text-align:right;font-weight:700;color:#111827;white-space:nowrap}
-/*HL*/.paper .tt tr.hl td{padding:0}
-.paper .tt .hlr{display:flex;justify-content:space-between;gap:12px;background:var(--ac);color:var(--on);font-size:15px;font-weight:800;padding:10px}
-.paper.t-minimal .tt .hlr{background:none;color:#111827;border-top:2px solid #111827;border-bottom:2px solid #111827}
-.paper .info{display:flex;gap:24px;margin-top:22px;align-items:flex-start;break-inside:avoid;page-break-inside:avoid}
-.paper .info .col{flex:1;min-width:0}
-.paper .info .txt{font-size:12.5px;color:#374151;line-height:1.55;word-break:break-word;white-space:pre-line}
-.paper .qrbox{flex:none;text-align:center;font-size:10.5px;color:#6b7280}
-.paper .qrbox img{width:92px;height:92px;display:block;margin:0 auto 3px;background:#fff}
-.paper .sign{margin-top:24px;display:flex;justify-content:flex-end;break-inside:avoid;page-break-inside:avoid}
-.paper .sign .box{width:200px;text-align:center}
-.paper .sign img{max-height:54px;max-width:170px;object-fit:contain;display:block;margin:0 auto 2px;mix-blend-mode:multiply}
-.paper .sign .ln{border-top:1px solid #6b7280;padding-top:4px}
-.paper .sign .sn{font-weight:700;font-size:12.5px;color:#111827}
-.paper .sign .st{font-size:11.5px;color:#6b7280}
-.paper .thanks{text-align:center;font-weight:700;color:var(--ac);font-size:14px;margin-bottom:8px}
-.paper.t-minimal .thanks{color:#111827}
-.paper .gen{text-align:center;font-size:10px;color:#9ca3af;border-top:1px solid #e5e7eb;padding-top:8px}
-
-/* ===== "Ride Bangla" layout: logo + company block left, big title / number / date right, thin rule, plain-text totals (no box), QR bottom-left ===== */
-.paper.t-rb .rbh{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;border-bottom:1px solid #e5e7eb;padding-bottom:16px}
-.paper.t-rb .rb-id{display:flex;gap:14px;align-items:center;min-width:0;flex:1}
-.paper.t-rb .rb-logo{max-height:72px;max-width:170px;object-fit:contain;flex:none}
-.paper.t-rb .rb-idt{min-width:0}
-.paper.t-rb .rb-name{font-size:19px;font-weight:700;line-height:1.25;color:#111827;word-break:break-word}
-.paper.t-rb .rb-ct{font-size:12.5px;font-weight:700;color:#4b5563;line-height:1.55;word-break:break-word}
-.paper.t-rb .rb-doc{text-align:right;flex:none;max-width:250px}
-.paper.t-rb .rb-title{font-size:32px;font-weight:800;line-height:1.05;color:var(--ac);word-break:break-word}
-.paper.t-rb .rb-no{margin-top:9px;font-size:14px;font-weight:700;color:#4b5563}
-.paper.t-rb .rb-dt{font-size:13px;font-weight:700;color:#111827;margin-top:2px}
-.paper.t-rb .rb-cust{margin-top:20px}
-.paper.t-rb .rb-lbl{font-size:13.5px;font-weight:700;color:var(--ac);margin-bottom:6px}
-.paper.t-rb .pm-name{font-size:15px}
-.paper.t-rb .pm-sub{font-weight:700}
-.paper.t-rb .rb-pay{margin-top:12px;font-size:13px;font-weight:700;color:#111827}
-.paper.t-rb .it{margin-top:18px}
-.paper.t-rb .it th{text-transform:none;letter-spacing:0;font-size:12.5px;padding:9px 10px}
-.paper.t-rb .it td{font-weight:600}
-.paper.t-rb .it tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--ac) 5%,transparent)}
-.paper.t-rb .rb-tot{margin-left:auto;width:270px;flex:none;text-align:right}
-.paper.t-rb .rb-tot div{display:flex;justify-content:space-between;gap:14px;padding:3px 0;font-size:13.5px;font-weight:700;color:#4b5563}
-.paper.t-rb .rb-tot div b{color:#111827}
-.paper.t-rb .rb-tot div.g{font-size:17px;color:var(--ac);padding-top:7px}
-.paper.t-rb .rb-tot div.g b{color:var(--ac);font-weight:800}
-.paper.t-rb .rb-qr{display:flex;align-items:center;gap:14px;margin-top:22px;break-inside:avoid;page-break-inside:avoid}
-.paper.t-rb .rb-qr img{width:92px;height:92px;flex:none;background:#fff}
-.paper.t-rb .rb-qr .a{font-size:13px;font-weight:700;color:var(--ac)}
-.paper.t-rb .rb-qr .n{font-size:12.5px;font-weight:700;color:#4b5563;margin-top:3px}
-.paper.t-rb .lbl{color:var(--ac)}
-@media print{.paper.t-rb .it tbody tr:nth-child(even) td{background:rgba(11,92,54,.05)}}
-
-@media print{
-  @page{size:A4;margin:10mm 0}
-  html,body{background:#fff !important}
-  body>*:not(#invApp){display:none !important}
-  #invApp{padding:0 !important}
-  #invApp .inv-tabs,#invApp .pane-edit,#invApp .act-bar,#invApp .pv-head,#invApp .pv-totals,#invApp .inv-modal,#invApp .tool-header-x{display:none !important}
-  .inv-toast,.inv-modal{display:none !important}
-  #invApp .container{max-width:none !important;padding:0 !important;margin:0 !important}
-  #invApp .inv-wrap{display:block !important;padding:0 !important}
-  #invApp .pane-preview{display:block !important;position:static !important}
-  #invApp .pv-size{height:auto !important;overflow:visible !important}
-  #invApp .pv-wrap{max-height:none !important}
-  #invApp .pv-wrap{height:auto !important;border:0 !important;background:none !important;box-shadow:none !important;overflow:visible !important;border-radius:0 !important}
-  .paper{transform:none !important;width:100% !important;min-height:0 !important;--pt:0px;padding-bottom:0 !important;box-shadow:none !important;overflow:visible !important}
-  .paper .pbody{display:block !important;min-height:0 !important}
-  .paper .pf{margin-top:18px}
-  .paper,.paper *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-}
-
+/* ===== The invoice sheet — same model as the Ride Bangla invoice (560px wide, A4-scaled when saved) ===== */
+.paper{width:560px;background:#fff;color:#1a1a1a;font:400 13px/1.35 system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans Bengali','Hind Siliguri','Nirmala UI',sans-serif;position:relative;box-sizing:border-box;padding:26px 28px 22px;overflow:hidden}
+.paper *{box-sizing:border-box}
+.paper>*{position:relative;z-index:1}
+.paper .wm{position:absolute;left:50%;top:50%;width:330px;max-width:70%;transform:translate(-50%,-50%);opacity:.07;pointer-events:none;z-index:0}
+.paper .stamp{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%) rotate(-24deg);font-size:96px;font-weight:800;line-height:1;letter-spacing:.08em;color:#16a34a;opacity:.13;border:8px solid #16a34a;padding:4px 20px;border-radius:14px;pointer-events:none;white-space:nowrap;z-index:2}
+.paper .k{display:block;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6b6b6b}
+.paper .p-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.paper .p-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.paper .p-logo{max-width:120px;max-height:54px;object-fit:contain;flex:none}
+.paper .p-name{font-size:17px;font-weight:800;line-height:1.15;color:#1a1a1a;overflow-wrap:anywhere}
+.paper .p-tag{font-size:11.5px;font-weight:600;color:#555;margin-top:2px;overflow-wrap:anywhere}
+.paper .p-doc{text-align:right;flex:none;max-width:230px}
+.paper .p-title{margin:0;font-size:25px;line-height:1;letter-spacing:.02em;font-weight:800;color:var(--ac);overflow-wrap:anywhere}
+.paper .p-meta{margin-top:8px;font-size:11.5px;font-weight:700;color:#1a1a1a;line-height:1.5}
+.paper .p-meta span{font-weight:600;color:#6b6b6b;margin-right:6px}
+.paper .p-contact{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:6px 12px;margin-top:12px;padding:9px 0;border-top:1px solid #dfe5df;border-bottom:1px solid #dfe5df}
+.paper .p-contact>div{min-width:0}
+.paper .p-contact b{display:block;font-size:11.5px;font-weight:700;overflow-wrap:anywhere}
+.paper .p-contact .full{grid-column:1/-1}
+.paper .p-cards{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;margin-top:12px}
+.paper .p-cards.one{grid-template-columns:1fr}
+.paper .p-card{min-width:0}
+.paper .p-sec{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);border-bottom:1.5px solid var(--ac);padding-bottom:3px;margin-bottom:4px}
+.paper .p-row{display:grid;grid-template-columns:58px minmax(0,1fr);gap:8px;align-items:end;padding-top:5px}
+.paper .p-row .k{padding-bottom:2px}
+.paper .p-row .v{min-height:19px;padding-bottom:2px;border-bottom:1px solid #d5dbd5;font-size:12.5px;font-weight:600;overflow-wrap:anywhere;white-space:pre-line}
+.paper table{border-collapse:collapse;width:100%;table-layout:fixed;margin-top:12px}
+.paper th{background:var(--ac);color:var(--on);text-align:left;padding:7px 8px;font-size:11.5px;font-weight:700}
+.paper td{padding:7px 8px;border-bottom:1px solid #eee;font-size:12.5px;font-weight:500;vertical-align:top;overflow-wrap:anywhere}
+.paper th.n,.paper td.n{text-align:right;white-space:nowrap}
+.paper td .dt{font-size:11px;color:#6b7280;margin-top:2px;white-space:pre-line}
+.paper .p-sum{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-top:12px}
+.paper .p-qr{display:flex;align-items:center;gap:8px;flex:none}
+.paper .p-qr img{width:78px;height:78px;flex:none;background:#fff}
+.paper .p-qr-txt{width:90px;font-size:10.5px;line-height:1.3;color:var(--ac);font-weight:700}
+.paper .p-qr-txt small{display:block;margin-top:3px;color:#6b6b6b;font-size:10px;font-weight:600;overflow-wrap:anywhere}
+.paper .p-tot{flex:1 1 auto;max-width:250px;margin-left:auto}
+.paper .p-tl{display:flex;justify-content:space-between;gap:10px;padding:3px 0;font-size:12px;font-weight:700}
+.paper .p-tl span{font-weight:600;color:#555}
+.paper .p-tl.g{margin-top:4px;padding-top:7px;border-top:1.5px solid var(--ac);font-size:15px;color:var(--ac)}
+.paper .p-tl.g span{color:var(--ac);font-weight:800}
+.paper .p-note{margin-top:10px;font-size:11.5px;font-weight:600;color:#444;white-space:pre-line;overflow-wrap:anywhere}
+.paper .p-note b{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:2px}
+.paper .p-words{margin-top:10px;font-size:11.5px;font-weight:600;color:#444}
+.paper .p-words b{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:2px}
+.paper .p-sign{margin-top:16px;display:flex;justify-content:flex-end}
+.paper .p-sign .box{width:180px;text-align:center}
+.paper .p-sign img{max-height:48px;max-width:160px;object-fit:contain;display:block;margin:0 auto 2px}
+.paper .p-sign .ln{border-top:1px solid #6b7280;padding-top:4px}
+.paper .p-sign .sn{font-weight:700;font-size:12px}
+.paper .p-sign .st{font-size:11px;color:#6b7280}
+.paper .p-thanks{text-align:center;font-weight:700;color:var(--ac);font-size:13px;margin-top:14px}
+.paper .p-foot{color:#555;font-size:11px;font-weight:600;margin-top:12px;border-top:1px solid #eee;padding-top:8px;text-align:center}
 </style>
-<section id="invApp" data-pv="sm">
+<section id="invApp" data-view="edit">
   <div class="container">
+    <div class="viewtabs" id="viewTabs"><button type="button" class="on" data-v="edit">✏️ Fill in</button><button type="button" data-v="preview">👁 Preview</button></div>
     <div class="inv-wrap">
 
       <!-- ============ LEFT: EDITOR ============ -->
       <div class="pane-edit">
+        <div class="installbar" id="installBar"><span id="installTxt">Keep this invoice maker on your phone’s home screen.</span><button type="button" class="btn sm" id="installBtn">Install app</button></div>
         <div class="act-bar act-top" data-actbar></div>
 
         <details class="sec" open id="secBiz">
-          <summary><span class="n">1</span>Your business (From)<span id="bizSum" style="font-weight:500;font-size:13px;color:var(--text-lo);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span></summary>
+          <summary><span class="n">1</span>Your business<span id="bizSum" style="font-weight:500;font-size:13px;color:var(--text-lo);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span></summary>
           <div class="sec-body">
-            <div class="field"><label>Company logo</label>
+            <div class="mini" style="margin:0 0 10px">Fill this once — your logo and details stay saved on this device until you change them.</div>
+            <div class="field"><label>Logo</label>
               <div class="upl"><input id="logoFile" type="file" accept="image/*"><img id="logoThumb" alt="" style="display:none"><button type="button" class="btn ghost sm" id="logoRemove" style="display:none">Remove</button></div>
-              <label class="chk"><input type="checkbox" id="logoHeader" checked>Show logo in header</label>
-              <label class="chk"><input type="checkbox" id="logoWatermark" checked>Show logo as faint watermark</label>
               <div id="logoStatus" class="mini"></div>
             </div>
-            <div class="field"><label>Business / company name</label><input id="fromName" type="text" placeholder="e.g. Nisha Design Studio"></div>
-            <div class="field"><label>Tagline (optional)</label><input id="fromTag" type="text" placeholder="e.g. Branding · Web · Print"></div>
-            <div class="field"><label>Address (line breaks ok)</label><textarea id="fromAddr" rows="2" placeholder="House, road, area&#10;City, country"></textarea></div>
+            <div class="field"><label>Business name</label><input id="fromName" type="text" placeholder="e.g. Nisha Design Studio"></div>
+            <div class="field"><label>Address</label><textarea id="fromAddr" rows="2" placeholder="House, road, area&#10;City, country"></textarea></div>
             <div class="g2">
               <div class="field"><label>Phone</label><input id="fromPhone" type="text" inputmode="tel" placeholder="+8801XXXXXXXXX"></div>
               <div class="field"><label>Email</label><input id="fromEmail" type="text" inputmode="email" autocapitalize="off" placeholder="hello@company.com"></div>
             </div>
+            <div class="field"><label>Website</label><input id="fromWeb" type="text" autocapitalize="off" placeholder="www.company.com"></div>
+          </div>
+        </details>
+
+        <details class="sec" open>
+          <summary><span class="n">2</span>Customer</summary>
+          <div class="sec-body">
+            <div class="field"><label>Name</label><input id="toName" type="text" list="custList" autocomplete="off" placeholder="Customer or company name"><datalist id="custList"></datalist></div>
             <div class="g2">
-              <div class="field"><label>Website</label><input id="fromWeb" type="text" autocapitalize="off" placeholder="www.company.com"></div>
-              <div class="field"><label>Tax / VAT / BIN / TIN no.</label><input id="fromTaxId" type="text" placeholder="optional"></div>
+              <div class="field"><label>Phone</label><input id="toPhone" type="text" inputmode="tel" placeholder="01XXXXXXXXX"></div>
+              <div class="field"><label>Address</label><input id="toAddr" type="text" placeholder="City, country"></div>
             </div>
           </div>
         </details>
 
         <details class="sec" open>
-          <summary><span class="n">2</span>Bill to (Customer)</summary>
-          <div class="sec-body">
-            <div class="field"><label>Customer / company name</label><input id="toName" type="text" list="custList" autocomplete="off" placeholder="e.g. ABC Company Ltd"><datalist id="custList"></datalist></div>
-            <div class="field"><label>Address</label><textarea id="toAddr" rows="2" placeholder="Street, city, country"></textarea></div>
-            <div class="g2">
-              <div class="field"><label>Phone / WhatsApp</label><input id="toPhone" type="text" inputmode="tel" placeholder="01XXXXXXXXX"></div>
-              <div class="field"><label>Email</label><input id="toEmail" type="text" inputmode="email" autocapitalize="off" placeholder="customer@email.com"></div>
-            </div>
-            <div class="field"><label>Customer tax / BIN no. (optional)</label><input id="toTaxId" type="text"></div>
-          </div>
-        </details>
-
-        <details class="sec" open>
-          <summary><span class="n">3</span>Invoice details</summary>
+          <summary><span class="n">3</span>Invoice</summary>
           <div class="sec-body">
             <div class="g2">
-              <div class="field"><label>Document type</label>
-                <select id="docTitle"><option>Invoice</option><option>Tax Invoice</option><option>Proforma Invoice</option><option>Commercial Invoice</option><option>Bill</option><option>Cash Memo</option><option>Receipt</option></select></div>
-              <div class="field"><label>Invoice #</label><input id="docNo" type="text"></div>
+              <div class="field"><label>Invoice no.</label><input id="docNo" type="text"></div>
+              <div class="field"><label>Date</label><input id="invDate" type="date"></div>
             </div>
             <div class="g2">
-              <div class="field"><label>Invoice date</label><input id="invDate" type="date"></div>
-              <div class="field"><label>Reference / PO no.</label><input id="poRef" type="text" placeholder="optional"></div>
+              <div class="field"><label>Currency</label><select id="currency"></select></div>
+              <div class="field"><label>Payment</label>
+                <select id="payTerms"><option value="due">Pay later — due date</option><option value="paid-cod">Paid — Cash on delivery</option><option value="paid-cash">Paid — Cash in hand</option><option value="paid-online">Paid — Online payment</option><option value="paid-bank">Paid — Bank transfer</option><option value="paid-mobile">Paid — Mobile banking</option></select></div>
             </div>
-            <div class="field"><label>Payment</label>
-              <select id="payTerms"><option value="due">Pay later — due date</option><option value="paid-cod">Paid — Cash on delivery</option><option value="paid-cash">Paid — Cash in hand</option><option value="paid-online">Paid — Online payment</option><option value="paid-bank">Paid — Bank transfer</option><option value="paid-mobile">Paid — bKash / Nagad / Rocket</option></select></div>
             <div id="dueRow" class="g2">
               <div class="field"><label>Payment terms</label>
                 <select id="dueTerm"><option value="0">Due on receipt</option><option value="7">Net 7 days</option><option value="14" selected>Net 14 days</option><option value="15">Net 15 days</option><option value="30">Net 30 days</option><option value="60">Net 60 days</option><option value="custom">Custom date</option></select></div>
               <div class="field"><label>Due date</label><input id="dueDate" type="date"></div>
             </div>
-            <div class="field"><label>Currency</label>
-              <select id="currency"></select></div>
           </div>
         </details>
 
         <details class="sec" open>
-          <summary><span class="n">4</span>Items / services</summary>
+          <summary><span class="n">4</span>Items</summary>
           <div class="sec-body">
             <div id="itemsBody"></div>
             <div class="btn-row" style="margin-top:4px"><button type="button" class="btn ghost" id="addItem">+ Add item</button><button type="button" class="btn ghost" id="newInvoice" title="Clears this invoice (customer, items, notes, totals) — your business details and logo stay">New invoice</button></div>
+            <div class="g2" style="margin-top:14px">
+              <div class="field"><label>Discount</label><input id="discVal" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
+              <div class="field"><label>Tax %</label><input id="taxRate" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
+            </div>
           </div>
         </details>
 
-        <details class="sec" open>
-          <summary><span class="n">5</span>Discount, tax &amp; charges</summary>
+        <details class="sec" id="secMore">
+          <summary><span class="n">5</span>More options (optional)</summary>
           <div class="sec-body">
             <div class="g2">
-              <div class="field"><label>Discount type</label><select id="discType"><option value="pct">Percent (%)</option><option value="amt">Fixed amount</option></select></div>
-              <div class="field"><label>Discount</label><input id="discVal" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
+              <div class="field"><label>Document type</label>
+                <select id="docTitle"><option>Invoice</option><option>Tax Invoice</option><option>Proforma Invoice</option><option>Commercial Invoice</option><option>Bill</option><option>Cash Memo</option><option>Receipt</option></select></div>
+              <div class="field"><label>Reference / PO no.</label><input id="poRef" type="text"></div>
             </div>
             <div class="g2">
+              <div class="field"><label>Discount type</label><select id="discType"><option value="pct">Percent (%)</option><option value="amt">Fixed amount</option></select></div>
               <div class="field"><label>Tax name</label><input id="taxLabel" type="text" value="Tax" placeholder="VAT / GST / Tax"></div>
-              <div class="field"><label>Tax %</label><input id="taxRate" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
             </div>
             <div class="g2">
               <div class="field"><label>Extra charge name</label><input id="shipLabel" type="text" value="Shipping" placeholder="Shipping / Delivery"></div>
               <div class="field"><label>Extra charge amount</label><input id="shipping" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
             </div>
-            <div class="field" id="advRow"><label>Amount already paid / advance</label><input id="advance" type="number" min="0" step="any" value="0" inputmode="decimal"><div class="mini">Shows “Amount paid” and “Balance due” on the invoice.</div></div>
-          </div>
-        </details>
-
-        <details class="sec">
-          <summary><span class="n">6</span>Payment details, notes &amp; terms</summary>
-          <div class="sec-body">
-            <div class="field"><label>How to pay (bank / bKash / Nagad…)</label><textarea id="payInfo" rows="3" placeholder="Bank: ABC Bank, A/C 1234567890&#10;bKash (Personal): 01XXXXXXXXX"></textarea></div>
+            <div class="field" id="advRow"><label>Amount already paid / advance</label><input id="advance" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
+            <div class="g2">
+              <div class="field"><label>Business tagline</label><input id="fromTag" type="text" placeholder="e.g. Branding · Web · Print"></div>
+              <div class="field"><label>Your tax / BIN no.</label><input id="fromTaxId" type="text"></div>
+            </div>
+            <div class="g2">
+              <div class="field"><label>Customer email</label><input id="toEmail" type="text" inputmode="email" autocapitalize="off"></div>
+              <div class="field"><label>Customer tax / BIN no.</label><input id="toTaxId" type="text"></div>
+            </div>
+            <div class="field"><label>How to pay (bank / bKash / Nagad…)</label><textarea id="payInfo" rows="2" placeholder="Bank: ABC Bank, A/C 1234567890&#10;bKash (Personal): 01XXXXXXXXX"></textarea></div>
             <div class="field"><label>Notes</label><textarea id="notes" rows="2" placeholder="e.g. Delivery within 3 working days."></textarea></div>
             <div class="field"><label>Terms &amp; conditions</label><textarea id="terms" rows="2" placeholder="e.g. Late payment may incur a 2% monthly fee."></textarea></div>
             <div class="field"><label>Footer message</label><input id="thanks" type="text" value="Thank you for your business!"></div>
-          </div>
-        </details>
-
-        <details class="sec">
-          <summary><span class="n">7</span>Signature</summary>
-          <div class="sec-body">
-            <div class="field"><label>Signature image (optional)</label>
-              <div class="upl"><input id="sigFile" type="file" accept="image/*"><img id="sigThumb" alt="" style="display:none"><button type="button" class="btn ghost sm" id="sigRemove" style="display:none">Remove</button></div>
-              <div class="mini">Tip: sign on white paper, take a photo, upload it.</div></div>
+            <div class="field"><label>Signature image</label>
+              <div class="upl"><input id="sigFile" type="file" accept="image/*"><img id="sigThumb" alt="" style="display:none"><button type="button" class="btn ghost sm" id="sigRemove" style="display:none">Remove</button></div></div>
             <div class="g2">
-              <div class="field"><label>Signer name</label><input id="sigName" type="text" placeholder="e.g. Nisha Rahman"></div>
-              <div class="field"><label>Title</label><input id="sigTitle" type="text" placeholder="e.g. Managing Director"></div>
+              <div class="field"><label>Signer name</label><input id="sigName" type="text"></div>
+              <div class="field"><label>Signer title</label><input id="sigTitle" type="text"></div>
             </div>
-          </div>
-        </details>
-
-        <details class="sec">
-          <summary><span class="n">8</span>Design</summary>
-          <div class="sec-body">
-            <div class="lbl2">Layout</div>
-            <div class="tpls" id="tpls">
-              <button type="button" class="tpl on" data-tpl="rb"><svg viewBox="0 0 90 60"><rect width="90" height="60" fill="#fff" stroke="#e5e7eb"/><rect x="6" y="6" width="10" height="10" fill="#9ca3af"/><rect x="20" y="7" width="22" height="3" fill="#6b7280"/><rect x="20" y="12" width="30" height="2" fill="#9ca3af"/><rect x="60" y="6" width="24" height="7" style="fill:var(--ac)"/><rect x="68" y="16" width="16" height="2" fill="#9ca3af"/><rect x="6" y="22" width="78" height="1" fill="#e5e7eb"/><rect x="6" y="27" width="78" height="6" style="fill:var(--ac)"/><rect x="6" y="36" width="78" height="2" fill="#e5e7eb"/><rect x="58" y="42" width="26" height="2" fill="#6b7280"/><rect x="56" y="47" width="28" height="4" style="fill:var(--ac)"/><rect x="6" y="42" width="11" height="11" fill="#374151"/></svg>Ride Bangla</button>
-              <button type="button" class="tpl" data-tpl="classic"><svg viewBox="0 0 90 60"><rect width="90" height="60" fill="#fff" stroke="#e5e7eb"/><rect x="6" y="6" width="22" height="6" fill="#9ca3af"/><rect x="58" y="6" width="26" height="8" style="fill:var(--ac)"/><rect x="6" y="26" width="78" height="6" style="fill:var(--ac)"/><rect x="6" y="36" width="78" height="2" fill="#e5e7eb"/><rect x="6" y="42" width="78" height="2" fill="#e5e7eb"/><rect x="54" y="50" width="30" height="5" style="fill:var(--ac)"/></svg>Classic</button>
-              <button type="button" class="tpl" data-tpl="modern"><svg viewBox="0 0 90 60"><rect width="90" height="60" fill="#fff" stroke="#e5e7eb"/><rect width="90" height="18" style="fill:var(--ac)"/><rect x="6" y="6" width="22" height="6" fill="#fff" opacity=".85"/><rect x="58" y="6" width="26" height="6" fill="#fff"/><rect x="6" y="26" width="78" height="6" style="fill:var(--ac)" opacity=".18"/><rect x="6" y="36" width="78" height="2" fill="#e5e7eb"/><rect x="6" y="42" width="78" height="2" fill="#e5e7eb"/><rect x="54" y="50" width="30" height="5" style="fill:var(--ac)"/></svg>Modern</button>
-              <button type="button" class="tpl" data-tpl="minimal"><svg viewBox="0 0 90 60"><rect width="90" height="60" fill="#fff" stroke="#e5e7eb"/><rect x="6" y="6" width="22" height="6" fill="#111827"/><rect x="58" y="7" width="26" height="4" fill="#111827" opacity=".6"/><rect x="6" y="16" width="78" height="1.5" fill="#111827"/><rect x="6" y="26" width="78" height="1.5" fill="#111827"/><rect x="6" y="36" width="78" height="2" fill="#e5e7eb"/><rect x="6" y="42" width="78" height="2" fill="#e5e7eb"/><rect x="54" y="50" width="30" height="1.5" fill="#111827"/></svg>Minimal</button>
-            </div>
-            <div class="lbl2" style="margin-top:14px">Accent colour</div>
+            <div class="lbl2">Accent colour</div>
             <div class="sw" id="swatches"></div>
             <div style="margin-top:10px">
+              <label class="chk"><input type="checkbox" id="logoHeader" checked>Show logo in header</label>
+              <label class="chk"><input type="checkbox" id="logoWatermark" checked>Show logo as faint watermark</label>
               <label class="chk"><input type="checkbox" id="showWords" checked>Show amount in words</label>
               <label class="chk"><input type="checkbox" id="qrInclude" checked>Include QR code (invoice no., total, payment details)</label>
-              <label class="chk"><input type="checkbox" id="remember" checked>Remember my business details, logo &amp; design on this device</label>
-              <div class="mini">Install on your phone: Chrome menu ⋮ → <b>Add to Home screen</b> (or <b>Install app</b>). Your saved logo and details open with it every time.</div>
-              <button type="button" class="btn ghost sm" id="installBtn" style="display:none;margin-top:8px">📲 Install this app</button>
+              <label class="chk"><input type="checkbox" id="remember" checked>Remember my business details &amp; logo on this device</label>
             </div>
           </div>
         </details>
@@ -458,7 +369,7 @@
 
       <!-- ============ RIGHT: PREVIEW ============ -->
       <div class="pane-preview">
-        <div class="pv-head"><span>Live preview · A4</span><span id="pageHint"></span><button type="button" class="pv-tog" id="pvTog">⤢ Larger</button></div>
+        <div class="pv-head"><span>Live preview</span><span id="pageHint"></span></div>
         <div class="pv-wrap" id="pvWrap"><div class="pv-size" id="pvSize"><div class="paper" id="docPreview"></div></div></div>
         <div class="pv-totals">
           <div class="tot-line"><span>Subtotal</span><b id="tSub">৳0.00</b></div>
@@ -521,7 +432,7 @@
         <li>Add your logo, business name and contact details — they’re remembered on this device (and on your home screen app) for next time.</li>
         <li>Add your client, invoice number and dates, then add line items with quantities and rates.</li>
         <li>Set tax and discount percentages and watch the totals update live.</li>
-        <li>Pick a layout and colour, then Print, Download (PDF or image), or tap Send to share the invoice picture with your customer.</li>
+        <li>Pick a colour, then Print, Download (PDF or image), or tap Send to share the invoice picture with your customer.</li>
     </ol>
     <h2>Frequently asked questions</h2>
     <div class="faq-list">
@@ -856,76 +767,56 @@ function qrDataUrl(text) {
 /* ---------- live preview ---------- */
 function renderPaper(inv, t) {
   var m = function (n) { return money(n, inv.cur); };
-  var cl = contactLines(inv.from);
+  var F = inv.from, TO = inv.to;
   var hasHeadLogo = inv.logo && inv.logoHeader;
-  var brand = '<div class="ph-brand">' + (hasHeadLogo ? '<img class="ph-logo" src="' + esc(inv.logo) + '" alt="">' : '') +
-    '<div style="min-width:0"><div class="ph-name">' + esc(inv.from.name || 'Your business name') + '</div>' +
-    (inv.from.tag ? '<div class="ph-tag">' + esc(inv.from.tag) + '</div>' : '') + '</div></div>' +
-    (cl.length ? '<div class="ph-contact">' + cl.map(esc).join('<br>') + '</div>' : '');
-  var head = '<div class="ph"><div class="ph-l">' + brand + '</div><div class="ph-doc"><div class="ph-title">' + esc(inv.title.toUpperCase()) + '</div>' +
-    '<div class="ph-no">' + esc(inv.no ? '# ' + inv.no : '') + '</div></div></div>';
-  var bl = clientLines(inv.to);
-  var mid = '<div class="pm"><div class="pm-bill"><div class="lbl">Bill to</div><div class="pm-name">' + esc(inv.to.name || 'Customer name') + '</div>' +
-    (bl.length ? '<div class="pm-sub">' + bl.map(esc).join('<br>') + '</div>' : '') + '</div>' +
-    '<div><table class="mt">' + metaRows(inv).map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('') + '</table></div></div>';
+  var due = (inv.pay === 'due' && inv.due) ? fmtDate(inv.due) : '';
+  var head = '<div class="p-head"><div class="p-brand">' + (hasHeadLogo ? '<img class="p-logo" src="' + esc(inv.logo) + '" alt="">' : '') +
+    '<div style="min-width:0"><div class="p-name">' + esc(F.name || 'Your business name') + '</div>' + (F.tag ? '<div class="p-tag">' + esc(F.tag) + '</div>' : '') + '</div></div>' +
+    '<div class="p-doc"><h2 class="p-title">' + esc(inv.title.toUpperCase()) + '</h2><div class="p-meta">' +
+    '<div><span>' + esc(noLabel(inv.title)) + '</span>' + esc(inv.no || '') + '</div><div><span>Date</span>' + esc(fmtDate(inv.date)) + '</div>' +
+    (due ? '<div><span>Due date</span>' + esc(due) + '</div>' : '') + '</div></div></div>';
+  var cols = [];
+  if (F.phone) cols.push('<div><span class="k">Phone</span><b>' + esc(F.phone) + '</b></div>');
+  if (F.email) cols.push('<div><span class="k">Email</span><b>' + esc(F.email) + '</b></div>');
+  if (F.web) cols.push('<div><span class="k">Website</span><b>' + esc(F.web) + '</b></div>');
+  if (F.addr) cols.push('<div class="full"><span class="k">Address</span><b style="white-space:pre-line">' + esc(F.addr) + '</b></div>');
+  if (F.tax) cols.push('<div class="full"><span class="k">Tax / BIN</span><b>' + esc(F.tax) + '</b></div>');
+  var contact = cols.length ? '<div class="p-contact p-blk">' + cols.join('') + '</div>' : '';
+  function row(k, v) { return '<div class="p-row"><span class="k">' + esc(k) + '</span><div class="v">' + esc(v) + '</div></div>'; }
+  var left = [row('Name', TO.name)];
+  if (TO.phone) left.push(row('Mobile', TO.phone));
+  if (TO.email) left.push(row('Email', TO.email));
+  if (TO.addr) left.push(row('Address', TO.addr));
+  if (TO.tax) left.push(row('Tax / BIN', TO.tax));
+  var payLbl = inv.pay === 'due' ? 'Pay later' : (PAY[inv.pay] || 'Paid');
+  var right = [row('Payment', payLbl)];
+  if (inv.po) right.push(row('Reference', inv.po));
+  right.push(row('Status', t.status === 'PAID' ? 'Paid' : (t.status === 'PARTIAL' ? 'Partly paid' : 'Due')));
+  var cards = '<div class="p-cards p-blk"><div class="p-card"><span class="p-sec">Customer</span>' + left.join('') + '</div><div class="p-card"><span class="p-sec">Details</span>' + right.join('') + '</div></div>';
   var rows = inv.items.map(function (it, i) {
-    return '<tr><td class="n">' + (i + 1) + '</td><td><div class="dsc">' + esc(it.desc || '—') + '</div>' + (it.detail ? '<div class="dt">' + esc(it.detail) + '</div>' : '') + '</td>' +
-      '<td class="r">' + esc(String(it.qty)) + '</td><td class="r">' + m(it.rate) + '</td><td class="r"><b>' + m(t.lines[i]) + '</b></td></tr>';
+    return '<tr><td><div>' + esc(it.desc || '—') + '</div>' + (it.detail ? '<div class="dt">' + esc(it.detail) + '</div>' : '') + '</td><td class="n">' + esc(String(it.qty)) + '</td><td class="n">' + esc(m(it.rate)) + '</td><td class="n">' + esc(m(t.lines[i])) + '</td></tr>';
   }).join('');
-  if (!rows) rows = '<tr><td class="n">1</td><td style="color:#9ca3af">Add your first item…</td><td class="r">–</td><td class="r">–</td><td class="r">–</td></tr>';
-  var items = '<table class="it"><thead><tr><th style="width:34px">#</th><th>Description</th><th class="r" style="width:64px">Qty</th><th class="r" style="width:110px">Rate</th><th class="r" style="width:120px">Amount</th></tr></thead><tbody>' + rows + '</tbody></table>';
-  var words = (inv.words && t.total > 0) ? amountWords(t.total, inv.cur) : '';
-  var tot = '<table class="tt">' + totalsRows(inv, t).map(function (r) {
-    if (r[2] === 'hl') return '<tr class="hl"><td colspan="2"><div class="hlr"><span>' + esc(r[0]) + '</span><span>' + esc(r[1]) + '</span></div></td></tr>';
-    return '<tr><td>' + esc(r[0]) + '</td><td' + (r[2] === 'b' ? ' style="font-size:14px"' : '') + '>' + esc(r[1]) + '</td></tr>';
-  }).join('') + '</table>';
-  var bottom = '<div class="pb"><div class="pb-l">' + (words ? '<div class="lbl">Amount in words</div><div class="words">' + esc(words) + '</div>' : '') + '</div>' + tot + '</div>';
-  var qrBox = '';
-  if (inv.qr) qrBox = '<div class="qrbox"><img id="invQrImg"' + (qrCache.url ? ' src="' + qrCache.url + '"' : '') + ' alt="QR code">Scan for details</div>';
-  var info = '';
-  if (inv.payInfo || qrBox) {
-    info = '<div class="info"><div class="col">' + (inv.payInfo ? '<div class="lbl">Payment details</div><div class="txt">' + esc(inv.payInfo) + '</div>' : '') + '</div>' + qrBox + '</div>';
-  }
+  if (!rows) rows = '<tr><td style="color:#9ca3af">Add your first item…</td><td class="n">–</td><td class="n">–</td><td class="n">–</td></tr>';
+  var table = '<table><colgroup><col><col style="width:11%"><col style="width:22%"><col style="width:24%"></colgroup><thead><tr><th>Description</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  var tot = '<div class="p-tot">' + totalsRows(inv, t).map(function (r) {
+    return '<div class="p-tl' + (r[2] === 'hl' ? ' g' : '') + '"><span>' + esc(r[0]) + '</span>' + esc(r[1]) + '</div>';
+  }).join('') + '</div>';
+  var qr = inv.qr ? '<div class="p-qr"><img id="invQrImg"' + (qrCache.url ? ' src="' + qrCache.url + '"' : '') + ' alt="QR code"><div class="p-qr-txt">Scan for invoice details<small>' + esc(inv.no || '') + '</small></div></div>' : '<div></div>';
+  var sum = '<div class="p-sum p-blk">' + qr + tot + '</div>';
+  var words = (inv.words && t.total > 0) ? '<div class="p-words p-blk"><b>Amount in words</b>' + esc(amountWords(t.total, inv.cur)) + '</div>' : '';
   var extra = '';
-  if (inv.notes) extra += '<div class="info"><div class="col"><div class="lbl">Notes</div><div class="txt">' + esc(inv.notes) + '</div></div></div>';
-  if (inv.terms) extra += '<div class="info"><div class="col"><div class="lbl">Terms &amp; conditions</div><div class="txt">' + esc(inv.terms) + '</div></div></div>';
+  if (inv.payInfo) extra += '<div class="p-note p-blk"><b>Payment details</b>' + esc(inv.payInfo) + '</div>';
+  if (inv.notes) extra += '<div class="p-note p-blk"><b>Notes</b>' + esc(inv.notes) + '</div>';
+  if (inv.terms) extra += '<div class="p-note p-blk"><b>Terms &amp; conditions</b>' + esc(inv.terms) + '</div>';
   var sign = '';
   if (inv.sig || inv.sigName || inv.sigTitle) {
-    sign = '<div class="sign"><div class="box">' + (inv.sig ? '<img src="' + esc(inv.sig) + '" alt="">' : '<div style="height:44px"></div>') +
+    sign = '<div class="p-sign p-blk"><div class="box">' + (inv.sig ? '<img src="' + esc(inv.sig) + '" alt="">' : '<div style="height:40px"></div>') +
       '<div class="ln"><div class="sn">' + esc(inv.sigName) + '</div><div class="st">' + esc(inv.sigTitle) + '</div></div></div></div>';
   }
-  var foot = '<div class="pf">' + (inv.thanks ? '<div class="thanks">' + esc(inv.thanks) + '</div>' : '') + '<div class="gen">Generated free with Ride Bangla Tools — tools.ridebangla.bd</div></div>';
-  var rbQr = '';
-  if (inv.tpl === 'rb') {
-    var cl2 = contactLines(inv.from);
-    var idh = '<div class="rb-id">' + (hasHeadLogo ? '<img class="rb-logo" src="' + esc(inv.logo) + '" alt="">' : '') +
-      '<div class="rb-idt"><div class="rb-name">' + esc(inv.from.name || 'Your business name') + '</div>' +
-      (inv.from.tag ? '<div class="rb-ct">' + esc(inv.from.tag) + '</div>' : '') +
-      cl2.map(function (l) { return '<div class="rb-ct">' + esc(l) + '</div>'; }).join('') + '</div></div>';
-    head = '<div class="rbh">' + idh + '<div class="rb-doc"><div class="rb-title">' + esc(inv.title.toUpperCase()) + '</div>' +
-      (inv.no ? '<div class="rb-no">' + esc(inv.no) + '</div>' : '') +
-      '<div class="rb-dt">' + esc(fmtDate(inv.date)) + '</div>' +
-      ((inv.pay === 'due' && inv.due) ? '<div class="rb-dt" style="color:#6b7280;font-weight:600">Due date: ' + esc(fmtDate(inv.due)) + '</div>' : '') + '</div></div>';
-    var payLbl = inv.pay === 'due' ? 'Pay later' : (PAY[inv.pay] || 'Paid');
-    mid = '<div class="rb-cust"><div class="rb-lbl">Customer</div><div class="pm-name">' + esc(inv.to.name || 'Customer name') + '</div>' +
-      (bl.length ? '<div class="pm-sub">' + bl.map(esc).join('<br>') + '</div>' : '') + '</div>' +
-      '<div class="rb-pay">Payment: ' + esc(payLbl) + (inv.po ? '&nbsp;&nbsp;·&nbsp;&nbsp;Reference: ' + esc(inv.po) : '') + '</div>';
-    var rrows = inv.items.map(function (it, i) {
-      return '<tr><td><div class="dsc">' + esc(it.desc || '—') + '</div>' + (it.detail ? '<div class="dt">' + esc(it.detail) + '</div>' : '') + '</td>' +
-        '<td class="r">' + esc(String(it.qty)) + '</td><td class="r">' + m(it.rate) + '</td><td class="r"><b>' + m(t.lines[i]) + '</b></td></tr>';
-    }).join('');
-    if (!rrows) rrows = '<tr><td style="color:#9ca3af">Add your first item…</td><td class="r">–</td><td class="r">–</td><td class="r">–</td></tr>';
-    items = '<table class="it"><thead><tr><th>Description</th><th class="r" style="width:70px">Qty</th><th class="r" style="width:120px">Rate</th><th class="r" style="width:130px">Amount</th></tr></thead><tbody>' + rrows + '</tbody></table>';
-    var rtot = '<div class="rb-tot">' + totalsRows(inv, t).map(function (r) {
-      return '<div' + (r[2] === 'hl' ? ' class="g"' : '') + '><span>' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b></div>';
-    }).join('') + '</div>';
-    bottom = '<div class="pb" style="margin-top:14px"><div class="pb-l">' + (words ? '<div class="lbl">Amount in words</div><div class="words">' + esc(words) + '</div>' : '') + '</div>' + rtot + '</div>';
-    info = inv.payInfo ? '<div class="info"><div class="col"><div class="lbl">Payment details</div><div class="txt">' + esc(inv.payInfo) + '</div></div></div>' : '';
-    if (inv.qr) rbQr = '<div class="rb-qr"><img id="invQrImg"' + (qrCache.url ? ' src="' + qrCache.url + '"' : '') + ' alt="QR code"><div><div class="a">Scan for invoice details</div><div class="n">' + esc(inv.no || '') + '</div></div></div>';
-  }
+  var foot = (inv.thanks ? '<div class="p-thanks p-blk">' + esc(inv.thanks) + '</div>' : '') + '<div class="p-foot">Generated free with Ride Bangla Tools — tools.ridebangla.bd</div>';
   var wm = (inv.logo && inv.logoWm) ? '<img class="wm" src="' + esc(inv.logo) + '" alt="" aria-hidden="true">' : '';
   var stamp = (t.status === 'PAID') ? '<div class="stamp">PAID</div>' : '';
-  return wm + stamp + '<div class="pbody">' + head + mid + items + bottom + info + extra + rbQr + sign + foot + '</div>';
+  return wm + stamp + head + contact + cards + table + sum + words + extra + sign + foot;
 }
 
 var lastQrText = '';
@@ -964,10 +855,10 @@ function render() {
 function fit() {
   var wrap = $('pvWrap'), size = $('pvSize'), paper = $('docPreview');
   if (!wrap || !size || !paper || !wrap.clientWidth) return;
-  var s = Math.min(1, wrap.clientWidth / 794);
-  paper.style.transform = s < 1 ? 'scale(' + s + ')' : '';
+  var s = Math.min(1.15, (wrap.clientWidth - 2) / 560);
+  paper.style.transform = Math.abs(s - 1) > 0.005 ? 'scale(' + s + ')' : '';
   size.style.height = Math.ceil(paper.offsetHeight * s) + 'px';
-  var pages = Math.max(1, Math.ceil(paper.offsetHeight / 1123));
+  var pages = Math.max(1, Math.ceil((paper.offsetHeight - 12) / 810));
   $('pageHint').textContent = pages > 1 ? 'about ' + pages + ' pages' : '1 page';
 }
 window.addEventListener('resize', fit);
@@ -1099,346 +990,6 @@ function commitNo() {
   saveCustomer(); saveNow();
 }
 
-/* ==========================================================================
-   PDF (pdf-lib). Real vector text; Bengali / ৳ etc. are shaped by the browser
-   on a canvas and embedded as crisp images so nothing is ever dropped.
-   ========================================================================== */
-async function buildPdf(inv) {
-  var PL = window.PDFLib;
-  if (!PL) throw new Error('PDF engine failed to load. Check your internet connection and try again.');
-  var t = calc(inv);
-  var pdf = await PL.PDFDocument.create();
-  var fR = await pdf.embedFont(PL.StandardFonts.Helvetica);
-  var fB = await pdf.embedFont(PL.StandardFonts.HelveticaBold);
-  var S = 4, rq = [], warnings = [];
-  var mctx = document.createElement('canvas').getContext('2d');
-  var CF = '"Noto Sans Bengali","Hind Siliguri","Kalpurush","Nirmala UI","Vrinda",Helvetica,Arial,sans-serif';
-  function isAnsi(s) { return !/[^\u0009\u000A\u000D -~ -ÿ€‘’“”–—…•]/.test(s); }
-  function tw(str, size, bold) {
-    str = String(str == null ? '' : str);
-    if (isAnsi(str)) return (bold ? fB : fR).widthOfTextAtSize(str, size);
-    mctx.font = (bold ? 'bold ' : '') + (size * S) + 'px ' + CF;
-    return mctx.measureText(str).width / S;
-  }
-  var W = 595.28, H = 841.89, M = 40, R = W - M, CW = W - 2 * M;
-  var AC = (function (c) { return PL.rgb(c[0] / 255, c[1] / 255, c[2] / 255); })(hexRgb(inv.accent));
-  var ONC = onColor(inv.accent) === '#ffffff' ? PL.rgb(1, 1, 1) : PL.rgb(0.07, 0.09, 0.15);
-  function tint(a) { var c = hexRgb(inv.accent); return PL.rgb(1 - (1 - c[0] / 255) * a, 1 - (1 - c[1] / 255) * a, 1 - (1 - c[2] / 255) * a); }
-  var INK = PL.rgb(0.07, 0.09, 0.15), GRAY = PL.rgb(0.42, 0.45, 0.5), LINE = PL.rgb(0.9, 0.91, 0.92), DARK = PL.rgb(0.07, 0.09, 0.15);
-  var page, Y;
-
-  function T(str, x, yTop, o) {
-    o = o || {}; str = String(str == null ? '' : str); if (!str) return 0;
-    var size = o.size || 10, bold = !!o.bold, col = o.color || INK, w = tw(str, size, bold);
-    if (o.align === 'r') x -= w; else if (o.align === 'c') x -= w / 2;
-    var by = H - yTop - size * 0.8;
-    if (isAnsi(str)) { page.drawText(str, { x: x, y: by, size: size, font: bold ? fB : fR, color: col }); return w; }
-    if (!str.trim()) return w;
-    var cw = Math.max(1, Math.ceil(w * S) + 4), chH = Math.ceil(size * 1.6 * S);
-    var cv = document.createElement('canvas'); cv.width = cw; cv.height = chH;
-    var cx = cv.getContext('2d'); cx.font = (bold ? 'bold ' : '') + (size * S) + 'px ' + CF; cx.textBaseline = 'alphabetic';
-    cx.fillStyle = 'rgb(' + Math.round(col.red * 255) + ',' + Math.round(col.green * 255) + ',' + Math.round(col.blue * 255) + ')';
-    cx.fillText(str, 2, size * 1.2 * S);
-    rq.push({ page: page, png: cv.toDataURL('image/png'), x: x - 2 / S, y: by - size * 0.4, w: cw / S, h: chH / S });
-    return w;
-  }
-  function wrap(str, maxW, size, bold) {
-    var out = [];
-    String(str || '').split('\n').forEach(function (para) {
-      var words = para.split(/\s+/).filter(Boolean), line = '';
-      if (!words.length) { out.push(''); return; }
-      words.forEach(function (wd) {
-        while (wd && tw(wd, size, bold) > maxW) {
-          if (line) { out.push(line); line = ''; }
-          var cut = 1; while (cut < wd.length && tw(wd.slice(0, cut + 1), size, bold) <= maxW) cut++;
-          out.push(wd.slice(0, cut)); wd = wd.slice(cut);
-        }
-        if (!wd) return;
-        var tt = line ? line + ' ' + wd : wd;
-        if (tw(tt, size, bold) > maxW && line) { out.push(line); line = wd; } else line = tt;
-      });
-      if (line) out.push(line);
-    });
-    return out.length ? out : [''];
-  }
-  function rect(x, yTop, w, h, color, extra) {
-    var o = { x: x, y: H - yTop - h, width: w, height: h, color: color }; if (extra) for (var k in extra) o[k] = extra[k];
-    page.drawRectangle(o);
-  }
-  function hline(x1, x2, yTop, th, color) { page.drawLine({ start: { x: x1, y: H - yTop }, end: { x: x2, y: H - yTop }, thickness: th || 0.6, color: color || LINE }); }
-
-  async function embedImg(dataUrl, what) {
-    if (!dataUrl) return null;
-    try {
-      var mm = /^data:image\/(png|jpeg);base64,([A-Za-z0-9+\/=]+)$/.exec(dataUrl);
-      if (!mm) throw new Error('bad');
-      var bin = atob(mm[2]), by = new Uint8Array(bin.length);
-      for (var i = 0; i < bin.length; i++) by[i] = bin.charCodeAt(i);
-      var im = mm[1] === 'png' ? await pdf.embedPng(by) : await pdf.embedJpg(by);
-      return { img: im, w: im.width, h: im.height };
-    } catch (e) { warnings.push(what + ' could not be embedded in the PDF.'); return null; }
-  }
-  var logo = await embedImg(inv.logo, 'Logo');
-  var sig = await embedImg(inv.sig, 'Signature');
-  var qrImg = null;
-  if (inv.qr) {
-    var qu = await qrDataUrl(qrText(inv, t));
-    qrImg = await embedImg(qu, 'QR code');
-  }
-
-  function drawWm() {
-    if (!logo || !inv.logoWm) return;
-    try {
-      var h = 300, w = h * logo.w / logo.h; if (w > 380) { w = 380; h = w * logo.h / logo.w; }
-      page.drawImage(logo.img, { x: (W - w) / 2, y: (H - h) / 2, width: w, height: h, opacity: 0.07 });
-    } catch (e) { warnings.push('Logo watermark could not be drawn.'); }
-  }
-  function newPage() { page = pdf.addPage([W, H]); Y = 40; drawWm(); }
-  function ensure(h) { if (Y + h > H - 54) { newPage(); return true; } return false; }
-
-  newPage();
-
-  /* PAID stamp (page 1) */
-  if (t.status === 'PAID') {
-    var sz = 110, stw = fB.widthOfTextAtSize('PAID', sz), sth = sz * 0.72, pad = 16;
-    var bw = stw + pad * 2, bh = sth + pad * 2, th = 24 * Math.PI / 180, cxx = W / 2, cyy = H * 0.56;
-    var ox = cxx - (bw / 2) * Math.cos(th) + (bh / 2) * Math.sin(th);
-    var oy = cyy - (bw / 2) * Math.sin(th) - (bh / 2) * Math.cos(th);
-    var green = PL.rgb(0.09, 0.64, 0.29);
-    page.drawRectangle({ x: ox, y: oy, width: bw, height: bh, rotate: PL.degrees(24), borderColor: green, borderWidth: 6, borderOpacity: 0.13 });
-    page.drawText('PAID', { x: ox + pad * Math.cos(th) - pad * Math.sin(th), y: oy + pad * Math.sin(th) + pad * Math.cos(th), size: sz, font: fB, color: green, opacity: 0.13, rotate: PL.degrees(24) });
-  }
-
-  /* ---- header ---- */
-  var modern = inv.tpl === 'modern', minimal = inv.tpl === 'minimal', rb = inv.tpl === 'rb';
-  if (rb) {
-    var rhTop = 40, rlw = 0, rlh = 0;
-    if (logo && inv.logoHeader) { rlh = 48; rlw = rlh * logo.w / logo.h; if (rlw > 150) { rlw = 150; rlh = rlw * logo.h / logo.w; } }
-    var rnX = M + (rlw ? rlw + 14 : 0), rLeftW = (R - 190) - rnX - 10;
-    var rnL = wrap(inv.from.name || 'Your business name', rLeftW, 13, true);
-    var rcL = [];
-    if (inv.from.tag) wrap(inv.from.tag, rLeftW, 9.5, true).forEach(function (x) { rcL.push(x); });
-    contactLines(inv.from).forEach(function (l) { wrap(l, rLeftW, 9.5, true).forEach(function (x) { rcL.push(x); }); });
-    var rLeftH = rnL.length * 17 + rcL.length * 13, rBand0 = Math.max(rlh, rLeftH);
-    if (rlw) page.drawImage(logo.img, { x: M, y: H - rhTop - (rBand0 - rlh) / 2 - rlh, width: rlw, height: rlh });
-    var rny = rhTop + (rBand0 - rLeftH) / 2;
-    rnL.forEach(function (l) { T(l, rnX, rny, { size: 13, bold: true }); rny += 17; });
-    rcL.forEach(function (l) { T(l, rnX, rny, { size: 9.5, bold: true, color: GRAY }); rny += 13; });
-    var rTitle = inv.title.toUpperCase(), rtSize = 26;
-    while (rtSize > 14 && tw(rTitle, rtSize, true) > 185) rtSize -= 2;
-    T(rTitle, R, rhTop, { size: rtSize, bold: true, color: AC, align: 'r' });
-    var rry = rhTop + 34;
-    if (inv.no) { T(inv.no, R, rry, { size: 11, bold: true, color: GRAY, align: 'r' }); rry += 17; }
-    T(fmtDate(inv.date), R, rry, { size: 10, bold: true, align: 'r' }); rry += 15;
-    if (inv.pay === 'due' && inv.due) { T('Due date: ' + fmtDate(inv.due), R, rry, { size: 9.5, bold: true, color: GRAY, align: 'r' }); rry += 15; }
-    var rBottom = rhTop + Math.max(rBand0, rry - rhTop);
-    hline(M, R, rBottom + 8, 0.75, LINE);
-    Y = rBottom + 24;
-    T('CUSTOMER', M, Y, { size: 9, bold: true, color: AC }); Y += 14;
-    wrap(inv.to.name || 'Customer name', CW, 11, true).forEach(function (l) { ensure(15); T(l, M, Y, { size: 11, bold: true }); Y += 15; });
-    clientLines(inv.to).forEach(function (l) { wrap(l, CW, 9.5, true).forEach(function (x) { ensure(13); T(x, M, Y, { size: 9.5, bold: true, color: GRAY }); Y += 13; }); });
-    Y += 6;
-    ensure(16);
-    T('Payment: ' + (inv.pay === 'due' ? 'Pay later' : (PAY[inv.pay] || 'Paid')) + (inv.po ? '   ·   Reference: ' + inv.po : ''), M, Y, { size: 10, bold: true });
-    Y += 22;
-  } else {
-  var hx = M, hTop = modern ? 30 : 40;
-  var headCol = modern ? ONC : INK, subCol = modern ? ONC : GRAY;
-  var lw = 0, lh = 0;
-  if (logo && inv.logoHeader) {
-    lh = 46; lw = lh * logo.w / logo.h; if (lw > 130) { lw = 130; lh = lw * logo.h / logo.w; }
-  }
-  var nameX = hx + (lw ? lw + (modern ? 22 : 12) : 0);
-  var nameW = (R - 200) - nameX - 6;
-  var nameLines = wrap(inv.from.name || 'Your business name', nameW, 16, true);
-  var tagLines = inv.from.tag ? wrap(inv.from.tag, nameW, 9, false) : [];
-  var nameH = nameLines.length * 19 + tagLines.length * 12;
-  var topH = Math.max(lh + (modern && lw ? 12 : 0), nameH);
-  var cLines = []; contactLines(inv.from).forEach(function (l) { wrap(l, R - 200 - hx - 6, 9, false).forEach(function (x) { cLines.push(x); }); });
-  var leftH = topH + (cLines.length ? 8 + cLines.length * 12 : 0);
-  var rightH = 62;
-  var hBottom = hTop + Math.max(leftH, rightH);
-  var bandH = 0;
-  if (modern) { bandH = hBottom + 22; rect(0, 0, W, bandH, AC); }
-  if (lw) {
-    if (modern) { rect(hx, hTop - 6 + 0, lw + 12, lh + 12, PL.rgb(1, 1, 1)); page.drawImage(logo.img, { x: hx + 6, y: H - hTop - 6 - lh, width: lw, height: lh }); nameX = hx + lw + 12 + 12; }
-    else page.drawImage(logo.img, { x: hx, y: H - hTop - lh, width: lw, height: lh });
-  }
-  var ny = hTop;
-  nameLines.forEach(function (l) { T(l, nameX, ny, { size: 16, bold: true, color: headCol }); ny += 19; });
-  tagLines.forEach(function (l) { T(l, nameX, ny, { size: 9, color: subCol }); ny += 12; });
-  var cy = hTop + topH + 8;
-  cLines.forEach(function (l) { T(l, hx, cy, { size: 9, color: subCol }); cy += 12; });
-  var titleCol = modern ? ONC : (minimal ? INK : AC);
-  T(inv.title.toUpperCase(), R, hTop, { size: minimal ? 22 : 26, bold: !minimal, color: titleCol, align: 'r' });
-  if (inv.no) T('# ' + inv.no, R, hTop + 34, { size: 11, color: modern ? ONC : GRAY, align: 'r' });
-  if (modern) Y = bandH + 26;
-  else if (minimal) { hline(M, R, hBottom + 12, 1.4, DARK); Y = hBottom + 30; }
-  else Y = hBottom + 24;
-
-  /* ---- bill to + meta ---- */
-  var by0 = Y;
-  var metaX = R - 215;
-  var mr = metaRows(inv);
-  T('BILL TO', M, by0, { size: 8, bold: true, color: minimal ? GRAY : AC });
-  var by = by0 + 14;
-  wrap(inv.to.name || 'Customer name', metaX - M - 16, 12, true).forEach(function (l) { T(l, M, by, { size: 12, bold: true }); by += 15; });
-  clientLines(inv.to).forEach(function (l) { wrap(l, metaX - M - 16, 9.5, false).forEach(function (x) { T(x, M, by, { size: 9.5, color: GRAY }); by += 12.5; }); });
-  var my = by0;
-  mr.forEach(function (r) {
-    T(r[0], metaX, my, { size: 9, color: GRAY });
-    var vl = wrap(r[1], 120, 9.5, true);
-    vl.forEach(function (l, i) { T(l, R, my + i * 12.5, { size: 9.5, bold: true, align: 'r' }); });
-    my += Math.max(1, vl.length) * 12.5 + 4;
-  });
-  Y = Math.max(by, my) + 22;
-  }
-
-  /* ---- items table ---- */
-  var amtR = R - 8, rateR = amtR - 100, qtyR = rateR - 90, descX = M + (rb ? 8 : 28), descW = qtyR - 44 - descX - 6;
-  function tableHead() {
-    var hh = 24;
-    if (!minimal && !modern) rect(M, Y, CW, hh, AC);
-    if (modern) { rect(M, Y, CW, hh, tint(0.12)); hline(M, R, Y + hh, 1.4, AC); }
-    if (minimal) hline(M, R, Y + hh, 1.4, DARK);
-    var hc = modern ? AC : (minimal ? INK : ONC);
-    var ty = Y + 8;
-    if (rb) {
-      T('Description', descX, ty - 1, { size: 9.5, bold: true, color: hc });
-      T('Qty', qtyR, ty - 1, { size: 9.5, bold: true, color: hc, align: 'r' });
-      T('Rate', rateR, ty - 1, { size: 9.5, bold: true, color: hc, align: 'r' });
-      T('Amount', amtR, ty - 1, { size: 9.5, bold: true, color: hc, align: 'r' });
-    } else {
-    T('#', M + 8, ty, { size: 8, bold: true, color: hc });
-    T('DESCRIPTION', descX, ty, { size: 8, bold: true, color: hc });
-    T('QTY', qtyR, ty, { size: 8, bold: true, color: hc, align: 'r' });
-    T('RATE', rateR, ty, { size: 8, bold: true, color: hc, align: 'r' });
-    T('AMOUNT', amtR, ty, { size: 8, bold: true, color: hc, align: 'r' });
-    }
-    Y += hh;
-  }
-  tableHead();
-  var items = inv.items.length ? inv.items : [{ desc: '', detail: '', qty: 0, rate: 0 }];
-  items.forEach(function (it, i) {
-    var dl = wrap(it.desc || '—', descW, 9.5, true), xl = it.detail ? wrap(it.detail, descW, 8.5, false) : [];
-    var rh = 18 + dl.length * 12.5 + xl.length * 11.5;
-    if (Y + rh > H - 54) { newPage(); tableHead(); }
-    if ((modern || rb) && i % 2 === 1) rect(M, Y, CW, rh, tint(0.05));
-    var ty = Y + 9;
-    if (!rb) T(String(i + 1), M + 8, ty, { size: 9, color: PL.rgb(0.6, 0.64, 0.7) });
-    dl.forEach(function (l, k) { T(l, descX, ty + k * 12.5, { size: 9.5, bold: true }); });
-    xl.forEach(function (l, k) { T(l, descX, ty + dl.length * 12.5 + 1 + k * 11.5, { size: 8.5, color: GRAY }); });
-    T(String(it.qty), qtyR, ty, { size: 9.5, align: 'r' });
-    T(money(it.rate, inv.cur), rateR, ty, { size: 9.5, align: 'r' });
-    T(money(t.lines[i] || 0, inv.cur), amtR, ty, { size: 9.5, bold: true, align: 'r' });
-    Y += rh;
-    hline(M, R, Y, 0.6, LINE);
-  });
-  Y += 14;
-
-  /* ---- totals + amount in words ---- */
-  var trs = totalsRows(inv, t);
-  var tx = R - 230;
-  var tH = trs.reduce(function (s, r) { return s + (r[2] === 'hl' ? 30 : 19); }, 0);
-  var words = (inv.words && t.total > 0) ? amountWords(t.total, inv.cur) : '';
-  var wl = words ? wrap(words, tx - M - 20, 9.5, false) : [];
-  var wH = words ? 14 + wl.length * 12.5 : 0;
-  ensure(Math.max(tH, wH) + 6);
-  var ty0 = Y;
-  if (words) {
-    T('AMOUNT IN WORDS', M, ty0, { size: 8, bold: true, color: minimal ? GRAY : AC });
-    wl.forEach(function (l, k) { T(l, M, ty0 + 14 + k * 12.5, { size: 9.5, color: PL.rgb(0.22, 0.25, 0.32) }); });
-  }
-  var yy = ty0;
-  trs.forEach(function (r) {
-    if (rb) {
-      var rhl = r[2] === 'hl', rsz = rhl ? 12 : 9.5;
-      T(r[0], tx + 10, yy + 4, { size: rsz, bold: true, color: rhl ? AC : GRAY });
-      T(r[1], R - 10, yy + 4, { size: rsz, bold: true, color: rhl ? AC : INK, align: 'r' });
-      yy += rhl ? 28 : 19;
-    } else if (r[2] === 'hl') {
-      if (minimal) { hline(tx, R, yy, 1.4, DARK); hline(tx, R, yy + 28, 1.4, DARK); }
-      else rect(tx, yy, 230, 28, AC);
-      var c = minimal ? INK : ONC;
-      T(r[0], tx + 10, yy + 9, { size: 11, bold: true, color: c });
-      T(r[1], R - 10, yy + 9, { size: 11, bold: true, color: c, align: 'r' });
-      yy += 30;
-    } else {
-      var bold = r[2] === 'b';
-      T(r[0], tx + 10, yy + 4, { size: 9.5, color: bold ? INK : GRAY, bold: bold });
-      T(r[1], R - 10, yy + 4, { size: 9.5, bold: true, align: 'r' });
-      yy += 19;
-    }
-  });
-  Y = Math.max(yy, ty0 + wH) + 12;
-
-  /* ---- payment details + QR ---- */
-  function label(txt) { T(txt, M, Y, { size: 8, bold: true, color: minimal ? GRAY : AC }); Y += 13; }
-  function block(txt, maxW) {
-    wrap(txt, maxW, 9.5, false).forEach(function (l) { ensure(14); T(l, M, Y, { size: 9.5, color: PL.rgb(0.22, 0.25, 0.32) }); Y += 12.5; });
-  }
-  var qrSide = rb ? null : qrImg;
-  if (inv.payInfo || qrSide) {
-    var qs = 72;
-    ensure(Math.max(qrSide ? qs + 16 : 0, inv.payInfo ? 40 : 0));
-    var yStart = Y;
-    if (qrSide) {
-      page.drawImage(qrImg.img, { x: R - qs, y: H - Y - qs, width: qs, height: qs });
-      T('Scan for details', R - qs / 2, Y + qs + 3, { size: 7.5, color: GRAY, align: 'c' });
-    }
-    if (inv.payInfo) { label('PAYMENT DETAILS'); block(inv.payInfo, CW - (qrSide ? qs + 24 : 0)); }
-    Y = Math.max(Y, qrSide ? yStart + qs + 14 : 0) + 2;
-  }
-  if (inv.notes) { ensure(40); label('NOTES'); block(inv.notes, CW); Y += 4; }
-  if (inv.terms) { ensure(40); label('TERMS & CONDITIONS'); block(inv.terms, CW); Y += 4; }
-  if (rb && qrImg) {
-    var rqz = 80; ensure(rqz + 14); Y += 6;
-    page.drawImage(qrImg.img, { x: M, y: H - Y - rqz, width: rqz, height: rqz });
-    T('Scan for invoice details', M + rqz + 12, Y + rqz / 2 - 14, { size: 10, bold: true, color: AC });
-    T(inv.no || '', M + rqz + 12, Y + rqz / 2 + 2, { size: 9.5, bold: true, color: GRAY });
-    Y += rqz + 12;
-  }
-
-  /* ---- signature ---- */
-  if (sig || inv.sigName || inv.sigTitle) {
-    ensure(86);
-    Y += 2;
-    var bx = R - 190, bwid = 190;
-    if (sig) {
-      var sh = 44, sw = sh * sig.w / sig.h; if (sw > 170) { sw = 170; sh = sw * sig.h / sig.w; }
-      page.drawImage(sig.img, { x: bx + (bwid - sw) / 2, y: H - Y - sh, width: sw, height: sh });
-    }
-    Y += 46;
-    hline(bx, R, Y, 0.8, GRAY);
-    if (inv.sigName) T(inv.sigName, bx + bwid / 2, Y + 4, { size: 9.5, bold: true, align: 'c' });
-    if (inv.sigTitle) T(inv.sigTitle, bx + bwid / 2, Y + 17, { size: 8.5, color: GRAY, align: 'c' });
-    Y += 34;
-  }
-  if (inv.thanks) { ensure(20); Y += 4; T(inv.thanks, W / 2, Y, { size: 10.5, bold: true, color: minimal ? INK : AC, align: 'c' }); Y += 20; }
-
-  /* ---- footer on every page ---- */
-  var pages = pdf.getPages();
-  pages.forEach(function (p, i) {
-    page = p;
-    hline(M, R, H - 44, 0.6, LINE);
-    T('Generated free with Ride Bangla Tools — tools.ridebangla.bd', M, H - 36, { size: 7.5, color: PL.rgb(0.6, 0.64, 0.7) });
-    if (pages.length > 1) T('Page ' + (i + 1) + ' of ' + pages.length, R, H - 36, { size: 7.5, color: PL.rgb(0.6, 0.64, 0.7), align: 'r' });
-  });
-
-  for (var k = 0; k < rq.length; k++) {
-    try {
-      var im = await pdf.embedPng(rq[k].png);
-      rq[k].page.drawImage(im, { x: rq[k].x, y: rq[k].y, width: rq[k].w, height: rq[k].h });
-    } catch (e) { if (warnings.indexOf('Some non-Latin text could not be drawn in the PDF.') < 0) warnings.push('Some non-Latin text could not be drawn in the PDF.'); }
-  }
-  try {
-    pdf.setTitle((inv.title || 'Invoice') + ' ' + (inv.no || ''));
-    if (inv.from.name) pdf.setAuthor(inv.from.name);
-    pdf.setCreator('Ride Bangla Tools'); pdf.setProducer('Ride Bangla Tools');
-  } catch (e) {}
-  return { bytes: await pdf.save(), warnings: warnings };
-}
-
 function fileName(inv, ext) {
   var base = (inv.no || 'invoice').replace(/[^\w\-\u0980-\u09FF]+/g, '_').replace(/^_+|_+$/g, '') || 'invoice';
   return base + '.' + (ext || 'pdf');
@@ -1447,6 +998,50 @@ function loadScript(src) {
   return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
 }
 var pdfJob = null, imgJob = null, imgCache = null;
+/* The invoice picture and the PDF are both drawn from the live sheet, so they always match the preview
+   exactly — in any language and any currency symbol. */
+function paperCssText() {
+  var all = document.querySelectorAll('style');
+  for (var i = 0; i < all.length; i++) {
+    var tx = all[i].textContent, k = tx.indexOf('/* ===== The invoice sheet');
+    if (k >= 0) return tx.slice(k);
+  }
+  return '';
+}
+function sheetOpts() {
+  var inv = collect();
+  return { cssText: paperCssText(), width: 560, scale: 2.5, vars: { '--ac': inv.accent, '--on': onColor(inv.accent) } };
+}
+async function ensureQr() {
+  var inv = collect(); if (!inv.qr) return;
+  var url = await qrDataUrl(qrText(inv, calc(inv)));
+  var im = $('invQrImg');
+  if (im && url && im.getAttribute('src') !== url) { im.src = url; await new Promise(function (r) { setTimeout(r, 80); }); }
+}
+async function loadSheetLib() {
+  if (!window.RBSheetImage) { try { await loadScript('../assets/sheet-image.js'); } catch (e) {} }
+  if (!window.RBSheetImage) throw new Error('Picture engine failed to load. Check your internet connection and try again.');
+}
+function getImage() {
+  if (imgCache && imgCache.ver === ver) return Promise.resolve(imgCache);
+  if (imgJob && imgJob.ver === ver) return imgJob.p;
+  var my = ver;
+  var p = (async function () {
+    await loadSheetLib(); await ensureQr();
+    var inv = collect();
+    var blob = await window.RBSheetImage.toPngBlob($('docPreview'), sheetOpts());
+    var out = { ver: my, blob: blob, name: fileName(inv, 'png'), warnings: [] };
+    imgCache = out; return out;
+  })();
+  imgJob = { ver: my, p: p };
+  p.then(null, function () { if (imgJob && imgJob.p === p) imgJob = null; });
+  return p;
+}
+function dataUrlBytes(u) {
+  var bin = atob(u.split(',')[1]), by = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) by[i] = bin.charCodeAt(i);
+  return by;
+}
 function getPdf() {
   if (pdfCache && pdfCache.ver === ver) return Promise.resolve(pdfCache);
   if (pdfJob && pdfJob.ver === ver) return pdfJob.p;
@@ -1454,54 +1049,37 @@ function getPdf() {
   var p = (async function () {
     if (!window.PDFLib) { try { await loadScript('../assets/pdf-lib.min.js'); } catch (e) {} }
     if (!window.PDFLib) { try { await loadScript('https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js'); } catch (e) {} }
+    if (!window.PDFLib) throw new Error('PDF engine failed to load. Check your internet connection and try again.');
+    await loadSheetLib(); await ensureQr();
     var inv = collect();
-    var r = await buildPdf(inv);
-    var out = { ver: my, bytes: r.bytes, blob: new Blob([r.bytes], { type: 'application/pdf' }), name: fileName(inv, 'pdf'), warnings: r.warnings, inv: inv };
+    var r = await window.RBSheetImage.toCanvas($('docPreview'), sheetOpts());
+    var cv = r.canvas, PL = window.PDFLib;
+    var pdf = await PL.PDFDocument.create();
+    var Wp = 595.28, Hp = 841.89, Mg = 28, cw = Wp - 2 * Mg, k = cw / cv.width, pagePx = Math.floor((Hp - 2 * Mg) / k);
+    var brk = r.breaks.map(function (b) { return Math.round(b * r.scale); });
+    var start = 0;
+    while (start < cv.height) {
+      var limit = start + pagePx, end = limit;
+      if (limit >= cv.height) end = cv.height;
+      else for (var i = brk.length - 1; i >= 0; i--) { if (brk[i] <= limit && brk[i] > start + pagePx * 0.4) { end = brk[i]; break; } }
+      var h = end - start, sc = document.createElement('canvas'); sc.width = cv.width; sc.height = h;
+      var cx = sc.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, sc.width, h); cx.drawImage(cv, 0, start, cv.width, h, 0, 0, cv.width, h);
+      var im = await pdf.embedPng(dataUrlBytes(sc.toDataURL('image/png')));
+      var page = pdf.addPage([Wp, Hp]);
+      page.drawImage(im, { x: Mg, y: Hp - Mg - h * k, width: cw, height: h * k });
+      start = end;
+    }
+    try {
+      pdf.setTitle((inv.title || 'Invoice') + ' ' + (inv.no || ''));
+      if (inv.from.name) pdf.setAuthor(inv.from.name);
+      pdf.setCreator('Ride Bangla Tools'); pdf.setProducer('Ride Bangla Tools');
+    } catch (e) {}
+    var bytes = await pdf.save();
+    var out = { ver: my, bytes: bytes, blob: new Blob([bytes], { type: 'application/pdf' }), name: fileName(inv, 'pdf'), warnings: [], inv: inv };
     pdfCache = out; return out;
   })();
   pdfJob = { ver: my, p: p };
   p.then(null, function () { if (pdfJob && pdfJob.p === p) pdfJob = null; });
-  return p;
-}
-/* picture of the invoice: the finished PDF is drawn page by page (so it always matches the PDF exactly) */
-async function ensurePdfJs() {
-  if (window.pdfjsLib) return window.pdfjsLib;
-  await loadScript(new URL('../assets/pdf.min.js', location.href).href);
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('../assets/pdf.worker.min.js', location.href).href;
-  return window.pdfjsLib;
-}
-async function pdfToPng(bytes) {
-  var lib = await ensurePdfJs();
-  var doc = await lib.getDocument({ data: bytes.slice(0) }).promise;
-  var SC = 2, pages = [];
-  for (var i = 1; i <= doc.numPages; i++) {
-    var pg = await doc.getPage(i), vp = pg.getViewport({ scale: SC });
-    var cv = document.createElement('canvas'); cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height);
-    var cx = cv.getContext('2d'); cx.fillStyle = '#ffffff'; cx.fillRect(0, 0, cv.width, cv.height);
-    await pg.render({ canvasContext: cx, viewport: vp }).promise;
-    pages.push(cv);
-  }
-  var out = pages[0];
-  if (pages.length > 1) {   /* several pages: stack them into one tall picture */
-    var H = pages.reduce(function (s, c) { return s + c.height; }, 0);
-    out = document.createElement('canvas'); out.width = pages[0].width; out.height = H;
-    var ox = out.getContext('2d'); ox.fillStyle = '#ffffff'; ox.fillRect(0, 0, out.width, H);
-    var y = 0; pages.forEach(function (c, k) { ox.drawImage(c, 0, y); y += c.height; if (k < pages.length - 1) { ox.fillStyle = '#d1d5db'; ox.fillRect(0, y - 1, out.width, 2); } });
-  }
-  return await new Promise(function (res, rej) { out.toBlob(function (b) { b ? res(b) : rej(new Error('Could not make the image')); }, 'image/png'); });
-}
-function getImage() {
-  if (imgCache && imgCache.ver === ver) return Promise.resolve(imgCache);
-  if (imgJob && imgJob.ver === ver) return imgJob.p;
-  var my = ver;
-  var p = (async function () {
-    var r = await getPdf();
-    var blob = await pdfToPng(r.bytes);
-    var out = { ver: r.ver, blob: blob, name: r.name.replace(/\.pdf$/i, '.png'), warnings: r.warnings };
-    imgCache = out; return out;
-  })();
-  imgJob = { ver: my, p: p };
-  p.then(null, function () { if (imgJob && imgJob.p === p) imgJob = null; });
   return p;
 }
 function saveBlob(blob, name) {
@@ -1587,17 +1165,32 @@ async function actDownloadImg() {
 }
 
 /* ---------- send (as a picture) ---------- */
-function defaultMsg(inv, t) {
-  var L = ['Hello ' + (inv.to.name || 'there') + ',', ''];
-  L.push('Please find ' + (/^[aeiou]/i.test(inv.title) ? 'an ' : 'a ') + inv.title.toLowerCase() + (inv.no ? ' (' + inv.no + ')' : '') + ' from ' + (inv.from.name || 'us') + ' for ' + money(t.total, inv.cur) + '.');
-  if (t.bal > 0) {
-    L.push(t.hasAdv ? 'Balance due: ' + money(t.bal, inv.cur) + '.' : '');
-    if (inv.pay === 'due' && inv.due) L.push('Due date: ' + fmtDate(inv.due) + '.');
-  } else L.push('Payment received — thank you!');
-  if (inv.payInfo && t.bal > 0) { L.push(''); L.push('Payment details:'); L.push(inv.payInfo); }
-  L.push(''); L.push('Thank you,'); L.push(inv.from.name || '');
-  return L.filter(function (x, i, a) { return !(x === '' && a[i - 1] === ''); }).join('\n').trim();
+function fullText(inv, t) {
+  var m = function (n) { return money(n, inv.cur); };
+  var L = [(inv.from.name ? inv.from.name + ' — ' : '') + inv.title + (inv.no ? ' ' + inv.no : ''), 'Date: ' + fmtDate(inv.date)];
+  if (inv.pay === 'due' && inv.due) L.push('Due date: ' + fmtDate(inv.due));
+  L.push('');
+  if (inv.to.name) L.push('To: ' + inv.to.name);
+  if (inv.to.phone) L.push('Phone: ' + inv.to.phone);
+  if (inv.to.email) L.push('Email: ' + inv.to.email);
+  if (inv.to.addr) L.push('Address: ' + inv.to.addr);
+  if (inv.to.tax) L.push('Tax / BIN: ' + inv.to.tax);
+  if (inv.items.length) {
+    L.push(''); L.push('Items:');
+    inv.items.forEach(function (it, i) { L.push((i + 1) + '. ' + (it.desc || '—') + (it.detail ? ' (' + it.detail + ')' : '') + ' — ' + it.qty + ' × ' + m(it.rate) + ' = ' + m(t.lines[i])); });
+  }
+  L.push('');
+  totalsRows(inv, t).forEach(function (r) { L.push(r[0] + ': ' + r[1]); });
+  L.push('Payment: ' + (inv.pay === 'due' ? 'Pay later' : (PAY[inv.pay] || 'Paid')) + (t.bal > 0 ? ' — balance due ' + m(t.bal) : ' — paid'));
+  if (inv.po) L.push('Reference: ' + inv.po);
+  if (inv.payInfo) { L.push(''); L.push('How to pay:'); L.push(inv.payInfo); }
+  if (inv.notes) { L.push(''); L.push('Notes: ' + inv.notes); }
+  if (inv.terms) { L.push(''); L.push('Terms: ' + inv.terms); }
+  var c = [inv.from.phone, inv.from.email, inv.from.web].filter(Boolean).join(' · ');
+  if (c || inv.thanks) { L.push(''); if (inv.thanks) L.push(inv.thanks); if (c) L.push(c); }
+  return L.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }
+function defaultMsg(inv, t) { return fullText(inv, t); }
 function normPhone(p) {
   var d = String(p || '').replace(/[^\d+]/g, '');
   if (!d) return '';
@@ -1624,7 +1217,7 @@ async function openSend() {
   $('sWa').style.display = share ? 'none' : '';
   $('sendSub').textContent = 'Preparing the invoice picture…';
   $('sendNote').innerHTML = share
-    ? 'Tap <b>Send picture</b>, choose WhatsApp, Messenger or Email and then your customer — the invoice goes as a picture.'
+    ? 'Tap <b>Send picture</b>, choose WhatsApp, Messenger, Facebook or Email — the invoice goes as a picture <b>together with the full text</b> below.'
     : 'On a computer the picture is <b>copied for you</b>: tap WhatsApp or Email, then paste it (Ctrl+V / Cmd+V) into the chat or email. If copying is blocked, the picture is saved instead.';
   $('sendModal').classList.add('open');
   try {
@@ -1682,10 +1275,18 @@ async function sDlImg() {
 /* page can be put on the home screen and opens straight to this tool */
 function setupInstall() {
   try {
-    var dip = null, ib = $('installBtn');
-    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); dip = e; if (ib) ib.style.display = ''; });
-    if (ib) ib.addEventListener('click', function () { if (!dip) return; dip.prompt(); dip.userChoice.then(function () { dip = null; ib.style.display = 'none'; }, function () {}); });
-    window.addEventListener('appinstalled', function () { if (ib) ib.style.display = 'none'; });
+    var dip = null, bar = $('installBar'), ib = $('installBtn');
+    var standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+    var ios = /iPhone|iPad|iPod/i.test(navigator.userAgent || '') || (/Macintosh/.test(navigator.userAgent || '') && navigator.maxTouchPoints > 1);
+    function show() { if (bar && !standalone) bar.classList.add('show'); }
+    if (isMobileDev()) show();
+    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); dip = e; show(); });
+    window.addEventListener('appinstalled', function () { if (bar) bar.classList.remove('show'); });
+    if (ib) ib.addEventListener('click', function () {
+      if (dip) { dip.prompt(); dip.userChoice.then(function () { dip = null; }, function () {}); return; }
+      alert(ios ? 'To put this on your home screen: tap the Share button in Safari, then “Add to Home Screen”.'
+                : 'To put this on your home screen: open the browser menu (⋮) and tap “Install app” or “Add to Home screen”.');
+    });
   } catch (e) {}
   try {
     if (!/^https?:$/.test(location.protocol)) return;
@@ -1724,7 +1325,7 @@ function init() {
   var s = lsGet('rb_inv_v2');
   if (s) {
     ['fromTag', 'fromPhone', 'fromEmail', 'fromWeb', 'fromTaxId', 'sigName', 'sigTitle', 'taxLabel', 'shipLabel', 'payInfo', 'terms', 'thanks'].forEach(function (k) { if (typeof s[k] === 'string') $(k).value = s[k]; });
-    if (s.tpl && /^(rb|classic|modern|minimal)$/.test(s.tpl)) tpl = s.tpl; if (s.accent) accent = s.accent;
+    if (s.accent) accent = s.accent;
     if (s.currency && CUR[s.currency]) $('currency').value = s.currency;
     if (s.docTitle) $('docTitle').value = s.docTitle;
     if (s.qr === false) { qrOn = false; $('qrInclude').checked = false; }
@@ -1799,7 +1400,6 @@ function init() {
   });
   $('sigRemove').addEventListener('click', function () { sigData = null; $('sigFile').value = ''; lsDel('rb_inv_sig'); syncImgUi(); render(); });
   /* design */
-  $('tpls').addEventListener('click', function (e) { var b = e.target.closest('.tpl'); if (!b) return; tpl = b.getAttribute('data-tpl'); syncTplUi(); render(); });
   $('swatches').addEventListener('click', function (e) { var b = e.target.closest('button[data-c]'); if (!b) return; accent = b.getAttribute('data-c'); syncTplUi(); render(); });
   $('accentPick').addEventListener('input', function () { accent = this.value; syncTplUi(true); render(); });
   $('qrInclude').addEventListener('change', function () { qrOn = this.checked; render(); });
@@ -1808,13 +1408,12 @@ function init() {
   window.addEventListener('pagehide', saveNow);
   document.addEventListener('visibilitychange', function () { if (document.hidden) saveNow(); });
 
-  /* preview size on phones: small -> large -> hidden */
-  $('pvTog').addEventListener('click', function () {
-    var app = $('invApp'), cur = app.getAttribute('data-pv') || 'sm';
-    var nxt = cur === 'sm' ? 'lg' : (cur === 'lg' ? 'off' : 'sm');
-    app.setAttribute('data-pv', nxt);
-    this.textContent = nxt === 'sm' ? '⤢ Larger' : (nxt === 'lg' ? '▴ Hide' : '👁 Show');
-    setTimeout(fit, 30);
+  /* phones: Fill in / Preview tabs */
+  $('viewTabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-v]'); if (!b) return;
+    $('invApp').setAttribute('data-view', b.getAttribute('data-v'));
+    document.querySelectorAll('#viewTabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    try { $('viewTabs').scrollIntoView(); } catch (er) {} setTimeout(fit, 30);
   });
   /* action bars (event delegation) */
   $('invApp').addEventListener('click', function (e) {
@@ -1841,7 +1440,6 @@ function init() {
   window.addEventListener('load', fit);
 }
 function syncTplUi() {
-  document.querySelectorAll('#tpls .tpl').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tpl') === tpl); });
   document.querySelectorAll('#swatches button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-c').toLowerCase() === accent.toLowerCase()); });
   var pk = $('accentPick'); if (pk && /^#[0-9a-fA-F]{6}$/.test(accent)) pk.value = accent;
   $('invApp').style.setProperty('--ac', accent);

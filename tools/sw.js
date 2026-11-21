@@ -2,13 +2,16 @@
    Pages + JS/CSS are NETWORK-FIRST so visitors always see the newest site;
    cached copies are only a fallback when offline. Images stay cache-first
    with a background refresh so the site stays fast. */
-var CACHE = 'rb-tools-v4';
+var CACHE = 'rb-tools-v5';
 var CORE = [
   '/',
   '/index.html',
   '/assets/manifest.webmanifest',
   '/assets/main.js',
   '/assets/ai.js',
+  '/business/invoice-generator.html',
+  '/assets/sheet-image.js',
+  '/assets/pdf-lib.min.js',
   '/assets/icon-192.png',
   '/assets/icon-512.png'
 ];
