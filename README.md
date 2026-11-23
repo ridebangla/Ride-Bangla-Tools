@@ -231,7 +231,7 @@ Ride Bangla Limited is led by Enamul Seddik (Co-Founder & CEO), Emon Seddik (Co-
   <a href="https://x.com/ridebangla"><img src="https://cdn.simpleicons.org/x/000000" width="22" alt="X"></a>&nbsp; <a href="https://x.com/ridebangla">X</a> &nbsp;·&nbsp;
   <a href="https://www.instagram.com/ride.bangla_"><img src="https://cdn.simpleicons.org/instagram/E4405F" width="22" alt="Instagram"></a>&nbsp; <a href="https://www.instagram.com/ride.bangla_">Instagram</a> &nbsp;·&nbsp;
   <a href="https://www.threads.net/@ride.bangla_"><img src="https://cdn.simpleicons.org/threads/000000" width="22" alt="Threads"></a> &nbsp;·&nbsp;
-  <a href="https://www.tiktok.com/@ridebangla0"><img src="https://cdn.simpleicons.org/tiktok/000000" width="22" alt="TikTok"></a>&nbsp; <a href="https://www.tiktok.com/@ridebangla0">TikTok</a> &nbsp;·&nbsp;
+  <a href="https://www.tiktok.com/@ridebangla"><img src="https://cdn.simpleicons.org/tiktok/000000" width="22" alt="TikTok"></a>&nbsp; <a href="https://www.tiktok.com/@ridebangla">TikTok</a> &nbsp;·&nbsp;
   <a href="https://www.youtube.com/@ridebangla-0"><img src="https://cdn.simpleicons.org/youtube/FF0000" width="22" alt="YouTube"></a>&nbsp; <a href="https://www.youtube.com/@ridebangla-0">YouTube</a>
 </p>
 

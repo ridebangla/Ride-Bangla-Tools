@@ -54,6 +54,15 @@
           "value": "camera=(self), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), magnetometer=(), gyroscope=(), accelerometer=()"
         }
       ]
+    },
+    {
+      "source": "/ad-banner-snippets.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ]
 }
